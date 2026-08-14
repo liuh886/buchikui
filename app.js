@@ -65,7 +65,7 @@
     byId('scenarioNav').href=compact?'#route':'#cases';
     navLinks.slice(1).forEach(link=>link.hidden=compact);
     if(mobilePrimary){
-      mobilePrimary.href=compact?'#route':'#cases';
+      mobilePrimary.href=compact?'#route':'#scenarioPicker';
       mobilePrimary.textContent=compact?'查看处理步骤':'找到我的问题';
       mobilePrimary.setAttribute('aria-label',compact?'跳到处理步骤':'跳到问题场景');
     }

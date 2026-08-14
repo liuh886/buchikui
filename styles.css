@@ -581,8 +581,9 @@ h1 em{font-style:normal;color:var(--red)}
 }
 .check:nth-child(odd){border-right:1px solid #55514a}
 .evidence-group-list .check:nth-child(odd){border-right:1px solid #55514a}
-.evidence-group-list .check:nth-last-child(-n+2){border-bottom:0}
-.evidence-group-list .check:only-child{border-right:0;border-bottom:0}
+.evidence-group-list .check:last-child{border-bottom:0}
+.evidence-group-list .check:nth-last-child(2):nth-child(odd){border-bottom:0}
+.evidence-group-list .check:only-child{border-right:0}
 .check:hover{background:#22211e}
 .check input{position:absolute;opacity:0}
 .box{

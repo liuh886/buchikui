@@ -97,6 +97,8 @@
   }
 
   function renderStandardCase(){
+    const situation=document.querySelector('.situation');
+    situation.classList.toggle('dense',active.scenarios.length>6);
     byId('scenarioNav').textContent=`${active.scenarios.length} 个场景`;
     byId('situationList').innerHTML='<span class="situation-label">我遇到的是：</span>'+active.scenarios.map((item,index)=>`<a href="#case-${index+1}">${item.short}</a>`).join('');
     byId('casesKicker').textContent=active.section.kicker;

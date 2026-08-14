@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>不吃亏 — 消费前多看一眼，消费后少走弯路</title>
+  <meta name="description" content="不吃亏：消费风险识别、证据留存与合理维权行动指南。十条原则，帮你识别套路、留下证据、选对路径、合理维权。" />
+  <meta property="og:title" content="不吃亏 — 十条不吃亏原则" />
+  <meta property="og:description" content="消费前多看一眼，消费后少走弯路。识别套路，留下证据，选对路径，合理维权。" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --purple-50: #faf5ff;
+      --purple-100: #f3e8ff;
+      --purple-700: #7c3aed;
+      --purple-800: #6b21a8;
+      --gray-200: #e5e7eb;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --nav-h: 64px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      color: var(--gray-900);
+      background: var(--gray-900);
+      overflow: hidden;
+    }
+
+    /* ============ 导航栏 ============ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gray-200);
+      z-index: 50;
+    }
+
+    .navbar-inner {
+      max-width: 1200px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--purple-700);
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links > li > a,
+    .dropdown-toggle {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray-700);
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+    }
+
+    .nav-links > li > a:hover,
+    .dropdown-toggle:hover { color: var(--purple-700); }
+
+    .nav-soon {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--gray-400);
+      margin-left: 4px;
+    }
+
+    /* 案例下拉菜单（mega menu） */
+    .has-dropdown { position: relative; }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      padding-top: 12px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    }
+
+    .has-dropdown:hover .dropdown,
+    .has-dropdown:focus-within .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-panel {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      box-shadow: 0 12px 48px rgba(17, 24, 39, 0.12);
+      padding: 28px;
+      min-width: 660px;
+    }
+
+    .dropdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 32px;
+    }
+
+    .dropdown-group h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 10px;
+    }
+
+    .dropdown-group ul { list-style: none; }
+
+    .dropdown-group li { margin-bottom: 6px; }
+
+    .dropdown-item {
+      display: block;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: default;
+      transition: background 0.15s;
+    }
+
+    .dropdown-item:hover { background: var(--purple-50); }
+
+    .dropdown-item .item-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-700);
+    }
+
+    .dropdown-item:hover .item-name { color: var(--purple-700); }
+
+    .dropdown-item .item-desc {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+
+    .dropdown-note {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-200);
+      font-size: 12px;
+      color: var(--gray-400);
+      text-align: center;
+    }
+
+    /* 移动端汉堡菜单 */
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: var(--gray-700);
+    }
+
+    .mobile-menu {
+      display: none;
+      border-top: 1px solid var(--gray-200);
+      background: #fff;
+      max-height: calc(100vh - var(--nav-h));
+      max-height: calc(100dvh - var(--nav-h));
+      overflow-y: auto;
+      padding: 16px 24px 32px;
+    }
+
+    .mobile-menu.open { display: block; }
+
+    .mobile-menu details { margin-bottom: 8px; }
+
+    .mobile-menu summary {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray-700);
+      padding: 10px 0;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .mobile-menu summary::before {
+      content: '▸';
+      margin-right: 8px;
+      color: var(--gray-400);
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+
+    .mobile-menu details[open] summary::before { transform: rotate(90deg); }
+
+    .mobile-menu .sub {
+      margin-left: 20px;
+      padding: 4px 0 8px;
+    }
+
+    .mobile-menu .sub span {
+      display: block;
+      font-size: 14px;
+      color: var(--gray-500);
+      padding: 6px 0;
+    }
+
+    .mobile-menu .static-link {
+      display: block;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray-700);
+      text-decoration: none;
+      padding: 10px 0;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    /* ============ 进度指示器 ============ */
+    .progress {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 40;
+    }
+
+    .progress a {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .progress a:hover { background: rgba(255, 255, 255, 0.7); }
+
+    .progress a.active {
+      background: #fff;
+      transform: scale(1.6);
+    }
+
+    /* ============ 十屏滚动容器 ============ */
+    #deck {
+      height: 100vh;
+      height: 100dvh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    #deck::-webkit-scrollbar { display: none; }
+
+    .slide {
+      min-height: 100vh;
+      min-height: 100dvh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 每屏渐变配色（对应 design-system.md） */
+    .slide:nth-child(1)  { background: linear-gradient(135deg, #9333ea, #4338ca); }
+    .slide:nth-child(2)  { background: linear-gradient(135deg, #4f46e5, #1d4ed8); }
+    .slide:nth-child(3)  { background: linear-gradient(135deg, #2563eb, #0e7490); }
+    .slide:nth-child(4)  { background: linear-gradient(135deg, #0891b2, #0f766e); }
+    .slide:nth-child(5)  { background: linear-gradient(135deg, #0d9488, #15803d); }
+    .slide:nth-child(6)  { background: linear-gradient(135deg, #16a34a, #047857); }
+    .slide:nth-child(7)  { background: linear-gradient(135deg, #059669, #4d7c0f); }
+    .slide:nth-child(8)  { background: linear-gradient(135deg, #65a30d, #a16207); }
+    .slide:nth-child(9)  { background: linear-gradient(135deg, #ca8a04, #c2410c); }
+    .slide:nth-child(10) { background: linear-gradient(135deg, #ea580c, #b91c1c); }
+
+    /* 可读性暗角 */
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.22) 100%);
+      pointer-events: none;
+    }
+
+    /* 背景大数字水印 */
+    .slide-number-bg {
+      position: absolute;
+      right: 3%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: clamp(220px, 32vw, 460px);
+      font-weight: 900;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.06);
+      pointer-events: none;
+      user-select: none;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .slide-content {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      padding: calc(var(--nav-h) + 40px) 40px 72px;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .slide.active .slide-content {
+      opacity: 1;
+      transform: none;
+    }
+
+    .slide-meta {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      opacity: 0.65;
+      margin-bottom: 24px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .slide-title {
+      font-size: clamp(34px, 5.6vw, 64px);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .slide-subtitle {
+      font-size: clamp(17px, 2.2vw, 24px);
+      font-weight: 400;
+      opacity: 0.92;
+      margin-bottom: 48px;
+    }
+
+    .slide-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .slide-columns h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 16px;
+    }
+
+    .slide-columns ul { list-style: none; }
+
+    .slide-columns li {
+      font-size: 16px;
+      line-height: 1.6;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 10px;
+      opacity: 0.95;
+    }
+
+    .slide-columns li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.72em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .slide-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      padding-bottom: 3px;
+      opacity: 0.85;
+      transition: opacity 0.2s, border-color 0.2s;
+    }
+
+    .slide-cta:hover {
+      opacity: 1;
+      border-color: #fff;
+    }
+
+    .slide-cta .soon {
+      font-size: 11px;
+      font-weight: 400;
+      opacity: 0.7;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-left: 4px;
+    }
+
+    /* 第一屏滚动提示 */
+    .scroll-hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-align: center;
+      animation: hint-bounce 2s infinite;
+    }
+
+    @keyframes hint-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* 第十屏页脚 */
+    .slide-footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      font-size: 12px;
+      line-height: 1.8;
+      opacity: 0.75;
+    }
+
+    .slide-footer a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* ============ 响应式 ============ */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .menu-btn { display: block; }
+      .progress { right: 10px; gap: 8px; }
+      .progress a { width: 6px; height: 6px; }
+      .slide-content { padding: calc(var(--nav-h) + 24px) 24px 56px; }
+      .slide-columns { grid-template-columns: 1fr; gap: 28px; margin-bottom: 36px; }
+      .slide-subtitle { margin-bottom: 36px; }
+      .slide-number-bg { font-size: 200px; right: -4%; }
+    }
+
+    /* 无障碍：减少动画 */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .slide-content { opacity: 1; transform: none; transition: none; }
+      .scroll-hint { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ 导航栏 ============ -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a class="logo" href="#principle-1">不吃亏</a>
+
+      <ul class="nav-links">
+        <li class="has-dropdown">
+          <button class="dropdown-toggle" aria-haspopup="true">
+            案例
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="dropdown">
+            <div class="dropdown-panel">
+              <div class="dropdown-grid">
+                <div class="dropdown-group">
+                  <h3>交通出行</h3>
+                  <ul>
+                    <li><span class="dropdown-item"><span class="item-name">如何租车维权</span><span class="item-desc">租车押金被扣？还车时被索赔？</span></span></li>
+                    <li><span class="dropdown-item"><span class="item-name">如何网约车维权</span><span class="item-desc">费用争议、账号封禁、司乘纠纷</span></span></li>
+                  </ul>
+                </div>
+                <div class="dropdown-group">
+                  <h3>预付消费</h3>
+                  <ul>
+                    <li><span class="dropdown-item"><span class="item-name">如何健身房维权</span><span class="item-desc">健身房跑路、年卡退费难</span></span></li>
+                    <li><span class="dropdown-item"><span class="item-name">如何美发店维权</span><span class="item-desc">预付卡退费、诱导充值</span></span></li>
+                    <li><span class="dropdown-item"><span class="item-name">如何教育培训维权</span><span class="item-desc">退费难、虚假宣传、包过承诺</span></span></li>
+                  </ul>
+                </div>
+                <div class="dropdown-group">
+                  <h3>电商购物</h3>
+                  <ul>
+                    <li><span class="dropdown-item"><span class="item-name">如何电商维权</span><span class="item-desc">假货、拒绝退货、虚假宣传</span></span></li>
+                    <li><span class="dropdown-item"><span class="item-name">如何直播带货维权</span><span class="item-desc">夸大宣传、货不对板</span></span></li>
+                  </ul>
+                </div>
+                <div class="dropdown-group">
+                  <h3>生活服务</h3>
+                  <ul>
+                    <li><span class="dropdown-item"><span class="item-name">如何旅行住宿维权</span><span class="item-desc">酒店退订、机票改退、附加费用</span></span></li>
+                    <li><span class="dropdown-item"><span class="item-name">如何装修维权</span><span class="item-desc">低价签约、中途增项、质量问题</span></span></li>
+                  </ul>
+                </div>
+                <div class="dropdown-group">
+                  <h3>大额消费</h3>
+                  <ul>
+                    <li><span class="dropdown-item"><span class="item-name">如何医美维权</span><span class="item-desc">效果承诺、诱导贷款、资质问题</span></span></li>
+                    <li><span class="dropdown-item"><span class="item-name">如何买车维权</span><span class="item-desc">定金纠纷、隐瞒车况、强制装潢</span></span></li>
+                  </ul>
+                </div>
+                <div class="dropdown-group">
+                  <h3>数字消费</h3>
+                  <ul>
+                    <li><span class="dropdown-item"><span class="item-name">如何自动续费维权</span><span class="item-desc">默认勾选、取消困难、扣费无提醒</span></span></li>
+                    <li><span class="dropdown-item"><span class="item-name">如何游戏充值维权</span><span class="item-desc">未成年人充值、诱导消费</span></span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="dropdown-note">专题内容筹备中，首发「如何租车维权」</div>
+            </div>
+          </div>
+        </li>
+        <li><a href="#" onclick="return false" style="cursor:default">工具<span class="nav-soon">筹备中</span></a></li>
+        <li><a href="https://github.com/liuh886/buchikui" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+
+      <button class="menu-btn" id="menuBtn" aria-label="打开菜单">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+      <details>
+        <summary>交通出行</summary>
+        <div class="sub"><span>如何租车维权（筹备中）</span><span>如何网约车维权（筹备中）</span></div>
+      </details>
+      <details>
+        <summary>预付消费</summary>
+        <div class="sub"><span>如何健身房维权（筹备中）</span><span>如何美发店维权（筹备中）</span><span>如何教育培训维权（筹备中）</span></div>
+      </details>
+      <details>
+        <summary>电商购物</summary>
+        <div class="sub"><span>如何电商维权（筹备中）</span><span>如何直播带货维权（筹备中）</span></div>
+      </details>
+      <details>
+        <summary>生活服务</summary>
+        <div class="sub"><span>如何旅行住宿维权（筹备中）</span><span>如何装修维权（筹备中）</span></div>
+      </details>
+      <details>
+        <summary>大额消费</summary>
+        <div class="sub"><span>如何医美维权（筹备中）</span><span>如何买车维权（筹备中）</span></div>
+      </details>
+      <details>
+        <summary>数字消费</summary>
+        <div class="sub"><span>如何自动续费维权（筹备中）</span><span>如何游戏充值维权（筹备中）</span></div>
+      </details>
+      <a class="static-link" href="https://github.com/liuh886/buchikui" target="_blank" rel="noopener">GitHub →</a>
+    </div>
+  </nav>
+
+  <!-- ============ 进度指示器 ============ -->
+  <div class="progress" id="progress" aria-hidden="true">
+    <a href="#principle-1" class="active"></a>
+    <a href="#principle-2"></a>
+    <a href="#principle-3"></a>
+    <a href="#principle-4"></a>
+    <a href="#principle-5"></a>
+    <a href="#principle-6"></a>
+    <a href="#principle-7"></a>
+    <a href="#principle-8"></a>
+    <a href="#principle-9"></a>
+    <a href="#principle-10"></a>
+  </div>
+
+  <!-- ============ 十屏原则 ============ -->
+  <main id="deck">
+
+    <!-- 01 -->
+    <section class="slide" id="principle-1">
+      <div class="slide-number-bg">01</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 01 / 10</div>
+        <h1 class="slide-title">先看规则，再付钱</h1>
+        <p class="slide-subtitle">所有口头承诺，都要落到文字里。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>销售嘴上说「随时可退」，合同里写「概不退款」</li>
+              <li>付款之后才发现隐藏条款</li>
+              <li>宣传页面与合同条款不一致</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>付款前看清退款、违约、免责条款</li>
+              <li>重要承诺要求书面确认</li>
+              <li>截图保存宣传页与聊天记录</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看通用维权指南 →<span class="soon">筹备中</span></a>
+      </div>
+      <div class="scroll-hint">↓ 滚动</div>
+    </section>
+
+    <!-- 02 -->
+    <section class="slide" id="principle-2">
+      <div class="slide-number-bg">02</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 02 / 10</div>
+        <h1 class="slide-title">低价有条件，就不叫低价</h1>
+        <p class="slide-subtitle">把「起步价」换算成「最终总价」。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>广告价只是「起步价」</li>
+              <li>服务费、保险费、手续费层层加码</li>
+              <li>「到店另议」的价格陷阱</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>要求列明全部费用明细</li>
+              <li>按最终总价做比较</li>
+              <li>问清「这个价格包含什么」</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看价格陷阱专题 →<span class="soon">筹备中</span></a>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="slide" id="principle-3">
+      <div class="slide-number-bg">03</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 03 / 10</div>
+        <h1 class="slide-title">押金不是商家的备用收入</h1>
+        <p class="slide-subtitle">交押金前，先问清楚扣什么、何时退、凭什么扣。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>还车后称「有划痕」，拒退押金</li>
+              <li>扣款无明细、无票据、无依据</li>
+              <li>以「系统审核」为由无限期拖延</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>取车时拍照录像，双方确认车况</li>
+              <li>还车时要求当场验车并签字</li>
+              <li>扣款必须提供合同依据与费用明细</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看租车维权专题 →<span class="soon">筹备中</span></a>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="slide" id="principle-4">
+      <div class="slide-number-bg">04</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 04 / 10</div>
+        <h1 class="slide-title">证据要在争议发生前保存</h1>
+        <p class="slide-subtitle">聊天记录、页面截图、付款凭证，一个都别少。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>商家否认之前的承诺</li>
+              <li>宣传页面事后悄悄修改</li>
+              <li>聊天记录「不小心」丢失</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>下单前保存宣传页和规则</li>
+              <li>履约时拍照录像</li>
+              <li>保存订单、账单与全部沟通记录</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看证据留存指南 →<span class="soon">筹备中</span></a>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="slide" id="principle-5">
+      <div class="slide-number-bg">05</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 05 / 10</div>
+        <h1 class="slide-title">对「限时」「最后名额」保持警惕</h1>
+        <p class="slide-subtitle">催你立刻付款的人，通常不希望你仔细比较。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>「仅剩最后 3 个名额」</li>
+              <li>「今天不签就涨价」</li>
+              <li>「不马上转账就失效」</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>先停十分钟：核验主体、对比价格</li>
+              <li>查看退款规则，问清全部费用</li>
+              <li>不在压力下做任何付款决定</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看营销话术拆解 →<span class="soon">筹备中</span></a>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section class="slide" id="principle-6">
+      <div class="slide-number-bg">06</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 06 / 10</div>
+        <h1 class="slide-title">预付得越多，风险越大</h1>
+        <p class="slide-subtitle">能按次付，就别一次性付多年。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>健身房、培训机构卷款跑路</li>
+              <li>预付卡「概不退换」</li>
+              <li>商家的经营风险转嫁给消费者</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>优先短周期、可退款的付款方式</li>
+              <li>大额预付前先查商家经营状况</li>
+              <li>不被「优惠力度」冲昏头脑</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看预付消费专题 →<span class="soon">筹备中</span></a>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="slide" id="principle-7">
+      <div class="slide-number-bg">07</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 07 / 10</div>
+        <h1 class="slide-title">不要只和客服吵，要留下可用记录</h1>
+        <p class="slide-subtitle">少情绪，多事实。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>客服「已读不回」拖时间</li>
+              <li>电话口头承诺无凭据</li>
+              <li>情绪化争吵解决不了问题</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>用「时间—订单—问题—证据—诉求—期限」表达</li>
+              <li>重要沟通落到文字并保留记录</li>
+              <li>明确给出处理期限</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看沟通话术模板 →<span class="soon">筹备中</span></a>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="slide" id="principle-8">
+      <div class="slide-number-bg">08</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 08 / 10</div>
+        <h1 class="slide-title">谁主张扣钱，谁就应当说清楚</h1>
+        <p class="slide-subtitle">要求对方列明合同依据、事实依据、证据材料。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>一句「按平台规定」就扣款</li>
+              <li>「系统判定」违约却不给理由</li>
+              <li>扣款无明细、无票据</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>要求列明合同依据与事实依据</li>
+              <li>要求提供费用计算方式和正规发票</li>
+              <li>举证不能的扣款，可主张退还</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看扣款争议专题 →<span class="soon">筹备中</span></a>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="slide" id="principle-9">
+      <div class="slide-number-bg">09</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 09 / 10</div>
+        <h1 class="slide-title">选对渠道，比盲目投诉重要</h1>
+        <p class="slide-subtitle">先判断问题，再决定找谁。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>找错渠道，来回踢皮球</li>
+              <li>只在网上发泄，不进入正式流程</li>
+              <li>错过最佳处理时机</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>先判断问题性质：退款、质量还是虚假宣传</li>
+              <li>按金额与证据选：客服 → 12315 → 消协 → 诉讼</li>
+              <li>每一步保留受理编号与回复记录</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看维权渠道导航 →<span class="soon">筹备中</span></a>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="slide" id="principle-10">
+      <div class="slide-number-bg">10</div>
+      <div class="slide-content">
+        <div class="slide-meta">不吃亏 · 十条原则 — 10 / 10</div>
+        <h1 class="slide-title">维权不是「出口气」</h1>
+        <p class="slide-subtitle">是拿回属于你的东西。目标具体、金额清楚、步骤留痕。</p>
+        <div class="slide-columns">
+          <div>
+            <h3>⚠ 常见套路</h3>
+            <ul>
+              <li>目标模糊，只求「给个说法」</li>
+              <li>情绪上头，忘了算清金额</li>
+              <li>过程不留痕，后续无法追溯</li>
+            </ul>
+          </div>
+          <div>
+            <h3>✓ 行动要点</h3>
+            <ul>
+              <li>明确诉求：退款、赔偿还是解除合同</li>
+              <li>算清每一笔金额及其依据</li>
+              <li>理性、持续、证据充分地推进</li>
+            </ul>
+          </div>
+        </div>
+        <a class="slide-cta" href="https://github.com/liuh886/buchikui/tree/main/docs" target="_blank" rel="noopener">查看行动指南 →<span class="soon">筹备中</span></a>
+
+        <footer class="slide-footer">
+          <p>本站提供消费风险识别、证据留存和维权路径参考，不代替律师法律意见、行政机关处理或司法裁判。如遇复杂法律问题，建议咨询专业律师。</p>
+          <p>不吃亏 Buchikui · <a href="https://github.com/liuh886/buchikui" target="_blank" rel="noopener">GitHub</a></p>
+        </footer>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    (function () {
+      var deck = document.getElementById('deck');
+      var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var dots = Array.prototype.slice.call(document.querySelectorAll('.progress a'));
+      var current = 0;
+
+      // 滚动检测：激活当前屏、更新进度点、同步 URL hash
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var i = slides.indexOf(entry.target);
+            current = i;
+            entry.target.classList.add('active');
+            dots.forEach(function (d, di) {
+              d.classList.toggle('active', di === i);
+            });
+            history.replaceState(null, '', '#' + entry.target.id);
+          }
+        });
+      }, { root: deck, threshold: 0.5 });
+
+      slides.forEach(function (s) { observer.observe(s); });
+
+      // 键盘导航
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+          e.preventDefault();
+          go(current + 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+          e.preventDefault();
+          go(current - 1);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          go(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          go(slides.length - 1);
+        }
+      });
+
+      function go(i) {
+        if (i < 0 || i >= slides.length) return;
+        slides[i].scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // 进度点点击
+      dots.forEach(function (d, i) {
+        d.addEventListener('click', function (e) {
+          e.preventDefault();
+          go(i);
+        });
+      });
+
+      // 移动端菜单
+      var menuBtn = document.getElementById('menuBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      menuBtn.addEventListener('click', function () {
+        mobileMenu.classList.toggle('open');
+      });
+
+      // URL hash 直达（分享某一屏）
+      window.addEventListener('load', function () {
+        if (location.hash) {
+          var target = document.querySelector(location.hash);
+          if (target && target.classList.contains('slide')) {
+            target.scrollIntoView({ behavior: 'instant' });
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

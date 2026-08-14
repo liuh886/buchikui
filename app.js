@@ -42,7 +42,7 @@
 
     function persistEvidence(){
       const n=boxes.filter(box=>box.checked).length;
-      count.textContent=`${n} / ${boxes.length}`;
+      count.textContent=String(n);
       localStorage.setItem(evidenceKey,JSON.stringify(Object.fromEntries(boxes.map(box=>[box.dataset.evidence,box.checked]))));
     }
 
@@ -61,10 +61,39 @@
     standardOnly.forEach(element=>element.hidden=compact);
 
     const navLinks=[...document.querySelectorAll('nav a')];
-    const mobilePrint=document.querySelector('.mobile-bar [data-print]');
+    const mobilePrimary=byId('mobilePrimaryAction');
     byId('scenarioNav').href=compact?'#route':'#cases';
     navLinks.slice(1).forEach(link=>link.hidden=compact);
-    if(mobilePrint) mobilePrint.textContent=compact?'打印指南':'保存清单';
+    if(mobilePrimary){
+      mobilePrimary.href=compact?'#route':'#scenarioPicker';
+      mobilePrimary.textContent=compact?'查看处理步骤':'找到我的问题';
+      mobilePrimary.setAttribute('aria-label',compact?'跳到处理步骤':'跳到问题场景');
+    }
+  }
+
+  function renderEvidence(){
+    setHtml('evidenceTitle',active.evidence.title);
+    setHtml('evidenceIntro',active.evidence.intro);
+    byId('evidenceFootnote').textContent=active.evidence.footnote;
+
+    const checklist=byId('checklist');
+    const renderCheck=item=>`<label class="check"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${item.title}</strong><small>${item.detail}</small></span><span class="when">${item.when}</span></label>`;
+
+    if(active.evidence.groups&&active.evidence.groups.length){
+      checklist.classList.add('grouped');
+      checklist.innerHTML=active.evidence.groups.map((group,index)=>{
+        const items=active.evidence.items.filter(item=>item.group===group.key);
+        return `<section class="evidence-group" role="group" aria-labelledby="evidence-group-${index}">
+          <div class="evidence-group-head"><strong id="evidence-group-${index}">${group.title}</strong><span>${group.note}</span></div>
+          <div class="evidence-group-list">${items.map(renderCheck).join('')}</div>
+        </section>`;
+      }).join('');
+    }else{
+      checklist.classList.remove('grouped');
+      checklist.innerHTML=active.evidence.items.map(renderCheck).join('');
+    }
+
+    restoreEvidence();
   }
 
   function renderStandardCase(){
@@ -74,15 +103,16 @@
     setHtml('casesTitle',active.section.title);
     setHtml('casesIntro',active.section.intro);
     byId('caseList').innerHTML=active.scenarios.map((item,index)=>{
-      const blocks=item.blocks.map(block=>`<div class="case-block${block.full?' full':''}"><b>${block.label}</b>${block.html}</div>`).join('');
+      const blocks=item.blocks.map(block=>{
+        const classes=['case-block'];
+        if(block.full) classes.push('full');
+        if(block.kind==='action') classes.push('action');
+        return `<div class="${classes.join(' ')}"><b>${block.label}</b>${block.html}</div>`;
+      }).join('');
       return `<article class="case" id="case-${index+1}"><div class="case-no">${String(index+1).padStart(2,'0')}</div><div class="case-title"><span class="risk">${item.risk}</span><h3>${item.title}</h3></div><div class="case-body">${blocks}</div></article>`;
     }).join('');
 
-    setHtml('evidenceTitle',active.evidence.title);
-    setHtml('evidenceIntro',active.evidence.intro);
-    byId('evidenceFootnote').textContent=active.evidence.footnote;
-    byId('checklist').innerHTML=active.evidence.items.map(item=>`<label class="check"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${item.title}</strong><small>${item.detail}</small></span><span class="when">${item.when}</span></label>`).join('');
-    restoreEvidence();
+    renderEvidence();
 
     setHtml('templateTitle',active.template.title);
     setHtml('templateIntro',active.template.intro);
@@ -103,7 +133,7 @@
     setHtml('panicTitle',active.panic.title);
     byId('panicList').innerHTML=active.panic.items.map(item=>`<li><div><strong>${item.title}</strong>${item.text}</div></li>`).join('');
 
-    if(active.layout==='compact') byId('scenarioNav').textContent='追费步骤';
+    if(active.layout==='compact') byId('scenarioNav').textContent='处理步骤';
     else renderStandardCase();
 
     const routeHeading=document.querySelector('.route .section-head h2');
@@ -201,6 +231,16 @@
     const slug=new URLSearchParams(location.search).get('case');
     const next=cases.find(item=>item.slug===slug);
     if(next&&next.slug!==active.slug) switchCase(next,{updateUrl:false});
+  });
+
+  byId('mobilePrimaryAction').addEventListener('click',event=>{
+    if(active.layout==='compact') return;
+    event.preventDefault();
+    const target=byId('scenarioPicker');
+    const offset=window.innerWidth<=860?70:88;
+    const top=target.getBoundingClientRect().top+window.scrollY-offset;
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top,behavior:reduced?'auto':'smooth'});
   });
 
   document.querySelectorAll('[data-print]').forEach(button=>button.addEventListener('click',()=>window.print()));

@@ -70,7 +70,7 @@
     </div>
   </section>
 
-  <div class="situation" aria-label="按问题快速跳转">
+  <div class="situation" id="scenarioPicker" aria-label="按问题快速跳转">
     <div class="wrap" id="situationList"><span class="situation-label">我遇到的是：</span></div>
   </div>
 
@@ -87,12 +87,12 @@
   <section class="evidence" id="evidence">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="kicker">你的证据护城河</span><h2 id="evidenceTitle"></h2></div>
+        <div><span class="kicker">关键证据</span><h2 id="evidenceTitle"></h2></div>
         <p id="evidenceIntro"></p>
       </div>
       <div class="checklist" id="checklist"></div>
       <div class="evidence-foot">
-        <div class="progress-text">已保留 <strong id="progressCount">0 / 0</strong> 项。<span id="evidenceFootnote"></span></div>
+        <div class="progress-text">已保存 <strong id="progressCount">0</strong> 项关键材料。<span id="evidenceFootnote"></span></div>
         <button class="btn btn-on-dark" data-print>打印这份清单</button>
       </div>
     </div>
@@ -112,7 +112,7 @@
   <section class="template" id="template">
     <div class="wrap template-grid">
       <div>
-        <span class="kicker">少情绪，多事实</span>
+        <span class="kicker">可直接复制</span>
         <h2 id="templateTitle"></h2>
         <p id="templateIntro"></p>
       </div>
@@ -139,7 +139,7 @@
 </footer>
 
 <div class="mobile-bar">
-  <button class="btn" data-print>保存清单</button>
+  <a class="btn" id="mobilePrimaryAction" href="#scenarioPicker" aria-label="跳到问题场景">找到我的问题</a>
   <button class="btn btn-mobile-primary" data-share>分享 CASE</button>
 </div>
 

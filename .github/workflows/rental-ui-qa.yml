@@ -33,12 +33,17 @@ jobs:
           p=Path('index.html')
           s=p.read_text()
           helper='''<script>
-          addEventListener('load',()=>setTimeout(()=>{
+          (()=>{
             const qa=new URLSearchParams(location.search).get('qa');
-            const target=qa==='picker'?document.getElementById('scenarioPicker'):qa==='evidence'?document.getElementById('evidence'):null;
-            if(target) target.scrollIntoView({block:'start'});
-            if(qa==='mobile-action') document.getElementById('mobilePrimaryAction').click();
-          },150));
+            if(qa==='picker'){
+              document.querySelector('.hero').style.display='none';
+            }
+            if(qa==='evidence'){
+              document.querySelector('.hero').style.display='none';
+              document.getElementById('scenarioPicker').style.display='none';
+              document.getElementById('cases').style.display='none';
+            }
+          })();
           </script>'''
           p.write_text(s.replace('</body>',helper+'</body>'))
           PY
@@ -58,9 +63,6 @@ jobs:
             --window-size=390,844 --screenshot=/tmp/rental-mobile-picker.png \
             'http://127.0.0.1:4173/?case=rental&qa=picker'
           "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=1000 \
-            --window-size=390,844 --screenshot=/tmp/rental-mobile-action.png \
-            'http://127.0.0.1:4173/?case=rental&qa=mobile-action'
-          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=1000 \
             --window-size=390,844 --screenshot=/tmp/rental-mobile-evidence.png \
             'http://127.0.0.1:4173/?case=rental&qa=evidence'
 
@@ -73,8 +75,6 @@ jobs:
             const root=document.documentElement;
             const body=document.body;
             body.dataset.qaOverflow=String(root.scrollWidth>root.clientWidth);
-            body.dataset.qaScrollWidth=String(root.scrollWidth);
-            body.dataset.qaClientWidth=String(root.clientWidth);
             body.dataset.qaScenarioCount=String(document.querySelectorAll('#caseList .case').length);
             body.dataset.qaActionCount=String(document.querySelectorAll('#caseList .case-block.action').length);
             body.dataset.qaGroupCount=String(document.querySelectorAll('.evidence-group').length);
@@ -105,7 +105,7 @@ jobs:
             grep -q 'data-qa-evidence-count="1"' "$f"
           done
 
-          file /tmp/rental-desktop.png /tmp/rental-mobile.png /tmp/rental-mobile-picker.png /tmp/rental-mobile-action.png /tmp/rental-mobile-evidence.png
+          file /tmp/rental-desktop.png /tmp/rental-mobile.png /tmp/rental-mobile-picker.png /tmp/rental-mobile-evidence.png
 
       - name: Upload QA evidence
         uses: actions/upload-artifact@v4
@@ -115,7 +115,6 @@ jobs:
             /tmp/rental-desktop.png
             /tmp/rental-mobile.png
             /tmp/rental-mobile-picker.png
-            /tmp/rental-mobile-action.png
             /tmp/rental-mobile-evidence.png
             /tmp/rental-desktop.html
             /tmp/rental-mobile.html

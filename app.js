@@ -233,6 +233,16 @@
     if(next&&next.slug!==active.slug) switchCase(next,{updateUrl:false});
   });
 
+  byId('mobilePrimaryAction').addEventListener('click',event=>{
+    if(active.layout==='compact') return;
+    event.preventDefault();
+    const target=byId('scenarioPicker');
+    const offset=window.innerWidth<=860?70:88;
+    const top=target.getBoundingClientRect().top+window.scrollY-offset;
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top,behavior:reduced?'auto':'smooth'});
+  });
+
   document.querySelectorAll('[data-print]').forEach(button=>button.addEventListener('click',()=>window.print()));
   document.querySelectorAll('[data-share]').forEach(button=>button.addEventListener('click',sharePage));
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f0e8">
+  <meta name="theme-color" content="#f6f3ec">
   <title>不吃亏｜消费纠纷行动指南</title>
   <meta name="description" content="不吃亏：每次打开随机一份消费纠纷行动指南。先固定事实，再留证据，再选维权路径。">
   <meta property="og:title" content="不吃亏｜消费纠纷行动指南">
@@ -14,38 +14,42 @@
 </head>
 <body>
 <header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="./">不吃亏<i></i></a>
+  <div class="wrap topbar-inner">
+    <a class="brand" href="./" aria-label="不吃亏首页">不吃亏<span class="brand-mark" aria-hidden="true"></span></a>
 
     <div class="case-switcher" id="caseSwitcher">
       <button class="case-switcher-trigger" id="caseSwitcherTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="caseSwitcherPopover">
         <span class="case-switcher-id" id="caseSwitcherId">CASE</span>
         <span class="case-switcher-current" id="caseName">正在载入</span>
-        <svg class="case-switcher-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <span class="case-switcher-action">切换</span>
+        <svg class="case-switcher-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
       </button>
 
       <div class="case-switcher-popover" id="caseSwitcherPopover" role="dialog" aria-label="切换案例" hidden>
         <div class="case-switcher-head">
           <div>
-            <span class="case-switcher-eyebrow">CASE LIBRARY</span>
-            <strong>换一个真实问题</strong>
+            <strong>案例目录</strong>
+            <span>找到与你当前处境最接近的一项</span>
           </div>
           <button class="case-random" id="randomCaseButton" type="button" aria-label="随机切换到另一个案例">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4 9 9"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4 9 9"/></svg>
             随机一个
           </button>
         </div>
         <div class="case-switcher-list" id="caseSwitcherList"></div>
-        <div class="case-switcher-foot">直接访问首页时，每次刷新仍会随机出现一个 CASE。</div>
+        <div class="case-switcher-foot">首页保持随机；分享链接会固定当前 CASE。</div>
       </div>
     </div>
 
     <nav aria-label="页面导航">
-      <a href="#cases" id="scenarioNav">典型场景</a><a href="#evidence">证据清单</a><a href="#route">维权路径</a><a href="#template">沟通模板</a>
+      <a href="#cases" id="scenarioNav">典型场景</a>
+      <a href="#evidence">证据清单</a>
+      <a href="#route">维权路径</a>
+      <a href="#template">沟通模板</a>
     </nav>
     <div class="top-actions">
-      <button class="btn" data-print>打印 / 存 PDF</button>
-      <button class="btn dark" data-share>分享这个 CASE</button>
+      <button class="btn btn-quiet" data-print>打印</button>
+      <button class="btn btn-primary" data-share>分享 CASE</button>
     </div>
   </div>
 </header>
@@ -54,7 +58,7 @@
 <main id="top">
   <section class="hero">
     <div class="wrap hero-grid">
-      <div>
+      <div class="hero-main">
         <div class="stamp" id="caseStamp">CASE</div>
         <h1 id="heroTitle">正在打开一份<br>不吃亏指南。</h1>
         <p class="hero-copy" id="heroCopy">先固定事实，再留证据，再选路径。</p>
@@ -89,7 +93,7 @@
       <div class="checklist" id="checklist"></div>
       <div class="evidence-foot">
         <div class="progress-text">已保留 <strong id="progressCount">0 / 0</strong> 项。<span id="evidenceFootnote"></span></div>
-        <button class="btn" style="border-color:#aaa;color:#fff" data-print>打印这份清单</button>
+        <button class="btn btn-on-dark" data-print>打印这份清单</button>
       </div>
     </div>
   </section>
@@ -113,7 +117,7 @@
         <p id="templateIntro"></p>
       </div>
       <div class="script">
-        <button class="btn copy" id="copyTemplate">复制</button>
+        <button class="btn btn-quiet copy" id="copyTemplate">复制</button>
         <pre id="templateText"></pre>
       </div>
     </div>
@@ -122,7 +126,10 @@
 
 <footer>
   <div class="wrap footer-grid">
-    <div><div class="footer-brand">不吃亏<i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--red);margin-left:5px"></i></div><div style="font-size:13px;color:var(--muted);margin-top:6px">消费前多看一眼，消费后少走弯路。</div></div>
+    <div>
+      <div class="footer-brand">不吃亏<span class="brand-mark" aria-hidden="true"></span></div>
+      <div class="footer-tagline">消费前多看一眼，消费后少走弯路。</div>
+    </div>
     <div class="sources">
       <strong id="sourcesTitle">本页依据与官方入口</strong>
       <ol id="sourceList"></ol>
@@ -133,7 +140,7 @@
 
 <div class="mobile-bar">
   <button class="btn" data-print>保存清单</button>
-  <button class="btn primary" data-share>分享这个 CASE</button>
+  <button class="btn btn-mobile-primary" data-share>分享 CASE</button>
 </div>
 
 <script src="cases.js"></script>

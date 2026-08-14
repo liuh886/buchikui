@@ -16,7 +16,30 @@
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="./">不吃亏<i></i></a>
-    <div class="case-name" id="caseName">CASE</div>
+
+    <div class="case-switcher" id="caseSwitcher">
+      <button class="case-switcher-trigger" id="caseSwitcherTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="caseSwitcherPopover">
+        <span class="case-switcher-id" id="caseSwitcherId">CASE</span>
+        <span class="case-switcher-current" id="caseName">正在载入</span>
+        <svg class="case-switcher-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+
+      <div class="case-switcher-popover" id="caseSwitcherPopover" role="dialog" aria-label="切换案例" hidden>
+        <div class="case-switcher-head">
+          <div>
+            <span class="case-switcher-eyebrow">CASE LIBRARY</span>
+            <strong>换一个真实问题</strong>
+          </div>
+          <button class="case-random" id="randomCaseButton" type="button" aria-label="随机切换到另一个案例">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4 9 9"/></svg>
+            随机一个
+          </button>
+        </div>
+        <div class="case-switcher-list" id="caseSwitcherList"></div>
+        <div class="case-switcher-foot">直接访问首页时，每次刷新仍会随机出现一个 CASE。</div>
+      </div>
+    </div>
+
     <nav aria-label="页面导航">
       <a href="#cases" id="scenarioNav">典型场景</a><a href="#evidence">证据清单</a><a href="#route">维权路径</a><a href="#template">沟通模板</a>
     </nav>
@@ -26,6 +49,7 @@
     </div>
   </div>
 </header>
+<div class="case-switcher-backdrop" id="caseSwitcherBackdrop" hidden></div>
 
 <main id="top">
   <section class="hero">

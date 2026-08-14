@@ -4,6 +4,15 @@
 
 **不吃亏**是一个面向普通消费者的公益型行动指南：不做情绪曝光，不替用户“吵架”，重点帮助用户把消费纠纷变成一条可验证、可推进的证据链。
 
+## 产品与体验规范
+
+后续产品、内容、交互和视觉修改默认以以下两份文档为验收基准：
+
+- [`docs/product-experience-spec.md`](docs/product-experience-spec.md)：**上位 SPECS**，定义完整产品感、信息架构、视觉层次、场景与内容质量、移动端、反退化规则和 Definition of Done。
+- [`docs/design-system.md`](docs/design-system.md)：**视觉实现规范**，定义颜色、字体、组件、响应式、动效与无障碍细节。
+
+任何面向用户的修改都应先满足 Product Experience SPECS，再进入具体视觉与代码实现；不要只以“代码已完成”或“单个组件看起来没问题”作为完成标准。
+
 ## 当前 Demo
 
 首页现在是一套 **随机 Case 阅读器**：

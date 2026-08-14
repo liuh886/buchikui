@@ -4,163 +4,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f4f0e8">
-  <title>不吃亏｜如何租车维权：6 个高频坑与证据清单</title>
-  <meta name="description" content="租车无车、车型不符、提灯验损、重复保险、出险拒赔、违章待处理费：一份以证据为核心的租车维权行动指南。">
-  <meta property="og:title" content="租车维权，不靠吵。靠证据链。">
-  <meta property="og:description" content="6 个高频坑、1 份证据清单、4 条维权路径。出发前先存这页。">
+  <title>不吃亏｜消费纠纷行动指南</title>
+  <meta name="description" content="不吃亏：每次打开随机一份消费纠纷行动指南。先固定事实，再留证据，再选维权路径。">
+  <meta property="og:title" content="不吃亏｜消费纠纷行动指南">
+  <meta property="og:description" content="把一次吃亏，变成下一次不会再吃的亏。">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="zh_CN">
-  <style>
-    :root{
-      --ink:#171717;--paper:#f4f0e8;--white:#fffdf8;--red:#ef4a3c;--yellow:#ffd846;
-      --blue:#3157d5;--muted:#6f6a62;--line:#cbc4b8;--soft:#e8e2d8;--green:#1e6d50;
-      --shadow:0 20px 60px rgba(23,23,23,.10);--radius:22px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.65}
-    button,a{font:inherit}
-    a{color:inherit}
-    ::selection{background:var(--yellow);color:var(--ink)}
-    .wrap{width:min(1180px,calc(100% - 40px));margin:auto}
-    .topbar{position:sticky;top:0;z-index:50;background:rgba(244,240,232,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(23,23,23,.12)}
-    .topbar .wrap{height:68px;display:flex;align-items:center;gap:24px}
-    .brand{font-weight:950;font-size:24px;letter-spacing:-.04em;text-decoration:none}
-    .brand i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--red);margin-left:4px}
-    .case-name{font-size:13px;color:var(--muted);border-left:1px solid var(--line);padding-left:20px}
-    nav{margin-left:auto;display:flex;gap:20px}
-    nav a{font-size:13px;font-weight:750;text-decoration:none}
-    .top-actions{display:flex;gap:8px;margin-left:8px}
-    .btn{border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:9px 15px;cursor:pointer;font-weight:800;font-size:13px;transition:.18s ease}
-    .btn:hover{transform:translateY(-1px);box-shadow:0 4px 0 var(--ink)}
-    .btn.dark{background:var(--ink);color:var(--white)}
-    .hero{padding:76px 0 72px;border-bottom:1px solid var(--line)}
-    .hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:56px;align-items:end}
-    .stamp{display:inline-block;border:2px solid var(--red);color:var(--red);padding:5px 9px;font-weight:900;font-size:12px;letter-spacing:.12em;transform:rotate(-2deg);margin-bottom:28px}
-    h1{font-size:clamp(54px,8vw,106px);line-height:.91;letter-spacing:-.075em;margin:0 0 28px;max-width:900px;font-weight:950}
-    h1 em{font-style:normal;color:var(--red)}
-    .hero-copy{font-size:clamp(18px,2vw,24px);max-width:760px;margin:0;color:#37332e}
-    .hero-copy strong{background:linear-gradient(transparent 58%,var(--yellow) 58%)}
-    .panic-card{background:var(--ink);color:var(--white);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow);transform:rotate(1deg)}
-    .panic-card h2{font-size:26px;line-height:1.1;margin:0 0 24px}
-    .panic-list{counter-reset:panic;list-style:none;margin:0;padding:0;display:grid;gap:16px}
-    .panic-list li{counter-increment:panic;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;font-size:14px;color:#ded9d1}
-    .panic-list li:before{content:counter(panic);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--yellow);color:var(--ink);font-weight:950}
-    .panic-list strong{display:block;color:var(--white);font-size:15px;margin-bottom:2px}
-    .situation{padding:28px 0 30px;border-bottom:1px solid var(--line)}
-    .situation .wrap{display:flex;align-items:center;gap:14px;overflow:auto;scrollbar-width:none}
-    .situation .wrap::-webkit-scrollbar{display:none}
-    .situation-label{font-size:13px;font-weight:900;white-space:nowrap;margin-right:4px}
-    .situation a{white-space:nowrap;text-decoration:none;border:1px solid var(--ink);border-radius:999px;padding:8px 13px;font-size:13px;font-weight:750;background:var(--white)}
-    .situation a:hover{background:var(--yellow)}
-    .section{padding:84px 0}
-    .section-head{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;margin-bottom:46px}
-    .kicker{font-size:12px;font-weight:950;letter-spacing:.16em;color:var(--red)}
-    .section-head h2{font-size:clamp(40px,6vw,72px);line-height:.96;letter-spacing:-.055em;margin:10px 0 0}
-    .section-head p{margin:0;color:var(--muted);font-size:17px;max-width:520px;justify-self:end}
-    .case-list{border-top:2px solid var(--ink)}
-    .case{display:grid;grid-template-columns:110px minmax(220px,.62fr) minmax(0,1.38fr);border-bottom:1px solid var(--line);padding:34px 0;gap:28px}
-    .case-no{font-size:56px;font-weight:950;letter-spacing:-.07em;line-height:1}
-    .case-title h3{font-size:30px;line-height:1.05;letter-spacing:-.035em;margin:4px 0 10px}
-    .risk{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:850;color:var(--red)}
-    .risk:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
-    .case-body{display:grid;grid-template-columns:1fr 1fr;gap:22px 30px}
-    .case-block{padding-top:10px;border-top:1px solid var(--ink)}
-    .case-block.full{grid-column:1/-1}
-    .case-block b{display:block;font-size:12px;letter-spacing:.12em;margin-bottom:8px}
-    .case-block p{font-size:14px;margin:0;color:#3e3933}
-    .case-block ul{margin:0;padding-left:18px;font-size:14px;color:#3e3933}
-    .key{font-weight:900;color:var(--ink)}
-    .warn{background:var(--yellow);padding:1px 5px}
-    .evidence{background:var(--ink);color:var(--white);padding:88px 0}
-    .evidence .section-head{margin-bottom:36px}
-    .evidence .kicker{color:var(--yellow)}
-    .evidence .section-head p{color:#bdb7ae}
-    .checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#4d4a45;border:1px solid #4d4a45}
-    .check{position:relative;background:#202020;padding:20px 22px;display:grid;grid-template-columns:34px 1fr auto;gap:14px;align-items:center;cursor:pointer}
-    .check input{position:absolute;opacity:0}
-    .box{width:30px;height:30px;border:1.5px solid #777;border-radius:8px;display:grid;place-items:center;color:var(--ink);font-weight:950;transition:.15s}
-    .check input:checked + .box{background:var(--yellow);border-color:var(--yellow)}
-    .check input:checked + .box:after{content:"✓"}
-    .check strong{display:block;font-size:15px}
-    .check small{color:#aaa49c;font-size:12px}
-    .check .when{font-size:11px;color:#aaa49c;border:1px solid #555;padding:4px 7px;border-radius:999px;white-space:nowrap}
-    .evidence-foot{margin-top:22px;display:flex;justify-content:space-between;gap:16px;align-items:center}
-    .progress-text{font-size:13px;color:#bbb4aa}
-    .progress-text strong{color:var(--yellow)}
-    .route{padding:90px 0;border-bottom:1px solid var(--line)}
-    .route-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ink);background:var(--ink);gap:1px}
-    .route-step{background:var(--paper);padding:26px;min-height:255px;display:flex;flex-direction:column}
-    .route-step .n{font-weight:950;font-size:13px;color:var(--red)}
-    .route-step h3{font-size:23px;line-height:1.1;margin:34px 0 12px;letter-spacing:-.03em}
-    .route-step p{font-size:13px;color:var(--muted);margin:0 0 18px}
-    .route-step a{margin-top:auto;font-size:13px;font-weight:900;text-underline-offset:4px}
-    .route-note{margin-top:18px;border-left:4px solid var(--blue);padding:14px 16px;background:#e6eaf8;font-size:13px}
-    .template{padding:88px 0}
-    .template-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:48px;align-items:start}
-    .template h2{font-size:clamp(38px,5vw,64px);letter-spacing:-.05em;line-height:1;margin:0 0 20px}
-    .template p{color:var(--muted);font-size:15px}
-    .script{background:var(--white);border:1px solid var(--ink);box-shadow:9px 9px 0 var(--ink);padding:28px;position:relative}
-    .script pre{font:500 14px/1.8 ui-monospace,SFMono-Regular,Menlo,Consolas,"PingFang SC",monospace;white-space:pre-wrap;margin:0;color:#332f2a}
-    .script .copy{position:absolute;right:14px;top:14px}
-    footer{padding:48px 0 90px;border-top:1px solid var(--line)}
-    .footer-grid{display:grid;grid-template-columns:1fr 2fr;gap:40px}
-    .footer-brand{font-size:30px;font-weight:950;letter-spacing:-.05em}
-    .sources{font-size:12px;color:var(--muted)}
-    .sources a{font-weight:800}
-    .sources li{margin-bottom:8px}
-    .legal{font-size:11px;color:#8b857d;margin-top:18px}
-    .mobile-bar{display:none}
-    @media(max-width:860px){
-      .wrap{width:min(100% - 28px,1180px)}
-      nav,.case-name,.top-actions{display:none}
-      .topbar .wrap{height:58px}
-      .hero{padding:54px 0}
-      .hero-grid,.section-head,.template-grid,.footer-grid{grid-template-columns:1fr}
-      .hero-grid{gap:34px}
-      .panic-card{transform:none}
-      h1{font-size:clamp(52px,16vw,82px)}
-      .section{padding:64px 0}
-      .section-head p{justify-self:start}
-      .case{grid-template-columns:68px 1fr;gap:18px}
-      .case-no{font-size:42px}
-      .case-body{grid-column:1/-1;grid-template-columns:1fr}
-      .case-block.full{grid-column:auto}
-      .checklist,.route-grid{grid-template-columns:1fr}
-      .evidence{padding:64px 0}
-      .evidence-foot{align-items:flex-start;flex-direction:column}
-      .route{padding:64px 0}
-      .route-step{min-height:auto}
-      .route-step h3{margin-top:18px}
-      .template{padding:64px 0}
-      footer{padding-bottom:108px}
-      .mobile-bar{position:fixed;display:flex;z-index:60;bottom:10px;left:10px;right:10px;background:var(--ink);border:1px solid #555;border-radius:16px;padding:8px;gap:8px;box-shadow:0 12px 32px rgba(0,0,0,.28)}
-      .mobile-bar .btn{flex:1;border-color:#777;color:var(--white)}
-      .mobile-bar .btn.primary{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}
-    }
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
-    @media print{
-      .topbar,.situation,.mobile-bar,.btn{display:none!important}
-      body{background:white}
-      .hero,.section,.route,.template{padding:28px 0}
-      .panic-card,.evidence{background:white;color:black;border:1px solid #222}
-      .evidence .section-head p,.progress-text,.check small,.check .when{color:#444}
-      .check{background:white;color:black}
-      .case{break-inside:avoid}
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="topbar">
   <div class="wrap">
-    <a class="brand" href="#top">不吃亏<i></i></a>
-    <div class="case-name">CASE 001 · 如何租车维权</div>
+    <a class="brand" href="./">不吃亏<i></i></a>
+    <div class="case-name" id="caseName">CASE</div>
     <nav aria-label="页面导航">
-      <a href="#cases">6 个场景</a><a href="#evidence">证据清单</a><a href="#route">维权路径</a><a href="#template">沟通模板</a>
+      <a href="#cases" id="scenarioNav">典型场景</a><a href="#evidence">证据清单</a><a href="#route">维权路径</a><a href="#template">沟通模板</a>
     </nav>
     <div class="top-actions">
       <button class="btn" data-print>打印 / 存 PDF</button>
-      <button class="btn dark" data-share>分享这页</button>
+      <button class="btn dark" data-share>分享这个 CASE</button>
     </div>
   </div>
 </header>
@@ -169,121 +31,40 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="stamp">CASE 001 / CAR RENTAL</div>
-        <h1>租车维权，<br>不靠吵。<br>靠<em>证据链。</em></h1>
-        <p class="hero-copy">无车、换车、验损、保险、出险、违章费——真正决定你能不能把钱拿回来的，往往不是谁声音大，而是<strong>订单 → 合同 → 实车 → 车况 → 定损 → 扣款</strong>能不能一环扣一环。</p>
+        <div class="stamp" id="caseStamp">CASE</div>
+        <h1 id="heroTitle">正在打开一份<br>不吃亏指南。</h1>
+        <p class="hero-copy" id="heroCopy">先固定事实，再留证据，再选路径。</p>
       </div>
-      <aside class="panic-card" aria-label="现在先做四件事">
-        <h2>纠纷已经发生？<br>现在先做 4 件事。</h2>
-        <ol class="panic-list">
-          <li><div><strong>停止口头拉扯</strong>转到 App、微信、短信或邮件，形成可回看的文字记录。</div></li>
-          <li><div><strong>把原始材料下载下来</strong>订单、合同、支付、保险、行驶证、验车单，不只截一张局部图。</div></li>
-          <li><div><strong>对方要扣钱，就要依据</strong>要求写明金额、合同条款、事实、照片/定损凭证和收费主体。</div></li>
-          <li><div><strong>明确一个可执行诉求</strong>退多少、取消哪笔收费、补开什么凭证，以及希望何时答复。</div></li>
-        </ol>
+      <aside class="panic-card" aria-label="纠纷发生后的第一步">
+        <h2 id="panicTitle">纠纷已经发生？<br>现在先做 4 件事。</h2>
+        <ol class="panic-list" id="panicList"></ol>
       </aside>
     </div>
   </section>
 
   <div class="situation" aria-label="按问题快速跳转">
-    <div class="wrap">
-      <span class="situation-label">我遇到的是：</span>
-      <a href="#case-1">到店没车</a><a href="#case-2">车不对</a><a href="#case-3">被验损扣钱</a>
-      <a href="#case-4">又买一份保险</a><a href="#case-5">出险被拒赔</a><a href="#case-6">收违章待处理费</a>
-    </div>
+    <div class="wrap" id="situationList"><span class="situation-label">我遇到的是：</span></div>
   </div>
 
   <section class="section" id="cases">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="kicker">六个高频事故点</span><h2>别先判断谁对。<br>先把事实钉死。</h2></div>
-        <p>下面每一项都按同一个逻辑写：先确认事实，再留证据，再要求书面依据。你不需要懂很多法律，先把最容易丢失的证据抓住。</p>
+        <div><span class="kicker" id="casesKicker"></span><h2 id="casesTitle"></h2></div>
+        <p id="casesIntro"></p>
       </div>
-
-      <div class="case-list">
-        <article class="case" id="case-1">
-          <div class="case-no">01</div>
-          <div class="case-title"><span class="risk">高频</span><h3>预订后无车，押金却还冻着</h3></div>
-          <div class="case-body">
-            <div class="case-block"><b>立刻做</b><ul><li>现场拍门店/取车点、到达时间；</li><li>让门店或平台<strong class="key">书面确认“无法按订单提供车辆”</strong>；</li><li>截图订单状态和押金/预授权状态。</li></ul></div>
-            <div class="case-block"><b>你要问清楚</b><p>订单到底是“商家取消、用户取消，还是未履约”？押金是已扣款还是仅冻结？谁负责解除、什么时候解除？</p></div>
-            <div class="case-block full"><b>关键判断</b><p>经营者通过平台应明示租赁车型、收费和押金收退等事项，并按合同约定交付车辆。符合押金退还条件的，经营者应及时退还。<span class="warn">不要为了赶时间自己点“取消订单”而把责任状态改成用户取消。</span></p></div>
-          </div>
-        </article>
-
-        <article class="case" id="case-2">
-          <div class="case-no">02</div>
-          <div class="case-title"><span class="risk">取车前 2 分钟决定后面很多事</span><h3>实车与合同/订单车辆不符</h3></div>
-          <div class="case-body">
-            <div class="case-block"><b>必须核对</b><ul><li>品牌、车型/车组；</li><li><strong class="key">车牌号</strong>；</li><li>行驶证车辆信息和<strong class="key">使用性质</strong>；</li><li>合同/验车单上登记的车辆。</li></ul></div>
-            <div class="case-block"><b>如果临时换车</b><p>先要求重新确认合同或形成书面补充记录。尤其别接受“系统里还是原车，实际开另一辆”这种状态。</p></div>
-            <div class="case-block full"><b>为什么重要</b><p>车型与车牌决定订单、合同、保险、事故和违章能否对应到<strong class="key">同一辆车</strong>。租赁经营车辆原则上还应登记为“租赁”使用性质；拍一张行驶证，后面可能省掉大量解释。</p></div>
-          </div>
-        </article>
-
-        <article class="case" id="case-3">
-          <div class="case-no">03</div>
-          <div class="case-title"><span class="risk">最容易变成“各说各话”</span><h3>“提灯验损”：还车突然多出划痕</h3></div>
-          <div class="case-body">
-            <div class="case-block"><b>取车时</b><p>用视频连续拍一圈：四角、轮毂、玻璃、前后杠、车门、内饰和仪表。镜头里带上车牌，并让时间可确认。</p></div>
-            <div class="case-block"><b>还车时</b><p>再连续拍一圈；尽量要求现场验车并留结果。若对方事后索赔，不要只听口头报价。</p></div>
-            <div class="case-block full"><b>被扣钱时必须索要</b><p><strong class="key">损伤位置照片/视频 + 定损或维修凭证 + 收费明细 + 合同依据 + 扣款记录。</strong> 如果对方只给一张模糊照片或一句“系统定损”，继续要求可核验材料。保留每一次沟通的时间、对象和答复。</p></div>
-          </div>
-        </article>
-
-        <article class="case" id="case-4">
-          <div class="case-no">04</div>
-          <div class="case-title"><span class="risk">最容易被“保障”两个字绕晕</span><h3>平台买了保障，门店又推一份</h3></div>
-          <div class="case-body">
-            <div class="case-block"><b>别只看商品名</b><p>“无忧、尊享、安心、全险”不等于同一件事。先判断它是保险产品、免赔服务，还是门店自有保障方案。</p></div>
-            <div class="case-block"><b>当场对四件事</b><ul><li>谁是保险人/服务提供方；</li><li>保的是哪辆车、谁；</li><li>免赔额和除外责任；</li><li>出险后向谁报案、谁先垫钱。</li></ul></div>
-            <div class="case-block full"><b>避免重复付费</b><p>把平台订单里的保障说明和门店推荐方案放在一起比。若保障范围高度重合，要求对方书面说明<strong class="key">新增了什么实际保障</strong>；不要在没看到条款/保单信息时只凭“这个必须买”付款。</p></div>
-          </div>
-        </article>
-
-        <article class="case" id="case-5">
-          <div class="case-no">05</div>
-          <div class="case-title"><span class="risk">先救援报案，再争责任</span><h3>出了险，却因车辆性质等原因不赔</h3></div>
-          <div class="case-body">
-            <div class="case-block"><b>事故后第一轮证据</b><ul><li>现场照片/视频、事故时间地点；</li><li>报警/事故处理材料（如有）；</li><li>保险报案号；</li><li>行驶证、合同、订单、保障方案。</li></ul></div>
-            <div class="case-block"><b>被拒赔时</b><p>不要只接受电话结论。要求保险方或服务方提供<strong class="key">书面拒赔/不承担说明</strong>，明确引用的条款、事实和车辆信息。</p></div>
-            <div class="case-block full"><b>重点核对</b><p>订单车辆、实际车辆、行驶证使用性质、保单承保车辆是否一致。若问题源于出租方提供的车辆或投保信息与实际不匹配，把这些材料一并固定，再分别向出租方/平台主张。<span class="warn">这里不能先假定保险一定应赔，先把“为什么不赔”变成书面、可核验的理由。</span></p></div>
-          </div>
-        </article>
-
-        <article class="case" id="case-6">
-          <div class="case-no">06</div>
-          <div class="case-title"><span class="risk">罚款 ≠ 门店服务费</span><h3>交通违章，又多一笔“待处理费”</h3></div>
-          <div class="case-body">
-            <div class="case-block"><b>先确认真的有违法记录</b><p>核对车牌、违法时间、地点、行为和官方记录，确认发生在你的租期内。租赁期间发生的交通违法，承租人依法依规处理。</p></div>
-            <div class="case-block"><b>再拆开两笔钱</b><p><strong class="key">行政罚款/记分处理</strong>与租车公司所谓“违章待处理费、管理费、手续费”不是同一个概念。</p></div>
-            <div class="case-block full"><b>对额外费用追问</b><p>要求对方提供该收费的<strong class="key">合同条款、触发条件、金额计算方式和收费明细</strong>。不要因为看到“违章”两个字，就把任何附加收费都当成官方交通罚款。</p></div>
-          </div>
-        </article>
-      </div>
+      <div class="case-list" id="caseList"></div>
     </div>
   </section>
 
   <section class="evidence" id="evidence">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="kicker">你的证据护城河</span><h2>10 样东西，<br>能留就都留。</h2></div>
-        <p>点击打勾。清单会保存在当前浏览器里。真正有用的不是截图数量，而是能不能证明“约定是什么、实际发生了什么、对方为什么扣钱”。</p>
+        <div><span class="kicker">你的证据护城河</span><h2 id="evidenceTitle"></h2></div>
+        <p id="evidenceIntro"></p>
       </div>
-      <div class="checklist" id="checklist">
-        <label class="check"><input type="checkbox" data-evidence="order"><span class="box"></span><span><strong>订单完整页</strong><small>车型/车组、价格、取还车、取消规则</small></span><span class="when">下单后</span></label>
-        <label class="check"><input type="checkbox" data-evidence="contract"><span class="box"></span><span><strong>租赁合同 / 补充约定</strong><small>特别看押金、验损、保险、违章收费</small></span><span class="when">签字前</span></label>
-        <label class="check"><input type="checkbox" data-evidence="car"><span class="box"></span><span><strong>车牌 + 行驶证</strong><small>实际车辆、使用性质、登记信息</small></span><span class="when">取车时</span></label>
-        <label class="check"><input type="checkbox" data-evidence="before"><span class="box"></span><span><strong>取车 360° 连续视频</strong><small>外观、轮毂、玻璃、内饰、仪表</small></span><span class="when">开走前</span></label>
-        <label class="check"><input type="checkbox" data-evidence="after"><span class="box"></span><span><strong>还车 360° 连续视频</strong><small>尽量拍到停车位置、车牌和时间</small></span><span class="when">交车时</span></label>
-        <label class="check"><input type="checkbox" data-evidence="insurance"><span class="box"></span><span><strong>保险 / 保障方案</strong><small>保单号、责任、免赔额、除外责任</small></span><span class="when">付款前</span></label>
-        <label class="check"><input type="checkbox" data-evidence="damage"><span class="box"></span><span><strong>定损 / 维修 / 收费凭证</strong><small>索赔金额必须能解释怎么算出来</small></span><span class="when">被索赔</span></label>
-        <label class="check"><input type="checkbox" data-evidence="chat"><span class="box"></span><span><strong>完整沟通记录</strong><small>门店、平台、保险方：谁在何时说了什么</small></span><span class="when">全程</span></label>
-        <label class="check"><input type="checkbox" data-evidence="money"><span class="box"></span><span><strong>支付 / 冻结 / 扣款记录</strong><small>区分预授权、押金、租金和额外费用</small></span><span class="when">全程</span></label>
-        <label class="check"><input type="checkbox" data-evidence="violation"><span class="box"></span><span><strong>违法记录（如有）</strong><small>车牌、时间、地点、行为、处理状态</small></span><span class="when">收到通知</span></label>
-      </div>
+      <div class="checklist" id="checklist"></div>
       <div class="evidence-foot">
-        <div class="progress-text">已保留 <strong id="progressCount">0 / 10</strong> 项。纠纷越往后走，越难补拍前面的证据。</div>
+        <div class="progress-text">已保留 <strong id="progressCount">0 / 0</strong> 项。<span id="evidenceFootnote"></span></div>
         <button class="btn" style="border-color:#aaa;color:#fff" data-print>打印这份清单</button>
       </div>
     </div>
@@ -293,15 +74,10 @@
     <div class="wrap">
       <div class="section-head">
         <div><span class="kicker">维权路径</span><h2>从能解决问题的<br>地方开始。</h2></div>
-        <p>不是每个问题都要一上来起诉。先用书面事实和明确诉求推动商家/平台处理；行政渠道解决监管和消费争议；协商、调解仍解决不了，再考虑诉讼。</p>
+        <p id="routeIntro"></p>
       </div>
-      <div class="route-grid">
-        <article class="route-step"><span class="n">STEP 01</span><h3>商家 / 平台<br>书面交涉</h3><p>一次性发清：订单号、时间线、争议金额、证据、合同依据疑问、你的具体诉求和答复期限。</p><a href="#template">直接复制模板 →</a></article>
-        <article class="route-step"><span class="n">STEP 02</span><h3>交通运输主管部门<br>12328</h3><p>涉及小微型客车租赁经营服务、经营备案、服务规范等，可向所在地租赁行政主管部门反映；交通运输部门要求利用 12328 等渠道建立投诉举报制度。</p><a href="https://www.mot.gov.cn/" target="_blank" rel="noopener">交通运输部 →</a></article>
-        <article class="route-step"><span class="n">STEP 03</span><h3>消费者投诉<br>12315</h3><p>押金、额外收费、格式条款、未按约提供服务等消费争议，可通过全国 12315 平台或热线提交。准备好经营者名称、事实、证据和具体诉求。</p><a href="https://www.12315.cn/" target="_blank" rel="noopener">全国 12315 平台 →</a></article>
-        <article class="route-step"><span class="n">STEP 04</span><h3>人民法院<br>在线服务全国版</h3><p>金额和证据都已明确，协商/投诉仍不能解决时，可评估诉讼。全国统一电子诉讼服务平台已启用电脑端和微信小程序。</p><a href="https://zxfw.court.gov.cn/" target="_blank" rel="noopener">人民法院在线服务 →</a></article>
-      </div>
-      <div class="route-note"><strong>交通违法/事故另行区分：</strong>违法确认、事故处理等属于公安机关交通管理事项；不要把“租车行业主管部门”和“公安交管”混成一个部门。商家收的“待处理费”也不等于公安交管作出的罚款。</div>
+      <div class="route-grid" id="routeGrid"></div>
+      <div class="route-note" id="routeNote"></div>
     </div>
   </section>
 
@@ -309,27 +85,12 @@
     <div class="wrap template-grid">
       <div>
         <span class="kicker">少情绪，多事实</span>
-        <h2>一段够用的<br>书面沟通结构。</h2>
-        <p>目标不是“把客服说服”，而是留下一份第三方也能看懂的材料。把括号里的内容换成你的事实。</p>
+        <h2 id="templateTitle"></h2>
+        <p id="templateIntro"></p>
       </div>
       <div class="script">
         <button class="btn copy" id="copyTemplate">复制</button>
-        <pre id="templateText">订单号：【____】
-
-我于【日期/时间】通过【平台/门店】预订/承租【车型】，实际发生情况如下：
-1. 【按时间顺序写事实 1】
-2. 【事实 2】
-3. 目前已产生/拟产生费用：【¥____】
-
-我的诉求是：【退款 / 解除押金冻结 / 取消某项收费 / 提供换车 / 其他】。
-
-如贵方认为需要扣款或由我承担费用，请书面提供：
-① 对应合同条款；
-② 事实及证据（照片/视频/违法记录等）；
-③ 定损、维修或其他费用凭证；
-④ 金额计算方式及收费主体。
-
-请在【3】个工作日内书面回复。相关订单、合同、车辆、支付及沟通材料我已留存。</pre>
+        <pre id="templateText"></pre>
       </div>
     </div>
   </section>
@@ -339,57 +100,19 @@
   <div class="wrap footer-grid">
     <div><div class="footer-brand">不吃亏<i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--red);margin-left:5px"></i></div><div style="font-size:13px;color:var(--muted);margin-top:6px">消费前多看一眼，消费后少走弯路。</div></div>
     <div class="sources">
-      <strong>本页依据与官方入口（更新：2026-08-14）</strong>
-      <ol>
-        <li><a href="https://xxgk.mot.gov.cn/jigou/fgs/202108/t20210825_3616598.html" target="_blank" rel="noopener">交通运输部：《小微型客车租赁经营服务管理办法》（2021 年修正版）</a> — 车辆使用性质、信息明示、合同交付、投诉处理等。</li>
-        <li><a href="https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2024/art_0aea188276a44f0baf940ab95ee00e0a.html" target="_blank" rel="noopener">《中华人民共和国消费者权益保护法实施条例》</a> — 格式条款、押金退还等。</li>
-        <li><a href="https://www.12315.cn/" target="_blank" rel="noopener">全国 12315 平台</a>；<a href="https://zxfw.court.gov.cn/" target="_blank" rel="noopener">人民法院在线服务网</a>。</li>
-      </ol>
-      <p class="legal">免责声明：本页提供消费风险识别、证据留存和维权路径参考，不代替个案法律意见、保险理赔结论、行政机关处理或司法裁判。具体责任仍以事实、合同、有效保单/保障条款及适用法律为准。</p>
+      <strong id="sourcesTitle">本页依据与官方入口</strong>
+      <ol id="sourceList"></ol>
+      <p class="legal" id="legalText"></p>
     </div>
   </div>
 </footer>
 
 <div class="mobile-bar">
   <button class="btn" data-print>保存清单</button>
-  <button class="btn primary" data-share>分享给同行人</button>
+  <button class="btn primary" data-share>分享这个 CASE</button>
 </div>
 
-<script>
-  const KEY='buchikui-rental-evidence-v1';
-  const boxes=[...document.querySelectorAll('[data-evidence]')];
-  const count=document.getElementById('progressCount');
-  function updateCount(){
-    const n=boxes.filter(x=>x.checked).length;
-    count.textContent=`${n} / ${boxes.length}`;
-    localStorage.setItem(KEY,JSON.stringify(Object.fromEntries(boxes.map(x=>[x.dataset.evidence,x.checked]))));
-  }
-  try{
-    const saved=JSON.parse(localStorage.getItem(KEY)||'{}');
-    boxes.forEach(x=>x.checked=!!saved[x.dataset.evidence]);
-  }catch(e){}
-  boxes.forEach(x=>x.addEventListener('change',updateCount));
-  updateCount();
-
-  document.querySelectorAll('[data-print]').forEach(btn=>btn.addEventListener('click',()=>window.print()));
-
-  async function sharePage(){
-    const data={title:'不吃亏｜如何租车维权',text:'租车维权，不靠吵。靠证据链：6 个高频坑 + 证据清单 + 维权路径。',url:location.href};
-    try{
-      if(navigator.share){await navigator.share(data)}
-      else{await navigator.clipboard.writeText(location.href);alert('链接已复制')}
-    }catch(e){}
-  }
-  document.querySelectorAll('[data-share]').forEach(btn=>btn.addEventListener('click',sharePage));
-
-  document.getElementById('copyTemplate').addEventListener('click',async function(){
-    const text=document.getElementById('templateText').innerText;
-    try{
-      await navigator.clipboard.writeText(text);
-      this.textContent='已复制';
-      setTimeout(()=>this.textContent='复制',1400);
-    }catch(e){window.prompt('复制以下内容：',text)}
-  });
-</script>
+<script src="cases.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

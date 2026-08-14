@@ -697,6 +697,7 @@ footer{padding:48px 0 92px;border-top:1px solid var(--line-strong)}
 
 @media(max-width:860px){
   .wrap{width:min(100% - 28px,1180px)}
+  .topbar{background:var(--paper);backdrop-filter:none}
   .topbar-inner{min-height:62px;gap:10px}
   .brand{font-size:21px}
   .brand-mark{width:7px;height:7px;transform:translateY(-6px)}

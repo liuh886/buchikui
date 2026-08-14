@@ -1,0 +1,94 @@
+name: Rental UI QA
+
+on:
+  push:
+    branches: [agent/rental-user-first-ux]
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check cases.js
+          node --check compact-cases.js
+          node --check mobile-plan-case.js
+
+      - name: Render rental page in Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$CHROME"
+
+          python3 -m http.server 4173 >/tmp/buchikui-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID' EXIT
+          sleep 1
+
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars \
+            --window-size=1440,1100 --screenshot=/tmp/rental-desktop.png \
+            'http://127.0.0.1:4173/?case=rental'
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars \
+            --window-size=390,844 --screenshot=/tmp/rental-mobile.png \
+            'http://127.0.0.1:4173/?case=rental'
+
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          probe='''<script>
+          (()=>{
+            const root=document.documentElement;
+            const body=document.body;
+            body.dataset.qaOverflow=String(root.scrollWidth>root.clientWidth);
+            body.dataset.qaScrollWidth=String(root.scrollWidth);
+            body.dataset.qaClientWidth=String(root.clientWidth);
+            body.dataset.qaScenarioCount=String(document.querySelectorAll('#caseList .case').length);
+            body.dataset.qaActionCount=String(document.querySelectorAll('#caseList .case-block.action').length);
+            body.dataset.qaGroupCount=String(document.querySelectorAll('.evidence-group').length);
+            body.dataset.qaMobileHref=document.getElementById('mobilePrimaryAction').getAttribute('href');
+            body.dataset.qaPickerExists=String(Boolean(document.getElementById('scenarioPicker')));
+            const first=document.querySelector('[data-evidence]');
+            if(first) first.click();
+            body.dataset.qaEvidenceCount=document.getElementById('progressCount').textContent.trim();
+          })();
+          </script>'''
+          p.write_text(s.replace('</body>',probe+'</body>'))
+          PY
+
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars \
+            --window-size=1440,1100 --dump-dom \
+            'http://127.0.0.1:4173/?case=rental' >/tmp/rental-desktop.html
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars \
+            --window-size=390,844 --dump-dom \
+            'http://127.0.0.1:4173/?case=rental' >/tmp/rental-mobile.html
+
+          for f in /tmp/rental-desktop.html /tmp/rental-mobile.html; do
+            grep -q 'data-qa-overflow="false"' "$f"
+            grep -q 'data-qa-scenario-count="8"' "$f"
+            grep -q 'data-qa-action-count="8"' "$f"
+            grep -q 'data-qa-group-count="3"' "$f"
+            grep -q 'data-qa-mobile-href="#scenarioPicker"' "$f"
+            grep -q 'data-qa-picker-exists="true"' "$f"
+            grep -q 'data-qa-evidence-count="1"' "$f"
+          done
+
+          file /tmp/rental-desktop.png /tmp/rental-mobile.png
+
+      - name: Upload QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: rental-ui-qa
+          path: |
+            /tmp/rental-desktop.png
+            /tmp/rental-mobile.png
+            /tmp/rental-desktop.html
+            /tmp/rental-mobile.html

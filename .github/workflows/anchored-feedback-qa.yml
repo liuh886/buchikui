@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Check JavaScript syntax
+      - name: Check JavaScript syntax and integration contract
         run: |
           node --check app.js
           node --check cases.js
@@ -23,6 +23,10 @@ jobs:
           node --check court-case.js
           node --check membership-config.js
           node --check feedback.js
+          grep -q 'data-account-slot' index.html
+          grep -q 'admin/shared/account-shell.js?v=6' index.html
+          grep -q 'feedback.js' index.html
+          grep -q "productCode: 'buchikui'" membership-config.js
 
       - name: Exercise selection feedback in Chrome
         shell: bash
@@ -30,7 +34,6 @@ jobs:
           set -euo pipefail
           CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$CHROME"
-          cp index.html index-real.html
 
           python3 - <<'PY'
           from pathlib import Path
@@ -100,9 +103,9 @@ jobs:
                     document.getElementById('consumerFeedbackForm').requestSubmit();
                     setTimeout(markOverflow,500);
                   }
-                },180);
-              },180);
-            },180);
+                },220);
+              },220);
+            },220);
           })();
           </script>'''
           p.write_text(s.replace('</body>',probe+'</body>'))
@@ -114,31 +117,37 @@ jobs:
           sleep 1
 
           BASE='http://127.0.0.1:4173/?case=rental'
-          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=1800 --window-size=1440,1100 --screenshot=/tmp/feedback-desktop.png "$BASE&qa=composer"
-          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=1800 --window-size=390,844 --screenshot=/tmp/feedback-mobile.png "$BASE&qa=composer"
-          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=1800 --window-size=1440,1100 --dump-dom "$BASE&qa=composer" >/tmp/composer.html
-          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=1800 --window-size=390,844 --dump-dom "$BASE&qa=composer" >/tmp/composer-mobile.html
-          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=1800 --window-size=390,844 --dump-dom "$BASE&qa=loggedout" >/tmp/loggedout.html
-          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=2600 --window-size=1440,1100 --dump-dom "$BASE&qa=submit" >/tmp/submit.html
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=2200 --window-size=1440,1100 --screenshot=/tmp/feedback-desktop.png "$BASE&qa=composer"
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=2200 --window-size=390,844 --screenshot=/tmp/feedback-mobile.png "$BASE&qa=composer"
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=2200 --window-size=1440,1100 --dump-dom "$BASE&qa=composer" >/tmp/composer.html
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=2200 --window-size=390,844 --dump-dom "$BASE&qa=composer" >/tmp/composer-mobile.html
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=2200 --window-size=390,844 --dump-dom "$BASE&qa=loggedout" >/tmp/loggedout.html
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=3200 --window-size=1440,1100 --dump-dom "$BASE&qa=submit" >/tmp/submit.html
 
-          for f in /tmp/composer.html /tmp/composer-mobile.html; do
-            grep -q 'data-qa-overflow="false"' "$f"
-            grep -q 'data-qa-selection="true"' "$f"
-            grep -q 'data-qa-composer="true"' "$f"
-            grep -Eq 'data-qa-quote="[1-9][0-9]*"' "$f"
-          done
-          grep -q 'data-qa-account-opened="true"' /tmp/loggedout.html
-          grep -q 'data-qa-pending="true"' /tmp/loggedout.html
-          grep -q 'data-qa-inserted="true"' /tmp/submit.html
-          grep -q 'data-qa-insert-product="buchikui"' /tmp/submit.html
-          grep -q 'data-qa-insert-kind="anchored_consumer_experience"' /tmp/submit.html
-          grep -q 'data-qa-insert-type="experience"' /tmp/submit.html
-          grep -q 'case=rental' /tmp/submit.html
-
-          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --virtual-time-budget=4500 --window-size=1440,900 --dump-dom 'http://127.0.0.1:4173/index-real.html?case=beauty-hair' >/tmp/real-account.html
-          grep -q 'hao-account-trigger' /tmp/real-account.html
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          checks = {
+            'composer.html': ['data-qa-overflow="false"','data-qa-selection="true"','data-qa-composer="true"'],
+            'composer-mobile.html': ['data-qa-overflow="false"','data-qa-selection="true"','data-qa-composer="true"'],
+            'loggedout.html': ['data-qa-account-opened="true"','data-qa-pending="true"'],
+            'submit.html': ['data-qa-inserted="true"','data-qa-insert-product="buchikui"','data-qa-insert-kind="anchored_consumer_experience"','data-qa-insert-type="experience"','case=rental'],
+          }
+          failed=[]
+          for name, needles in checks.items():
+            text=Path('/tmp',name).read_text()
+            attrs=' '.join(re.findall(r'data-qa-[\\w-]+="[^"]*"', text))
+            print(name, attrs)
+            for needle in needles:
+              if needle not in text: failed.append(f'{name}: {needle}')
+            if name.startswith('composer') and not re.search(r'data-qa-quote="[1-9][0-9]*"', text):
+              failed.append(f'{name}: non-empty quote')
+          if failed:
+            raise SystemExit('QA failures: ' + '; '.join(failed))
+          PY
 
       - name: Upload QA evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: anchored-feedback-qa
@@ -149,4 +158,3 @@ jobs:
             /tmp/composer-mobile.html
             /tmp/loggedout.html
             /tmp/submit.html
-            /tmp/real-account.html

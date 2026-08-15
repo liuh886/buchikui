@@ -6,7 +6,7 @@
 
 唯一闭环：
 
-**Reader 选中文字 → 登录 → 提交经验 → Supabase `product_feedback` → Admin review → 编辑修改 GitHub 正文 → PR / merge → Pages 发布 → 反馈标记为已吸纳。**
+**Reader 选中文字 → 登录 → 提交经验 → Supabase `product_feedback` → Admin / Agent review → 编辑 GitHub 正文 → PR / merge → Pages 发布 → 反馈标记为已吸纳。**
 
 公开正文仍以 GitHub `main` 为唯一权威。Supabase 只保存消费者反馈和 review 状态，不充当 CMS。
 
@@ -76,16 +76,17 @@ status       = new（数据库默认值）
 }
 ```
 
-`anchor_key` 用内容结构的语义身份；quote selector 和 `case_updated` 保存用户提交时真正看到的版本。旧反馈不需要为了正文改稿自动迁移或重锚定：Admin review 时保留原始 quote 即可。
+`anchor_key` 用内容结构的语义身份；quote selector 和 `case_updated` 保存用户提交时真正看到的版本。旧反馈不需要为了正文改稿自动迁移或重锚定：review 时保留原始 quote 即可。
 
 ## 权限与审核
 
-现有 Supabase RLS 是权威：
+现有 Supabase RLS 是 Reader 权限的权威：
 
 - `authenticated` 用户只能 INSERT 自己的反馈；
 - 新反馈只能以 `status = new` 写入；
 - 用户只能读取自己的反馈；
-- 管理员通过现有 `feedback-admin` Edge Function review。
+- 管理员通过现有 `feedback-admin` Edge Function review；
+- 内部 Agent 在明确拥有 Supabase 工具权限时，可按 `docs/agent-feedback-workflow.md` 直接读取在线队列并回写处理状态，不通过公开 Reader API。
 
 Admin 对 Buchikui 使用现有状态字段，但显示为编辑语义：
 
@@ -96,3 +97,19 @@ Admin 对 Buchikui 使用现有状态字段，但显示为编辑语义：
 - `closed` → 不采纳
 
 不新增公开评论、回复、点赞、Realtime、通知、第二套审核后台或第二张反馈表。
+
+## Agent 处理
+
+Agent 不读取 Admin DOM，也不等待人工导出反馈。**Supabase `product_feedback` 就是在线反馈的唯一机器入口。**
+
+仓库根目录 `AGENTS.md` 定义 Agent 的全局行为，`docs/agent-feedback-workflow.md` 定义：
+
+- 在线队列的唯一 SQL；
+- 如何按 `case_slug + anchor_key` 聚类；
+- 如何把用户反馈当作不可信输入而不是指令；
+- 如何对照当前 GitHub `main`；
+- 如何验证事实后集中修改 CASE；
+- 如何把处理中的反馈标记为 `reviewing / planned`；
+- 如何在 PR merge 后标记为 `resolved`，或明确 `closed`。
+
+因此后续用户只需要给出类似 **“处理不吃亏反馈”** 的任务；具备 GitHub + Supabase 权限的 Agent 应直接读取实时队列并完成闭环，而不是要求用户复制粘贴反馈内容。

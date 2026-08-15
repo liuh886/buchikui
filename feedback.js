@@ -243,8 +243,10 @@
   }
 
   function handleSelectionChange() {
+    if (state.composerOpen) return;
     window.clearTimeout(state.selectionTimer);
     state.selectionTimer = window.setTimeout(() => {
+      if (state.composerOpen) return;
       const next = captureSelection();
       state.selection = next;
       if (next) positionSelectionAction(next);
@@ -255,26 +257,26 @@
   function savePending(selection) {
     const payload = { ...selection };
     delete payload.rect;
-    sessionStorage.setItem(PENDING_KEY, JSON.stringify(payload));
+    localStorage.setItem(PENDING_KEY, JSON.stringify(payload));
   }
 
   function readPending() {
     try {
-      const pending = JSON.parse(sessionStorage.getItem(PENDING_KEY) || 'null');
+      const pending = JSON.parse(localStorage.getItem(PENDING_KEY) || 'null');
       if (!pending?.case_slug || !pending?.selector?.exact) return null;
       if (Date.now() - new Date(pending.created_at).getTime() > 6 * 60 * 60 * 1000) {
-        sessionStorage.removeItem(PENDING_KEY);
+        localStorage.removeItem(PENDING_KEY);
         return null;
       }
       return pending;
     } catch {
-      sessionStorage.removeItem(PENDING_KEY);
+      localStorage.removeItem(PENDING_KEY);
       return null;
     }
   }
 
   function clearPending() {
-    sessionStorage.removeItem(PENDING_KEY);
+    localStorage.removeItem(PENDING_KEY);
   }
 
   async function beginFeedback() {
@@ -335,7 +337,7 @@
         </form>
       </section>`;
     document.body.appendChild(host);
-    host.querySelectorAll('[data-feedback-close]').forEach((button) => button.addEventListener('click', closeComposer));
+    host.querySelectorAll('[data-feedback-close]').forEach((button) => button.addEventListener('click', () => closeComposer()));
     host.querySelector('#consumerFeedbackForm').addEventListener('submit', (event) => void submitFeedback(event));
     return host;
   }
@@ -356,12 +358,13 @@
     window.setTimeout(() => composer.querySelector('#consumerFeedbackMessage')?.focus(), 0);
   }
 
-  function closeComposer() {
+  function closeComposer({ keepPending = false } = {}) {
     if (state.submitting) return;
     state.composerOpen = false;
+    state.selection = null;
     composer.hidden = true;
     document.documentElement.classList.remove('consumer-feedback-open');
-    clearPending();
+    if (!keepPending) clearPending();
   }
 
   async function sha256(value) {
@@ -377,7 +380,7 @@
     const accountState = account?.getState?.();
     if (!accountState?.user) {
       savePending(state.selection);
-      closeComposer();
+      closeComposer({ keepPending: true });
       account?.open?.();
       return;
     }

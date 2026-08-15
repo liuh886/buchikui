@@ -1,0 +1,72 @@
+name: CASE 006 visual QA
+
+on:
+  push:
+    branches:
+      - agent/visualize-advisor-compounding
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and formula checks
+        run: |
+          node --check case-visual.js
+          node <<'NODE'
+          const principal=10000,purchase=.0012,recurring=.017,redemption=.001;
+          const advisor=(years,gross=0)=>principal*(1-purchase)*Math.pow((1+gross)*(1-recurring),years)*(1-redemption);
+          const etf=(years,fee,gross=0)=>principal*Math.pow((1+gross)*(1-fee),years);
+          const round=x=>Math.round(x);
+          const expected={
+            flat:[round(advisor(1)),round(advisor(5)),round(advisor(10))],
+            iqqFlat:[round(etf(1,.001)),round(etf(5,.001)),round(etf(10,.001))],
+            growth:[round(advisor(1,.08)),round(advisor(5,.08)),round(advisor(10,.08))],
+            iqqGrowth:[round(etf(1,.001,.08)),round(etf(5,.001,.08)),round(etf(10,.001,.08))]
+          };
+          const want={flat:[9808,9158,8406],iqqFlat:[9990,9950,9900],growth:[10593,13456,18147],iqqGrowth:[10789,14620,21374]};
+          for(const key of Object.keys(want)) if(JSON.stringify(expected[key])!==JSON.stringify(want[key])) throw new Error(`${key}: ${expected[key]} != ${want[key]}`);
+          const html=require('fs').readFileSync('index.html','utf8');
+          if(!html.includes('id="caseVisual"')) throw new Error('case visual mount missing');
+          if(!html.includes('case-visual.css')||!html.includes('case-visual.js')) throw new Error('case visual assets missing');
+          console.log(expected);
+          NODE
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --silent playwright@1.55.0
+          npx playwright install chromium
+      - name: Capture desktop and mobile
+        run: |
+          python3 -m http.server 4173 >/tmp/buchikui-http.log 2>&1 &
+          node <<'NODE'
+          const { chromium }=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            for(const [name,width,height] of [['desktop',1440,1200],['mobile',390,844]]){
+              const page=await browser.newPage({viewport:{width,height}});
+              await page.goto('http://127.0.0.1:4173/?case=alipay-advisor-cost',{waitUntil:'networkidle'});
+              await page.locator('#caseVisual').scrollIntoViewIfNeeded();
+              await page.screenshot({path:`${name}.png`,fullPage:true});
+              const box=await page.locator('#caseVisual').boundingBox();
+              if(!box||box.height<400) throw new Error(`${name}: visual section missing`);
+              const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1);
+              if(overflow) throw new Error(`${name}: horizontal overflow`);
+              await page.getByRole('button',{name:/同样年化/}).click();
+              if(!(await page.locator('#caseVisual').innerText()).includes('¥3,227')) throw new Error(`${name}: growth comparison did not render`);
+            }
+            await browser.close();
+          })();
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: case-006-visual-screenshots
+          path: |
+            desktop.png
+            mobile.png

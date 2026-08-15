@@ -168,6 +168,7 @@
     byId('sourcesTitle').textContent=`本页依据与官方入口（更新：${active.updated}）`;
     byId('sourceList').innerHTML=active.sources.map(source=>`<li><a href="${escapeAttr(source.href)}" target="_blank" rel="noopener">${source.title}</a> — ${source.note}</li>`).join('');
     byId('legalText').textContent=active.legal;
+    byId('takeawayText').textContent=active.takeaway;
   }
 
   function isSwitcherOpen(){return !byId('caseSwitcherPopover').hidden}

@@ -3,6 +3,19 @@
   const stamp=document.getElementById('caseStamp');
   if(!section||!stamp) return;
 
+  const investmentVisual={
+    type:'cost-compound',
+    principal:10000,
+    purchaseFee:.0012,
+    recurringFee:.017,
+    redemptionFee:.001,
+    growthRate:.08,
+    benchmarks:[
+      {name:'IQQ',fee:.001},
+      {name:'QQQ',fee:.0018},
+      {name:'VOO',fee:.0003}
+    ]
+  };
   let mode='flat';
   const money=value=>`¥${Math.round(value).toLocaleString('zh-CN')}`;
   const pct=value=>`${(value*100).toFixed(2)}%`;
@@ -40,8 +53,8 @@
 
   function render(){
     const active=getActiveCase();
-    const visual=active&&active.visual;
-    if(!visual||visual.type!=='cost-compound'){
+    const visual=active&&active.slug==='alipay-advisor-cost'?investmentVisual:null;
+    if(!visual){
       section.hidden=true;
       section.innerHTML='';
       return;

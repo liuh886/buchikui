@@ -1,8 +1,8 @@
 window.BUCHIKUI_CASES.push({
-  id:'005',slug:'internet-court-self-litigation',name:'如何在互联网法院为自己打官司',label:'ONLINE LITIGATION',updated:'2026-08-15',
+  id:'005',slug:'internet-court-self-litigation',name:'第一次自己打民事官司',label:'CIVIL LITIGATION',updated:'2026-08-15',
   meta:{
-    title:'不吃亏｜如何在互联网法院为自己打官司：立案、证据、质证与庭审',
-    description:'第一次自己打民事官司：先判断是否值得起诉、互联网法院是否有管辖权，再把被告、诉讼请求、起诉状、证据目录、追加当事人、质证和庭审逐步做对。',
+    title:'不吃亏｜第一次自己打民事官司：立案、证据、质证与庭审',
+    description:'第一次自己打民事官司：先判断是否值得起诉、法院和被告是否找对，再把诉讼请求、起诉状、证据目录、质证和庭审逐步做对。',
     ogTitle:'第一次自己打官司，先把请求、事实和证据对齐。',
     ogDescription:'能网上立案不等于归互联网法院管辖。先选对法院和被告，再把诉讼请求、证据和质证做成法院能直接处理的材料。'
   },

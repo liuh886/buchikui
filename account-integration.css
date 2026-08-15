@@ -1,0 +1,103 @@
+.account-slot {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.account-slot .hao-account-mount {
+  position: static;
+  z-index: auto;
+  display: inline-flex;
+  align-items: center;
+  font-family: inherit;
+}
+
+.account-slot .hao-account-trigger {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-soft);
+  box-shadow: none;
+  backdrop-filter: none;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.account-slot .hao-account-trigger:hover {
+  transform: none;
+  border-color: var(--ink);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.account-slot .hao-account-trigger:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.account-slot .hao-account-trigger-visual {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+}
+
+.account-slot .hao-account-trigger svg {
+  width: 17px;
+  height: 17px;
+}
+
+.account-slot .hao-account-trigger-label {
+  display: none;
+}
+
+.account-slot .hao-account-trigger.is-pro {
+  width: auto;
+  min-width: 38px;
+  padding: 0 6px;
+}
+
+.account-slot .hao-account-trigger.is-pro::after {
+  content: 'PRO';
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  padding: 0 4px;
+  border: 1px solid color-mix(in srgb, var(--blue) 30%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--blue) 6%, var(--paper-strong));
+  color: var(--blue);
+  font-size: 8px;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: .08em;
+}
+
+@media (max-width: 860px) {
+  .account-slot .hao-account-trigger {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .account-slot .hao-account-trigger.is-pro {
+    width: 36px;
+    padding: 0;
+  }
+
+  .account-slot .hao-account-trigger.is-pro::after {
+    display: none;
+  }
+}

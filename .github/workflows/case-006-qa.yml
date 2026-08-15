@@ -1,0 +1,52 @@
+name: CASE 006 QA
+
+on:
+  push:
+    branches:
+      - agent/rental-identity-and-advisor-cost
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: |
+          node --check cases.js
+          node --check compact-cases.js
+          node --check mobile-plan-case.js
+          node --check court-case.js
+          node --check investment-advisor-case.js
+          node --check app.js
+      - name: Validate CASE contracts
+        run: |
+          node <<'NODE'
+          global.window={BUCHIKUI_CASES:[]};
+          require('./cases.js');
+          require('./compact-cases.js');
+          require('./mobile-plan-case.js');
+          require('./court-case.js');
+          require('./investment-advisor-case.js');
+          const cases=window.BUCHIKUI_CASES;
+          if(cases.length!==6) throw new Error(`expected 6 cases, got ${cases.length}`);
+          const rental=cases.find(x=>x.slug==='rental');
+          if(!rental.scenarios[0].short.includes('门头')) throw new Error('rental operator-identity scenario missing');
+          if(!rental.scenarios[0].blocks.some(x=>x.html.includes('滴滴租车')&&x.html.includes('悟空租车'))) throw new Error('rental storefront example missing');
+          if(!rental.takeaway.includes('自营租赁公司')) throw new Error('rental takeaway not strengthened');
+          const court=cases.find(x=>x.slug==='internet-court-self-litigation');
+          if(!court.takeaway.includes('法律也可以是每个消费者的武器')) throw new Error('court takeaway not updated');
+          const advisor=cases.find(x=>x.slug==='alipay-advisor-cost');
+          if(!advisor||advisor.layout!=='compact') throw new Error('advisor compact case missing');
+          if(!advisor.route.note.includes('1.91%')||!advisor.route.note.includes('9,809')) throw new Error('advisor cost example missing');
+          if(!advisor.legal.includes('不代表当前或未来每位投资者的实际费率')) throw new Error('advisor assumption boundary missing');
+          if(!advisor.route.note.includes('QQQ 0.18%')||!advisor.route.note.includes('VOO 0.03%')||!advisor.route.note.includes('0.95%')) throw new Error('comparison rates missing');
+          const html=require('fs').readFileSync('index.html','utf8');
+          if(!html.includes('<script src="investment-advisor-case.js"></script>')) throw new Error('CASE 006 script not loaded');
+          console.log(cases.map(x=>`${x.id} ${x.slug}`).join('\n'));
+          NODE

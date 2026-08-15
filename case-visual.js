@@ -3,38 +3,40 @@
   const stamp=document.getElementById('caseStamp');
   if(!section||!stamp) return;
 
-  let mode='flat';
   const money=value=>`¥${Math.round(value).toLocaleString('zh-CN')}`;
   const pct=value=>`${(value*100).toFixed(2)}%`;
+  const multiple=value=>`${value.toFixed(1)}×`;
 
   function getActiveCase(){
     const match=stamp.textContent.match(/CASE\s+(\d+)/);
     return match?window.BUCHIKUI_CASES.find(item=>item.id===match[1]):null;
   }
 
-  function advisorValue(model,years,grossReturn){
-    return model.principal*(1-model.purchaseFee)*Math.pow((1+grossReturn)*(1-model.recurringFee),years)*(1-model.redemptionFee);
+  function advisorValue(model,years){
+    return model.principal*(1-model.purchaseFee)*Math.pow(1-model.recurringFee,years)*(1-model.redemptionFee);
   }
 
-  function benchmarkValue(model,item,years,grossReturn){
-    return model.principal*Math.pow((1+grossReturn)*(1-item.fee),years);
+  function benchmarkValue(model,item,years){
+    return model.principal*Math.pow(1-item.fee,years);
   }
 
-  function renderBars(model,years,grossReturn){
-    const advisor=advisorValue(model,years,grossReturn);
-    const values=model.benchmarks.map(item=>({name:item.name,value:benchmarkValue(model,item,years,grossReturn)}));
-    const all=[{name:'投顾示例',value:advisor,className:'advisor'},...values.map(item=>({...item,className:item.name.toLowerCase()}))];
-    const max=Math.max(...all.map(item=>item.value));
-    const iqq=values.find(item=>item.name==='IQQ');
-    return `<article class="cost-horizon">
-      <div class="cost-horizon-head"><strong>${years} 年</strong><span>${String(years).padStart(2,'0')} YEAR</span></div>
-      <div class="cost-bars">
-        ${all.map(item=>`<div class="cost-bar ${item.className}">
-          <div class="cost-bar-copy"><b>${item.name}</b><strong>${money(item.value)}</strong></div>
-          <div class="cost-track" aria-hidden="true"><div class="cost-fill" style="--bar:${(item.value/max*100).toFixed(2)}%"></div></div>
-        </div>`).join('')}
+  function renderMultiple(model,benchmark,years){
+    const advisor=advisorValue(model,years);
+    const reference=benchmarkValue(model,benchmark,years);
+    const advisorCost=model.principal-advisor;
+    const referenceCost=model.principal-reference;
+    const advisorRate=advisorCost/model.principal;
+    const referenceRate=referenceCost/model.principal;
+    const ratio=advisorCost/referenceCost;
+
+    return `<article class="cost-multiple">
+      <div class="cost-multiple-head"><strong>${years} 年</strong><span>${String(years).padStart(2,'0')} YEAR</span></div>
+      <div class="cost-multiple-number">${multiple(ratio)}</div>
+      <p class="cost-multiple-rate"><b>投顾 ${pct(advisorRate)}</b><span>vs</span><b>IQQ ${pct(referenceRate)}</b></p>
+      <div class="cost-multiple-money">
+        <span>累计费用约 ${money(advisorCost)} vs ${money(referenceCost)}</span>
+        <strong>相差 ${money(advisorCost-referenceCost)}</strong>
       </div>
-      <div class="cost-gap">相对 IQQ 少留下<strong>${money(iqq.value-advisor)}</strong></div>
     </article>`;
   }
 
@@ -47,44 +49,45 @@
       return;
     }
 
+    const iqq=model.benchmarks.find(item=>item.name==='IQQ');
+    if(!iqq){
+      section.hidden=true;
+      section.innerHTML='';
+      return;
+    }
+
     section.hidden=false;
-    const grossReturn=mode==='growth'?model.growthRate:0;
     const visibleRoundTrip=model.principal*(model.purchaseFee+model.redemptionFee);
     const firstYearRecurring=model.principal*model.recurringFee;
-    const tenYearFlatCost=model.principal-advisorValue(model,10,0);
+    const tenYearFlatCost=model.principal-advisorValue(model,10);
+    const recurringMultiple=model.recurringFee/iqq.fee;
 
     section.innerHTML=`<div class="wrap">
       <header class="cost-vis-head">
-        <div><span class="cost-vis-kicker">费用复利 / COST COMPOUNDING</span><h2>小费率，<br>会被时间放大。</h2></div>
-        <p>同样从 ${money(model.principal)} 出发。先把市场收益设成 0，只看费用本身怎么侵蚀本金；再切到“所有产品底层都同样年化 ${pct(model.growthRate)}”的示意，观察费用如何进一步吃掉复利。</p>
+        <div><span class="cost-vis-kicker">费用倍率 / COST MULTIPLE</span><h2>真正惊人的，<br>不是 1.91%。<br>是约 19 倍。</h2></div>
+        <p>把市场收益设成 0，只隔离费用本身：同样从 ${money(model.principal)} 出发，用 IQQ 作为低成本纳指 100 对标。比较的不是谁涨得更多，而是<strong>同一笔钱被费用吃掉的比例相差多少倍</strong>。</p>
       </header>
       <div class="cost-vis-grid">
         <article class="cost-iceberg">
-          <div><h3>费用冰山</h3><small>买卖时最显眼的费用，其实只是水面上的一小块。</small></div>
+          <div><h3>费用冰山</h3><small>买卖时最显眼的费用，只是水面上的一小块。</small></div>
           <div class="iceberg-meter" aria-label="费用冰山：一次性申购与赎回费用约 ${money(visibleRoundTrip)}，持续费用首年约 ${money(firstYearRecurring)}">
             <div class="iceberg-visible"><span class="iceberg-label">水面上 / 一次性</span><strong>${money(visibleRoundTrip)}</strong><p>申购 ${pct(model.purchaseFee)} + 赎回 ${pct(model.redemptionFee)}，按 1 万元粗略折算。</p></div>
-            <div class="iceberg-hidden"><span class="iceberg-label">水面下 / 每年持续</span><strong>${pct(model.recurringFee)}</strong><p>底层基金运作费与投顾费合计。首年约 ${money(firstYearRecurring)}；横盘 10 年后，连同进出费用累计约损耗 ${money(tenYearFlatCost)}。</p></div>
+            <div class="iceberg-hidden"><span class="iceberg-label">水面下 / 每年持续</span><strong>${pct(model.recurringFee)}</strong><p>底层基金运作费与投顾费合计。首年约 ${money(firstYearRecurring)}；横盘 10 年，连同进出费用累计约损耗 ${money(tenYearFlatCost)}。</p></div>
           </div>
         </article>
         <div class="cost-timeline">
-          <div><h3>时间放大器</h3><small>柱长只用于同一持有期内横向比较；金额才是主信息。</small></div>
-          <div class="cost-mode" role="group" aria-label="切换费用复利假设">
-            <button type="button" data-cost-mode="flat" aria-pressed="${mode==='flat'}">市场横盘 0%</button>
-            <button type="button" data-cost-mode="growth" aria-pressed="${mode==='growth'}">同样年化 ${pct(model.growthRate)}（示意）</button>
+          <div><h3>对标 IQQ：费用倍率</h3><small>下方比较“累计费用损耗率”。倍率越高，意味着为相近市场暴露付出的费用层级越重。</small></div>
+          <div class="cost-multiples">${[1,5,10].map(years=>renderMultiple(model,iqq,years)).join('')}</div>
+          <div class="cost-recurring-callout">
+            <span>长期持续费用本身</span>
+            <strong>${pct(model.recurringFee)} ÷ ${pct(iqq.fee)} = ${multiple(recurringMultiple)}</strong>
+            <p>1 年的总倍率更高，是因为还叠加了申购和赎回这两个一次性成本。持有期拉长后倍率略回落，不代表投顾变便宜；累计被费用侵蚀的金额仍持续扩大。</p>
           </div>
-          <div class="cost-horizons">${[1,5,10].map(years=>renderBars(model,years,grossReturn)).join('')}</div>
         </div>
       </div>
-      <p class="cost-vis-note"><strong>${mode==='flat'?'当前模式：只隔离费用影响。':'当前模式：同样年化 8% 只是说明性假设，不是收益预测。'}</strong> 投顾示例按申购费 ${pct(model.purchaseFee)}、持续费用 ${pct(model.recurringFee)}/年、退出赎回费 ${pct(model.redemptionFee)} 计算；IQQ / QQQ / VOO 只计当前产品自身年费率，不含券商佣金、买卖价差、汇兑、税费等。IQQ 当前费率口径以后续官方资料为准。</p>
+      <p class="cost-vis-note"><strong>口径：</strong>市场横盘、无分红，只比较费用造成的本金损耗。投顾示例按申购费 ${pct(model.purchaseFee)}、持续费用 ${pct(model.recurringFee)}/年、退出赎回费 ${pct(model.redemptionFee)} 计算；IQQ 只计当前产品自身净费用率 ${pct(iqq.fee)}。尚未计入投顾调仓摩擦，也未计入 ETF 券商佣金、买卖价差、汇兑与税费。IQQ 当前费率以后续官方资料为准。</p>
     </div>`;
   }
-
-  section.addEventListener('click',event=>{
-    const button=event.target.closest('[data-cost-mode]');
-    if(!button) return;
-    mode=button.dataset.costMode;
-    render();
-  });
 
   new MutationObserver(render).observe(stamp,{childList:true,characterData:true,subtree:true});
   render();

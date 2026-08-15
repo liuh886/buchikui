@@ -5,6 +5,18 @@ window.BUCHIKUI_CASES.push({
   label:'INVESTMENT ADVISORY',
   layout:'compact',
   updated:'2026-08-15',
+  costModel:{
+    principal:10000,
+    purchaseFee:.0012,
+    recurringFee:.017,
+    redemptionFee:.001,
+    growthRate:.08,
+    benchmarks:[
+      {name:'IQQ',fee:.001},
+      {name:'QQQ',fee:.0018},
+      {name:'VOO',fee:.0003}
+    ]
+  },
   meta:{
     title:'不吃亏｜支付宝投顾的真实交易成本：看得见的费只是冰山一角',
     description:'用 1 万元、持有一年且底层资产不涨不跌的算例，把申购费、基金运作费、赎回费、投顾费和调仓摩擦拆开，再与低成本 ETF 和一年期定存的费率量级对照。',

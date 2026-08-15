@@ -57,7 +57,7 @@
 
   function setLayoutMode(){
     const compact=active.layout==='compact';
-    const standardOnly=[document.querySelector('.situation'),byId('cases'),byId('evidence'),byId('template')];
+    const standardOnly=[document.querySelector('.situation'),byId('serviceStandard'),byId('cases'),byId('evidence'),byId('template')];
     standardOnly.forEach(element=>element.hidden=compact);
 
     const navLinks=[...document.querySelectorAll('nav a')];
@@ -98,11 +98,28 @@
     restoreEvidence();
   }
 
+  function renderServiceStandard(){
+    const section=byId('serviceStandard');
+    const standard=active.serviceStandard;
+    if(!standard){
+      section.hidden=true;
+      return;
+    }
+
+    section.hidden=false;
+    byId('serviceStandardKicker').textContent=standard.kicker||'正常服务标准';
+    setHtml('serviceStandardTitle',standard.title);
+    setHtml('serviceStandardIntro',standard.intro);
+    byId('serviceStandardGrid').innerHTML=standard.items.map((item,index)=>`<article class="route-step"><span class="n">STANDARD ${String(index+1).padStart(2,'0')}</span><h3>${item.title}</h3><p>${item.text}</p></article>`).join('');
+    setHtml('serviceStandardNote',standard.note||'');
+  }
+
   function renderStandardCase(){
     const situation=document.querySelector('.situation');
     situation.classList.toggle('dense',active.scenarios.length>6);
     byId('scenarioNav').textContent=`${active.scenarios.length} 个场景`;
     byId('situationList').innerHTML='<span class="situation-label">我遇到的是：</span>'+active.scenarios.map((item,index)=>`<a href="#case-${index+1}">${item.short}</a>`).join('');
+    renderServiceStandard();
     byId('casesKicker').textContent=active.section.kicker;
     setHtml('casesTitle',active.section.title);
     setHtml('casesIntro',active.section.intro);

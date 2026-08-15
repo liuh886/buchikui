@@ -1,0 +1,67 @@
+.account-slot{display:flex;align-items:center}
+.account-slot .hao-account-trigger{width:38px;height:38px;border:1px solid rgba(17,17,17,.18);background:transparent;color:inherit}
+.account-slot .hao-account-trigger:hover{border-color:rgba(17,17,17,.45);background:rgba(255,255,255,.35)}
+#hao-account-overlay .hao-account-billing-note{display:none}
+
+.consumer-feedback-action{position:fixed;z-index:1300;min-width:108px;height:36px;padding:0 14px;border:0;border-radius:0;background:#171717;color:#fff;font:700 13px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.02em;box-shadow:0 8px 24px rgba(0,0,0,.16);cursor:pointer}
+.consumer-feedback-action::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;background:#f0c94a;vertical-align:1px}
+.consumer-feedback-action:hover{background:#000}
+.consumer-feedback-action.is-mobile{left:50%!important;top:auto!important;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);height:40px;min-width:124px}
+
+.consumer-feedback-toast{position:fixed;z-index:1600;left:50%;bottom:28px;transform:translate(-50%,12px);max-width:min(560px,calc(100vw - 32px));padding:12px 16px;background:#171717;color:#fff;font:600 13px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;opacity:0;transition:opacity .18s ease,transform .18s ease}
+.consumer-feedback-toast.is-visible{opacity:1;transform:translate(-50%,0)}
+
+.consumer-feedback-composer{position:fixed;inset:0;z-index:1500}
+.consumer-feedback-backdrop{position:absolute;inset:0;background:rgba(17,17,17,.28)}
+.consumer-feedback-panel{position:absolute;top:0;right:0;width:min(430px,100vw);height:100%;box-sizing:border-box;overflow:auto;padding:32px 30px 34px;background:#f6f3ec;border-left:1px solid #171717;color:#171717;box-shadow:-18px 0 42px rgba(0,0,0,.12)}
+.consumer-feedback-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:22px;border-bottom:1px solid rgba(17,17,17,.24)}
+.consumer-feedback-head span{display:block;margin-bottom:8px;font:800 11px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.14em}
+.consumer-feedback-head h2{margin:0;font:700 clamp(28px,3vw,38px)/1.05 Georgia,"Times New Roman",serif;letter-spacing:-.03em}
+.consumer-feedback-close{width:34px;height:34px;border:1px solid rgba(17,17,17,.25);background:transparent;color:#171717;font:300 26px/1 Arial,sans-serif;cursor:pointer}
+.consumer-feedback-close:hover{border-color:#171717}
+.consumer-feedback-intro{margin:18px 0 24px;color:#555;font:400 14px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-context{padding:18px 0 20px;border-top:3px solid #171717;border-bottom:1px solid rgba(17,17,17,.22)}
+.consumer-feedback-context>span{display:block;color:#777;font:700 11px/1.3 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.07em}
+.consumer-feedback-context>strong{display:block;margin-top:6px;font:700 14px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-context blockquote{margin:14px 0 0;padding:12px 14px;background:#f0c94a;color:#171717;font:600 15px/1.6 Georgia,"Times New Roman",serif}
+.consumer-feedback-types{margin:24px 0 0;padding:0;border:0}
+.consumer-feedback-types legend{margin-bottom:8px;font:700 13px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-types label{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;padding:12px 0;border-top:1px solid rgba(17,17,17,.16);cursor:pointer}
+.consumer-feedback-types label:last-child{border-bottom:1px solid rgba(17,17,17,.16)}
+.consumer-feedback-types input{margin:3px 0 0;accent-color:#171717}
+.consumer-feedback-types strong,.consumer-feedback-types small{display:block}
+.consumer-feedback-types strong{font:700 14px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-types small{margin-top:3px;color:#666;font:400 12px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-message{display:block;margin-top:22px}
+.consumer-feedback-message>span{display:block;margin-bottom:8px;font:700 13px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-message textarea{display:block;width:100%;box-sizing:border-box;resize:vertical;min-height:150px;padding:13px 14px;border:1px solid #171717;border-radius:0;background:#fffdf7;color:#171717;font:400 14px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;outline:none}
+.consumer-feedback-message textarea:focus{box-shadow:inset 4px 0 0 #f0c94a}
+.consumer-feedback-privacy{margin:8px 0 0;color:#777;font:400 11px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-status{min-height:20px;margin:12px 0 0;color:#555;font:600 12px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px;padding-top:18px;border-top:1px solid rgba(17,17,17,.18)}
+.consumer-feedback-actions .btn{min-height:40px}
+.consumer-feedback-open{overflow:hidden}
+
+@media(max-width:860px){
+  .top-actions{gap:6px}
+  .account-slot .hao-account-trigger{width:36px;height:36px}
+  .consumer-feedback-toast{bottom:calc(92px + env(safe-area-inset-bottom))}
+}
+
+@media(max-width:680px){
+  .consumer-feedback-backdrop{background:rgba(17,17,17,.34)}
+  .consumer-feedback-panel{top:auto;bottom:0;width:100%;height:auto;max-height:88vh;padding:22px 20px calc(24px + env(safe-area-inset-bottom));border-left:0;border-top:1px solid #171717;box-shadow:0 -18px 42px rgba(0,0,0,.14)}
+  .consumer-feedback-head{padding-bottom:16px}
+  .consumer-feedback-head h2{font-size:30px}
+  .consumer-feedback-intro{margin:14px 0 18px}
+  .consumer-feedback-context{padding:14px 0 16px}
+  .consumer-feedback-context blockquote{margin-top:10px;padding:10px 12px;font-size:14px}
+  .consumer-feedback-types{margin-top:18px}
+  .consumer-feedback-types label{padding:10px 0}
+  .consumer-feedback-message{margin-top:18px}
+  .consumer-feedback-message textarea{min-height:128px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .consumer-feedback-toast{transition:none}
+}

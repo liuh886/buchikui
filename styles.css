@@ -710,7 +710,7 @@ h1 em{font-style:normal;color:var(--red)}
   box-shadow:0 12px 36px rgba(23,23,21,.08);
 }
 .script::before{
-  content:"书面沟通模板";
+  content:attr(data-label);
   position:absolute;
   top:11px;
   left:30px;

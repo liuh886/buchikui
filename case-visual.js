@@ -5,39 +5,62 @@
 
   const money=value=>`¥${Math.round(value).toLocaleString('zh-CN')}`;
   const pct=value=>`${(value*100).toFixed(2)}%`;
-  const multiple=value=>`${value.toFixed(2)}×`;
 
   function getActiveCase(){
     const match=stamp.textContent.match(/CASE\s+(\d+)/);
     return match?window.BUCHIKUI_CASES.find(item=>item.id===match[1]):null;
   }
 
-  function cumulativeLoss(rate,years){
-    return 1-Math.pow(1-rate,years);
+  function advisorValue(model,years,rebalanceDrag=0){
+    return model.principal*(1-model.purchaseFee)*Math.pow((1+model.grossReturn)*(1-model.recurringFee)*(1-rebalanceDrag),years)*(1-model.redemptionFee);
   }
 
-  function renderMultiple(model,benchmark,years){
-    const advisorRate=cumulativeLoss(model.annualizedComparisonFee,years);
-    const referenceRate=cumulativeLoss(benchmark.fee,years);
-    const advisorCost=model.principal*advisorRate;
-    const referenceCost=model.principal*referenceRate;
-    const ratio=advisorRate/referenceRate;
+  function benchmarkValue(model,item,years){
+    return model.principal*Math.pow((1+model.grossReturn)*(1-item.fee),years);
+  }
 
-    return `<article class="cost-multiple">
-      <div class="cost-multiple-head"><strong>${years} 年</strong><span>${String(years).padStart(2,'0')} YEAR</span></div>
-      <div class="cost-multiple-number">${multiple(ratio)}</div>
-      <p class="cost-multiple-rate"><b>投顾 ${pct(advisorRate)}</b><span>vs</span><b>IQQ ${pct(referenceRate)}</b></p>
-      <div class="cost-multiple-money">
-        <span>等效累计损耗约 ${money(advisorCost)} vs ${money(referenceCost)}</span>
-        <strong>相差 ${money(advisorCost-referenceCost)}</strong>
+  function renderHorizon(model,iqq,years){
+    const advisor=advisorValue(model,years,0);
+    const reference=benchmarkValue(model,iqq,years);
+    const gap=reference-advisor;
+    const gapRate=gap/reference;
+    const max=Math.max(advisor,reference);
+    return `<article class="wealth-horizon">
+      <div class="wealth-horizon-head"><strong>${years} 年</strong><span>${String(years).padStart(2,'0')} YEAR</span></div>
+      <div class="wealth-bars">
+        <div class="wealth-bar iqq">
+          <div class="wealth-bar-copy"><b>IQQ</b><strong>${money(reference)}</strong></div>
+          <div class="wealth-track" aria-hidden="true"><div class="wealth-fill" style="--bar:${(reference/max*100).toFixed(2)}%"></div></div>
+        </div>
+        <div class="wealth-bar advisor">
+          <div class="wealth-bar-copy"><b>投顾 · 已知成本下限</b><strong>${money(advisor)}</strong></div>
+          <div class="wealth-track" aria-hidden="true"><div class="wealth-fill" style="--bar:${(advisor/max*100).toFixed(2)}%"></div></div>
+        </div>
       </div>
+      <div class="wealth-gap"><span>即使假设调仓摩擦 = 0</span><strong>仍少 ${money(gap)} · ${pct(gapRate)}</strong></div>
     </article>`;
+  }
+
+  function renderSensitivity(model,iqq){
+    const years=10;
+    const reference=benchmarkValue(model,iqq,years);
+    const scenarios=[0,...model.rebalanceSensitivity];
+    return scenarios.map(drag=>{
+      const value=advisorValue(model,years,drag);
+      const gap=reference-value;
+      const label=drag===0?'0% · 已知成本下限':`+${pct(drag)} / 年`;
+      return `<div class="rebalance-row">
+        <span>${label}</span>
+        <strong>${money(value)}</strong>
+        <em>比 IQQ 少 ${money(gap)}</em>
+      </div>`;
+    }).join('');
   }
 
   function render(){
     const active=getActiveCase();
     const model=active&&active.costModel;
-    if(!model||!model.annualizedComparisonFee){
+    if(!model||!model.grossReturn){
       section.hidden=true;
       section.innerHTML='';
       return;
@@ -53,37 +76,35 @@
     section.hidden=false;
     const visibleRoundTrip=model.principal*(model.purchaseFee+model.redemptionFee);
     const firstYearRecurring=model.principal*model.recurringFee;
-    const recurringMultiple=model.recurringFee/iqq.fee;
+    const iqqTen=benchmarkValue(model,iqq,10);
 
     section.innerHTML=`<div class="wrap">
       <header class="cost-vis-head">
-        <div><span class="cost-vis-kicker">费用倍率 / COST MULTIPLE</span><h2>一年约 19 倍。<br>十年仍约 18 倍。</h2></div>
-        <p>这里把一年综合成本 <strong>${pct(model.annualizedComparisonFee)}</strong> 作为年化等效费率，与 IQQ 的 <strong>${pct(iqq.fee)}</strong> 用完全相同的复利公式比较。核心不是“少了多少钱”，而是<strong>费用侵蚀的量级究竟差多少倍</strong>。</p>
+        <div><span class="cost-vis-kicker">费用复利 / COST COMPOUNDING</span><h2>同样 8%，<br>费用会把终点拉开。</h2></div>
+        <p>假设投顾组合和 IQQ 背后的市场暴露都获得同样的 <strong>${pct(model.grossReturn)}</strong> 年化毛收益。投顾主线甚至先把调仓摩擦设成 0——也就是说，这已经是一个<strong>偏乐观的成本下限</strong>。</p>
       </header>
       <div class="cost-vis-grid">
         <article class="cost-iceberg">
-          <div><h3>费用冰山</h3><small>买卖时最显眼的费用，只是水面上的一小块。</small></div>
-          <div class="iceberg-meter" aria-label="费用冰山：一次性申购与赎回费用约 ${money(visibleRoundTrip)}，持续费用首年约 ${money(firstYearRecurring)}">
-            <div class="iceberg-visible"><span class="iceberg-label">水面上 / 一次性</span><strong>${money(visibleRoundTrip)}</strong><p>申购 ${pct(model.purchaseFee)} + 赎回 ${pct(model.redemptionFee)}，按 1 万元粗略折算。</p></div>
-            <div class="iceberg-hidden"><span class="iceberg-label">水面下 / 每年持续</span><strong>${pct(model.recurringFee)}</strong><p>底层基金运作费与投顾费合计，首年约 ${money(firstYearRecurring)}。这部分才是长期持续侵蚀的主体。</p></div>
+          <div><h3>费用冰山</h3><small>真正危险的不是哪一笔费用特别大，而是有些成本持续发生，还有一些根本无法在买入前准确量化。</small></div>
+          <div class="iceberg-meter three-level" aria-label="费用冰山：一次性申购与赎回约 ${money(visibleRoundTrip)}，已知持续费用约 ${pct(model.recurringFee)} 每年，另有未知调仓摩擦">
+            <div class="iceberg-visible"><span class="iceberg-label">水面上 / 看得见</span><strong>${money(visibleRoundTrip)}</strong><p>申购 ${pct(model.purchaseFee)} + 最终退出赎回 ${pct(model.redemptionFee)}，按 1 万元粗略折算。</p></div>
+            <div class="iceberg-hidden"><span class="iceberg-label">水面下 / 持续发生</span><strong>${pct(model.recurringFee)} / 年</strong><p>底层基金运作费 + 投顾费。首年约 ${money(firstYearRecurring)}，会持续侵蚀复利。</p></div>
+            <div class="iceberg-unknown"><span class="iceberg-label">更深处 / 不透明</span><strong>调仓摩擦：未知</strong><p>底层申赎、价差、汇兑与交易时点损耗最终仍由用户组合承担；没有完整交易归因，就不能把它当成 0。</p></div>
           </div>
         </article>
         <div class="cost-timeline">
-          <div><h3>对标 IQQ：费用倍率</h3><small>公式统一为：累计费用损耗 = 1 − (1 − 年化费率)<sup>n</sup>。</small></div>
-          <div class="cost-multiples">${[1,5,10].map(years=>renderMultiple(model,iqq,years)).join('')}</div>
-          <div class="cost-recurring-callout">
-            <span>公式口径</span>
-            <strong>[1 − (1 − 1.91%)ⁿ] ÷ [1 − (1 − 0.10%)ⁿ]</strong>
-            <p>1 年约 19.10 倍，5 年约 18.42 倍，10 年约 17.62 倍。倍率随时间略下降，是复利损耗的数学结果；并不意味着绝对费用损耗在下降。</p>
-          </div>
-          <div class="cost-recurring-callout">
-            <span>持续费用本身</span>
-            <strong>${pct(model.recurringFee)} ÷ ${pct(iqq.fee)} = ${recurringMultiple.toFixed(1)}×</strong>
-            <p>投顾示例中约 1.70%/年的底层基金运作费 + 投顾费，与 IQQ 0.10% 的当前净费用率相比，本身就是约 17 倍的持续费用层级。</p>
+          <div><h3>同样年化 8%，最后留下多少？</h3><small>IQQ 只计当前产品自身净费用率 ${pct(iqq.fee)}；投顾主线计已知费用，并暂时假设调仓摩擦为 0。</small></div>
+          <div class="wealth-horizons">${[5,10,20].map(years=>renderHorizon(model,iqq,years)).join('')}</div>
+          <div class="rebalance-sensitivity">
+            <div class="rebalance-head">
+              <div><span>10 年敏感性</span><strong>未知调仓成本，会继续拉开差距。</strong></div>
+              <p>IQQ 10 年约 ${money(iqqTen)}。下列 0.20% / 0.50% / 1.00% 只是年化等效摩擦情景，不是对产品真实调仓成本的认定。</p>
+            </div>
+            <div class="rebalance-rows">${renderSensitivity(model,iqq)}</div>
           </div>
         </div>
       </div>
-      <p class="cost-vis-note"><strong>口径说明：</strong>${pct(model.annualizedComparisonFee)} 来自本页“一年横盘”综合成本算例，其中包含一次性的申购 / 赎回费。5 年和 10 年这里把它视为<strong>年化等效费率</strong>做同口径复利比较，是为了看费用量级，不表示一次性费用在真实长期持有中每年都会重复发生。尚未计入投顾调仓摩擦，也未计入 ETF 券商佣金、买卖价差、汇兑与税费。</p>
+      <p class="cost-vis-note"><strong>计算口径：</strong>投顾已知成本下限 = ${money(model.principal)} × (1 − ${pct(model.purchaseFee)}) × [ (1 + ${pct(model.grossReturn)}) × (1 − ${pct(model.recurringFee)}) ]ⁿ × (1 − ${pct(model.redemptionFee)})；调仓敏感性再额外乘入 (1 − 调仓摩擦)ⁿ。IQQ = ${money(model.principal)} × [ (1 + ${pct(model.grossReturn)}) × (1 − ${pct(iqq.fee)}) ]ⁿ。两边都只是费用隔离模型，不是收益预测；ETF 自身的佣金、价差、汇兑和税费未计入。</p>
     </div>`;
   }
 

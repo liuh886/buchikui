@@ -1,0 +1,54 @@
+name: CASE 006 visual QA
+
+on:
+  push:
+    branches:
+      - agent/visualize-advisor-compounding
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and canonical model
+        run: |
+          node --check investment-advisor-case.js
+          node --check case-visual.js
+          node <<'NODE'
+          global.window={BUCHIKUI_CASES:[]};
+          require('./investment-advisor-case.js');
+          const c=window.BUCHIKUI_CASES[0],m=c.costModel;
+          if(!m||m.principal!==10000||m.purchaseFee!==.0012||m.recurringFee!==.017||m.redemptionFee!==.001) throw new Error('canonical cost model missing');
+          const advisor=(years,gross=0)=>m.principal*(1-m.purchaseFee)*Math.pow((1+gross)*(1-m.recurringFee),years)*(1-m.redemptionFee);
+          const iqq=m.benchmarks.find(x=>x.name==='IQQ');
+          const etf=(years,fee,gross=0)=>m.principal*Math.pow((1+gross)*(1-fee),years);
+          if(Math.round(advisor(10))!==8406||Math.round(etf(10,iqq.fee))!==9900) throw new Error('flat 10y mismatch');
+          if(Math.round(etf(10,iqq.fee,.08)-advisor(10,.08))!==3227) throw new Error('growth gap mismatch');
+          NODE
+      - name: Browser smoke
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --silent playwright@1.55.0
+          npx playwright install chromium
+          python3 -m http.server 4173 >/tmp/buchikui-http.log 2>&1 &
+          node <<'NODE'
+          const { chromium }=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            for(const [width,height] of [[1440,1200],[390,844]]){
+              const page=await browser.newPage({viewport:{width,height}});
+              await page.goto('http://127.0.0.1:4173/?case=alipay-advisor-cost',{waitUntil:'networkidle'});
+              if(await page.locator('#caseVisual').isHidden()) throw new Error('visual hidden');
+              if(await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1)) throw new Error(`overflow at ${width}`);
+              await page.getByRole('button',{name:/同样年化/}).click();
+              if(!(await page.locator('#caseVisual').innerText()).includes('¥3,227')) throw new Error('growth mode mismatch');
+            }
+            await browser.close();
+          })();
+          NODE

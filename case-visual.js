@@ -74,8 +74,6 @@
     }
 
     section.hidden=false;
-    const visibleRoundTrip=model.principal*(model.purchaseFee+model.redemptionFee);
-    const firstYearRecurring=model.principal*model.recurringFee;
     const iqqTen=benchmarkValue(model,iqq,10);
 
     section.innerHTML=`<div class="wrap">
@@ -84,14 +82,6 @@
         <p>假设投顾组合和 IQQ 背后的市场暴露都获得同样的 <strong>${pct(model.grossReturn)}</strong> 年化毛收益。投顾主线甚至先把调仓摩擦设成 0——也就是说，这已经是一个<strong>偏乐观的成本下限</strong>。</p>
       </header>
       <div class="cost-vis-grid">
-        <article class="cost-iceberg">
-          <div><h3>费用冰山</h3><small>真正危险的不是哪一笔费用特别大，而是有些成本持续发生，还有一些根本无法在买入前准确量化。</small></div>
-          <div class="iceberg-meter three-level" aria-label="费用冰山：一次性申购与赎回约 ${money(visibleRoundTrip)}，已知持续费用约 ${pct(model.recurringFee)} 每年，另有未知调仓摩擦">
-            <div class="iceberg-visible"><span class="iceberg-label">水面上 / 看得见</span><strong>${money(visibleRoundTrip)}</strong><p>申购 ${pct(model.purchaseFee)} + 最终退出赎回 ${pct(model.redemptionFee)}，按 1 万元粗略折算。</p></div>
-            <div class="iceberg-hidden"><span class="iceberg-label">水面下 / 持续发生</span><strong>${pct(model.recurringFee)} / 年</strong><p>底层基金运作费 + 投顾费。首年约 ${money(firstYearRecurring)}，会持续侵蚀复利。</p></div>
-            <div class="iceberg-unknown"><span class="iceberg-label">更深处 / 不透明</span><strong>调仓摩擦：未知</strong><p>底层申赎、价差、汇兑与交易时点损耗最终仍由用户组合承担；没有完整交易归因，就不能把它当成 0。</p></div>
-          </div>
-        </article>
         <div class="cost-timeline">
           <div><h3>同样年化 8%，最后留下多少？</h3><small>IQQ 只计当前产品自身净费用率 ${pct(iqq.fee)}；投顾主线计已知费用，并暂时假设调仓摩擦为 0。</small></div>
           <div class="wealth-horizons">${[5,10,20].map(years=>renderHorizon(model,iqq,years)).join('')}</div>

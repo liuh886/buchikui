@@ -102,6 +102,20 @@
 - Compact Case：判断条件 + 3–4 步行动路径 + 官方依据
 - 所有 Case：随机首页、固定分享链接、打印、官方来源与免责声明
 
+## 消费者经验回流
+
+正文保持编辑权威，但允许普通消费者把一手经验反馈到具体段落：
+
+- 阅读始终公开，无需登录；
+- 用户选中文字后才出现 **“补充经验”**，不在正文常驻评论图标、评论数或头像墙；
+- 登录用户可以提交 `亲身经历 / 信息纠错 / 流程补充 / 其他`；
+- 每条反馈同时保存当前 CASE、语义 block anchor、原文 quote、前后文、位置和正文版本；
+- 反馈只进入现有 Supabase `product_feedback` 与 Admin Feedback Inbox，不自动公开、不直接修改正文；
+- 编辑按 `待审 → 评审中 → 已采纳 · 待改稿 → 已吸纳 / 不采纳` 处理；真正吸收内容时仍通过 GitHub PR 修改正式 Case；
+- GitHub `main` 始终是公开正文唯一权威，Supabase 只是 community evidence inbox。
+
+详细合同见 [`docs/consumer-feedback.md`](docs/consumer-feedback.md)。
+
 ## 产品原则
 
 - **场景优先**：用户通常从“我遇到了什么”进入，不要求先理解法律或责任分类
@@ -115,7 +129,7 @@
 
 ## 当前技术实现
 
-继续保持纯静态站，不引入框架、构建系统或后端：
+公开 Reader 继续保持纯静态 GitHub Pages，不引入框架、构建系统或自建应用服务器。登录和消费者反馈复用现有共享 Hao Account + Supabase 基础设施：
 
 - `index.html`：统一页面壳
 - `styles.css`：共享视觉系统
@@ -124,9 +138,13 @@
 - `mobile-plan-case.js`：CASE 004 通讯套餐降费内容数据
 - `court-case.js`：CASE 005 自助民事诉讼内容数据
 - `app.js`：随机选择、standard/compact 渲染、证据状态与可选证据分组、Case 语义标签、分享、打印、复制模板
-- GitHub Pages 直接部署
+- `membership-config.js`：接入现有 Hao Account；阅读不设登录门槛，也不启用计费
+- `feedback.js` / `feedback.css`：文字选区、稳定语义 anchor、反馈 drawer / bottom sheet 与提交
+- Supabase `product_feedback`：复用现有表、RLS 和状态字段；不新增 Buchikui 专属反馈表或 Edge Function
+- `liuh886/admin` Feedback Inbox：集中 review 段落原文、消费者补充与处理状态
+- GitHub Pages 直接部署公开 Reader；GitHub `main` 保存唯一正式正文
 
-当前只有两种明确页面形态：`standard` 和 `compact`。不为每个 Case 单独复制页面，也不增加额外路由或框架。
+当前只有两种明确页面形态：`standard` 和 `compact`。消费者反馈是共享阅读能力，不为每个 Case 单独复制页面，也不增加新的 Case renderer。
 
 ## 官方参考
 

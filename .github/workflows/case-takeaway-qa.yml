@@ -1,0 +1,46 @@
+name: CASE takeaway QA
+
+on:
+  push:
+    branches:
+      - agent/add-case-takeaways
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: |
+          node --check app.js
+          node --check cases.js
+          node --check compact-cases.js
+          node --check mobile-plan-case.js
+          node --check court-case.js
+      - name: Validate takeaway contract
+        run: |
+          node <<'NODE'
+          global.window={BUCHIKUI_CASES:[]};
+          require('./cases.js');
+          require('./compact-cases.js');
+          require('./mobile-plan-case.js');
+          require('./court-case.js');
+          const cases=window.BUCHIKUI_CASES;
+          if(cases.length!==5) throw new Error(`expected 5 cases, got ${cases.length}`);
+          for(const item of cases){
+            if(typeof item.takeaway!=='string'||!item.takeaway.trim()) throw new Error(`missing takeaway: ${item.slug}`);
+          }
+          const fs=require('fs');
+          const html=fs.readFileSync('index.html','utf8');
+          const app=fs.readFileSync('app.js','utf8');
+          if(!html.includes('id="takeawayText"')) throw new Error('takeaway target missing');
+          if(html.indexOf('id="takeawayText"')<html.indexOf('id="legalText"')) throw new Error('takeaway must be after legal disclaimer');
+          if(!app.includes("byId('takeawayText').textContent=active.takeaway")) throw new Error('renderer missing takeaway binding');
+          console.log(cases.map(x=>`${x.id} ${x.slug}: ${x.takeaway}`).join('\n'));
+          NODE

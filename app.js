@@ -63,6 +63,8 @@
     const navLinks=[...document.querySelectorAll('nav a')];
     const mobilePrimary=byId('mobilePrimaryAction');
     byId('scenarioNav').href=compact?'#route':'#cases';
+    byId('routeNav').textContent=active.route.navLabel||'维权路径';
+    byId('templateNav').textContent=active.template?.navLabel||'沟通模板';
     navLinks.slice(1).forEach(link=>link.hidden=compact);
     if(mobilePrimary){
       mobilePrimary.href=compact?'#route':'#scenarioPicker';
@@ -116,6 +118,7 @@
 
     renderEvidence();
 
+    byId('templateCard').dataset.label=active.template.label||'书面沟通模板';
     setHtml('templateTitle',active.template.title);
     setHtml('templateIntro',active.template.intro);
     byId('templateText').textContent=active.template.text;
@@ -138,6 +141,7 @@
     if(active.layout==='compact') byId('scenarioNav').textContent='处理步骤';
     else renderStandardCase();
 
+    byId('routeKicker').textContent=active.route.kicker||'维权路径';
     const routeHeading=document.querySelector('.route .section-head h2');
     routeHeading.innerHTML=active.route.title||'从能解决问题的<br>地方开始。';
     setHtml('routeIntro',active.route.intro);

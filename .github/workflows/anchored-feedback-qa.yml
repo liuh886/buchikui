@@ -61,6 +61,10 @@ jobs:
               }}}}},
               subscribe(listener){listener(snapshot());return()=>{};}
             };
+            document.addEventListener('DOMContentLoaded',()=>{
+              const slot=document.querySelector('[data-account-slot]');
+              if(slot)slot.innerHTML='<button class="hao-account-trigger" type="button" aria-label="QA account">Q</button>';
+            });
           })();
           </script>'''
           s=s.replace(real,stub)
@@ -92,7 +96,7 @@ jobs:
                 body.dataset.qaSelection=String(Boolean(action&&!action.hidden));
                 action?.click();
                 setTimeout(()=>{
-                  body.dataset.qaPending=String(Boolean(sessionStorage.getItem('buchikui-pending-feedback-v1')));
+                  body.dataset.qaPending=String(Boolean(localStorage.getItem('buchikui-pending-feedback-v1')));
                   body.dataset.qaComposer=String(Boolean(document.getElementById('consumerFeedbackComposer')&&!document.getElementById('consumerFeedbackComposer').hidden));
                   body.dataset.qaQuote=String(document.getElementById('consumerFeedbackQuote')?.textContent?.length||0);
                   markOverflow();
@@ -136,7 +140,7 @@ jobs:
           failed=[]
           for name, needles in checks.items():
             text=Path('/tmp',name).read_text()
-            attrs=' '.join(re.findall(r'data-qa-[\\w-]+="[^"]*"', text))
+            attrs=' '.join(re.findall(r'data-qa-[\w-]+="[^"]*"', text))
             print(name, attrs)
             for needle in needles:
               if needle not in text: failed.append(f'{name}: {needle}')

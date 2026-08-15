@@ -1,0 +1,108 @@
+name: Court Case QA
+
+on:
+  push:
+    branches: [agent/add-online-litigation-case]
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check cases.js
+          node --check compact-cases.js
+          node --check mobile-plan-case.js
+          node --check court-case.js
+
+      - name: Render court case in Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$CHROME"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          probe='''<script>
+          (()=>{
+            const root=document.documentElement;
+            const body=document.body;
+            body.dataset.qaOverflow=String(root.scrollWidth>root.clientWidth);
+            body.dataset.qaScenarioCount=String(document.querySelectorAll('#caseList .case').length);
+            body.dataset.qaEvidenceCount=String(document.querySelectorAll('[data-evidence]').length);
+            body.dataset.qaEvidenceGroups=String(document.querySelectorAll('.evidence-group').length);
+            body.dataset.qaDense=String(document.querySelector('.situation')?.classList.contains('dense'));
+            body.dataset.qaRouteKicker=document.querySelector('#routeKicker')?.textContent||'';
+            body.dataset.qaTemplateNav=document.querySelector('#templateNav')?.textContent||'';
+            body.dataset.qaTemplateLabel=document.querySelector('#templateCard')?.dataset.label||'';
+            const qa=new URLSearchParams(location.search).get('qa');
+            if(qa==='picker'){
+              document.querySelectorAll('.topbar,.hero').forEach(el=>el.style.display='none');
+              document.querySelectorAll('#cases,#evidence,#route,#template,footer,.mobile-bar').forEach(el=>el.style.display='none');
+            }
+            if(qa==='evidence'){
+              document.querySelectorAll('.topbar,.hero,.situation,#cases').forEach(el=>el.style.display='none');
+              document.querySelectorAll('#route,#template,footer,.mobile-bar').forEach(el=>el.style.display='none');
+            }
+            if(qa==='template'){
+              document.querySelectorAll('.topbar,.hero,.situation,#cases,#evidence,#route').forEach(el=>el.style.display='none');
+              document.querySelectorAll('footer,.mobile-bar').forEach(el=>el.style.display='none');
+            }
+          })();
+          </script>'''
+          p.write_text(s.replace('</body>',probe+'</body>'))
+          PY
+
+          python3 -m http.server 4173 >/tmp/buchikui-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID' EXIT
+          sleep 1
+
+          URL='http://127.0.0.1:4173/?case=internet-court-self-litigation'
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=1440,1100 --screenshot=/tmp/court-desktop.png "$URL"
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,844 --screenshot=/tmp/court-mobile.png "$URL"
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,844 --screenshot=/tmp/court-picker.png "$URL&qa=picker"
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=1440,1100 --screenshot=/tmp/court-evidence.png "$URL&qa=evidence"
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,1200 --screenshot=/tmp/court-template.png "$URL&qa=template"
+
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,844 --dump-dom "$URL" >/tmp/court-mobile.html
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=1440,1100 --dump-dom "$URL" >/tmp/court-desktop.html
+          "$CHROME" --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=390,844 --dump-dom 'http://127.0.0.1:4173/?case=beauty-hair' >/tmp/beauty.html
+
+          for f in /tmp/court-mobile.html /tmp/court-desktop.html; do
+            grep -q 'data-qa-overflow="false"' "$f"
+            grep -q 'data-qa-scenario-count="10"' "$f"
+            grep -q 'data-qa-evidence-count="9"' "$f"
+            grep -q 'data-qa-evidence-groups="3"' "$f"
+            grep -q 'data-qa-dense="true"' "$f"
+            grep -q 'data-qa-route-kicker="诉讼路径"' "$f"
+            grep -q 'data-qa-template-nav="起诉状骨架"' "$f"
+            grep -q 'data-qa-template-label="民事起诉状骨架"' "$f"
+          done
+          grep -q 'data-qa-overflow="false"' /tmp/beauty.html
+          grep -q 'data-qa-scenario-count="6"' /tmp/beauty.html
+          grep -q 'data-qa-dense="false"' /tmp/beauty.html
+
+      - name: Upload QA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: court-case-qa
+          path: |
+            /tmp/court-desktop.png
+            /tmp/court-mobile.png
+            /tmp/court-picker.png
+            /tmp/court-evidence.png
+            /tmp/court-template.png
+            /tmp/court-mobile.html
+            /tmp/court-desktop.html
+            /tmp/beauty.html

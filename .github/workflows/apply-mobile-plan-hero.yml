@@ -1,0 +1,35 @@
+name: Apply mobile plan hero refresh
+
+on:
+  push:
+    branches:
+      - agent/refresh-mobile-plan-hero
+    paths:
+      - .github/workflows/apply-mobile-plan-hero.yml
+      - scripts/refresh-mobile-plan-hero.py
+
+permissions:
+  contents: write
+
+jobs:
+  edit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/refresh-mobile-plan-hero
+      - name: Apply copy edit
+        run: python3 scripts/refresh-mobile-plan-hero.py
+      - name: Verify CASE 004
+        run: |
+          node --check mobile-plan-case.js
+          grep -F "通讯费太贵，<br><em>不换号也有选择权</em>。" mobile-plan-case.js
+          grep -F "“老用户不如狗”？" mobile-plan-case.js
+          grep -F "不换号也可以改套餐。" mobile-plan-case.js
+      - name: Commit edit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add mobile-plan-case.js
+          git commit -m "refresh mobile plan hero copy"
+          git push origin HEAD:agent/refresh-mobile-plan-hero

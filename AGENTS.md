@@ -57,5 +57,7 @@ Do not maintain a second registry. Search the current content data for `case_slu
 - `compact-cases.js`
 - `mobile-plan-case.js`
 - `court-case.js`
+- `investment-advisor-case.js`
+- `bank-wealth-case.js`
 
 If the repository structure changes, follow current `main`; do not preserve obsolete paths.

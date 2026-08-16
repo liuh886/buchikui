@@ -80,19 +80,27 @@ jobs:
               const verification=await page.locator('#consumerFeedbackVerificationStatus').innerText();
               if(!verification.includes('验证完成')) throw new Error(`missing verified state at ${width}: ${verification}`);
               if(await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1)) throw new Error(`horizontal overflow with Turnstile open at ${width}`);
-              console.log(`verified ${width}: ${verification}`);
 
               await page.fill('#consumerFeedbackMessage','这是自动化测试经验，不会进入真实数据库。');
-              await submit.click();
+              const beforeSubmit=await page.evaluate(()=>{
+                const form=document.getElementById('consumerFeedbackForm');
+                window.__feedbackSubmitEvents=0;
+                form.addEventListener('submit',()=>window.__feedbackSubmitEvents++,{capture:true});
+                return {valid:form.checkValidity(),disabled:document.getElementById('consumerFeedbackSubmit').disabled};
+              });
+              if(!beforeSubmit.valid || beforeSubmit.disabled) throw new Error(`form not submittable at ${width}: ${JSON.stringify(beforeSubmit)}`);
+              await page.evaluate(()=>document.getElementById('consumerFeedbackForm').requestSubmit());
               await page.waitForTimeout(800);
               const afterSubmit=await page.evaluate(()=>({
+                submitEvents:window.__feedbackSubmitEvents,
                 hidden:document.getElementById('consumerFeedbackComposer').hidden,
                 status:document.getElementById('consumerFeedbackStatus').textContent,
                 verification:document.getElementById('consumerFeedbackVerificationStatus').textContent,
                 button:document.getElementById('consumerFeedbackSubmit').textContent,
                 disabled:document.getElementById('consumerFeedbackSubmit').disabled,
               }));
-              console.log(`submitted ${width}:`, afterSubmit, browserErrors);
+              console.log(`${width}:`, {beforeSubmit,afterSubmit,browserErrors});
+              if(afterSubmit.submitEvents!==1) throw new Error(`submit event count wrong at ${width}: ${JSON.stringify(afterSubmit)}`);
               if(afterSubmit.status!=='已提交。') throw new Error(`submission did not reach success at ${width}: ${JSON.stringify(afterSubmit)} errors=${JSON.stringify(browserErrors)}`);
               if(!afterSubmit.hidden) throw new Error(`composer did not close at ${width}: ${JSON.stringify(afterSubmit)} errors=${JSON.stringify(browserErrors)}`);
               if(await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1)) throw new Error(`horizontal overflow after submit at ${width}`);

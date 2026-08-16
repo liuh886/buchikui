@@ -1,0 +1,37 @@
+name: Apply Turnstile feedback protection
+
+on:
+  push:
+    branches:
+      - agent/protect-feedback-with-turnstile
+    paths:
+      - .github/workflows/apply-feedback-turnstile.yml
+      - scripts/apply-feedback-turnstile.py
+
+permissions:
+  contents: write
+
+jobs:
+  edit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/protect-feedback-with-turnstile
+      - name: Apply frontend protection
+        run: python3 scripts/apply-feedback-turnstile.py
+      - name: Verify frontend contract
+        run: |
+          node --check feedback.js
+          grep -F 'challenges.cloudflare.com/turnstile/v0/api.js?render=explicit' index.html
+          grep -F "client.functions.invoke('feedback-submit'" feedback.js
+          grep -F '验证后提交' feedback.js
+          grep -F 'consumer-feedback-turnstile' feedback.css
+          ! grep -F ".from('product_feedback').insert" feedback.js
+      - name: Commit frontend protection
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html feedback.js feedback.css
+          git commit -m "gate feedback submission with Turnstile"
+          git push origin HEAD:agent/protect-feedback-with-turnstile

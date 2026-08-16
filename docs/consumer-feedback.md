@@ -6,7 +6,7 @@
 
 唯一闭环：
 
-**Reader 选中文字 → 登录 → 提交经验 → Supabase `product_feedback` → Admin / Agent review → 编辑 GitHub 正文 → PR / merge → Pages 发布 → 反馈标记为已吸纳。**
+**Reader 选中文字 → 登录 → Cloudflare Turnstile → `feedback-submit` → Supabase `product_feedback` → Admin / Agent review → 编辑 GitHub 正文 → PR / merge → Pages 发布 → 反馈标记为已吸纳。**
 
 公开正文仍以 GitHub `main` 为唯一权威。Supabase 只保存消费者反馈和 review 状态，不充当 CMS。
 
@@ -31,7 +31,33 @@
 - 未登录点击后打开现有 Hao Account；选区暂存在浏览器 `localStorage`，最多保留 6 小时，因此 OAuth 跳转或邮箱 Magic Link 在新标签页完成登录后仍能继续原反馈。
 - 已登录时桌面使用右侧 editorial drawer，移动端使用 bottom sheet。
 - 提交类型只有四种：`亲身经历 / 信息纠错 / 流程补充 / 其他`。
+- `提交给编辑` 默认锁定；Cloudflare Turnstile 成功后才解锁。token 过期、超时、验证错误或一次提交失败后都必须重新验证。
 - 提交后只提示“已进入编辑收件箱”，不会直接公开。
+
+## 机器人防护
+
+Turnstile 不是前端装饰，而是写入合同的一部分：
+
+1. Reader 动态渲染 Cloudflare Turnstile；成功后得到一次性 token。
+2. Reader 只调用 Supabase Edge Function `feedback-submit`，不再直接 INSERT `product_feedback`。
+3. `feedback-submit` 先验证登录用户，再调用 Cloudflare Siteverify。
+4. 只有 `success = true`、`action = buchikui_feedback`、`hostname = liuh886.github.io` 同时成立时才写入数据库。
+5. `user_id`、`product_code = buchikui`、`category = content`、`status = new` 都由服务端确定，不接受客户端覆盖。
+6. 数据库不再给 `authenticated` / `anon` 直接 INSERT 权限；因此绕过按钮直接调用 Data API 也不能提交。
+
+生产配置只有两项 Function Secret：
+
+```text
+TURNSTILE_SITE_KEY=<Cloudflare Turnstile sitekey>
+TURNSTILE_SECRET_KEY=<Cloudflare Turnstile secret>
+```
+
+Cloudflare widget 的允许 hostname 设为 `liuh886.github.io`。前端不保存 secret；sitekey 由 `feedback-submit` 的 `config` action 返回。两项 secret 任意一项缺失时，Reader 必须 fail closed：显示“机器人验证暂不可用，提交已锁定”，不恢复旧的浏览器直写路径。
+
+Cloudflare 官方实现与服务端校验要求：
+
+- https://developers.cloudflare.com/turnstile/get-started/
+- https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
 
 ## 数据合同
 
@@ -43,7 +69,7 @@ category     = content
 message      = 用户补充
 page_url     = 固定到当前 CASE 的 URL
 metadata     = 锚定上下文
-status       = new（数据库默认值）
+status       = new
 ```
 
 `metadata`：
@@ -80,11 +106,11 @@ status       = new（数据库默认值）
 
 ## 权限与审核
 
-现有 Supabase RLS 是 Reader 权限的权威：
+Reader 写权限只有一条：
 
-- `authenticated` 用户只能 INSERT 自己的反馈；
-- 新反馈只能以 `status = new` 写入；
-- 用户只能读取自己的反馈；
+- `feedback-submit` 验证登录用户 + Turnstile 后，以服务端权限 INSERT；
+- `authenticated` / `anon` 不能直接 INSERT `product_feedback`；
+- 用户仍只能读取自己的反馈；
 - 管理员通过现有 `feedback-admin` Edge Function review；
 - 内部 Agent 在明确拥有 Supabase 工具权限时，可按 `docs/agent-feedback-workflow.md` 直接读取在线队列并回写处理状态，不通过公开 Reader API。
 

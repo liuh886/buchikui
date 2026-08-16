@@ -37,6 +37,10 @@
 .consumer-feedback-message textarea{display:block;width:100%;box-sizing:border-box;resize:vertical;min-height:150px;padding:13px 14px;border:1px solid #171717;border-radius:0;background:#fffdf7;color:#171717;font:400 14px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;outline:none}
 .consumer-feedback-message textarea:focus{box-shadow:inset 4px 0 0 #f0c94a}
 .consumer-feedback-privacy{margin:8px 0 0;color:#777;font:400 11px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-verification{margin-top:16px;padding:16px 0 0;border-top:1px solid rgba(17,17,17,.18)}
+.consumer-feedback-turnstile{min-height:65px;width:100%;overflow:hidden}
+.consumer-feedback-verification p{margin:8px 0 0;color:#666;font:600 11px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.consumer-feedback-actions .btn:disabled{opacity:.42;cursor:not-allowed}
 .consumer-feedback-status{min-height:20px;margin:12px 0 0;color:#555;font:600 12px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .consumer-feedback-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px;padding-top:18px;border-top:1px solid rgba(17,17,17,.18)}
 .consumer-feedback-actions .btn{min-height:40px}

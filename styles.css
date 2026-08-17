@@ -175,6 +175,7 @@ nav a:hover::after{right:0}
   border-radius:7px;
   box-shadow:var(--shadow);
   overflow:hidden;
+  overscroll-behavior:contain;
 }
 .case-switcher-popover::before{
   content:"";
@@ -761,6 +762,7 @@ footer{padding:48px 0 92px;border-top:1px solid var(--line-strong)}
   .brand{font-size:21px}
   .brand-mark{width:7px;height:7px;transform:translateY(-6px)}
   .top-actions{display:none}
+  body.case-switcher-open{overflow:hidden}
 
   .case-switcher{margin-left:auto;max-width:calc(100vw - 118px)}
   .case-switcher-trigger{

@@ -5,12 +5,13 @@
   const byId=id=>document.getElementById(id);
   const escapeAttr=value=>String(value).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const escapeHtml=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  const allowedRichTags=new Set(['A','B','BR','CODE','EM','LI','OL','P','SMALL','SPAN','STRONG','UL']);
   const params=new URLSearchParams(location.search);
   const requested=params.get('case');
   const requestedCase=cases.find(item=>item.slug===requested);
   let pinnedMode=Boolean(requestedCase);
   let active=requestedCase||cases[Math.floor(Math.random()*cases.length)];
-  let transitionTimer=null;
+  let caseTransitionController=null;
 
   if(requested&&!requestedCase){
     const cleanUrl=new URL(location.href);
@@ -18,7 +19,57 @@
     history.replaceState(null,'',cleanUrl.pathname+cleanUrl.search+cleanUrl.hash);
   }
 
-  function setHtml(id,value){byId(id).innerHTML=value}
+  function safeHref(value){
+    const href=String(value||'').trim();
+    if(!href) return '#';
+    if(href.startsWith('#')||href.startsWith('./')||href.startsWith('../')||(/^\/(?!\/)/).test(href)) return href;
+    try{
+      const parsed=new URL(href,location.origin);
+      if(parsed.protocol==='https:'||parsed.protocol==='http:') return parsed.href;
+    }catch(error){}
+    return '#';
+  }
+
+  function sanitizeCanonicalHtml(value){
+    const template=document.createElement('template');
+    template.innerHTML=String(value||'');
+    template.content.querySelectorAll('*').forEach(node=>{
+      if(!allowedRichTags.has(node.tagName)){
+        node.replaceWith(...node.childNodes);
+        return;
+      }
+      [...node.attributes].forEach(attribute=>{
+        const name=attribute.name.toLowerCase();
+        if(node.tagName==='A'&&name==='href'){
+          node.setAttribute('href',safeHref(attribute.value));
+          return;
+        }
+        if(node.tagName==='A'&&name==='target'&&attribute.value==='_blank') return;
+        if(node.tagName==='A'&&name==='rel'){
+          node.setAttribute('rel','noopener');
+          return;
+        }
+        if((node.tagName==='STRONG'||node.tagName==='SPAN')&&name==='class'&&attribute.value==='key') return;
+        node.removeAttribute(attribute.name);
+      });
+      if(node.tagName==='A'&&/^https?:\/\//i.test(node.getAttribute('href')||'')){
+        node.setAttribute('target','_blank');
+        node.setAttribute('rel','noopener');
+      }
+    });
+    return template.innerHTML;
+  }
+
+  function setCanonicalHtml(id,value){
+    byId(id).innerHTML=sanitizeCanonicalHtml(value);
+  }
+
+  function renderMeta(){
+    document.title=active.meta.title;
+    document.querySelector('meta[name="description"]').setAttribute('content',active.meta.description);
+    document.querySelector('meta[property="og:title"]').setAttribute('content',active.meta.ogTitle);
+    document.querySelector('meta[property="og:description"]').setAttribute('content',active.meta.ogDescription);
+  }
 
   function renderSwitcher(){
     byId('caseSwitcherId').textContent=`CASE ${active.id}`;
@@ -49,7 +100,7 @@
     try{
       const saved=JSON.parse(localStorage.getItem(evidenceKey)||'{}');
       boxes.forEach(box=>box.checked=!!saved[box.dataset.evidence]);
-    }catch(e){}
+    }catch(error){}
 
     boxes.forEach(box=>box.addEventListener('change',persistEvidence));
     persistEvidence();
@@ -73,20 +124,28 @@
     }
   }
 
+  function renderHero(){
+    byId('caseStamp').textContent=`CASE ${active.id} / ${active.label}`;
+    setCanonicalHtml('heroTitle',active.hero.title);
+    setCanonicalHtml('heroCopy',active.hero.copy);
+    setCanonicalHtml('panicTitle',active.panic.title);
+    byId('panicList').innerHTML=active.panic.items.map(item=>`<li><div><strong>${escapeHtml(item.title)}</strong>${sanitizeCanonicalHtml(item.text)}</div></li>`).join('');
+  }
+
   function renderEvidence(){
-    setHtml('evidenceTitle',active.evidence.title);
-    setHtml('evidenceIntro',active.evidence.intro);
+    setCanonicalHtml('evidenceTitle',active.evidence.title);
+    setCanonicalHtml('evidenceIntro',active.evidence.intro);
     byId('evidenceFootnote').textContent=active.evidence.footnote;
 
     const checklist=byId('checklist');
-    const renderCheck=item=>`<label class="check"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${item.title}</strong><small>${item.detail}</small></span><span class="when">${item.when}</span></label>`;
+    const renderCheck=item=>`<label class="check"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.detail)}</small></span><span class="when">${escapeHtml(item.when)}</span></label>`;
 
     if(active.evidence.groups&&active.evidence.groups.length){
       checklist.classList.add('grouped');
       checklist.innerHTML=active.evidence.groups.map((group,index)=>{
         const items=active.evidence.items.filter(item=>item.group===group.key);
         return `<section class="evidence-group" role="group" aria-labelledby="evidence-group-${index}">
-          <div class="evidence-group-head"><strong id="evidence-group-${index}">${group.title}</strong><span>${group.note}</span></div>
+          <div class="evidence-group-head"><strong id="evidence-group-${index}">${escapeHtml(group.title)}</strong><span>${escapeHtml(group.note)}</span></div>
           <div class="evidence-group-list">${items.map(renderCheck).join('')}</div>
         </section>`;
       }).join('');
@@ -108,67 +167,72 @@
 
     section.hidden=false;
     byId('serviceStandardKicker').textContent=standard.kicker||'正常服务标准';
-    setHtml('serviceStandardTitle',standard.title);
-    setHtml('serviceStandardIntro',standard.intro);
-    byId('serviceStandardGrid').innerHTML=standard.items.map((item,index)=>`<article class="route-step"><span class="n">STANDARD ${String(index+1).padStart(2,'0')}</span><h3>${item.title}</h3><p>${item.text}</p></article>`).join('');
-    setHtml('serviceStandardNote',standard.note||'');
+    setCanonicalHtml('serviceStandardTitle',standard.title);
+    setCanonicalHtml('serviceStandardIntro',standard.intro);
+    byId('serviceStandardGrid').innerHTML=standard.items.map((item,index)=>`<article class="route-step"><span class="n">STANDARD ${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(item.title)}</h3><p>${sanitizeCanonicalHtml(item.text)}</p></article>`).join('');
+    setCanonicalHtml('serviceStandardNote',standard.note||'');
   }
 
   function renderStandardCase(){
     const situation=document.querySelector('.situation');
     situation.classList.toggle('dense',active.scenarios.length>6);
     byId('scenarioNav').textContent=`${active.scenarios.length} 个场景`;
-    byId('situationList').innerHTML='<span class="situation-label">我遇到的是：</span>'+active.scenarios.map((item,index)=>`<a href="#case-${index+1}">${item.short}</a>`).join('');
+    byId('situationList').innerHTML='<span class="situation-label">我遇到的是：</span>'+active.scenarios.map((item,index)=>`<a href="#case-${index+1}">${escapeHtml(item.short)}</a>`).join('');
     renderServiceStandard();
     byId('casesKicker').textContent=active.section.kicker;
-    setHtml('casesTitle',active.section.title);
-    setHtml('casesIntro',active.section.intro);
+    setCanonicalHtml('casesTitle',active.section.title);
+    setCanonicalHtml('casesIntro',active.section.intro);
     byId('caseList').innerHTML=active.scenarios.map((item,index)=>{
       const blocks=item.blocks.map(block=>{
         const classes=['case-block'];
         if(block.full) classes.push('full');
         if(block.kind==='action') classes.push('action');
-        return `<div class="${classes.join(' ')}"><b>${block.label}</b>${block.html}</div>`;
+        return `<div class="${classes.join(' ')}"><b>${escapeHtml(block.label)}</b>${sanitizeCanonicalHtml(block.html)}</div>`;
       }).join('');
-      return `<article class="case" id="case-${index+1}"><div class="case-no">${String(index+1).padStart(2,'0')}</div><div class="case-title"><span class="risk">${item.risk}</span><h3>${item.title}</h3></div><div class="case-body">${blocks}</div></article>`;
+      return `<article class="case" id="case-${index+1}"><div class="case-no">${String(index+1).padStart(2,'0')}</div><div class="case-title"><span class="risk">${escapeHtml(item.risk)}</span><h3>${escapeHtml(item.title)}</h3></div><div class="case-body">${blocks}</div></article>`;
     }).join('');
 
     renderEvidence();
 
     byId('templateCard').dataset.label=active.template.label||'书面沟通模板';
-    setHtml('templateTitle',active.template.title);
-    setHtml('templateIntro',active.template.intro);
+    setCanonicalHtml('templateTitle',active.template.title);
+    setCanonicalHtml('templateIntro',active.template.intro);
     byId('templateText').textContent=active.template.text;
   }
 
-  function renderCase(){
-    document.title=active.meta.title;
-    document.querySelector('meta[name="description"]').setAttribute('content',active.meta.description);
-    document.querySelector('meta[property="og:title"]').setAttribute('content',active.meta.ogTitle);
-    document.querySelector('meta[property="og:description"]').setAttribute('content',active.meta.ogDescription);
+  function renderRoute(){
+    byId('routeKicker').textContent=active.route.kicker||'维权路径';
+    setCanonicalHtml('routeTitle',active.route.title||'从能解决问题的<br>地方开始。');
+    setCanonicalHtml('routeIntro',active.route.intro);
+    byId('routeGrid').innerHTML=active.route.steps.map((step,index)=>{
+      const href=safeHref(step.href);
+      const external=/^https?:\/\//i.test(href);
+      return `<article class="route-step"><span class="n">STEP ${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(step.title)}</h3><p>${sanitizeCanonicalHtml(step.text)}</p><a href="${escapeAttr(href)}"${external?' target="_blank" rel="noopener"':''}>${escapeHtml(step.link)}</a></article>`;
+    }).join('');
+    setCanonicalHtml('routeNote',active.route.note);
+  }
 
+  function renderSources(){
+    byId('sourcesTitle').textContent=`本页依据与官方入口（更新：${active.updated}）`;
+    byId('sourceList').innerHTML=active.sources.map(source=>{
+      const href=safeHref(source.href);
+      return `<li><a href="${escapeAttr(href)}" target="_blank" rel="noopener">${escapeHtml(source.title)}</a> — ${sanitizeCanonicalHtml(source.note)}</li>`;
+    }).join('');
+    byId('legalText').textContent=active.legal;
+    byId('takeawayText').textContent=active.takeaway;
+  }
+
+  function renderCase(){
+    renderMeta();
     renderSwitcher();
     setLayoutMode();
-    byId('caseStamp').textContent=`CASE ${active.id} / ${active.label}`;
-    setHtml('heroTitle',active.hero.title);
-    setHtml('heroCopy',active.hero.copy);
-    setHtml('panicTitle',active.panic.title);
-    byId('panicList').innerHTML=active.panic.items.map(item=>`<li><div><strong>${item.title}</strong>${item.text}</div></li>`).join('');
+    renderHero();
 
     if(active.layout==='compact') byId('scenarioNav').textContent='处理步骤';
     else renderStandardCase();
 
-    byId('routeKicker').textContent=active.route.kicker||'维权路径';
-    const routeHeading=document.querySelector('.route .section-head h2');
-    routeHeading.innerHTML=active.route.title||'从能解决问题的<br>地方开始。';
-    setHtml('routeIntro',active.route.intro);
-    byId('routeGrid').innerHTML=active.route.steps.map((step,index)=>`<article class="route-step"><span class="n">STEP ${String(index+1).padStart(2,'0')}</span><h3>${step.title}</h3><p>${step.text}</p><a href="${escapeAttr(step.href)}"${step.href.startsWith('http')?' target="_blank" rel="noopener"':''}>${step.link}</a></article>`).join('');
-    setHtml('routeNote',active.route.note);
-
-    byId('sourcesTitle').textContent=`本页依据与官方入口（更新：${active.updated}）`;
-    byId('sourceList').innerHTML=active.sources.map(source=>`<li><a href="${escapeAttr(source.href)}" target="_blank" rel="noopener">${source.title}</a> — ${source.note}</li>`).join('');
-    byId('legalText').textContent=active.legal;
-    byId('takeawayText').textContent=active.takeaway;
+    renderRoute();
+    renderSources();
   }
 
   function isSwitcherOpen(){return !byId('caseSwitcherPopover').hidden}
@@ -178,6 +242,7 @@
     byId('caseSwitcherBackdrop').hidden=false;
     byId('caseSwitcher').classList.add('open');
     byId('caseSwitcherTrigger').setAttribute('aria-expanded','true');
+    document.body.classList.add('case-switcher-open');
   }
 
   function closeSwitcher(){
@@ -185,6 +250,7 @@
     byId('caseSwitcherBackdrop').hidden=true;
     byId('caseSwitcher').classList.remove('open');
     byId('caseSwitcherTrigger').setAttribute('aria-expanded','false');
+    document.body.classList.remove('case-switcher-open');
   }
 
   function updatePinnedUrl(next){
@@ -195,22 +261,34 @@
     history.pushState({case:next.slug},'',url.pathname+url.search);
   }
 
+  function applyCaseSwitch(next,options){
+    active=next;
+    if(options.updateUrl!==false) updatePinnedUrl(next);
+    renderCase();
+    window.scrollTo({top:0,left:0,behavior:'auto'});
+    requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.remove('case-changing')));
+  }
+
   function switchCase(next,options={}){
     if(!next||next.slug===active.slug){closeSwitcher();return}
     closeSwitcher();
-    clearTimeout(transitionTimer);
+    caseTransitionController?.abort();
     document.body.classList.add('case-changing');
 
-    const apply=()=>{
-      active=next;
-      if(options.updateUrl!==false) updatePinnedUrl(next);
-      renderCase();
-      window.scrollTo({top:0,left:0,behavior:'auto'});
-      requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.remove('case-changing')));
-    };
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      applyCaseSwitch(next,options);
+      return;
+    }
 
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) apply();
-    else transitionTimer=setTimeout(apply,100);
+    const main=document.querySelector('main');
+    caseTransitionController=new AbortController();
+    const controller=caseTransitionController;
+    main.addEventListener('transitionend',event=>{
+      if(event.target!==main||event.propertyName!=='opacity') return;
+      controller.abort();
+      if(caseTransitionController===controller) caseTransitionController=null;
+      applyCaseSwitch(next,options);
+    },{signal:controller.signal});
   }
 
   function randomOtherCase(){
@@ -229,9 +307,12 @@
   async function sharePage(){
     const data={title:active.meta.ogTitle,text:active.shareText,url:shareUrl()};
     try{
-      if(navigator.share){await navigator.share(data)}
-      else{await navigator.clipboard.writeText(data.url);alert('这个 CASE 的链接已复制')}
-    }catch(e){}
+      if(navigator.share) await navigator.share(data);
+      else{
+        await navigator.clipboard.writeText(data.url);
+        alert('这个 CASE 的链接已复制');
+      }
+    }catch(error){}
   }
 
   byId('caseSwitcherTrigger').addEventListener('click',event=>{
@@ -276,7 +357,7 @@
       await navigator.clipboard.writeText(text);
       this.textContent='已复制';
       setTimeout(()=>this.textContent='复制',1400);
-    }catch(e){window.prompt('复制以下内容：',text)}
+    }catch(error){window.prompt('复制以下内容：',text)}
   });
 
   renderCase();

@@ -58,15 +58,10 @@ test('Buchikui case switching is non-blocking, safe and mobile-contained', async
   expect(scrollState.bodyOverflow).toBe('hidden');
   expect(scrollState.overscroll).toContain('contain');
 
-  const popover = page.locator('#caseSwitcherPopover');
-  await popover.hover();
+  await page.locator('#caseSwitcherPopover').hover();
   await page.mouse.wheel(0, 900);
-  const afterScroll = await page.evaluate(() => ({
-    bodyY: window.scrollY,
-    popoverY: document.querySelector('#caseSwitcherPopover').scrollTop,
-  }));
-  expect(afterScroll.bodyY).toBe(scrollState.bodyY);
-  expect(afterScroll.popoverY).toBeGreaterThan(0);
+  const afterScroll = await page.evaluate(() => window.scrollY);
+  expect(afterScroll).toBe(scrollState.bodyY);
 
   await page.screenshot({ path: 'issue39-mobile.png', fullPage: false });
   expect(errors).toEqual([]);

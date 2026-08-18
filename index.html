@@ -4,14 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f3ec">
+  <meta name="application-name" content="不吃亏">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="不吃亏">
   <title>不吃亏｜消费纠纷行动指南</title>
   <meta name="description" content="不吃亏：每次打开随机一份消费纠纷行动指南。先固定事实，再留证据，再选维权路径。">
   <meta property="og:title" content="不吃亏｜消费纠纷行动指南">
   <meta property="og:description" content="把一次吃亏，变成下一次不会再吃的亏。">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="zh_CN">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="case-visual.css">
+  <link rel="stylesheet" href="pwa.css">
   <link rel="stylesheet" href="https://liuh886.github.io/admin/shared/account-shell.css?v=6">
   <link rel="stylesheet" href="account-integration.css">
   <link rel="stylesheet" href="feedback.css">
@@ -41,7 +50,10 @@
           </button>
         </div>
         <div class="case-switcher-list" id="caseSwitcherList"></div>
-        <div class="case-switcher-foot">首页保持随机；分享链接会固定当前 CASE。</div>
+        <div class="case-switcher-foot">
+          <span>首页保持随机；分享链接会固定当前 CASE。</span>
+          <button class="case-install" type="button" data-install-app hidden>安装到设备</button>
+        </div>
       </div>
     </div>
 
@@ -53,6 +65,7 @@
     </nav>
     <div class="top-actions">
       <div class="account-slot" data-account-slot aria-label="账户"></div>
+      <button class="btn btn-quiet pwa-install-action" type="button" data-install-app hidden>安装</button>
       <button class="btn btn-quiet" data-print>打印</button>
       <button class="btn btn-primary" data-share>分享 CASE</button>
     </div>
@@ -159,6 +172,31 @@
   </div>
 </footer>
 
+<dialog class="pwa-dialog" id="pwaInstallDialog" aria-labelledby="pwaInstallTitle">
+  <div class="pwa-dialog-inner">
+    <button class="pwa-dialog-close" type="button" data-pwa-dialog-close aria-label="关闭安装说明">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
+    <h2 id="pwaInstallTitle">把“不吃亏”放到主屏幕。</h2>
+    <p>安装后会以独立应用窗口打开，已经缓存的案例可以在离线时继续阅读。</p>
+    <ol>
+      <li>打开浏览器的分享菜单。</li>
+      <li>选择“添加到主屏幕”。</li>
+      <li>确认名称后完成添加。</li>
+    </ol>
+    <p class="pwa-dialog-note">案例正文、证据清单和模板支持离线阅读；登录、反馈和外部官方链接仍需要联网。</p>
+    <button class="btn btn-primary" type="button" data-pwa-dialog-close>知道了</button>
+  </div>
+</dialog>
+
+<div class="pwa-toast" id="pwaToast" role="status" aria-live="polite" hidden>
+  <div>
+    <strong id="pwaToastTitle"></strong>
+    <span id="pwaToastText"></span>
+  </div>
+  <button id="pwaToastAction" type="button" hidden></button>
+</div>
+
 <div class="mobile-bar">
   <a class="btn" id="mobilePrimaryAction" href="#scenarioPicker" aria-label="跳到问题场景">找到我的问题</a>
   <button class="btn btn-mobile-primary" data-share>分享 CASE</button>
@@ -176,5 +214,6 @@
 <script defer src="https://liuh886.github.io/admin/shared/account-shell.js?v=7"></script>
 <script defer src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 <script defer src="feedback.js"></script>
+<script defer src="pwa.js"></script>
 </body>
 </html>

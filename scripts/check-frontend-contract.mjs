@@ -1,10 +1,12 @@
 import { readFile } from 'node:fs/promises';
 
-const [html, app, styles, pwa, serviceWorker, manifestRaw] = await Promise.all([
+const [html, app, styles, pwa, library, libraryStyles, serviceWorker, manifestRaw] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
   readFile(new URL('../pwa.js', import.meta.url), 'utf8'),
+  readFile(new URL('../library.js', import.meta.url), 'utf8'),
+  readFile(new URL('../library.css', import.meta.url), 'utf8'),
   readFile(new URL('../sw.js', import.meta.url), 'utf8'),
   readFile(new URL('../manifest.webmanifest', import.meta.url), 'utf8'),
 ]);
@@ -46,6 +48,10 @@ if (!styles.includes('body.case-switcher-open{overflow:hidden}')) fail('Mobile c
 
 if (!html.includes('rel="manifest" href="manifest.webmanifest"')) fail('PWA manifest link is missing');
 if (!html.includes('rel="apple-touch-icon"')) fail('Apple touch icon is missing');
+if (!html.includes('href="library.css"')) fail('Personal library styles are missing');
+if (!html.includes('id="libraryDialog"')) fail('Personal library dialog is missing');
+if (!html.includes('data-library-open')) fail('Personal library entry point is missing');
+if (!html.includes('src="library.js"')) fail('Personal library client is not loaded');
 if (!html.includes('src="pwa.js"')) fail('PWA client is not loaded');
 
 for (const required of [
@@ -58,9 +64,30 @@ for (const required of [
 }
 
 for (const required of [
-  "const CACHE_NAME='buchikui-pwa-v1';",
+  "const STORAGE_KEY='buchikui-library-v1';",
+  'function recordRecent(item)',
+  'function toggleFavorite(slug)',
+  'function evidenceProgress(item)',
+  '`buchikui-${item.slug}-evidence-v1`',
+  'new MutationObserver(',
+]) {
+  if (!library.includes(required)) fail(`Missing personal library contract: ${required}`);
+}
+
+for (const required of [
+  '.library-dialog',
+  '.library-progress-track',
+  '.mobile-bar{grid-template-columns:1.35fr .78fr .72fr}',
+]) {
+  if (!libraryStyles.includes(required)) fail(`Missing personal library style contract: ${required}`);
+}
+
+for (const required of [
+  "const CACHE_NAME='buchikui-pwa-v2';",
   "'./index.html'",
   "'./cases.js'",
+  "'./library.js'",
+  "'./library.css'",
   "'./pwa.js'",
   "self.skipWaiting()",
   "networkFirst(request,'./index.html')",
@@ -83,4 +110,4 @@ await Promise.all([
   readFile(new URL('../icons/icon-maskable-512.png', import.meta.url)),
 ]);
 
-console.log(`Frontend contract passed for ${localScripts.length} deferred local scripts with installable PWA shell.`);
+console.log(`Frontend contract passed for ${localScripts.length} deferred local scripts with installable PWA shell and local personal library.`);

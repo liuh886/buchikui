@@ -1,13 +1,9 @@
-const CACHE_NAME='buchikui-pwa-v2';
+const CACHE_NAME='buchikui-pwa-v3';
 const CORE_ASSETS=[
   './',
   './index.html',
   './styles.css',
-  './case-visual.css',
-  './account-integration.css',
   './feedback.css',
-  './pwa.css',
-  './library.css',
   './cases.js',
   './compact-cases.js',
   './mobile-plan-case.js',
@@ -15,8 +11,6 @@ const CORE_ASSETS=[
   './investment-advisor-case.js',
   './bank-wealth-case.js',
   './app.js',
-  './library.js',
-  './case-visual.js',
   './membership-config.js',
   './feedback.js',
   './pwa.js',
@@ -28,7 +22,11 @@ const CORE_ASSETS=[
 ];
 
 self.addEventListener('install',event=>{
-  event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(CORE_ASSETS)));
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache=>cache.addAll(CORE_ASSETS))
+      .then(()=>self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate',event=>{
@@ -37,10 +35,6 @@ self.addEventListener('activate',event=>{
       .then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key))))
       .then(()=>self.clients.claim())
   );
-});
-
-self.addEventListener('message',event=>{
-  if(event.data?.type==='SKIP_WAITING') self.skipWaiting();
 });
 
 async function networkFirst(request,fallbackUrl=''){

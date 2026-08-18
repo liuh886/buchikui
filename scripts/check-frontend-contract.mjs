@@ -1,14 +1,13 @@
 import { readFile } from 'node:fs/promises';
 
-const [html, app, styles, pwa, library, libraryStyles, serviceWorker, manifestRaw] = await Promise.all([
+const [html, app, styles, pwa, serviceWorker, manifestRaw, investmentCase] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
   readFile(new URL('../pwa.js', import.meta.url), 'utf8'),
-  readFile(new URL('../library.js', import.meta.url), 'utf8'),
-  readFile(new URL('../library.css', import.meta.url), 'utf8'),
   readFile(new URL('../sw.js', import.meta.url), 'utf8'),
   readFile(new URL('../manifest.webmanifest', import.meta.url), 'utf8'),
+  readFile(new URL('../investment-advisor-case.js', import.meta.url), 'utf8'),
 ]);
 
 const fail = (message) => {
@@ -48,52 +47,56 @@ if (!styles.includes('body.case-switcher-open{overflow:hidden}')) fail('Mobile c
 
 if (!html.includes('rel="manifest" href="manifest.webmanifest"')) fail('PWA manifest link is missing');
 if (!html.includes('rel="apple-touch-icon"')) fail('Apple touch icon is missing');
-if (!html.includes('href="library.css"')) fail('Personal library styles are missing');
-if (!html.includes('id="libraryDialog"')) fail('Personal library dialog is missing');
-if (!html.includes('data-library-open')) fail('Personal library entry point is missing');
-if (!html.includes('src="library.js"')) fail('Personal library client is not loaded');
-if (!html.includes('src="pwa.js"')) fail('PWA client is not loaded');
+if (!html.includes('src="pwa.js"')) fail('PWA registration client is not loaded');
+if (!html.includes('data-share')) fail('Share action is missing');
+if (!html.includes('data-print')) fail('Evidence print action is missing');
 
-for (const required of [
-  "navigator.serviceWorker.register('./sw.js')",
-  "window.addEventListener('beforeinstallprompt'",
-  'registration.waiting',
-  "waiting.postMessage({type:'SKIP_WAITING'})",
+for (const retired of [
+  'data-install-app',
+  'id="pwaInstallDialog"',
+  'id="pwaToast"',
+  'data-library-open',
+  'id="libraryDialog"',
+  'data-account-slot',
+  'src="library.js"',
+  'src="case-visual.js"',
+  'href="library.css"',
+  'href="case-visual.css"',
+  'href="pwa.css"',
+  'href="account-integration.css"',
 ]) {
-  if (!pwa.includes(required)) fail(`Missing PWA client contract: ${required}`);
+  if (html.includes(retired)) fail(`Retired reader chrome returned: ${retired}`);
+}
+
+if (!pwa.includes("navigator.serviceWorker.register('./sw.js')")) fail('PWA service worker registration is missing');
+if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.includes('SKIP_WAITING')) {
+  fail('PWA client must stay infrastructure-only');
 }
 
 for (const required of [
-  "const STORAGE_KEY='buchikui-library-v1';",
-  'function recordRecent(item)',
-  'function toggleFavorite(slug)',
-  'function evidenceProgress(item)',
-  '`buchikui-${item.slug}-evidence-v1`',
-  'new MutationObserver(',
-]) {
-  if (!library.includes(required)) fail(`Missing personal library contract: ${required}`);
-}
-
-for (const required of [
-  '.library-dialog',
-  '.library-progress-track',
-  '.mobile-bar{grid-template-columns:1.35fr .78fr .72fr}',
-]) {
-  if (!libraryStyles.includes(required)) fail(`Missing personal library style contract: ${required}`);
-}
-
-for (const required of [
-  "const CACHE_NAME='buchikui-pwa-v2';",
+  "const CACHE_NAME='buchikui-pwa-v3';",
   "'./index.html'",
   "'./cases.js'",
-  "'./library.js'",
-  "'./library.css'",
   "'./pwa.js'",
-  "self.skipWaiting()",
+  'self.skipWaiting()',
   "networkFirst(request,'./index.html')",
 ]) {
   if (!serviceWorker.includes(required)) fail(`Missing service worker contract: ${required}`);
 }
+
+for (const retired of [
+  "'./library.js'",
+  "'./library.css'",
+  "'./case-visual.js'",
+  "'./case-visual.css'",
+  "'./pwa.css'",
+  "'./account-integration.css'",
+]) {
+  if (serviceWorker.includes(retired)) fail(`Retired offline asset returned: ${retired}`);
+}
+
+if (investmentCase.includes('costModel:')) fail('Case-specific cost-model renderer contract must not return');
+if (!investmentCase.includes('1 万元持有 10 年后投顾约为 1.81 万元')) fail('Compact advisor cost comparison is missing');
 
 const manifest = JSON.parse(manifestRaw);
 if (manifest.display !== 'standalone') fail('PWA manifest must use standalone display mode');
@@ -110,4 +113,4 @@ await Promise.all([
   readFile(new URL('../icons/icon-maskable-512.png', import.meta.url)),
 ]);
 
-console.log(`Frontend contract passed for ${localScripts.length} deferred local scripts with installable PWA shell and local personal library.`);
+console.log(`Frontend contract passed for ${localScripts.length} deferred local scripts with a minimal reader surface and infrastructure-only PWA.`);

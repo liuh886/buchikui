@@ -1,4 +1,4 @@
-const CACHE_NAME='buchikui-pwa-v1';
+const CACHE_NAME='buchikui-pwa-v2';
 const CORE_ASSETS=[
   './',
   './index.html',
@@ -7,6 +7,7 @@ const CORE_ASSETS=[
   './account-integration.css',
   './feedback.css',
   './pwa.css',
+  './library.css',
   './cases.js',
   './compact-cases.js',
   './mobile-plan-case.js',
@@ -14,6 +15,7 @@ const CORE_ASSETS=[
   './investment-advisor-case.js',
   './bank-wealth-case.js',
   './app.js',
+  './library.js',
   './case-visual.js',
   './membership-config.js',
   './feedback.js',

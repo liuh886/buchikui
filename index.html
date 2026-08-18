@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="case-visual.css">
   <link rel="stylesheet" href="pwa.css">
+  <link rel="stylesheet" href="library.css">
   <link rel="stylesheet" href="https://liuh886.github.io/admin/shared/account-shell.css?v=6">
   <link rel="stylesheet" href="account-integration.css">
   <link rel="stylesheet" href="feedback.css">
@@ -66,6 +67,7 @@
     <div class="top-actions">
       <div class="account-slot" data-account-slot aria-label="账户"></div>
       <button class="btn btn-quiet pwa-install-action" type="button" data-install-app hidden>安装</button>
+      <button class="btn btn-quiet" type="button" data-library-open>我的</button>
       <button class="btn btn-quiet" data-print>打印</button>
       <button class="btn btn-primary" data-share>分享 CASE</button>
     </div>
@@ -172,6 +174,54 @@
   </div>
 </footer>
 
+<dialog class="library-dialog" id="libraryDialog" aria-labelledby="libraryTitle">
+  <div class="library-sheet">
+    <div class="library-head">
+      <div>
+        <span class="library-kicker">我的不吃亏</span>
+        <h2 id="libraryTitle">把正在处理的事，留在这里。</h2>
+        <p>收藏、最近阅读和证据进度只保存在这台设备；不要求登录，离线也能查看。</p>
+      </div>
+      <button class="library-close" type="button" data-library-close aria-label="关闭我的不吃亏">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="library-current">
+      <div class="library-current-copy">
+        <span class="library-current-id" id="libraryCurrentId">CASE</span>
+        <strong class="library-current-name" id="libraryCurrentName">当前案例</strong>
+      </div>
+      <button class="btn" id="libraryFavoriteCurrent" type="button" data-library-favorite="" aria-pressed="false">收藏当前 CASE</button>
+    </div>
+
+    <div class="library-stats" aria-label="我的不吃亏摘要">
+      <div class="library-stat"><strong id="libraryFavoriteCount">0</strong><span>收藏</span></div>
+      <div class="library-stat"><strong id="libraryRecentCount">0</strong><span>最近阅读</span></div>
+      <div class="library-stat"><strong id="libraryEvidenceCount">0/0</strong><span>证据已保存</span></div>
+    </div>
+
+    <div class="library-body">
+      <section class="library-section" aria-labelledby="libraryFavoritesTitle">
+        <div class="library-section-head"><h3 id="libraryFavoritesTitle">收藏</h3><span>需要反复核对的 CASE</span></div>
+        <div class="library-list" id="libraryFavorites"></div>
+      </section>
+
+      <section class="library-section" aria-labelledby="libraryRecentTitle">
+        <div class="library-section-head"><h3 id="libraryRecentTitle">最近阅读</h3><span>最多保留 6 个</span></div>
+        <div class="library-list" id="libraryRecent"></div>
+      </section>
+
+      <section class="library-section" aria-labelledby="libraryEvidenceTitle">
+        <div class="library-section-head"><h3 id="libraryEvidenceTitle">证据进度</h3><span>沿用每个 CASE 的原清单</span></div>
+        <div class="library-list" id="libraryEvidence"></div>
+      </section>
+
+      <p class="library-privacy">这些记录只用于当前设备上的阅读与办事进度，不上传 Supabase，也不创建新的内容权威。清除浏览器站点数据会同时清除这些本地记录。</p>
+    </div>
+  </div>
+</dialog>
+
 <dialog class="pwa-dialog" id="pwaInstallDialog" aria-labelledby="pwaInstallTitle">
   <div class="pwa-dialog-inner">
     <button class="pwa-dialog-close" type="button" data-pwa-dialog-close aria-label="关闭安装说明">
@@ -200,6 +250,7 @@
 <div class="mobile-bar">
   <a class="btn" id="mobilePrimaryAction" href="#scenarioPicker" aria-label="跳到问题场景">找到我的问题</a>
   <button class="btn btn-mobile-primary" data-share>分享 CASE</button>
+  <button class="btn" type="button" data-library-open>我的</button>
 </div>
 
 <script defer src="cases.js"></script>
@@ -209,6 +260,7 @@
 <script defer src="investment-advisor-case.js"></script>
 <script defer src="bank-wealth-case.js"></script>
 <script defer src="app.js"></script>
+<script defer src="library.js"></script>
 <script defer src="case-visual.js"></script>
 <script defer src="membership-config.js"></script>
 <script defer src="https://liuh886.github.io/admin/shared/account-shell.js?v=7"></script>

@@ -304,15 +304,43 @@
     return url.toString();
   }
 
+  function createShareMeritToast(){
+    const toast=document.createElement('div');
+    toast.className='consumer-feedback-toast share-merit-toast';
+    toast.setAttribute('role','status');
+    toast.setAttribute('aria-live','polite');
+    toast.hidden=true;
+    document.body.appendChild(toast);
+    return toast;
+  }
+
+  const shareMeritToast=createShareMeritToast();
+  let shareMeritTimer=null;
+
+  function showShareMerit(){
+    clearTimeout(shareMeritTimer);
+    shareMeritToast.textContent='功德 +1';
+    shareMeritToast.hidden=false;
+    requestAnimationFrame(()=>shareMeritToast.classList.add('is-visible'));
+    shareMeritTimer=setTimeout(()=>{
+      shareMeritToast.classList.remove('is-visible');
+      setTimeout(()=>{shareMeritToast.hidden=true},180);
+    },1800);
+  }
+
   async function sharePage(){
     const data={title:active.meta.ogTitle,text:active.shareText,url:shareUrl()};
     try{
-      if(navigator.share) await navigator.share(data);
-      else{
-        await navigator.clipboard.writeText(data.url);
-        alert('这个 CASE 的链接已复制');
+      if(navigator.share){
+        await navigator.share(data);
+        showShareMerit();
+        return;
       }
-    }catch(error){}
+      await navigator.clipboard.writeText(data.url);
+      showShareMerit();
+    }catch(error){
+      if(error?.name!=='AbortError'&&!navigator.share) window.prompt('复制这个 CASE 的链接：',data.url);
+    }
   }
 
   byId('caseSwitcherTrigger').addEventListener('click',event=>{

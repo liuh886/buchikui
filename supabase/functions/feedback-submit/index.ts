@@ -1,8 +1,6 @@
 import { createClient } from "npm:@supabase/supabase-js@2.111.0";
 
-const ALLOWED_ORIGINS = new Set(["https://liuh886.github.io"]);
-const EXPECTED_HOSTNAME = "liuh886.github.io";
-const TURNSTILE_ACTION = "buchikui_feedback";
+const ALLOWED_ORIGIN = "https://liuh886.github.io";
 const FEEDBACK_TYPES = new Set(["experience", "correction", "process", "other"]);
 const CASE_SLUG = /^[a-z0-9][a-z0-9-]{0,79}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
@@ -21,7 +19,7 @@ function namedKey(name: string): string {
 function corsHeaders(req: Request): Record<string, string> {
   const origin = req.headers.get("origin") ?? "";
   return {
-    "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "https://liuh886.github.io",
+    "Access-Control-Allow-Origin": origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN,
     "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Vary": "Origin",
@@ -54,29 +52,10 @@ function integer(value: unknown, label: string): number {
 function pageUrl(value: unknown): string {
   const raw = text(value, 1200, "page URL");
   const url = new URL(raw);
-  if (url.origin !== "https://liuh886.github.io" || !url.pathname.startsWith("/buchikui/")) {
+  if (url.origin !== ALLOWED_ORIGIN || !url.pathname.startsWith("/buchikui/")) {
     throw new Error("Invalid page URL.");
   }
   return url.toString();
-}
-
-async function verifyTurnstile(token: string, secret: string, remoteIp: string | null) {
-  const body = new URLSearchParams({ secret, response: token });
-  if (remoteIp) body.set("remoteip", remoteIp);
-
-  const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body,
-    signal: AbortSignal.timeout(6000),
-  });
-  if (!response.ok) throw new Error("Turnstile verification is unavailable.");
-  return await response.json() as {
-    success?: boolean;
-    hostname?: string;
-    action?: string;
-    "error-codes"?: string[];
-  };
 }
 
 Deno.serve(async (req: Request) => {
@@ -84,7 +63,7 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json(req, { error: "Method not allowed." }, 405);
 
   const origin = req.headers.get("origin") ?? "";
-  if (!ALLOWED_ORIGINS.has(origin)) return json(req, { error: "Origin is not allowed." }, 403);
+  if (origin !== ALLOWED_ORIGIN) return json(req, { error: "Origin is not allowed." }, 403);
 
   const length = Number(req.headers.get("content-length") ?? 0);
   if (Number.isFinite(length) && length > 24_000) return json(req, { error: "Payload is too large." }, 413);
@@ -112,25 +91,11 @@ Deno.serve(async (req: Request) => {
     return json(req, { error: "Invalid JSON payload." }, 400);
   }
 
-  const turnstileSiteKey = Deno.env.get("TURNSTILE_SITE_KEY")?.trim() ?? "";
-  const turnstileSecretKey = Deno.env.get("TURNSTILE_SECRET_KEY")?.trim() ?? "";
-  const action = String(body.action ?? "");
-
-  if (action === "config") {
-    return json(req, {
-      enabled: Boolean(turnstileSiteKey && turnstileSecretKey),
-      site_key: turnstileSiteKey || null,
-      action: TURNSTILE_ACTION,
-    });
-  }
-
-  if (action !== "submit") return json(req, { error: "Unknown action." }, 400);
-  if (!turnstileSiteKey || !turnstileSecretKey) {
-    return json(req, { error: "Human verification is not configured." }, 503);
+  if (String(body.action ?? "") !== "submit") {
+    return json(req, { error: "Unknown action." }, 400);
   }
 
   try {
-    const turnstileToken = text(body.turnstile_token, 2048, "Turnstile token");
     const message = text(body.message, 4000, "message");
     const feedbackType = text(body.feedback_type, 24, "feedback type");
     if (!FEEDBACK_TYPES.has(feedbackType)) throw new Error("Invalid feedback type.");
@@ -152,18 +117,6 @@ Deno.serve(async (req: Request) => {
     const blockHash = text(body.block_text_sha256, 64, "block hash").toLowerCase();
     if (!SHA256.test(blockHash)) throw new Error("Invalid block hash.");
     const canonicalPageUrl = pageUrl(body.page_url);
-
-    const forwardedFor = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
-    const verification = await verifyTurnstile(turnstileToken, turnstileSecretKey, forwardedFor);
-    if (!verification.success || verification.action !== TURNSTILE_ACTION || verification.hostname !== EXPECTED_HOSTNAME) {
-      console.warn("feedback-submit turnstile rejected", {
-        user_id: authData.user.id,
-        action: verification.action,
-        hostname: verification.hostname,
-        errors: verification["error-codes"] ?? [],
-      });
-      return json(req, { error: "Human verification failed.", code: "turnstile_failed" }, 403);
-    }
 
     const admin = createClient(supabaseUrl, secretKey, {
       auth: { persistSession: false, autoRefreshToken: false },

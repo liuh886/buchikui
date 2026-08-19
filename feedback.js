@@ -11,8 +11,6 @@
     composerOpen: false,
     submitting: false,
     selectionTimer: null,
-    turnstileToken: '',
-    turnstileWidgetId: null,
   };
 
   const normalizeText = (value) => String(value ?? '')
@@ -331,14 +329,10 @@
             <textarea id="consumerFeedbackMessage" maxlength="4000" rows="7" required placeholder="尽量写清：发生了什么、对方怎么处理、你做了什么、结果怎样。"></textarea>
           </label>
           <p class="consumer-feedback-privacy">请不要提交不必要的身份证号、手机号、订单号等个人信息。</p>
-          <div class="consumer-feedback-verification">
-            <div class="consumer-feedback-turnstile" id="consumerFeedbackTurnstile" aria-label="Cloudflare 人机验证"></div>
-            <p id="consumerFeedbackVerificationStatus" role="status" aria-live="polite">正在加载人机验证…</p>
-          </div>
           <p class="consumer-feedback-status" id="consumerFeedbackStatus" role="status" aria-live="polite"></p>
           <div class="consumer-feedback-actions">
             <button type="button" class="btn btn-quiet" data-feedback-close>取消</button>
-            <button type="submit" class="btn btn-primary" id="consumerFeedbackSubmit" disabled>验证后提交</button>
+            <button type="submit" class="btn btn-primary" id="consumerFeedbackSubmit">提交给编辑</button>
           </div>
         </form>
       </section>`;
@@ -353,75 +347,8 @@
   function syncSubmitState() {
     const submit = composer.querySelector('#consumerFeedbackSubmit');
     if (!submit) return;
-    submit.disabled = state.submitting || !state.turnstileToken;
-    submit.textContent = state.submitting
-      ? '提交中…'
-      : state.turnstileToken
-        ? '提交给编辑'
-        : '验证后提交';
-  }
-
-  function resetTurnstile(message = '完成人机验证后才能提交。') {
-    state.turnstileToken = '';
-    syncSubmitState();
-    const status = composer.querySelector('#consumerFeedbackVerificationStatus');
-    if (status) status.textContent = message;
-    if (state.turnstileWidgetId !== null && window.turnstile?.reset) {
-      window.turnstile.reset(state.turnstileWidgetId);
-    }
-  }
-
-  function removeTurnstile() {
-    state.turnstileToken = '';
-    if (state.turnstileWidgetId !== null && window.turnstile?.remove) {
-      window.turnstile.remove(state.turnstileWidgetId);
-    }
-    state.turnstileWidgetId = null;
-  }
-
-  async function prepareTurnstile() {
-    const status = composer.querySelector('#consumerFeedbackVerificationStatus');
-    const container = composer.querySelector('#consumerFeedbackTurnstile');
-    state.turnstileToken = '';
-    syncSubmitState();
-    if (status) status.textContent = '正在加载人机验证…';
-    if (container) container.innerHTML = '';
-
-    try {
-      const account = window.HaoAccount;
-      const client = await account?.getClient?.();
-      if (!client) throw new Error('Account client unavailable');
-      const { data, error } = await client.functions.invoke('feedback-submit', {
-        body: { action: 'config' },
-      });
-      if (error || !data?.enabled || !data?.site_key) throw new Error('Turnstile not configured');
-      if (!window.turnstile?.render) throw new Error('Turnstile script unavailable');
-
-      removeTurnstile();
-      state.turnstileWidgetId = window.turnstile.render('#consumerFeedbackTurnstile', {
-        sitekey: data.site_key,
-        action: data.action || 'buchikui_feedback',
-        theme: 'light',
-        size: 'flexible',
-        callback: (token) => {
-          state.turnstileToken = token;
-          if (status) status.textContent = '验证完成，可以提交。';
-          syncSubmitState();
-        },
-        'expired-callback': () => resetTurnstile('验证已过期，请重新完成后再提交。'),
-        'timeout-callback': () => resetTurnstile('验证超时，请重新完成后再提交。'),
-        'error-callback': () => {
-          resetTurnstile('机器人验证失败，请重新验证。');
-          return true;
-        },
-      });
-      if (status) status.textContent = '完成人机验证后才能提交。';
-    } catch (error) {
-      console.warn('Buchikui Turnstile:', error);
-      removeTurnstile();
-      syncSubmitState();
-      if (status) status.textContent = '机器人验证暂不可用，提交已锁定。';
-    }
+    submit.disabled = state.submitting;
+    submit.textContent = state.submitting ? '提交中…' : '提交给编辑';
   }
 
   function openComposer(selection) {
@@ -434,10 +361,8 @@
     composer.querySelector('#consumerFeedbackQuote').textContent = `“${selection.selector.exact}”`;
     composer.querySelector('#consumerFeedbackStatus').textContent = '';
     composer.querySelector('#consumerFeedbackMessage').value = '';
-    removeTurnstile();
     syncSubmitState();
     window.getSelection()?.removeAllRanges();
-    void prepareTurnstile();
     window.setTimeout(() => composer.querySelector('#consumerFeedbackMessage')?.focus(), 0);
   }
 
@@ -445,7 +370,6 @@
     if (state.submitting) return;
     state.composerOpen = false;
     state.selection = null;
-    removeTurnstile();
     composer.hidden = true;
     document.documentElement.classList.remove('consumer-feedback-open');
     if (!keepPending) clearPending();
@@ -459,7 +383,8 @@
 
   async function submitFeedback(event) {
     event.preventDefault();
-    if (state.submitting || !state.selection || !state.turnstileToken) return;
+    if (state.submitting || !state.selection) return;
+
     const account = window.HaoAccount;
     const accountState = account?.getState?.();
     if (!accountState?.user) {
@@ -473,7 +398,6 @@
     if (!message) return;
     const feedbackType = composer.querySelector('input[name="feedbackType"]:checked')?.value || 'experience';
     const status = composer.querySelector('#consumerFeedbackStatus');
-    const turnstileToken = state.turnstileToken;
     state.submitting = true;
     syncSubmitState();
     status.textContent = '正在把这条经验送进编辑收件箱…';
@@ -484,7 +408,6 @@
       const { data, error } = await client.functions.invoke('feedback-submit', {
         body: {
           action: 'submit',
-          turnstile_token: turnstileToken,
           feedback_type: feedbackType,
           message: message.slice(0, 4000),
           page_url: state.selection.page_url,
@@ -506,7 +429,6 @@
 
       clearPending();
       state.submitting = false;
-      state.turnstileToken = '';
       syncSubmitState();
       status.textContent = '已提交。';
       window.setTimeout(() => {
@@ -515,9 +437,9 @@
       }, 360);
     } catch (error) {
       console.warn('Buchikui anchored feedback:', error);
-      status.textContent = '提交失败，请重新验证后再试。';
       state.submitting = false;
-      resetTurnstile('请重新完成人机验证。');
+      syncSubmitState();
+      status.textContent = '提交失败，请稍后再试。';
     }
   }
 

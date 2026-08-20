@@ -26,32 +26,60 @@ for (const match of localScripts) {
 for (const required of [
   'function safeHref(value)',
   'function sanitizeCanonicalHtml(value)',
-  'const href=safeHref(step.href);',
-  'const href=safeHref(source.href);',
   'function renderMeta()',
   'function renderHero()',
+  'function renderEvidence()',
+  'function renderServiceStandard()',
+  'function renderStandardCase()',
   'function renderRoute()',
   'function renderSources()',
+  'const href=safeHref(step.href);',
+  'const href=safeHref(source.href);',
   "main.addEventListener('transitionend'",
   'caseTransitionController?.abort();',
+  "shareMeritToast.textContent='功德 +1';",
 ]) {
   if (!app.includes(required)) fail(`Missing frontend contract: ${required}`);
 }
 
-for (const retired of ['let transitionTimer=', 'setTimeout(apply,100)', "setAttribute('href',step.href)"]) {
+for (const retired of [
+  'let transitionTimer=',
+  'setTimeout(apply,100)',
+  "setAttribute('href',step.href)",
+  "byId('scenarioNav')",
+  "byId('situationList')",
+  "byId('caseStamp')",
+  'item.risk',
+  "byId('routeIntro')",
+  "byId('templateNav')",
+]) {
   if (app.includes(retired)) fail(`Retired frontend path returned: ${retired}`);
 }
 
-if (!styles.includes('overscroll-behavior:contain')) fail('Case switcher must contain overscroll');
-if (!styles.includes('body.case-switcher-open{overflow:hidden}')) fail('Mobile case switcher must lock background scroll');
-
-if (!html.includes('rel="manifest" href="manifest.webmanifest"')) fail('PWA manifest link is missing');
-if (!html.includes('rel="apple-touch-icon"')) fail('Apple touch icon is missing');
-if (!html.includes('src="pwa.js"')) fail('PWA registration client is not loaded');
-if (!html.includes('data-share')) fail('Share action is missing');
-if (!html.includes('data-print')) fail('Evidence print action is missing');
+for (const required of [
+  'rel="manifest" href="manifest.webmanifest"',
+  'rel="apple-touch-icon"',
+  'src="pwa.js"',
+  'data-share',
+  'data-print',
+  'id="caseList"',
+  'id="caseSwitcherId"',
+  '<details class="service-standard-details"',
+  '<details class="template-details"',
+]) {
+  if (!html.includes(required)) fail(`Missing reader surface: ${required}`);
+}
 
 for (const retired of [
+  '<nav',
+  'id="scenarioPicker"',
+  'class="stamp"',
+  'case-switcher-action',
+  'case-switcher-foot',
+  'id="routeKicker"',
+  'id="routeIntro"',
+  'id="scenarioNav"',
+  'id="templateNav"',
   'data-install-app',
   'id="pwaInstallDialog"',
   'id="pwaToast"',
@@ -66,6 +94,19 @@ for (const retired of [
   'href="account-integration.css"',
 ]) {
   if (html.includes(retired)) fail(`Retired reader chrome returned: ${retired}`);
+}
+
+for (const required of [
+  'overscroll-behavior:contain',
+  'body.case-switcher-open{overflow:hidden}',
+  '.service-standard-details',
+  '.template-details',
+  '.case-list',
+]) {
+  if (!styles.includes(required)) fail(`Missing simplified design contract: ${required}`);
+}
+for (const retired of ['.situation{', '.risk{', 'nav{']) {
+  if (styles.includes(retired)) fail(`Retired visual layer returned: ${retired}`);
 }
 
 if (!pwa.includes("navigator.serviceWorker.register('./sw.js')")) fail('PWA service worker registration is missing');
@@ -113,4 +154,4 @@ await Promise.all([
   readFile(new URL('../icons/icon-maskable-512.png', import.meta.url)),
 ]);
 
-console.log(`Frontend contract passed for ${localScripts.length} deferred local scripts with a minimal reader surface and infrastructure-only PWA.`);
+console.log(`Frontend contract passed for ${localScripts.length} deferred local scripts with one simplified reader path and infrastructure-only PWA.`);

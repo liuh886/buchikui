@@ -2,11 +2,12 @@
   const VERIFIED='2026-08-21';
   const updates={
     rental:{
-      kicker:'2026 新规',
+      kicker:'2026 新规 + 最新典型案例',
       title:'平台不能只说“这是商户纠纷”。',
-      text:'自 2026-02-01 起，平台依据自身规则对消费者采取不利处理，应说明事实、理由和依据，并提供便捷申诉；消费者要求人工判定时，不能只交给 AI / 系统自动处理。平台纠纷规则还应依法公平设置举证责任。',
+      text:'自 2026-02-01 起，平台依据自身规则对消费者采取不利处理，应说明事实、理由和依据，并提供便捷申诉；消费者要求人工判定时，不能只交给 AI / 系统自动处理。平台纠纷规则还应依法公平设置举证责任。最高法 2026-08-03 发布的电商平台典型案例进一步提示：平台实际掌握的交易、资金、投诉等数据和控制能力，会影响其是否已经尽到必要的平台责任。',
       action:'遇到扣款、驳回或责任推诿，直接要求：具体规则条款 + 商户提交材料 + 平台审核依据 + 人工复核结果。',
-      source:{title:'【部门规章】《网络交易平台规则监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html'}
+      source:{title:'【部门规章】《网络交易平台规则监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html'},
+      source2:{title:'【最高法典型案例】平台数据优势与必要措施责任',href:'https://www.court.gov.cn/zixun/xiangqing/507691.html'}
     },
     'beauty-hair':{
       kicker:'2025 司法解释',
@@ -55,7 +56,7 @@
       kicker:'CASE 008 · 关键权利',
       title:'免押不是免授权；“技术服务”不是免责。',
       text:'信用免押可能把信用评估、平台规则和持续扣款授权叠在一次点击里。平台自称“技术服务方”或支付机构自称“指令执行方”，都不能当然免除其依法承担的平台规则、用户争议和投诉处理责任。信用卡预授权的相对优势也不是“商户扣不了”，而是争议可以进入发卡行—收单行的调单、核查和举证链路。',
-      action:'选押金方式只问四件事：谁能扣？最多多少？授权何时结束？发生争议后谁必须把证据拿出来？',
+      action:'选押金方式只问四件事：谁能扣？最多多少？授权何时结束？发生争议后谁掌握、谁应提供关键证据？',
       source:{title:'【部门规章】《网络交易平台规则监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html'},
       source2:{title:'【司法解释】银行卡争议交易举证规则',href:'https://www.court.gov.cn/zixun/xiangqing/304771.html'}
     }
@@ -74,6 +75,7 @@
     if(host) return host;
     host=document.createElement('section');
     host.id='rightsPulse';
+    host.className='service-standard-wrap';
     host.setAttribute('aria-label','最近规则变化与当前权利');
     const hero=document.querySelector('.hero');
     if(hero) hero.insertAdjacentElement('afterend',host);

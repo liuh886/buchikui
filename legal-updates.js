@@ -82,6 +82,29 @@
     return host;
   }
 
+  function syncSources(item){
+    const list=document.getElementById('sourceList');
+    if(!list) return;
+    const sources=[item.source,item.source2].filter(Boolean);
+    const existing=new Set([...list.querySelectorAll('a[href]')].map(anchor=>anchor.href));
+    sources.forEach(source=>{
+      let normalized=source.href;
+      try{normalized=new URL(source.href,location.href).href}catch(error){}
+      if(existing.has(normalized)) return;
+      const li=document.createElement('li');
+      const a=document.createElement('a');
+      a.href=source.href;
+      a.target='_blank';
+      a.rel='noopener';
+      a.textContent=source.title;
+      li.append(a,document.createTextNode(` — 当前权利更新依据；法律核验 ${VERIFIED}。`));
+      list.appendChild(li);
+      existing.add(normalized);
+    });
+    const title=document.getElementById('sourcesTitle');
+    if(title&&!title.textContent.includes('权利核验')) title.textContent+=` · 权利核验 ${VERIFIED}`;
+  }
+
   function render(){
     const host=ensureHost();
     const active=getActiveCase();
@@ -93,6 +116,7 @@
     }
     host.hidden=false;
     host.innerHTML=`<div class="wrap"><div class="route-note" role="note"><strong>${esc(item.kicker)} · 权利核验 ${VERIFIED}</strong><br><span class="key">${esc(item.title)}</span> ${esc(item.text)}<br><strong>现在可以这样做：</strong> ${esc(item.action)}<br>${link(item.source)}${item.source2?` · ${link(item.source2)}`:''}</div></div>`;
+    syncSources(item);
   }
 
   window.addEventListener('DOMContentLoaded',()=>{

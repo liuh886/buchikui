@@ -74,7 +74,7 @@
   function renderSwitcher(){
     byId('caseSwitcherId').textContent=`CASE ${active.id}`;
     byId('caseName').textContent=active.name;
-    byId('caseSwitcherTrigger').setAttribute('aria-label',`当前是 CASE ${active.id}：${active.name}。点击切换案例`);
+    byId('caseSwitcherTrigger').setAttribute('aria-label',`${active.name}，点击切换案例`);
     byId('caseSwitcherList').innerHTML=cases.map(item=>{
       const isActive=item.slug===active.slug;
       return `<button class="case-switcher-item${isActive?' active':''}" type="button" data-switch-case="${escapeAttr(item.slug)}"${isActive?' aria-current="true"':''}>
@@ -108,44 +108,35 @@
 
   function setLayoutMode(){
     const compact=active.layout==='compact';
-    const standardOnly=[document.querySelector('.situation'),byId('serviceStandard'),byId('cases'),byId('evidence'),byId('template')];
+    const standardOnly=[byId('serviceStandard'),byId('cases'),byId('evidence'),byId('template')];
     standardOnly.forEach(element=>element.hidden=compact);
 
-    const navLinks=[...document.querySelectorAll('nav a')];
     const mobilePrimary=byId('mobilePrimaryAction');
-    byId('scenarioNav').href=compact?'#route':'#cases';
-    byId('routeNav').textContent=active.route.navLabel||'维权路径';
-    byId('templateNav').textContent=active.template?.navLabel||'沟通模板';
-    navLinks.slice(1).forEach(link=>link.hidden=compact);
-    if(mobilePrimary){
-      mobilePrimary.href=compact?'#route':'#scenarioPicker';
-      mobilePrimary.textContent=compact?'查看处理步骤':'找到我的问题';
-      mobilePrimary.setAttribute('aria-label',compact?'跳到处理步骤':'跳到问题场景');
-    }
+    mobilePrimary.href=compact?'#route':'#cases';
+    mobilePrimary.textContent=compact?'查看处理步骤':'找到我的问题';
+    mobilePrimary.setAttribute('aria-label',compact?'跳到处理步骤':'跳到问题场景');
   }
 
   function renderHero(){
-    byId('caseStamp').textContent=`CASE ${active.id} / ${active.label}`;
     setCanonicalHtml('heroTitle',active.hero.title);
     setCanonicalHtml('heroCopy',active.hero.copy);
     setCanonicalHtml('panicTitle',active.panic.title);
-    byId('panicList').innerHTML=active.panic.items.map(item=>`<li><div><strong>${escapeHtml(item.title)}</strong>${sanitizeCanonicalHtml(item.text)}</div></li>`).join('');
+    byId('panicList').innerHTML=active.panic.items.map(item=>`<li><strong>${escapeHtml(item.title)}</strong></li>`).join('');
   }
 
   function renderEvidence(){
     setCanonicalHtml('evidenceTitle',active.evidence.title);
     setCanonicalHtml('evidenceIntro',active.evidence.intro);
-    byId('evidenceFootnote').textContent=active.evidence.footnote;
 
     const checklist=byId('checklist');
-    const renderCheck=item=>`<label class="check"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.detail)}</small></span><span class="when">${escapeHtml(item.when)}</span></label>`;
+    const renderCheck=item=>`<label class="check"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${escapeHtml(item.title)}</strong>${item.detail?`<small>${escapeHtml(item.detail)}</small>`:''}</span>${item.when?`<span class="when">${escapeHtml(item.when)}</span>`:''}</label>`;
 
     if(active.evidence.groups&&active.evidence.groups.length){
       checklist.classList.add('grouped');
       checklist.innerHTML=active.evidence.groups.map((group,index)=>{
         const items=active.evidence.items.filter(item=>item.group===group.key);
         return `<section class="evidence-group" role="group" aria-labelledby="evidence-group-${index}">
-          <div class="evidence-group-head"><strong id="evidence-group-${index}">${escapeHtml(group.title)}</strong><span>${escapeHtml(group.note)}</span></div>
+          <div class="evidence-group-head"><strong id="evidence-group-${index}">${escapeHtml(group.title)}</strong></div>
           <div class="evidence-group-list">${items.map(renderCheck).join('')}</div>
         </section>`;
       }).join('');
@@ -159,6 +150,7 @@
 
   function renderServiceStandard(){
     const section=byId('serviceStandard');
+    const details=byId('serviceStandardDetails');
     const standard=active.serviceStandard;
     if(!standard){
       section.hidden=true;
@@ -166,20 +158,19 @@
     }
 
     section.hidden=false;
-    byId('serviceStandardKicker').textContent=standard.kicker||'正常服务标准';
+    details.open=false;
+    byId('serviceStandardKicker').textContent=standard.kicker||'正常服务基线';
     setCanonicalHtml('serviceStandardTitle',standard.title);
+    byId('serviceStandardCount').textContent=`${standard.items.length} 项 · 展开查看`;
     setCanonicalHtml('serviceStandardIntro',standard.intro);
-    byId('serviceStandardGrid').innerHTML=standard.items.map((item,index)=>`<article class="route-step"><span class="n">STANDARD ${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(item.title)}</h3><p>${sanitizeCanonicalHtml(item.text)}</p></article>`).join('');
-    setCanonicalHtml('serviceStandardNote',standard.note||'');
+    byId('serviceStandardGrid').innerHTML=standard.items.map((item,index)=>`<article class="standard-step"><span class="n">${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(item.title)}</h3><p>${sanitizeCanonicalHtml(item.text)}</p></article>`).join('');
+    const note=byId('serviceStandardNote');
+    note.hidden=!standard.note;
+    if(standard.note) setCanonicalHtml('serviceStandardNote',standard.note);
   }
 
   function renderStandardCase(){
-    const situation=document.querySelector('.situation');
-    situation.classList.toggle('dense',active.scenarios.length>6);
-    byId('scenarioNav').textContent=`${active.scenarios.length} 个场景`;
-    byId('situationList').innerHTML='<span class="situation-label">我遇到的是：</span>'+active.scenarios.map((item,index)=>`<a href="#case-${index+1}">${escapeHtml(item.short)}</a>`).join('');
     renderServiceStandard();
-    byId('casesKicker').textContent=active.section.kicker;
     setCanonicalHtml('casesTitle',active.section.title);
     setCanonicalHtml('casesIntro',active.section.intro);
     byId('caseList').innerHTML=active.scenarios.map((item,index)=>{
@@ -189,11 +180,12 @@
         if(block.kind==='action') classes.push('action');
         return `<div class="${classes.join(' ')}"><b>${escapeHtml(block.label)}</b>${sanitizeCanonicalHtml(block.html)}</div>`;
       }).join('');
-      return `<article class="case" id="case-${index+1}"><div class="case-no">${String(index+1).padStart(2,'0')}</div><div class="case-title"><span class="risk">${escapeHtml(item.risk)}</span><h3>${escapeHtml(item.title)}</h3></div><div class="case-body">${blocks}</div></article>`;
+      return `<article class="case" id="case-${index+1}"><div class="case-no">${String(index+1).padStart(2,'0')}</div><div class="case-title"><h3>${escapeHtml(item.title)}</h3></div><div class="case-body">${blocks}</div></article>`;
     }).join('');
 
     renderEvidence();
 
+    byId('templateDetails').open=false;
     byId('templateCard').dataset.label=active.template.label||'书面沟通模板';
     setCanonicalHtml('templateTitle',active.template.title);
     setCanonicalHtml('templateIntro',active.template.intro);
@@ -201,15 +193,15 @@
   }
 
   function renderRoute(){
-    byId('routeKicker').textContent=active.route.kicker||'维权路径';
-    setCanonicalHtml('routeTitle',active.route.title||'从能解决问题的<br>地方开始。');
-    setCanonicalHtml('routeIntro',active.route.intro);
+    setCanonicalHtml('routeTitle',active.route.title||'处理路径');
     byId('routeGrid').innerHTML=active.route.steps.map((step,index)=>{
       const href=safeHref(step.href);
       const external=/^https?:\/\//i.test(href);
-      return `<article class="route-step"><span class="n">STEP ${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(step.title)}</h3><p>${sanitizeCanonicalHtml(step.text)}</p><a href="${escapeAttr(href)}"${external?' target="_blank" rel="noopener"':''}>${escapeHtml(step.link)}</a></article>`;
+      return `<article class="route-step"><span class="n">${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(step.title)}</h3><p>${sanitizeCanonicalHtml(step.text)}</p><a href="${escapeAttr(href)}"${external?' target="_blank" rel="noopener"':''}>${escapeHtml(step.link)}</a></article>`;
     }).join('');
-    setCanonicalHtml('routeNote',active.route.note);
+    const note=byId('routeNote');
+    note.hidden=!active.route.note;
+    if(active.route.note) setCanonicalHtml('routeNote',active.route.note);
   }
 
   function renderSources(){
@@ -228,8 +220,7 @@
     setLayoutMode();
     renderHero();
 
-    if(active.layout==='compact') byId('scenarioNav').textContent='处理步骤';
-    else renderStandardCase();
+    if(active.layout!=='compact') renderStandardCase();
 
     renderRoute();
     renderSources();
@@ -364,16 +355,6 @@
     const slug=new URLSearchParams(location.search).get('case');
     const next=cases.find(item=>item.slug===slug);
     if(next&&next.slug!==active.slug) switchCase(next,{updateUrl:false});
-  });
-
-  byId('mobilePrimaryAction').addEventListener('click',event=>{
-    if(active.layout==='compact') return;
-    event.preventDefault();
-    const target=byId('scenarioPicker');
-    const offset=window.innerWidth<=860?70:88;
-    const top=target.getBoundingClientRect().top+window.scrollY-offset;
-    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({top,behavior:reduced?'auto':'smooth'});
   });
 
   document.querySelectorAll('[data-print]').forEach(button=>button.addEventListener('click',()=>window.print()));

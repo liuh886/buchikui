@@ -29,34 +29,23 @@
 
     <div class="case-switcher" id="caseSwitcher">
       <button class="case-switcher-trigger" id="caseSwitcherTrigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="caseSwitcherPopover">
-        <span class="case-switcher-id" id="caseSwitcherId">CASE</span>
+        <span class="case-switcher-state" id="caseSwitcherId" aria-hidden="true"></span>
         <span class="case-switcher-current" id="caseName">正在载入</span>
-        <span class="case-switcher-action">切换</span>
         <svg class="case-switcher-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
       </button>
 
       <div class="case-switcher-popover" id="caseSwitcherPopover" role="dialog" aria-label="切换案例" hidden>
         <div class="case-switcher-head">
-          <div>
-            <strong>案例目录</strong>
-            <span>找到与你当前处境最接近的一项</span>
-          </div>
+          <strong>切换案例</strong>
           <button class="case-random" id="randomCaseButton" type="button" aria-label="随机切换到另一个案例">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4 9 9"/></svg>
             随机一个
           </button>
         </div>
         <div class="case-switcher-list" id="caseSwitcherList"></div>
-        <div class="case-switcher-foot">首页保持随机；分享链接会固定当前 CASE。</div>
       </div>
     </div>
 
-    <nav aria-label="页面导航">
-      <a href="#cases" id="scenarioNav">典型场景</a>
-      <a href="#evidence">证据清单</a>
-      <a href="#route" id="routeNav">维权路径</a>
-      <a href="#template" id="templateNav">沟通模板</a>
-    </nav>
     <div class="top-actions">
       <button class="btn btn-primary" data-share>分享 CASE</button>
     </div>
@@ -68,36 +57,37 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-main">
-        <div class="stamp" id="caseStamp">CASE</div>
         <h1 id="heroTitle">正在打开一份<br>不吃亏指南。</h1>
         <p class="hero-copy" id="heroCopy">先固定事实，再留证据，再选路径。</p>
       </div>
       <aside class="panic-card" aria-label="纠纷发生后的第一步">
-        <h2 id="panicTitle">纠纷已经发生？<br>现在先做 4 件事。</h2>
+        <h2 id="panicTitle">事情已经发生？<br>现在先做这些。</h2>
         <ol class="panic-list" id="panicList"></ol>
       </aside>
     </div>
   </section>
 
-  <section class="section" id="serviceStandard" hidden>
+  <section class="service-standard-wrap" id="serviceStandard" hidden>
     <div class="wrap">
-      <div class="section-head">
-        <div><span class="kicker" id="serviceStandardKicker"></span><h2 id="serviceStandardTitle"></h2></div>
-        <p id="serviceStandardIntro"></p>
-      </div>
-      <div class="route-grid" id="serviceStandardGrid"></div>
-      <div class="route-note" id="serviceStandardNote"></div>
+      <details class="service-standard-details" id="serviceStandardDetails">
+        <summary>
+          <span class="kicker" id="serviceStandardKicker"></span>
+          <strong id="serviceStandardTitle"></strong>
+          <span class="disclosure-meta" id="serviceStandardCount"></span>
+        </summary>
+        <div class="service-standard-body">
+          <p class="service-standard-intro" id="serviceStandardIntro"></p>
+          <div class="standard-grid" id="serviceStandardGrid"></div>
+          <div class="route-note" id="serviceStandardNote"></div>
+        </div>
+      </details>
     </div>
   </section>
-
-  <div class="situation" id="scenarioPicker" aria-label="按问题快速跳转">
-    <div class="wrap" id="situationList"><span class="situation-label">我遇到的是：</span></div>
-  </div>
 
   <section class="section" id="cases">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="kicker" id="casesKicker"></span><h2 id="casesTitle"></h2></div>
+        <h2 id="casesTitle"></h2>
         <p id="casesIntro"></p>
       </div>
       <div class="case-list" id="caseList"></div>
@@ -107,22 +97,21 @@
   <section class="evidence" id="evidence">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="kicker">关键证据</span><h2 id="evidenceTitle"></h2></div>
+        <h2 id="evidenceTitle"></h2>
         <p id="evidenceIntro"></p>
       </div>
       <div class="checklist" id="checklist"></div>
       <div class="evidence-foot">
-        <div class="progress-text">已保存 <strong id="progressCount">0</strong> 项关键材料。<span id="evidenceFootnote"></span></div>
-        <button class="btn btn-on-dark" data-print>打印这份清单</button>
+        <div class="progress-text">已保存 <strong id="progressCount">0</strong> 项关键材料。</div>
+        <button class="btn btn-on-dark" data-print>打印清单</button>
       </div>
     </div>
   </section>
 
   <section class="route" id="route">
     <div class="wrap">
-      <div class="section-head">
-        <div><span class="kicker" id="routeKicker">维权路径</span><h2 id="routeTitle">从能解决问题的<br>地方开始。</h2></div>
-        <p id="routeIntro"></p>
+      <div class="section-head route-head">
+        <h2 id="routeTitle">处理路径</h2>
       </div>
       <div class="route-grid" id="routeGrid"></div>
       <div class="route-note" id="routeNote"></div>
@@ -130,16 +119,21 @@
   </section>
 
   <section class="template" id="template">
-    <div class="wrap template-grid">
-      <div>
-        <span class="kicker">可直接复制</span>
-        <h2 id="templateTitle"></h2>
-        <p id="templateIntro"></p>
-      </div>
-      <div class="script" id="templateCard" data-label="书面沟通模板">
-        <button class="btn btn-quiet copy" id="copyTemplate">复制</button>
-        <pre id="templateText"></pre>
-      </div>
+    <div class="wrap">
+      <details class="template-details" id="templateDetails">
+        <summary>
+          <span class="kicker">可直接复制</span>
+          <strong id="templateTitle"></strong>
+          <span class="disclosure-meta">查看 / 复制</span>
+        </summary>
+        <div class="template-body">
+          <p id="templateIntro"></p>
+          <div class="script" id="templateCard" data-label="书面沟通模板">
+            <button class="btn btn-quiet copy" id="copyTemplate">复制</button>
+            <pre id="templateText"></pre>
+          </div>
+        </div>
+      </details>
     </div>
   </section>
 </main>
@@ -162,7 +156,7 @@
 </footer>
 
 <div class="mobile-bar">
-  <a class="btn" id="mobilePrimaryAction" href="#scenarioPicker" aria-label="跳到问题场景">找到我的问题</a>
+  <a class="btn" id="mobilePrimaryAction" href="#cases" aria-label="跳到问题场景">找到我的问题</a>
   <button class="btn btn-mobile-primary" data-share>分享 CASE</button>
 </div>
 

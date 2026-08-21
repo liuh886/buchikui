@@ -67,6 +67,7 @@ Do not maintain a second registry. Search the current content data for `case_slu
 - `investment-advisor-case.js`
 - `bank-wealth-case.js`
 - `rental-payment-case.js`
+- `appliance-repair-case.js`
 - `legal-updates.js` — one strongest current rights update per CASE, not a duplicate CASE registry.
 
 If the repository structure changes, follow current `main`; do not preserve obsolete paths.

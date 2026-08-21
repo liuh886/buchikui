@@ -122,16 +122,33 @@ for (const required of [
 }
 
 for (const required of [
-  'function normalizeRules(item)',
+  'const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];',
   'function bindRuleTabs(host,rules)',
   'role="tablist"',
   'data-rights-rule',
+  '切换相关权利问题',
+  "tab:'经营主体'",
+  "tab:'预付退款'",
+  "tab:'套餐选择'",
+  "tab:'管辖'",
+  "tab:'费用'",
+  "tab:'风险测评'",
+  "tab:'调单核查'",
   "tab:'维修行为'",
   "tab:'明码标价'",
   "tab:'搜索广告'",
   "tab:'投诉举报'",
 ]) {
   if (!legalUpdates.includes(required)) fail(`Missing rights-pulse rule contract: ${required}`);
+}
+
+for (const retired of [
+  "tab:'当前规则'",
+  "tab:'即将生效'",
+  'item.upcoming',
+  'item.upcomingSource',
+]) {
+  if (legalUpdates.includes(retired)) fail(`Retired rights-pulse path returned: ${retired}`);
 }
 
 if (!pwa.includes("navigator.serviceWorker.register('./sw.js')")) fail('PWA service worker registration is missing');

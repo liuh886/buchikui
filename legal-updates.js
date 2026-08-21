@@ -100,14 +100,67 @@
       upcomingSource:{title:'【即将生效】《金融产品网络营销管理办法》',href:'https://www.cac.gov.cn/2026-04/24/c_1778769008779432.htm'}
     },
     'appliance-repair-trap':{
-      status:'现行',
-      authority:'部门规章',
-      effective:'2026-04-15',
-      title:'投诉和举报，可以在同一份材料里一起提。',
-      text:'2026 年新的《市场监督管理投诉举报处理办法》已经生效。同一份材料同时包含消费投诉和违法举报时，市场监管部门应分别处理；调解过程中发现涉嫌违反市场监管法律法规规章的线索，也应另行核查。',
-      action:'维权材料写清四件事：你联系到谁、对方判断什么故障、你同意了哪些维修、最终收了多少钱。要求退回争议费用；对虚假或误导宣传、未明码标价、虚报故障等违法线索，同时注明请依法核查。',
-      sources:[
-        {title:'【2026部门规章】《市场监督管理投诉举报处理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_e4d03a20c0fd49769e408c7bf3791ff5.html'}
+      rules:[
+        {
+          id:'repair-conduct',
+          tab:'维修行为',
+          status:'现行',
+          type:'部门规章',
+          authority:'商务部',
+          effective:'2012-08-01',
+          document:'《家电维修服务业管理办法》',
+          title:'虚报故障、故意替换正常部件，明令禁止。',
+          text:'第九条直接禁止虚列、夸大、伪造维修项目，虚报故障部件，故意替换性能正常的部件，以及冒用厂家商标或特约维修标识。A 换完没修好又继续推 B、C，不能仅凭这一点认定违法，但已经足以要求重新解释前一次诊断和后续追加项目的依据。',
+          action:'第一次换件没有解决原故障，先暂停后续换件。要求说明 A 的故障依据、换件后的结果，以及 B / C 的诊断依据；旧件、报价和每次维修结果都要保存。',
+          sources:[
+            {title:'商务部：家电维修服务业管理办法',href:'https://www.mofcom.gov.cn/zfxxgk/fdzdgknr/ztfl/blgg/art/2012/art_7bab8b7cb4ae429798d74b2311c847f4.html'}
+          ]
+        },
+        {
+          id:'repair-pricing',
+          tab:'明码标价',
+          status:'现行',
+          type:'价格规范',
+          authority:'国家发展改革委',
+          effective:'2006-01-01',
+          document:'《家用电器维修服务明码标价规定》',
+          title:'上门维修，价格应当在动手前说清。',
+          text:'上门维修人员应在服务前主动出示价目表或价格手册；结算时应如实列明检查费、修理费、辅料费、零配件名称 / 数量 / 价格和上门费。维修价格实行市场调节价，但不能把没有提前标明的费用留到最后再收。',
+          action:'动手前要价目表和报价。每增加一个项目都重新确认；付款前索要结算清单、维修凭证和发票，核对实际维修、配件和收费是否一致。',
+          sources:[
+            {title:'市场监管总局转载：家用电器维修服务明码标价规定',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/jls/art/2023/art_bf08901ce1ed4df9a7b63330521a5c58.html'}
+          ]
+        },
+        {
+          id:'search-ad',
+          tab:'搜索广告',
+          status:'现行',
+          type:'部门规章',
+          authority:'市场监管总局',
+          effective:'2023-05-01',
+          document:'《互联网广告管理办法》',
+          title:'竞价排名推广，应当显著标明“广告”。',
+          text:'第九条要求互联网广告具有可识别性；竞价排名的商品或服务，应显著标明“广告”，并与自然搜索结果明显区分。即使标了广告，也只说明这是商业推广，不能证明它是品牌官方售后或授权网点。',
+          action:'把搜索排名当线索，不当官方证明。先从品牌官网、官方 App、说明书或官方公众号找到售后入口，再核验搜索结果里的电话、公司和网点；同时保存广告标识和页面。',
+          sources:[
+            {title:'市场监管总局：互联网广告管理办法',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d93a579afd45413e8576e4623fab348f.html'}
+          ]
+        },
+        {
+          id:'complaint-2026',
+          tab:'投诉举报',
+          status:'现行',
+          type:'部门规章',
+          authority:'市场监管总局',
+          effective:'2026-04-15',
+          document:'《市场监督管理投诉举报处理办法》',
+          title:'投诉和举报，可以在同一份材料里一起提。',
+          text:'新办法明确：同一份材料同时包含消费投诉和违法举报内容时，市场监督管理部门应当分别处理；调解过程中发现涉嫌违反市场监管法律法规规章的线索，也应另行核查。',
+          action:'材料按时间写清搜索、诊断、换件、报价、付款和复检结果。退费诉求写明争议金额；虚假宣传、未明码标价、虚报故障等违法线索同时列出，请依法分别处理。',
+          sources:[
+            {title:'市场监管总局：市场监督管理投诉举报处理办法',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_e4d03a20c0fd49769e408c7bf3791ff5.html'}
+          ]
+        }
       ]
     },
     'rental-credit-card-first':{
@@ -126,7 +179,52 @@
 
   const esc=value=>String(value||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   const link=source=>source?`<a href="${esc(source.href)}" target="_blank" rel="noopener">${esc(source.title)} →</a>`:'';
-  const allSources=item=>[...(item.sources||[]),item.upcomingSource].filter(Boolean);
+  const ruleSources=rule=>rule.sources||[];
+
+  function normalizeRules(item){
+    if(item.rules&&item.rules.length) return item.rules;
+
+    const rules=[{
+      id:'current',
+      tab:'当前规则',
+      status:item.status||'现行',
+      type:item.authority||'',
+      authority:'',
+      effective:item.effective||'',
+      document:item.document||'',
+      title:item.title||'',
+      text:item.text||'',
+      action:item.action||'',
+      sources:item.sources||[]
+    }];
+
+    if(item.upcoming){
+      rules.push({
+        id:'upcoming',
+        tab:'即将生效',
+        status:'即将生效',
+        type:item.upcoming.authority||'',
+        authority:'',
+        effective:item.upcoming.effective||'',
+        document:item.upcoming.document||'',
+        title:item.upcoming.title||'',
+        text:item.upcoming.text||'',
+        action:item.upcoming.action||item.action||'',
+        sources:item.upcomingSource?[item.upcomingSource]:[]
+      });
+    }
+
+    return rules;
+  }
+
+  function allSources(item){
+    const seen=new Set();
+    return normalizeRules(item).flatMap(ruleSources).filter(source=>{
+      if(!source||!source.href||seen.has(source.href)) return false;
+      seen.add(source.href);
+      return true;
+    });
+  }
 
   function getActiveCase(){
     const name=document.getElementById('caseName')?.textContent?.trim();
@@ -142,6 +240,30 @@
     const hero=document.querySelector('.hero');
     if(hero) hero.insertAdjacentElement('afterend',host);
     return host;
+  }
+
+  function ruleBasis(rule){
+    return [rule.type,rule.authority].filter(Boolean).join(' · ');
+  }
+
+  function metaHtml(rule,count){
+    return `
+      <span class="rights-pulse-label">权利校验</span>
+      <strong>${esc(rule.status||'现行')}</strong>
+      ${ruleBasis(rule)?`<span>${esc(ruleBasis(rule))}</span>`:''}
+      ${rule.effective?`<span>实施 ${esc(rule.effective)}</span>`:''}
+      ${count>1?`<span>${count} 项关键规则</span>`:''}
+      <span>核验 ${VERIFIED}</span>`;
+  }
+
+  function panelHtml(rule){
+    const sources=ruleSources(rule).map(link).join('<span aria-hidden="true"> · </span>');
+    return `
+      ${rule.document?`<div class="rights-pulse-document">${esc(rule.document)}</div>`:''}
+      <h2>${esc(rule.title)}</h2>
+      <p>${esc(rule.text)}</p>
+      <div class="rights-pulse-action"><span>你现在可以要求</span><strong>${esc(rule.action)}</strong></div>
+      ${sources?`<div class="rights-pulse-sources">${sources}</div>`:''}`;
   }
 
   function syncSources(item){
@@ -167,6 +289,42 @@
     if(title&&!title.textContent.includes('权利核验')) title.textContent+=` · 权利核验 ${VERIFIED}`;
   }
 
+  function bindRuleTabs(host,rules){
+    const buttons=[...host.querySelectorAll('[data-rights-rule]')];
+    if(buttons.length<2) return;
+
+    const meta=host.querySelector('.rights-pulse-meta');
+    const panel=host.querySelector('.rights-pulse-panel');
+
+    function select(index,focus){
+      const rule=rules[index];
+      if(!rule) return;
+      buttons.forEach((button,buttonIndex)=>{
+        const selected=buttonIndex===index;
+        button.setAttribute('aria-selected',selected?'true':'false');
+        button.tabIndex=selected?0:-1;
+      });
+      meta.innerHTML=metaHtml(rule,rules.length);
+      panel.innerHTML=panelHtml(rule);
+      panel.setAttribute('aria-labelledby',buttons[index].id);
+      if(focus) buttons[index].focus();
+    }
+
+    buttons.forEach((button,index)=>{
+      button.addEventListener('click',()=>select(index,false));
+      button.addEventListener('keydown',event=>{
+        let next=null;
+        if(event.key==='ArrowRight') next=(index+1)%buttons.length;
+        if(event.key==='ArrowLeft') next=(index-1+buttons.length)%buttons.length;
+        if(event.key==='Home') next=0;
+        if(event.key==='End') next=buttons.length-1;
+        if(next===null) return;
+        event.preventDefault();
+        select(next,true);
+      });
+    });
+  }
+
   function render(){
     const host=ensureHost();
     const active=getActiveCase();
@@ -177,27 +335,20 @@
       return;
     }
 
-    const sources=(item.sources||[]).map(link).join('<span aria-hidden="true"> · </span>');
-    const upcoming=item.upcoming?`<div class="rights-pulse-upcoming"><div class="rights-pulse-upcoming-meta">即将生效 · ${esc(item.upcoming.effective)} · ${esc(item.upcoming.authority)}</div><strong>${esc(item.upcoming.title)}</strong><p>${esc(item.upcoming.text)}</p>${item.upcomingSource?`<div class="rights-pulse-upcoming-source">${link(item.upcomingSource)}</div>`:''}</div>`:'';
+    const rules=normalizeRules(item);
+    const first=rules[0];
+    const tabs=rules.length>1?`<div class="rights-pulse-tabs" role="tablist" aria-label="切换相关规则">${rules.map((rule,index)=>`<button class="rights-pulse-tab" type="button" role="tab" id="rightsRuleTab-${index}" aria-controls="rightsPulsePanel" aria-selected="${index===0?'true':'false'}" tabindex="${index===0?'0':'-1'}" data-rights-rule="${index}">${esc(rule.tab||`规则 ${index+1}`)}</button>`).join('')}</div>`:'';
 
     host.hidden=false;
     host.innerHTML=`<div class="wrap"><div class="rights-pulse">
-      <div class="rights-pulse-meta">
-        <span class="rights-pulse-label">权利校验</span>
-        <strong>${esc(item.status||'现行')}</strong>
-        <span>${esc(item.authority||'')}</span>
-        ${item.effective?`<span>实施 ${esc(item.effective)}</span>`:''}
-        <span>核验 ${VERIFIED}</span>
-      </div>
+      <div class="rights-pulse-meta">${metaHtml(first,rules.length)}</div>
       <div class="rights-pulse-content">
-        <h2>${esc(item.title)}</h2>
-        <p>${esc(item.text)}</p>
-        <div class="rights-pulse-action"><span>你现在可以要求</span><strong>${esc(item.action)}</strong></div>
-        ${upcoming}
-        <div class="rights-pulse-sources">${sources}</div>
+        ${tabs}
+        <div class="rights-pulse-panel" id="rightsPulsePanel" role="tabpanel"${rules.length>1?' aria-labelledby="rightsRuleTab-0"':''}>${panelHtml(first)}</div>
       </div>
     </div></div>`;
     syncSources(item);
+    bindRuleTabs(host,rules);
   }
 
   window.addEventListener('DOMContentLoaded',()=>{

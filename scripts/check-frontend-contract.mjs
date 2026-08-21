@@ -1,14 +1,16 @@
 import { readFile } from 'node:fs/promises';
 
-const [html, app, styles, pwa, serviceWorker, manifestRaw, investmentCase, applianceCase] = await Promise.all([
+const [html, app, styles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, applianceCase, legalUpdates] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
+  readFile(new URL('../rights-pulse.css', import.meta.url), 'utf8'),
   readFile(new URL('../pwa.js', import.meta.url), 'utf8'),
   readFile(new URL('../sw.js', import.meta.url), 'utf8'),
   readFile(new URL('../manifest.webmanifest', import.meta.url), 'utf8'),
   readFile(new URL('../investment-advisor-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../appliance-repair-case.js', import.meta.url), 'utf8'),
+  readFile(new URL('../legal-updates.js', import.meta.url), 'utf8'),
 ]);
 
 const fail = (message) => {
@@ -111,6 +113,27 @@ for (const retired of ['.situation{', '.risk{', 'nav{']) {
   if (styles.includes(retired)) fail(`Retired visual layer returned: ${retired}`);
 }
 
+for (const required of [
+  '.rights-pulse-tabs',
+  '.rights-pulse-tab[aria-selected="true"]',
+  '.rights-pulse-document',
+]) {
+  if (!rightsPulseStyles.includes(required)) fail(`Missing rights-pulse visual contract: ${required}`);
+}
+
+for (const required of [
+  'function normalizeRules(item)',
+  'function bindRuleTabs(host,rules)',
+  'role="tablist"',
+  'data-rights-rule',
+  "tab:'维修行为'",
+  "tab:'明码标价'",
+  "tab:'搜索广告'",
+  "tab:'投诉举报'",
+]) {
+  if (!legalUpdates.includes(required)) fail(`Missing rights-pulse rule contract: ${required}`);
+}
+
 if (!pwa.includes("navigator.serviceWorker.register('./sw.js')")) fail('PWA service worker registration is missing');
 if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.includes('SKIP_WAITING')) {
   fail('PWA client must stay infrastructure-only');
@@ -143,6 +166,7 @@ if (investmentCase.includes('costModel:')) fail('Case-specific cost-model render
 if (!investmentCase.includes('1 万元横盘一年，已知成本约 191 元')) fail('Compact advisor cost example is missing');
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
+if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair opening must identify search ranking as the start of the risk chain');
 
 const manifest = JSON.parse(manifestRaw);
 if (manifest.display !== 'standalone') fail('PWA manifest must use standalone display mode');
@@ -150,7 +174,7 @@ if (manifest.start_url !== './' || manifest.scope !== './') fail('PWA start_url 
 const iconPurposes = new Set((manifest.icons || []).map(icon => `${icon.sizes}:${icon.purpose || 'any'}`));
 if (!iconPurposes.has('192x192:any')) fail('PWA manifest is missing a 192x192 app icon');
 if (!iconPurposes.has('512x512:any')) fail('PWA manifest is missing a 512x512 app icon');
-if (!iconPurposes.has('512x512:maskable')) fail('PWA manifest is missing a maskable 512x512 icon');
+if (!iconPurposes.has('512x512:maskable')) fail('PWA manifest is missing a maskable 512x512 app icon');
 
 await Promise.all([
   readFile(new URL('../icons/icon-180.png', import.meta.url)),

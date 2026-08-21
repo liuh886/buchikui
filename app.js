@@ -204,6 +204,19 @@
     if(active.route.note) setCanonicalHtml('routeNote',active.route.note);
   }
 
+  function renderDiscussion(){
+    const section=byId('discussion');
+    const discussion=active.discussion;
+    section.hidden=!discussion;
+    if(!discussion){
+      byId('discussionTitle').textContent='';
+      byId('discussionBody').textContent='';
+      return;
+    }
+    setCanonicalHtml('discussionTitle',discussion.title);
+    setCanonicalHtml('discussionBody',discussion.html);
+  }
+
   function renderSources(){
     byId('sourcesTitle').textContent=`本页依据与官方入口（更新：${active.updated}）`;
     byId('sourceList').innerHTML=active.sources.map(source=>{
@@ -223,6 +236,7 @@
     if(active.layout!=='compact') renderStandardCase();
 
     renderRoute();
+    renderDiscussion();
     renderSources();
   }
 

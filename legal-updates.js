@@ -2,102 +2,318 @@
   const VERIFIED='2026-08-21';
   const updates={
     rental:{
-      status:'现行',
-      authority:'部门规章 · 最高法典型案例 · 行业政策',
-      effective:'2026-02-01',
-      title:'平台不能只说“这是商户纠纷”。',
-      text:'平台依据自身规则对消费者采取不利处理，应说明事实、理由和依据，提供申诉复核；消费者要求人工判定时，不能只交给 AI / 系统。2026 年租车三年行动方案又直接要求推广合同示范文本，明确押金退还、事故和违章处理、违约责任，并点名治理“天价定损”、加强租赁电商平台资质审核。最高法最新典型案例进一步提示：平台掌握的交易、资金、投诉数据和实际控制能力，会影响其是否尽到必要的平台责任。',
-      action:'遇到扣款、定损或平台推诿，要求四样东西：具体规则条款、商户提交材料、平台审核依据、人工复核结果；租车定损再追加损伤事实和金额计算依据。',
-      sources:[
-        {title:'【部门规章】《网络交易平台规则监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html'},
-        {title:'【政策文件】租车高质量发展三年行动方案（2026—2028年）',href:'https://xxgk.mot.gov.cn/jigou/ysfws/202606/t20260605_4206926.html'},
-        {title:'【最高法典型案例】平台数据优势与必要措施责任',href:'https://www.court.gov.cn/zixun/xiangqing/507691.html'}
+      rules:[
+        {
+          id:'operator',
+          tab:'经营主体',
+          status:'现行',
+          type:'行政法规',
+          authority:'国务院',
+          effective:'2024-07-01',
+          document:'《中华人民共和国消费者权益保护法实施条例》',
+          title:'平台入口、门头品牌和实际出租方，不能混成一个主体。',
+          text:'通过网络提供服务时，经营者应显著说明真实名称；由其他经营者实际提供服务的，还应向消费者提供实际经营者的名称、经营地址和联系方式。租车纠纷里，平台、合同出租方、收款方和实际交车方可能不是同一家公司。',
+          action:'要求平台或门店明确提供实际出租方的公司全称、经营地址和联系方式，并把它与合同签约方、收款主体、实际交车方逐一对上。',
+          sources:[
+            {title:'【行政法规】《消费者权益保护法实施条例》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2024/art_0aea188276a44f0baf940ab95ee00e0a.html'}
+          ]
+        },
+        {
+          id:'vehicle-status',
+          tab:'车辆资质',
+          status:'现行',
+          type:'部门规章',
+          authority:'交通运输部',
+          effective:'2021-04-01',
+          document:'《小微型客车租赁经营服务管理办法》',
+          title:'投入租赁经营的小微型客车，使用性质应登记为“租赁”。',
+          text:'现行办法要求，从事小微型客车租赁经营的企业具备相应条件，其中投入经营的小微型客车应检验合格，且登记使用性质为“租赁”。这是判断车辆是否按租赁业务规范投入经营的直接事实。',
+          action:'取车时拍下车牌和行驶证，核对“使用性质”。发现实际车辆、订单车辆或行驶证信息对不上时，先要求更正，不要直接确认正常交付。',
+          sources:[
+            {title:'【部门规章】《小微型客车租赁经营服务管理办法》现行修正版',href:'https://xxgk.mot.gov.cn/2020/jigou/fgs/202108/t20210825_3616598.html'}
+          ]
+        },
+        {
+          id:'deposit',
+          tab:'押金退还',
+          status:'现行',
+          type:'行政法规',
+          authority:'国务院',
+          effective:'2024-07-01',
+          document:'《中华人民共和国消费者权益保护法实施条例》',
+          title:'收押金，要提前说清怎么退、多久退；符合条件就应及时退。',
+          text:'经营者收取押金，应事先与消费者约定退还方式、程序和时限，不得设置不合理退还条件。消费者符合退还条件时，经营者应及时退还。',
+          action:'下单时保存押金金额、退还条件、程序和时限；还车后符合条件仍未退的，要求经营者按当时约定说明未退原因和具体退还时间。',
+          sources:[
+            {title:'【行政法规】《消费者权益保护法实施条例》第二十条',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2024/art_0aea188276a44f0baf940ab95ee00e0a.html'}
+          ]
+        },
+        {
+          id:'platform-appeal',
+          tab:'平台申诉',
+          status:'现行',
+          type:'部门规章',
+          authority:'市场监管总局 · 国家网信办',
+          effective:'2026-02-01',
+          document:'《网络交易平台规则监督管理办法》',
+          title:'平台不能只回复“这是商户纠纷”或“系统判定”。',
+          text:'平台依据平台规则对消费者采取不利措施时，应说明事实、理由和依据并提供便捷申诉；消费者提出人工判定要求时，不能仅采用人工智能等技术手段处理。',
+          action:'要求平台提供具体规则条款、商户提交材料、平台审核依据和人工复核结果。不要只接受“商户发起”或“系统审核”的结论。',
+          sources:[
+            {title:'【部门规章】《网络交易平台规则监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html'}
+          ]
+        }
       ]
     },
     'beauty-hair':{
-      status:'现行',
-      authority:'司法解释 · 最高法典型案例',
-      effective:'2025-05-01',
-      title:'消费记录在商家手里，不代表消费者只能认栽。',
-      text:'最高法预付式消费司法解释已经把几个高频痛点写成明确规则：符合条件的首次预付消费可在付款后七日内请求返还本金；非因消费者原因退款时，已消费项目原则上按折扣价或优惠比例计算；商家控制合同、消费次数、金额、余额等证据却无正当理由拒不提交，法院可以结合消费者主张认定争议事实；恶意“卷款跑路”还可能触发惩罚性赔偿。',
-      action:'退卡、闭店、余额争议时，把“我要退款”改成三项具体请求：完整合同和消费流水、按现行规则计算的退款明细、剩余余额；商家拒绝提供自己控制的记录，也要把“拒绝提供”固定成证据。',
-      sources:[
-        {title:'【司法解释】最高法预付式消费司法解释',href:'https://gongbao.court.gov.cn/Details/415add6e9c15736f2fbd871bdb1538.html'},
-        {title:'【最高法典型案例】预付消费证据、退款与职业闭店',href:'https://www.court.gov.cn/zixun/xiangqing/459331.html'}
+      rules:[
+        {
+          id:'prepaid-refund',
+          tab:'预付退款',
+          status:'现行',
+          type:'司法解释',
+          authority:'最高人民法院',
+          effective:'2025-05-01',
+          document:'《关于审理预付式消费民事纠纷案件适用法律若干问题的解释》',
+          title:'符合条件的预付消费，付款后七日内可以请求返还预付款本金。',
+          text:'司法解释明确适用于理发、美容等生活消费。消费者自付款之日起七日内请求返还预付款本金，人民法院原则上予以支持，但对已经从该经营者或其他经营者获得过相同商品或服务等情形设有例外。超过七日，也不等于当然不能解除或退款。',
+          action:'先核对付款日期和七日退款例外；同时保存付款记录、会员合同、消费流水和当前余额。要求退款时把本金、赠送和已消费金额分开。',
+          sources:[
+            {title:'【司法解释】最高法预付式消费司法解释',href:'https://gongbao.court.gov.cn/Details/415add6e9c15736f2fbd871bdb1538.html'}
+          ]
+        },
+        {
+          id:'relocation-transfer',
+          tab:'搬店转店',
+          status:'现行',
+          type:'司法解释',
+          authority:'最高人民法院',
+          effective:'2025-05-01',
+          document:'《关于审理预付式消费民事纠纷案件适用法律若干问题的解释》',
+          title:'搬店造成明显不便，或未经同意把合同义务转给第三人，可以成为解除合同的理由。',
+          text:'司法解释明确，经营者变更经营场所给消费者接受服务造成明显不便，或者未经消费者同意将预付式消费合同义务转给第三人，消费者请求解除合同，人民法院应予支持。',
+          action:'门店搬迁、转让或要求转卡时，先固定旧合同、余额和原经营主体。没说清旧债务由谁承担前，不要为了继续消费直接签新协议或补差价。',
+          sources:[
+            {title:'【司法解释】最高法预付式消费司法解释第十三条',href:'https://gongbao.court.gov.cn/Details/415add6e9c15736f2fbd871bdb1538.html'}
+          ]
+        },
+        {
+          id:'price-change',
+          tab:'单方加价',
+          status:'现行',
+          type:'司法解释 · 行政法规',
+          authority:'最高人民法院 · 国务院',
+          effective:'2025-05-01',
+          document:'预付式消费司法解释 + 《消费者权益保护法实施条例》',
+          title:'预付以后，经营者不能未经同意单方提高价格。',
+          text:'司法解释规定，经营者未经消费者同意单方提高商品或服务价格、降低质量，消费者可以要求按合同约定履行并承担相应违约责任；实施条例也要求预付合同约定具体内容和价款，履行中不得任意加价。',
+          action:'中途新增项目或加价时，当场写明是否同意，保存原套餐、价目、当次项目确认和结算清单。不要让“已经做了”替代你的明确同意。',
+          sources:[
+            {title:'【司法解释】最高法预付式消费司法解释第十二条',href:'https://gongbao.court.gov.cn/Details/415add6e9c15736f2fbd871bdb1538.html'},
+            {title:'【行政法规】《消费者权益保护法实施条例》第二十二条',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2024/art_0aea188276a44f0baf940ab95ee00e0a.html'}
+          ]
+        },
+        {
+          id:'medical-beauty',
+          tab:'医美资质',
+          status:'现行',
+          type:'部门规章',
+          authority:'国家卫生健康委',
+          effective:'2002-05-01',
+          document:'《医疗美容服务管理办法》',
+          title:'属于医疗美容的项目，必须进入医疗机构和医疗执业资质体系。',
+          text:'现行办法将使用手术、药物、医疗器械以及其他具有创伤性或侵入性的医学技术进行美容修复与再塑纳入医疗美容；未取得医疗机构执业许可并核准相应医疗美容诊疗科目，不得开展医疗美容服务。',
+          action:'项目涉及侵入性、药物或医疗器械等医疗美容行为时，先核验机构医疗资质、核准诊疗科目和实施人员执业资格，不要只看“美容院”“工作室”或营销名称。',
+          sources:[
+            {title:'【部门规章】《医疗美容服务管理办法》',href:'https://www.nhc.gov.cn/wjw/c100221/202201/d7e8fa33a26b425da98d69fb04191699.shtml'}
+          ]
+        }
       ]
     },
     'bank-small-account-fee':{
-      status:'现行',
-      authority:'监管典型案例 · 部门规章',
-      title:'“系统自动扣”不是收费依据。',
-      text:'金融监管部门已将“个人客户唯一账户仍被收取年费和小额账户管理费”列为违规收费，并公开过整改退费和处罚案例。《商业银行服务价格管理办法》还要求银行建立收费投诉登记、调查、处理和答复机制。',
-      action:'要求银行逐笔说明：扣费当日你在该行有几个账户、哪个账户享受减免、收费依据是哪一条、投诉调查结论是什么。不要只接受“系统就是这样扣”的答复。',
-      sources:[
-        {title:'【监管典型案例】唯一账户违规收费',href:'https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1130947&generaltype=0&itemId=4099'},
-        {title:'【部门规章】《商业银行服务价格管理办法》',href:'https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=274908&itemId=4214'}
+      rules:[
+        {
+          id:'fee-waiver',
+          tab:'账户减免',
+          status:'现行',
+          type:'监管典型案例 · 部门规章',
+          authority:'金融监管总局',
+          title:'“系统自动扣”不是收费依据。',
+          text:'监管部门已将个人客户唯一账户仍被收取年费和小额账户管理费列为违规收费。银行还应建立收费投诉登记、调查、处理和答复机制。',
+          action:'要求银行逐笔说明：扣费当日你在该行有几个账户、哪个账户享受减免、收费依据是什么、投诉核查结论是什么。',
+          sources:[
+            {title:'【监管典型案例】唯一账户违规收费',href:'https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1130947&generaltype=0&itemId=4099'},
+            {title:'【部门规章】《商业银行服务价格管理办法》',href:'https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=274908&itemId=4214'}
+          ]
+        }
       ]
     },
     'mobile-plan-cost':{
-      status:'现行',
-      authority:'行业规范 · 部门规章 · 监管动态',
-      title:'同等条件的老用户，不应被一句“你办不了”挡住。',
-      text:'现行资费营销规则要求，同一本地网营业区内具有同等交易条件的同类用户，对资费方案应享有同等选择权；除合同另有约定外，不得强制或限制用户选择、变更任一在售资费方案。2026 年通信监管仍在直接点名“新老用户不同权”和套餐变更难。投诉后 15 日未答复或处理不满意即可申诉；收费争议超过 5 个月再申诉，通常不予受理。',
-      action:'客服说“仅限新用户 / 老用户不能办”时，要求写进工单：套餐是否仍在售、你的号码具体缺少哪项交易条件、限制来自哪份规则、有没有同档替代方案。收费争议不要拖过 5 个月。',
-      sources:[
-        {title:'【行业规范】进一步规范电信资费营销行为',href:'https://shca.miit.gov.cn/zwgk/zcwj/wjfb/art/2022/art_2265bad324484a1fb243f5231c1014a5.html'},
-        {title:'【部门规章】《电信用户申诉处理办法》',href:'https://www.miit.gov.cn/zwgk/zcwj/flfg/art/2020/art_b2e4b04d28f84f0d8c11e76c2b5c650a.html'},
-        {title:'【2026监管动态】新老用户同等权益与套餐变更',href:'https://cqca.miit.gov.cn/xwdt/gzdt/art/2026/art_61fe759a72a746ab96fb624b211fad8c.html'}
+      rules:[
+        {
+          id:'plan-choice',
+          tab:'套餐选择',
+          status:'现行',
+          type:'行业监管规范',
+          authority:'工业和信息化部',
+          effective:'2018-08-23',
+          document:'《关于进一步规范电信资费营销行为的通知》',
+          title:'同等交易条件的同类用户，对在售资费方案应有同等选择权。',
+          text:'电信业务经营者应公示所有面向公众市场销售的在售资费方案；在同一本地网营业区或业务区内，应保证具有同等交易条件的同类用户对资费方案具有同等选择权。除合同另有约定外，不得强制或限制用户选择、变更任一在售资费方案。',
+          action:'拿一个明确的在售目标套餐去问。办不了时，要求工单写清套餐是否在售、你的号码具体缺哪项交易条件、限制依据和同档替代方案。',
+          sources:[
+            {title:'【行业监管规范】工信部《关于进一步规范电信资费营销行为的通知》',href:'https://www.miit.gov.cn/jgsj/txs/wjfb/art/2020/art_bd3aef28a0b440699839c09ae1709968.html'}
+          ]
+        },
+        {
+          id:'appeal-deadline',
+          tab:'申诉时限',
+          status:'现行',
+          type:'部门规章',
+          authority:'工业和信息化部',
+          effective:'2016-07-30',
+          document:'《电信用户申诉处理办法》',
+          title:'运营商 15 日未答复或处理不满意，可以申诉；收费争议别拖过 5 个月。',
+          text:'经营者接到用户投诉后应在15日内答复。用户对处理结果不满意，或者15日内未答复，可以向申诉受理机构申诉。属于收费争议的，争议发生距申诉超过5个月，通常不予受理。',
+          action:'第一次向运营商投诉就留工单号和日期。15日未答复或结果不满意及时申诉；涉及收费争议，不要把时间拖过5个月。',
+          sources:[
+            {title:'【部门规章】《电信用户申诉处理办法》',href:'https://wap.miit.gov.cn/zcfg/xxtxl/art/2016/art_d1b009428ab44a5a9465d9068e45fd66.html'}
+          ]
+        }
       ]
     },
     'internet-court-self-litigation':{
-      status:'现行',
-      authority:'司法解释 · 全国诉讼服务规则',
-      effective:'2025-11-01',
-      title:'先选对法院，再用全国统一入口和要素式文本。',
-      text:'互联网法院的新集中管辖范围已于 2025-11-01 起施行；能网上立案，不等于案件当然归互联网法院。2025-12-01 起，全国法院统一电子诉讼服务平台正式启用；67 类起诉状、答辩状示范文本也已全国推广，2026 年仍持续作为便利自行诉讼的重要工具。',
-      action:'立案前先写清“为什么这个法院有管辖权”，再优先用人民法院在线服务全国版和对应的要素式示范文本；不要自己从零写一篇长起诉状。',
-      sources:[
-        {title:'【司法解释】互联网法院案件管辖规定',href:'https://www.court.gov.cn/zixun/xiangqing/478291.html'},
-        {title:'【诉讼服务】全国法院统一电子诉讼服务平台',href:'https://www.court.gov.cn/zixun/xiangqing/482581.html'},
-        {title:'【最高法】67类起诉状答辩状示范文本',href:'https://www.court.gov.cn/zixun/xiangqing/468671.html'},
-        {title:'【2026典型案例】示范文本应用第四批',href:'https://www.court.gov.cn/zixun/xiangqing/505271.html'}
+      rules:[
+        {
+          id:'jurisdiction',
+          tab:'管辖',
+          status:'现行',
+          type:'司法解释',
+          authority:'最高人民法院',
+          effective:'2025-11-01',
+          document:'《最高人民法院关于互联网法院案件管辖的规定》',
+          title:'能网上立案，不等于案件归互联网法院管辖。',
+          text:'2025年11月1日起，互联网法院集中管辖范围已经调整。普通法院案件同样可以在线办理，是否由互联网法院审理仍要看案由、地域联系、管辖约定和是否属于规定列明的网络纠纷。',
+          action:'立案前先单独写清管辖依据：案由、被告住所地、合同履行地或侵权地、有效管辖约定，以及为什么这个法院有权受理。',
+          sources:[
+            {title:'【司法解释】互联网法院案件管辖规定',href:'https://www.court.gov.cn/fabu/xiangqing/478291.html'}
+          ]
+        },
+        {
+          id:'pleading-template',
+          tab:'起诉文本',
+          status:'现行',
+          type:'诉讼服务规则',
+          authority:'最高人民法院 · 司法部 · 全国律协',
+          effective:'2025-07-14',
+          document:'67类起诉状、答辩状示范文本',
+          title:'第一次起诉，不必从零写一篇长诉状。',
+          text:'67类常见案件起诉状、答辩状示范文本已在全国法院全面推广，采用要素式、勾选式结构，引导当事人把诉讼请求、事实、证据和争议焦点写完整。全国统一电子诉讼服务平台也已上线在线填写等功能。',
+          action:'先按案由匹配现行示范文本，再填具体请求、核心事实和证据；没有必要复制网上“万能起诉状”堆无关法条。',
+          sources:[
+            {title:'【诉讼服务规则】67类起诉状答辩状示范文本',href:'https://www.court.gov.cn/fabu/xiangqing/468671.html'},
+            {title:'【诉讼服务】全国法院统一电子诉讼服务平台公告',href:'https://www.court.gov.cn/zixun/xiangqing/482581.html'}
+          ]
+        },
+        {
+          id:'opponent-evidence',
+          tab:'对方证据',
+          status:'现行',
+          type:'司法解释',
+          authority:'最高人民法院',
+          effective:'2020-05-01',
+          document:'《最高人民法院关于民事诉讼证据的若干规定》',
+          title:'关键书证在对方手里，不等于你只能认输。',
+          text:'当事人可以申请法院责令对方提交由其控制的特定书证。申请需要说明书证名称或内容、要证明的事实、重要性、为什么判断由对方控制以及应当提交的理由。无正当理由拒不提交，可能产生不利的事实认定后果。',
+          action:'把目标材料描述到可以定位，并直接连接待证事实，例如具体订单的后台审核记录、账簿或原始凭证；不要只写“请对方提交全部资料”。',
+          sources:[
+            {title:'【司法解释】《最高人民法院关于民事诉讼证据的若干规定》',href:'https://gongbao.court.gov.cn/Details/0c15319f2bdbabb8e398035f775385.html'}
+          ]
+        }
       ]
     },
     'alipay-advisor-cost':{
-      status:'现行',
-      authority:'证监会规则',
-      effective:'2026-01-01',
-      title:'基金投顾不得双重收费。',
-      text:'基金销售费用新规已经生效：降低多类基金销售费用，明确持有期限超过一年的基金份额（货币市场基金等例外除外）不得继续收取销售服务费，并要求基金投顾业务不得双重收费。费用不能因为被拆成“底层基金 + 投顾 + 销售”几层就失去可解释性。',
-      action:'买前把投顾费、底层基金运作费、申赎费、销售服务费分层列出来；同一项服务疑似重复收费时，要求机构写清收费项目、计提基数、费率和规则依据。',
-      sources:[
-        {title:'【证监会规则】《公开募集证券投资基金销售费用管理规定》',href:'https://www.csrc.gov.cn/csrc/c100028/c7606047/content.shtml'}
-      ],
-      upcoming:{
-        effective:'2026-09-30',
-        authority:'八部门联合办法',
-        title:'第三方互联网平台将不能介入金融产品的签约、资金划转和适当性测评。',
-        text:'《金融产品网络营销管理办法》届时生效：第三方平台不得介入或变相介入销售合同签订、资金划转、适当性测评，也不得就金融产品与消费者进行互动咨询；购买环节原则上应跳转至金融机构自营平台。'
-      },
-      upcomingSource:{title:'【即将生效】《金融产品网络营销管理办法》',href:'https://www.cac.gov.cn/2026-04/24/c_1778769008779432.htm'}
+      rules:[
+        {
+          id:'fees',
+          tab:'费用',
+          status:'现行',
+          type:'证监会规则',
+          authority:'中国证监会',
+          effective:'2026-01-01',
+          document:'《公开募集证券投资基金销售费用管理规定》',
+          title:'基金投顾不得双重收费。',
+          text:'现行规定降低多类基金销售费用，并明确基金投顾业务不得双重收费；对投资者持有期限超过一年的基金份额，除货币市场基金外，不再收取销售服务费。',
+          action:'买前把投顾费、底层基金运作费、认申购和赎回费用、销售服务费分层列出；疑似重复收费时，要求写清收费项目、计提基数、费率和规则依据。',
+          sources:[
+            {title:'【证监会规则】《公开募集证券投资基金销售费用管理规定》修订说明',href:'https://www.csrc.gov.cn/csrc/c101954/c7606091/7606091/files/%E9%99%84%E4%BB%B62%EF%BC%9A%E3%80%8A%E5%85%AC%E5%BC%80%E5%8B%9F%E9%9B%86%E8%AF%81%E5%88%B8%E6%8A%95%E8%B5%84%E5%9F%BA%E9%87%91%E9%94%80%E5%94%AE%E8%B4%B9%E7%94%A8%E7%AE%A1%E7%90%86%E8%A7%84%E5%AE%9A%E3%80%8B%E4%BF%AE%E8%AE%A2%E8%AF%B4%E6%98%8E.pdf'}
+          ]
+        },
+        {
+          id:'third-party-platform',
+          tab:'第三方平台',
+          status:'即将生效',
+          type:'八部门联合办法',
+          authority:'人民银行等八部门',
+          effective:'2026-09-30',
+          document:'《金融产品网络营销管理办法》',
+          title:'第三方互联网平台将不能介入销售合同、资金划转和适当性测评。',
+          text:'新办法自2026年9月30日起实施。第三方互联网平台不得违反规定介入或变相介入销售合同签订、资金划转、适当性测评等金融产品销售环节，也不得就金融产品与消费者进行互动咨询；购买环节应转到金融机构自营平台。',
+          action:'从2026年9月30日起，看到第三方平台直接完成签约、资金划转、适当性测评或提供产品互动咨询时，先核对实际金融机构和购买入口，不要把平台品牌当成销售责任主体。',
+          sources:[
+            {title:'【即将生效】《金融产品网络营销管理办法》',href:'https://www.cac.gov.cn/2026-04/24/c_1778769008779432.htm'}
+          ]
+        }
+      ]
     },
     'bank-wealth-not-guaranteed':{
-      status:'现行',
-      authority:'部门规章',
-      effective:'2026-02-01',
-      title:'风险测评不是“过关考试”。',
-      text:'《金融机构产品适当性管理办法》禁止金融机构代替客户评估、不当提示或以其他方式影响评估结果真实性；产品风险高于客户风险承受能力，原则上属于不具备适当性；通过互联网销售也必须把适当性管理嵌入流程。',
-      action:'自己填、如实填并保存结果。有人教你“这个选高一点才能买”时，把话术、测评前后页面、产品风险等级一起固定下来；之后投诉不要只说“亏了”，而要指出具体哪一步适当性义务失守。',
-      sources:[
-        {title:'【部门规章】《金融机构产品适当性管理办法》',href:'https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=1217183'}
-      ],
-      upcoming:{
-        effective:'2026-09-30',
-        authority:'八部门联合办法',
-        title:'第三方平台不能替金融机构做适当性，也不能用品牌混同替代责任主体。',
-        text:'新规生效后，第三方互联网平台不得介入适当性测评或销售合同签订，不得就金融产品提供互动咨询，并应清晰展示实际提供金融产品的金融机构。'
-      },
-      upcomingSource:{title:'【即将生效】《金融产品网络营销管理办法》',href:'https://www.cac.gov.cn/2026-04/24/c_1778769008779432.htm'}
+      rules:[
+        {
+          id:'risk-assessment',
+          tab:'风险测评',
+          status:'现行',
+          type:'部门规章',
+          authority:'国家金融监督管理总局',
+          effective:'2026-02-01',
+          document:'《金融机构产品适当性管理办法》',
+          title:'风险测评不是“过关考试”，销售人员不能教你把答案填高。',
+          text:'现行办法禁止金融机构代替客户评估、进行不当提示、先销售后评估，或者通过其他方式影响评估结果真实性和有效性。风险测评是判断产品是否适合你的关键证据。',
+          action:'自己填、如实填并保存结果。有人指导你把答案往激进方向改时，保存聊天、录音或现场经过，以及测评前后结果和产品风险等级。',
+          sources:[
+            {title:'【部门规章】《金融机构产品适当性管理办法》',href:'https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1217183&itemId=4214'}
+          ]
+        },
+        {
+          id:'product-match',
+          tab:'产品匹配',
+          status:'现行',
+          type:'部门规章',
+          authority:'国家金融监督管理总局',
+          effective:'2026-02-01',
+          document:'《金融机构产品适当性管理办法》',
+          title:'产品风险高于你的风险承受能力，原则上属于不具备适当性。',
+          text:'办法明确，产品风险等级高于客户风险承受能力，或者购买所需资金与客户财务支付水平明显不匹配等情形，应认定客户与产品不具备适当性；除规则明确的例外外，金融机构不得销售不具备适当性的产品。',
+          action:'保存购买时的客户风险等级、产品风险等级和匹配结果。投诉时不要只说“亏了”，要指出当时具体哪里出现了风险等级或资金承受能力错配。',
+          sources:[
+            {title:'【部门规章】《金融机构产品适当性管理办法》第十二条',href:'https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1217183&itemId=4214'}
+          ]
+        },
+        {
+          id:'return-marketing',
+          tab:'收益宣传',
+          status:'现行',
+          type:'部门规章',
+          authority:'国家金融监督管理总局',
+          effective:'2026-02-01',
+          document:'《金融机构产品适当性管理办法》',
+          title:'不能用保本承诺、夸大收益或误导性风险提示把理财卖成“稳稳赚”。',
+          text:'办法禁止告知和风险提示中存在虚假、误导或重大遗漏，包括混淆存款、理财等产品，违规承诺保本保收益、夸大产品收益或保障范围。',
+          action:'保存购买时首页收益展示、排行榜、短信微信和理财经理话术。争议时把具体表述与产品说明书、风险等级和实际销售记录逐项对照。',
+          sources:[
+            {title:'【部门规章】《金融机构产品适当性管理办法》第十三条',href:'https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1217183&itemId=4214'}
+          ]
+        }
+      ]
     },
     'appliance-repair-trap':{
       rules:[
@@ -110,10 +326,10 @@
           effective:'2012-08-01',
           document:'《家电维修服务业管理办法》',
           title:'虚报故障、故意替换正常部件，明令禁止。',
-          text:'第九条直接禁止虚列、夸大、伪造维修项目，虚报故障部件，故意替换性能正常的部件，以及冒用厂家商标或特约维修标识。A 换完没修好又继续推 B、C，不能仅凭这一点认定违法，但已经足以要求重新解释前一次诊断和后续追加项目的依据。',
-          action:'第一次换件没有解决原故障，先暂停后续换件。要求说明 A 的故障依据、换件后的结果，以及 B / C 的诊断依据；旧件、报价和每次维修结果都要保存。',
+          text:'第九条直接禁止虚列、夸大、伪造维修项目，虚报故障部件，故意替换性能正常的部件，以及冒用厂家商标或特约维修标识。A换完没修好又继续推B、C，不能仅凭这一点认定违法，但已经足以要求重新解释前一次诊断和后续追加项目的依据。',
+          action:'第一次换件没有解决原故障，先暂停后续换件。要求说明A的故障依据、换件后的结果，以及B/C的诊断依据；旧件、报价和每次维修结果都要保存。',
           sources:[
-            {title:'商务部：家电维修服务业管理办法',href:'https://www.mofcom.gov.cn/zfxxgk/fdzdgknr/ztfl/blgg/art/2012/art_7bab8b7cb4ae429798d74b2311c847f4.html'}
+            {title:'【部门规章】《家电维修服务业管理办法》',href:'https://www.mofcom.gov.cn/zfxxgk/fdzdgknr/ztfl/blgg/art/2012/art_7bab8b7cb4ae429798d74b2311c847f4.html'}
           ]
         },
         {
@@ -125,10 +341,10 @@
           effective:'2006-01-01',
           document:'《家用电器维修服务明码标价规定》',
           title:'上门维修，价格应当在动手前说清。',
-          text:'上门维修人员应在服务前主动出示价目表或价格手册；结算时应如实列明检查费、修理费、辅料费、零配件名称 / 数量 / 价格和上门费。维修价格实行市场调节价，但不能把没有提前标明的费用留到最后再收。',
+          text:'上门维修人员应在服务前主动出示价目表或价格手册；结算时应如实列明检查费、修理费、辅料费、零配件名称、数量、价格和上门费。',
           action:'动手前要价目表和报价。每增加一个项目都重新确认；付款前索要结算清单、维修凭证和发票，核对实际维修、配件和收费是否一致。',
           sources:[
-            {title:'市场监管总局转载：家用电器维修服务明码标价规定',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/jls/art/2023/art_bf08901ce1ed4df9a7b63330521a5c58.html'}
+            {title:'【价格规范】家用电器维修服务明码标价规定',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/jls/art/2023/art_bf08901ce1ed4df9a7b63330521a5c58.html'}
           ]
         },
         {
@@ -140,10 +356,10 @@
           effective:'2023-05-01',
           document:'《互联网广告管理办法》',
           title:'竞价排名推广，应当显著标明“广告”。',
-          text:'第九条要求互联网广告具有可识别性；竞价排名的商品或服务，应显著标明“广告”，并与自然搜索结果明显区分。即使标了广告，也只说明这是商业推广，不能证明它是品牌官方售后或授权网点。',
-          action:'把搜索排名当线索，不当官方证明。先从品牌官网、官方 App、说明书或官方公众号找到售后入口，再核验搜索结果里的电话、公司和网点；同时保存广告标识和页面。',
+          text:'互联网广告应具有可识别性；竞价排名的商品或服务，应显著标明“广告”，并与自然搜索结果明显区分。即使标了广告，也不能证明它是品牌官方售后或授权网点。',
+          action:'把搜索排名当线索，不当官方证明。先从品牌官网、官方App、说明书或官方公众号找售后入口，再核验搜索结果里的电话、公司和网点。',
           sources:[
-            {title:'市场监管总局：互联网广告管理办法',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d93a579afd45413e8576e4623fab348f.html'}
+            {title:'【部门规章】《互联网广告管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d93a579afd45413e8576e4623fab348f.html'}
           ]
         },
         {
@@ -155,24 +371,62 @@
           effective:'2026-04-15',
           document:'《市场监督管理投诉举报处理办法》',
           title:'投诉和举报，可以在同一份材料里一起提。',
-          text:'新办法明确：同一份材料同时包含消费投诉和违法举报内容时，市场监督管理部门应当分别处理；调解过程中发现涉嫌违反市场监管法律法规规章的线索，也应另行核查。',
-          action:'材料按时间写清搜索、诊断、换件、报价、付款和复检结果。退费诉求写明争议金额；虚假宣传、未明码标价、虚报故障等违法线索同时列出，请依法分别处理。',
+          text:'同一份材料同时包含消费投诉和违法举报内容时，市场监督管理部门应分别处理；调解过程中发现涉嫌违法线索，也应另行核查。',
+          action:'材料按时间写清搜索、诊断、换件、报价、付款和复检结果。退费诉求写明争议金额；虚假宣传、未明码标价、虚报故障等违法线索同时列出。',
           sources:[
-            {title:'市场监管总局：市场监督管理投诉举报处理办法',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_e4d03a20c0fd49769e408c7bf3791ff5.html'}
+            {title:'【部门规章】《市场监督管理投诉举报处理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_e4d03a20c0fd49769e408c7bf3791ff5.html'}
           ]
         }
       ]
     },
     'rental-credit-card-first':{
-      status:'现行',
-      authority:'部门规章 · 行政法规',
-      effective:'2026-02-01',
-      title:'旧扣款争议，别只看今天的协议。',
-      text:'平台规则和付款授权会更新。现行规则要求平台保存相应历史规则版本，非银行支付机构的交易记录自交易结束后至少保存五年；平台依据规则对消费者采取不利处理时，还应说明事实、理由和依据并提供申诉、人工复核。',
-      action:'要求提供交易当时的付款授权、当时版本的平台规则、原始支付指令和交易记录、商户提交的扣款凭证。平台不要只回复“商户发起”或“系统处理”。',
-      sources:[
-        {title:'【部门规章】《网络交易平台规则监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html'},
-        {title:'【部门规章】《非银行支付机构监督管理条例实施细则》',href:'https://www.pbc.gov.cn/tiaofasi/144941/144979/3941920/2025111716285425957/2024042210595110796.pdf'}
+      rules:[
+        {
+          id:'chargeback-review',
+          tab:'调单核查',
+          status:'现行',
+          type:'监管规则',
+          authority:'国家金融监督管理总局',
+          effective:'2011-01-13',
+          document:'《商业银行信用卡业务监督管理办法》',
+          title:'出现可疑信用卡交易，可以要求发卡行进入核查和调单链路。',
+          text:'发卡银行应建立交易授权和风险监测制度；对可疑交易，应及时采取联系确认等措施，并通过电话核实、联系收单银行、调单或实地走访等方式排查处理。',
+          action:'发现异常预授权完成或请款时，立即向发卡行提出书面账务异议，明确要求核查交易、联系收单侧并调单，保留工单和处理结果。',
+          sources:[
+            {title:'【监管规则】《商业银行信用卡业务监督管理办法》第五十六条',href:'https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=272670'}
+          ]
+        },
+        {
+          id:'authorization-proof',
+          tab:'授权举证',
+          status:'现行',
+          type:'司法解释',
+          authority:'最高人民法院',
+          effective:'2021-05-25',
+          document:'《关于审理银行卡民事纠纷案件若干问题的规定》',
+          title:'你否认本人或授权交易时，对方主张“你授权过”，要拿出相应证据。',
+          text:'最高法规定，发卡行、非银行支付机构主张争议交易属于持卡人本人交易或者授权交易的，应承担相应举证责任，可以提交交易单据、身份识别和验证信息等材料。该规则解决的是交易是否本人或授权，不替代车损责任和赔偿金额的证明。',
+          action:'把异议写具体：我否认的是哪一笔交易、哪一项授权。要求提供交易单据、身份识别信息、验证信息和对应授权记录，不要只接受“系统显示已授权”。',
+          sources:[
+            {title:'【司法解释】最高法银行卡民事纠纷规定',href:'https://www.court.gov.cn/zixun/xiangqing/304771.html'}
+          ]
+        },
+        {
+          id:'platform-appeal',
+          tab:'平台申诉',
+          status:'现行',
+          type:'部门规章 · 行政法规',
+          authority:'市场监管总局 · 国家网信办 · 国务院',
+          effective:'2026-02-01',
+          document:'《网络交易平台规则监督管理办法》 + 《非银行支付机构监督管理条例》',
+          title:'信用免押发生争议，平台和支付机构都不能只把你推回商户。',
+          text:'平台依据规则作出不利处理时，应说明事实、理由和依据并提供申诉复核；支付机构还负有及时妥善处理用户争议、履行投诉处理主体责任的义务。',
+          action:'要求平台给出规则条款、商户材料、审核依据和人工复核结果；同时要求支付机构受理支付争议并核查授权与交易记录。',
+          sources:[
+            {title:'【部门规章】《网络交易平台规则监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html'},
+            {title:'【行政法规】《非银行支付机构监督管理条例》第三十五条',href:'https://www.pbc.gov.cn/tiaofasi/144941/144953/5174993/index.html'}
+          ]
+        }
       ]
     }
   };
@@ -180,42 +434,7 @@
   const esc=value=>String(value||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   const link=source=>source?`<a href="${esc(source.href)}" target="_blank" rel="noopener">${esc(source.title)} →</a>`:'';
   const ruleSources=rule=>rule.sources||[];
-
-  function normalizeRules(item){
-    if(item.rules&&item.rules.length) return item.rules;
-
-    const rules=[{
-      id:'current',
-      tab:'当前规则',
-      status:item.status||'现行',
-      type:item.authority||'',
-      authority:'',
-      effective:item.effective||'',
-      document:item.document||'',
-      title:item.title||'',
-      text:item.text||'',
-      action:item.action||'',
-      sources:item.sources||[]
-    }];
-
-    if(item.upcoming){
-      rules.push({
-        id:'upcoming',
-        tab:'即将生效',
-        status:'即将生效',
-        type:item.upcoming.authority||'',
-        authority:'',
-        effective:item.upcoming.effective||'',
-        document:item.upcoming.document||'',
-        title:item.upcoming.title||'',
-        text:item.upcoming.text||'',
-        action:item.upcoming.action||item.action||'',
-        sources:item.upcomingSource?[item.upcomingSource]:[]
-      });
-    }
-
-    return rules;
-  }
+  const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];
 
   function allSources(item){
     const seen=new Set();
@@ -329,15 +548,15 @@
     const host=ensureHost();
     const active=getActiveCase();
     const item=active&&updates[active.slug];
-    if(!item){
+    const rules=normalizeRules(item);
+    if(!rules.length){
       host.hidden=true;
       host.innerHTML='';
       return;
     }
 
-    const rules=normalizeRules(item);
     const first=rules[0];
-    const tabs=rules.length>1?`<div class="rights-pulse-tabs" role="tablist" aria-label="切换相关规则">${rules.map((rule,index)=>`<button class="rights-pulse-tab" type="button" role="tab" id="rightsRuleTab-${index}" aria-controls="rightsPulsePanel" aria-selected="${index===0?'true':'false'}" tabindex="${index===0?'0':'-1'}" data-rights-rule="${index}">${esc(rule.tab||`规则 ${index+1}`)}</button>`).join('')}</div>`:'';
+    const tabs=rules.length>1?`<div class="rights-pulse-tabs" role="tablist" aria-label="切换相关权利问题">${rules.map((rule,index)=>`<button class="rights-pulse-tab" type="button" role="tab" id="rightsRuleTab-${index}" aria-controls="rightsPulsePanel" aria-selected="${index===0?'true':'false'}" tabindex="${index===0?'0':'-1'}" data-rights-rule="${index}">${esc(rule.tab)}</button>`).join('')}</div>`:'';
 
     host.hidden=false;
     host.innerHTML=`<div class="wrap"><div class="rights-pulse">

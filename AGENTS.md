@@ -16,9 +16,21 @@ For **any new CASE, existing CASE rewrite, or consumer-feedback adoption**, read
 3. `docs/design-system.md` — visual implementation;
 4. `docs/legal-freshness-standard.md` — legal freshness, source authority, new-rule / new-case translation and Living CASE rules.
 
-The CASE content standard is intentionally short. Its central rule is:
+Every CASE has one mandatory starting question:
 
-> **Simplify explanation, not decisive process. Preserve any fact or action that may later determine complaint outcome, responsibility, evidence acceptance, loss amount, or judgment.**
+> **What is the single choice or action this CASE wants the consumer to change next time?**
+
+That answer is the CASE's only main proposition. Hero, immediate actions, scenarios, route, rights update and takeaway must all support it.
+
+Default narrative order:
+
+> **结论 → 2–4 个关键理由 / 判断 → 现在怎么做 → 已经出事怎么办 → 法规与证据依据 → 最终经验**
+
+Do not use laws, legal dimensions, or a collection of unrelated “principles” as the page outline. Laws support consumer judgments and actions; they do not become the information architecture.
+
+The second non-negotiable rule is:
+
+> **Simplify explanation, not decisive process. Preserve any fact or action that may later determine complaint outcome, responsibility, authorization, evidence acceptance, loss amount, or judgment.**
 
 The legal freshness rule adds one mandatory question:
 
@@ -26,7 +38,7 @@ The legal freshness rule adds one mandatory question:
 
 Default Standard CASE scenario structure remains **关键事实 + 现在做什么**. Do not create extra sections merely to fit new information. Prefer replacing weak copy and merging into the existing flow. Add a new scenario/module only when it materially changes the user's judgment, action, evidence, or escalation path.
 
-`legal-updates.js` is the public Living CASE layer. Keep at most one strongest current rights update per CASE. It must translate the source into a consumer action; it is not a legal-news feed.
+`legal-updates.js` is the public Living CASE layer. Keep only the strongest current rights update needed to change a consumer action; it is not a legal-news feed and must not repeat the CASE's main explanation.
 
 ## When asked to process feedback
 
@@ -42,7 +54,7 @@ Treat phrases such as `处理不吃亏反馈`, `review consumer feedback`, `吸�
    - `reject`: duplicate, anecdotal without general value, contradicts verified facts, or would weaken the product.
    - `needs evidence`: plausible but cannot be safely incorporated until verified.
 7. Verify any factual, legal, regulatory, pricing, platform-policy, medical, or other time-sensitive claim against current primary/official sources before editing. Also run the Legal Freshness Standard: check whether newer rules or authoritative cases have changed the user's rights position since the CASE was last verified.
-8. Change only the canonical source file(s). Apply `docs/case-content-standard.md`: keep the page simple, preserve decisive steps, prefer replacement over accumulation, and keep the existing scenario-first structure. Update the corresponding `legal-updates.js` entry when a stronger current rights change should replace the existing pulse.
+8. Change only the canonical source file(s). Apply `docs/case-content-standard.md`: establish the single core proposition first, keep laws subordinate to consumer judgment/action, preserve decisive steps, replace rather than append, and keep one readable main path. Update the corresponding `legal-updates.js` entry only when a stronger current rights change should replace the existing pulse.
 9. Run the repository's existing QA. Open one focused PR that lists the feedback IDs handled and the decision for each.
 10. Only after the content PR is successfully merged, write final feedback states back to Supabase using the writeback contract in `docs/agent-feedback-workflow.md`.
 
@@ -68,6 +80,6 @@ Do not maintain a second registry. Search the current content data for `case_slu
 - `bank-wealth-case.js`
 - `rental-payment-case.js`
 - `appliance-repair-case.js`
-- `legal-updates.js` — one strongest current rights update per CASE, not a duplicate CASE registry.
+- `legal-updates.js` — strongest current rights update per CASE, not a duplicate CASE registry.
 
 If the repository structure changes, follow current `main`; do not preserve obsolete paths.

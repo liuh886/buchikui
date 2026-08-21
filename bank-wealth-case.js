@@ -1,7 +1,7 @@
 window.BUCHIKUI_CASES.push({
   id:'007',
   slug:'bank-wealth-not-guaranteed',
-  name:'银行理财不保本怎么办',
+  name:'银行理财不一定保本',
   label:'BANK WEALTH',
   updated:'2026-08-20',
   meta:{

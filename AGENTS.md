@@ -14,17 +14,35 @@ For **any new CASE, existing CASE rewrite, or consumer-feedback adoption**, read
 1. `docs/product-experience-spec.md` — product structure and experience;
 2. `docs/case-content-standard.md` — authoritative content-writing and simplification rule;
 3. `docs/design-system.md` — visual implementation;
-4. `docs/legal-freshness-standard.md` — legal freshness, source authority, new-rule / new-case translation and Living CASE rules.
+4. `docs/legal-freshness-standard.md` — legal freshness, source authority, Rights Check admission, new-rule / new-case translation and Living CASE rules.
 
 Every CASE has one mandatory starting question:
 
 > **What is the single choice or action this CASE wants the consumer to change next time?**
 
-That answer is the CASE's only main proposition. Hero, immediate actions, scenarios, route, rights update and takeaway must all support it.
+That answer is the CASE's only main proposition. Hero, immediate actions, scenarios, evidence, route, rights check, optional discussion and takeaway must all support it.
+
+Before writing, also identify:
+
+- what information gap makes the consumer vulnerable;
+- who controls the money, evidence, rules or decision;
+- which consumer action, if done casually now, will be hardest to undo later.
+
+Default module responsibilities are strict:
+
+- **Hero:** speak plain consumer language; explain the core problem without leading with law names, legal history or abstract frameworks.
+- **Immediate Actions:** surface 3–4 actions that prevent the user from making a hard-to-reverse mistake.
+- **Rights Check (`legal-updates.js`):** present the key current legal / regulatory leverage and source authority. Whether it is one item or 2–4 tabs is governed only by `docs/legal-freshness-standard.md`.
+- **Scenarios:** identify real, typical consumer problems and pair each with **关键事实 + 现在做什么**.
+- **Evidence:** keep only materials tied to the dispute and say who controls evidence that the consumer must request.
+- **Route:** answer **when to escalate → to whom → with what → for what result**.
+- **Discussion:** optional, late-page only. Use it only when the CASE exposes a concrete product / industry governance mechanism worth improving. Separate current legal duties from Buchikui's editorial governance suggestions.
+- **Sources / Disclaimer:** support verification and boundaries, not a second article.
+- **Takeaway:** one transferable next-time choice, consistent with Hero.
 
 Default narrative order:
 
-> **结论 → 2–4 个关键理由 / 判断 → 现在怎么做 → 已经出事怎么办 → 法规与证据依据 → 最终经验**
+> **Hero → Immediate Actions → Rights Check → Scenarios → Evidence → Route → optional Template → optional Discussion → Sources / Disclaimer → Takeaway**
 
 Do not use laws, legal dimensions, or a collection of unrelated “principles” as the page outline. Laws support consumer judgments and actions; they do not become the information architecture.
 
@@ -36,9 +54,9 @@ The legal freshness rule adds one mandatory question:
 
 > **Has any current law, judicial interpretation, departmental rule, regulatory rule, platform rule, or high-value recent case changed what the consumer can demand, who must produce evidence, who may be responsible, or where the dispute should be escalated?**
 
-Default Standard CASE scenario structure remains **关键事实 + 现在做什么**. Do not create extra sections merely to fit new information. Prefer replacing weak copy and merging into the existing flow. Add a new scenario/module only when it materially changes the user's judgment, action, evidence, or escalation path.
+Default Standard CASE scenario structure remains **关键事实 + 现在做什么**. Do not create extra sections merely to fit new information. Prefer replacing weak copy and merging into the existing flow. Add a new scenario/module only when it materially changes the user's judgment, action, evidence, escalation path, or — for Discussion only — exposes a high-value governance mechanism worth examining.
 
-`legal-updates.js` is the public Living CASE layer. Keep only the strongest current rights update needed to change a consumer action; it is not a legal-news feed and must not repeat the CASE's main explanation.
+`legal-updates.js` is the public Living CASE rights layer. It is not a legal-news feed and must not repeat the CASE's main explanation. Default to one key issue; use 2–4 issue tabs only when all admission conditions in `docs/legal-freshness-standard.md` are met.
 
 ## When asked to process feedback
 
@@ -54,7 +72,7 @@ Treat phrases such as `处理不吃亏反馈`, `review consumer feedback`, `吸�
    - `reject`: duplicate, anecdotal without general value, contradicts verified facts, or would weaken the product.
    - `needs evidence`: plausible but cannot be safely incorporated until verified.
 7. Verify any factual, legal, regulatory, pricing, platform-policy, medical, or other time-sensitive claim against current primary/official sources before editing. Also run the Legal Freshness Standard: check whether newer rules or authoritative cases have changed the user's rights position since the CASE was last verified.
-8. Change only the canonical source file(s). Apply `docs/case-content-standard.md`: establish the single core proposition first, keep laws subordinate to consumer judgment/action, preserve decisive steps, replace rather than append, and keep one readable main path. Update the corresponding `legal-updates.js` entry only when a stronger current rights change should replace the existing pulse.
+8. Change only the canonical source file(s). Apply `docs/case-content-standard.md`: establish the single core proposition first, keep laws subordinate to consumer judgment/action, preserve decisive steps, replace rather than append, and keep one readable main path. Update the corresponding `legal-updates.js` entry only when current legal leverage should materially change the rights layer.
 9. Run the repository's existing QA. Open one focused PR that lists the feedback IDs handled and the decision for each.
 10. Only after the content PR is successfully merged, write final feedback states back to Supabase using the writeback contract in `docs/agent-feedback-workflow.md`.
 
@@ -80,6 +98,6 @@ Do not maintain a second registry. Search the current content data for `case_slu
 - `bank-wealth-case.js`
 - `rental-payment-case.js`
 - `appliance-repair-case.js`
-- `legal-updates.js` — strongest current rights update per CASE, not a duplicate CASE registry.
+- `legal-updates.js` — current rights layer keyed by consumer issue, not a duplicate CASE registry.
 
 If the repository structure changes, follow current `main`; do not preserve obsolete paths.

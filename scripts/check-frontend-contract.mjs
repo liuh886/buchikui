@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-const [html, app, styles, pwa, serviceWorker, manifestRaw, investmentCase] = await Promise.all([
+const [html, app, styles, pwa, serviceWorker, manifestRaw, investmentCase, applianceCase] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
@@ -8,6 +8,7 @@ const [html, app, styles, pwa, serviceWorker, manifestRaw, investmentCase] = awa
   readFile(new URL('../sw.js', import.meta.url), 'utf8'),
   readFile(new URL('../manifest.webmanifest', import.meta.url), 'utf8'),
   readFile(new URL('../investment-advisor-case.js', import.meta.url), 'utf8'),
+  readFile(new URL('../appliance-repair-case.js', import.meta.url), 'utf8'),
 ]);
 
 const fail = (message) => {
@@ -60,6 +61,7 @@ for (const required of [
   'rel="manifest" href="manifest.webmanifest"',
   'rel="apple-touch-icon"',
   'src="pwa.js"',
+  'src="appliance-repair-case.js"',
   'data-share',
   'data-print',
   'id="caseList"',
@@ -115,9 +117,10 @@ if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.inclu
 }
 
 for (const required of [
-  "const CACHE_NAME='buchikui-pwa-v3';",
+  "const CACHE_NAME='buchikui-pwa-v6';",
   "'./index.html'",
   "'./cases.js'",
+  "'./appliance-repair-case.js'",
   "'./pwa.js'",
   'self.skipWaiting()',
   "networkFirst(request,'./index.html')",
@@ -137,7 +140,9 @@ for (const retired of [
 }
 
 if (investmentCase.includes('costModel:')) fail('Case-specific cost-model renderer contract must not return');
-if (!investmentCase.includes('1 万元持有 10 年后投顾约为 1.81 万元')) fail('Compact advisor cost comparison is missing');
+if (!investmentCase.includes('1 万元横盘一年，已知成本约 191 元')) fail('Compact advisor cost example is missing');
+if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
+if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
 
 const manifest = JSON.parse(manifestRaw);
 if (manifest.display !== 'standalone') fail('PWA manifest must use standalone display mode');

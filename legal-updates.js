@@ -99,6 +99,17 @@
       },
       upcomingSource:{title:'【即将生效】《金融产品网络营销管理办法》',href:'https://www.cac.gov.cn/2026-04/24/c_1778769008779432.htm'}
     },
+    'appliance-repair-trap':{
+      status:'现行',
+      authority:'部门规章',
+      effective:'2026-04-15',
+      title:'别只写“诈骗”：退费是投诉，违法线索是举报。',
+      text:'2026 年新的《市场监督管理投诉举报处理办法》已经生效。同一份材料同时包含消费投诉和违法举报时，市场监管部门应分别处理；调解过程中发现涉嫌违反市场监管法律法规规章的线索，也应另行核查。调解没谈成，不等于违法线索一起结束。',
+      action:'在 12315 材料里直接分两栏：投诉诉求写退款金额和理由；举报线索写冒充官方、虚假 / 误导宣传、未明码标价、低价诱骗高价结算等具体事实。虚报故障、故意替换正常部件等行业违规，再向属地商务主管部门或当地承接执法部门反映。',
+      sources:[
+        {title:'【2026部门规章】《市场监督管理投诉举报处理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_e4d03a20c0fd49769e408c7bf3791ff5.html'}
+      ]
+    },
     'rental-credit-card-first':{
       status:'现行',
       authority:'部门规章 · 行政法规',

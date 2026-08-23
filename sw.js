@@ -13,6 +13,8 @@ const CORE_ASSETS=[
   './bank-wealth-case.js',
   './rental-payment-case.js',
   './appliance-repair-case.js',
+  './airport-sales-case.js',
+  './dating-safety-case.js',
   './app.js',
   './legal-updates.js',
   './membership-config.js',

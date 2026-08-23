@@ -98,6 +98,8 @@ Do not maintain a second registry. Search the current content data for `case_slu
 - `bank-wealth-case.js`
 - `rental-payment-case.js`
 - `appliance-repair-case.js`
+- `airport-sales-case.js`
+- `dating-safety-case.js`
 - `legal-updates.js` — current rights layer keyed by consumer issue, not a duplicate CASE registry.
 
 If the repository structure changes, follow current `main`; do not preserve obsolete paths.

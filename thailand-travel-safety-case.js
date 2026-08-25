@@ -1,0 +1,38 @@
+window.BUCHIKUI_CASES.push({
+  id:'012',
+  slug:'thailand-travel-safety',
+  name:'泰国旅游安全：识别异常风险路径',
+  label:'TRAVEL SAFETY',
+  updated:'2026-08-26',
+  meta:{
+    title:'不吃亏｜泰国旅游安全：识别异常风险路径',
+    description:'从泰缅边境相关网络爆料案例出发，了解旅行中跨境犯罪、诈骗、交通和应急处置风险。'
+  },
+  shareText:'旅行安全不是判断一个国家是否安全，而是识别自己是否进入异常风险路径。',
+  hero:{
+    title:'泰国旅游安全，<br>先识别<em>异常路径。</em>',
+    copy:'普通游客路线风险通常可控，但高薪诱惑、陌生人控制行程、非公开活动和边境转移等信号需要高度警惕。'
+  },
+  panic:{
+    title:'准备出行？<br>先守住这些边界。',
+    items:[
+      {title:'行程自己控制',text:'酒店、交通、目的地不要交给陌生人安排。'},
+      {title:'拒绝异常邀请',text:'远离高薪工作、免费旅行、投资机会等诱导。'},
+      {title:'保持可求助状态',text:'共享行程，保存护照和保险信息。'},
+      {title:'遇到异常立即离开',text:'优先进入商场、酒店、警察站等公共区域。'}
+    ]
+  },
+  section:{
+    kicker:'旅行风险识别',
+    title:'危险通常来自<br>异常行为组合。',
+    intro:'重点不是制造恐慌，而是在决定前识别风险信号。'
+  },
+  scenarios:[
+    {short:'边境诱骗',risk:'高风险',title:'被诱导前往与旅游目的无关区域',blocks:[{label:'关键事实',html:'<p>泰国主流旅游城市与边境特殊区域风险不同。陌生人安排交通、住宿和目的地，会降低个人控制能力。</p>'},{label:'现在做什么',kind:'action',html:'<p>不接受陌生人全程安排，不前往非必要边境区域。</p>'}]},
+    {short:'旅游诈骗',risk:'中风险',title:'黑导游、陌生活动和消费陷阱',blocks:[{label:'关键事实',html:'<p>正规旅游应由游客掌握选择权。异常消费、私人场所邀请需要警惕。</p>'},{label:'现在做什么',kind:'action',html:'<p>使用正规平台预订活动和交通。</p>'}]},
+    {short:'虚拟绑架',risk:'高风险',title:'冒充机构制造恐慌要求转账',blocks:[{label:'关键事实',html:'<p>任何要求保密、转账、隔离家人的行为都需要高度警惕。</p>'},{label:'现在做什么',kind:'action',html:'<p>独立联系官方渠道核验，不按对方指示操作。</p>'}]}
+  ],
+  evidence:{title:'提前准备关键资料。',intro:'保存护照、保险、订单和紧急联系人信息。',groups:[],items:[]},
+  route:{title:'遇到异常时',steps:[{title:'先脱离风险环境',text:'进入公共区域并联系同行人或家人。'}]},
+  discussion:{title:'Buchikui 产品启发',body:'旅行安全可以从静态攻略升级为 Trip Risk Radar，根据目的地、活动和行为识别风险。'}
+});

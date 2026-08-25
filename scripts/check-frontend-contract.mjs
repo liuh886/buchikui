@@ -180,7 +180,9 @@ for (const retired of [
 }
 
 if (investmentCase.includes('costModel:')) fail('Case-specific cost-model renderer contract must not return');
-if (!investmentCase.includes('1 万元横盘一年，已知成本约 191 元')) fail('Compact advisor cost example is missing');
+if (!investmentCase.includes('一年横盘<br>也会少 191.6 元')) fail('Compact advisor one-year cost example is missing');
+if (!investmentCase.includes('需要约 9.78%/年的毛收益才能追平')) fail('Compact advisor break-even analysis is missing');
+if (!investmentCase.includes('二十年以后<br>差距约 27.8%')) fail('Compact advisor long-term cost analysis is missing');
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
 if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair opening must identify search ranking as the start of the risk chain');

@@ -322,15 +322,24 @@
   const shareMeritToast=createShareMeritToast();
   let shareMeritTimer=null;
 
-  function showShareMerit(){
+  function hideShareMerit(){
+    shareMeritToast.classList.remove('is-visible');
+    setTimeout(()=>{shareMeritToast.hidden=true},180);
+  }
+
+  function showShareMerit(nextText=''){
     clearTimeout(shareMeritTimer);
     shareMeritToast.textContent='功德 +1';
     shareMeritToast.hidden=false;
     requestAnimationFrame(()=>shareMeritToast.classList.add('is-visible'));
     shareMeritTimer=setTimeout(()=>{
-      shareMeritToast.classList.remove('is-visible');
-      setTimeout(()=>{shareMeritToast.hidden=true},180);
-    },1800);
+      if(nextText){
+        shareMeritToast.textContent=nextText;
+        shareMeritTimer=setTimeout(hideShareMerit,1400);
+        return;
+      }
+      hideShareMerit();
+    },900);
   }
 
   async function sharePage(){
@@ -342,7 +351,7 @@
         return;
       }
       await navigator.clipboard.writeText(data.url);
-      showShareMerit();
+      showShareMerit('已复制到粘贴板');
     }catch(error){
       if(error?.name!=='AbortError'&&!navigator.share) window.prompt('复制这个 CASE 的链接：',data.url);
     }

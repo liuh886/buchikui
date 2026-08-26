@@ -180,6 +180,9 @@ for (const retired of [
 }
 
 if (investmentCase.includes('costModel:')) fail('Case-specific cost-model renderer contract must not return');
+if (!investmentCase.includes("panic:{")) fail('Compact advisor panic data required by renderHero is missing');
+if (!investmentCase.includes("shareText:")) fail('Compact advisor share text is missing');
+if (!investmentCase.includes("ogTitle:") || !investmentCase.includes("ogDescription:")) fail('Compact advisor social metadata is missing');
 if (!investmentCase.includes('IQQ        █           0.10%')) fail('Compact advisor IQQ fee anchor is missing');
 if (!investmentCase.includes('易方达159696 ██████      0.60%')) fail('Compact advisor domestic low-fee comparison is missing');
 if (!investmentCase.includes('广发159941  ██████████  1.00%')) fail('Compact advisor domestic high-fee comparison is missing');

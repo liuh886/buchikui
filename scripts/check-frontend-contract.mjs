@@ -191,7 +191,9 @@ for (const required of [
 ]) {
   if (!investmentCase.includes(required)) fail(`Compact advisor core fee-layer logic is missing: ${required}`);
 }
-if (investmentCase.includes('display:none')) fail('Compact advisor case must not hide legacy contract text in content');
+if (investmentCase.includes('display:none') || investmentCase.includes('<span style=')) {
+  fail('Compact advisor case must not hide legacy contract text in content');
+}
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
 if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair opening must identify search ranking as the start of the risk chain');

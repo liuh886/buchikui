@@ -183,10 +183,15 @@ if (investmentCase.includes('costModel:')) fail('Case-specific cost-model render
 if (!investmentCase.includes("panic:{")) fail('Compact advisor panic data required by renderHero is missing');
 if (!investmentCase.includes("shareText:")) fail('Compact advisor share text is missing');
 if (!investmentCase.includes("ogTitle:") || !investmentCase.includes("ogDescription:")) fail('Compact advisor social metadata is missing');
-if (!investmentCase.includes('IQQ        █           0.10%')) fail('Compact advisor IQQ fee anchor is missing');
-if (!investmentCase.includes('易方达159696 ██████      0.60%')) fail('Compact advisor domestic low-fee comparison is missing');
-if (!investmentCase.includes('广发159941  ██████████  1.00%')) fail('Compact advisor domestic high-fee comparison is missing');
-if (!investmentCase.includes('投顾服务费约 0.50%/年只是新增的一层')) fail('Compact advisor fee-stacking conclusion is missing');
+for (const required of [
+  '自己买 IQQ        约 0.10%',
+  '自己买国内纳指 ETF 约 0.60%–1.00%',
+  '支付宝投顾        底层基金费用 + 约 0.50% 投顾费',
+  '投顾不是“更高级的基金”，而是“基金 + 服务”',
+]) {
+  if (!investmentCase.includes(required)) fail(`Compact advisor core fee-layer logic is missing: ${required}`);
+}
+if (investmentCase.includes('display:none')) fail('Compact advisor case must not hide legacy contract text in content');
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
 if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair opening must identify search ranking as the start of the risk chain');

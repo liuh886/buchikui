@@ -42,6 +42,9 @@ for (const required of [
   "main.addEventListener('transitionend'",
   'caseTransitionController?.abort();',
   "shareMeritToast.textContent='功德 +1';",
+  "showShareMerit('已复制到粘贴板');",
+  "const requestedCase=cases.find(item=>item.slug===requested);",
+  "url.searchParams.set('case',active.slug);",
 ]) {
   if (!app.includes(required)) fail(`Missing frontend contract: ${required}`);
 }

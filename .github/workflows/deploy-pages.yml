@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -13,12 +12,17 @@ permissions:
   id-token: write
 
 concurrency:
-  group: buchikui-pages-${{ github.event.pull_request.number || github.ref }}
+  group: buchikui-pages
   cancel-in-progress: true
 
 jobs:
-  validate:
+  deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      CLOUDFLARE_WEB_ANALYTICS_TOKEN: ${{ vars.CLOUDFLARE_WEB_ANALYTICS_TOKEN || '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -36,25 +40,6 @@ jobs:
 
       - name: Validate frontend contracts
         run: node scripts/check-frontend-contract.mjs
-
-  deploy:
-    needs: validate
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    env:
-      CLOUDFLARE_WEB_ANALYTICS_TOKEN: ${{ vars.CLOUDFLARE_WEB_ANALYTICS_TOKEN || '' }}
-      PAGES_ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
 
       - name: Prepare public artifact
         run: |
@@ -75,11 +60,8 @@ jobs:
       - name: Upload static site
         uses: actions/upload-pages-artifact@v5
         with:
-          name: ${{ env.PAGES_ARTIFACT_NAME }}
           path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
-        with:
-          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}

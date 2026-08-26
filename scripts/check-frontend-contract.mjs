@@ -180,9 +180,10 @@ for (const retired of [
 }
 
 if (investmentCase.includes('costModel:')) fail('Case-specific cost-model renderer contract must not return');
-if (!investmentCase.includes('一年横盘<br>也会少 191.6 元')) fail('Compact advisor one-year cost example is missing');
-if (!investmentCase.includes('需要约 9.78%/年的毛收益才能追平')) fail('Compact advisor break-even analysis is missing');
-if (!investmentCase.includes('二十年以后<br>差距约 27.8%')) fail('Compact advisor long-term cost analysis is missing');
+if (!investmentCase.includes('IQQ        █           0.10%')) fail('Compact advisor IQQ fee anchor is missing');
+if (!investmentCase.includes('易方达159696 ██████      0.60%')) fail('Compact advisor domestic low-fee comparison is missing');
+if (!investmentCase.includes('广发159941  ██████████  1.00%')) fail('Compact advisor domestic high-fee comparison is missing');
+if (!investmentCase.includes('投顾服务费约 0.50%/年只是新增的一层')) fail('Compact advisor fee-stacking conclusion is missing');
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
 if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair opening must identify search ranking as the start of the risk chain');

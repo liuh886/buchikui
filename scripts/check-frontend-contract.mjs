@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-const [html, app, styles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, applianceCase, legalUpdates] = await Promise.all([
+const [html, app, styles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, legalUpdates] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
@@ -9,6 +9,7 @@ const [html, app, styles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, in
   readFile(new URL('../sw.js', import.meta.url), 'utf8'),
   readFile(new URL('../manifest.webmanifest', import.meta.url), 'utf8'),
   readFile(new URL('../investment-advisor-case.js', import.meta.url), 'utf8'),
+  readFile(new URL('../thailand-travel-safety-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../appliance-repair-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../legal-updates.js', import.meta.url), 'utf8'),
 ]);
@@ -64,6 +65,7 @@ for (const required of [
   'rel="apple-touch-icon"',
   'src="pwa.js"',
   'src="appliance-repair-case.js"',
+  'src="thailand-travel-safety-case.js"',
   'data-share',
   'data-print',
   'id="caseList"',
@@ -161,6 +163,7 @@ for (const required of [
   "'./index.html'",
   "'./cases.js'",
   "'./appliance-repair-case.js'",
+  "'./thailand-travel-safety-case.js'",
   "'./pwa.js'",
   'self.skipWaiting()',
   "networkFirst(request,'./index.html')",
@@ -194,6 +197,24 @@ for (const required of [
 if (investmentCase.includes('display:none') || investmentCase.includes('<span style=')) {
   fail('Compact advisor case must not hide legacy contract text in content');
 }
+
+for (const required of [
+  "slug:'thailand-travel-safety'",
+  "layout:'compact'",
+  "ogTitle:",
+  "ogDescription:",
+  "panic:{",
+  "route:{",
+  "sources:[",
+  "takeaway:",
+  "legal:",
+  '免费但不合理',
+  '行程被改变',
+  '要求隔离',
+]) {
+  if (!thailandCase.includes(required)) fail(`Thailand travel safety case contract is missing: ${required}`);
+}
+
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
 if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair opening must identify search ranking as the start of the risk chain');

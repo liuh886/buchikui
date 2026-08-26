@@ -1,0 +1,67 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: buchikui-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      CLOUDFLARE_WEB_ANALYTICS_TOKEN: ${{ vars.CLOUDFLARE_WEB_ANALYTICS_TOKEN || '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Validate JavaScript syntax
+        run: |
+          find . -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
+          node --check scripts/inject-cloudflare-web-analytics.mjs
+          node --check scripts/check-frontend-contract.mjs
+
+      - name: Validate frontend contracts
+        run: node scripts/check-frontend-contract.mjs
+
+      - name: Prepare public artifact
+        run: |
+          mkdir _site
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='scripts/' \
+            --exclude='_site/' \
+            ./ _site/
+
+      - name: Inject Cloudflare Web Analytics when configured
+        run: node scripts/inject-cloudflare-web-analytics.mjs _site
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

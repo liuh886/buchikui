@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-const [html, app, styles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, legalUpdates] = await Promise.all([
+const [html, app, styles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, layoffCase, legalUpdates] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
@@ -11,6 +11,7 @@ const [html, app, styles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, in
   readFile(new URL('../investment-advisor-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../thailand-travel-safety-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../appliance-repair-case.js', import.meta.url), 'utf8'),
+  readFile(new URL('../layoff-compensation-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../legal-updates.js', import.meta.url), 'utf8'),
 ]);
 
@@ -69,6 +70,7 @@ for (const required of [
   'src="pwa.js"',
   'src="appliance-repair-case.js"',
   'src="thailand-travel-safety-case.js"',
+  'src="layoff-compensation-case.js"',
   'data-share',
   'data-print',
   'id="caseList"',
@@ -128,6 +130,7 @@ for (const required of [
 
 for (const required of [
   'const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];',
+  'const ruleVerified=rule=>rule&&rule.verified?rule.verified:VERIFIED;',
   'function bindRuleTabs(host,rules)',
   'role="tablist"',
   'data-rights-rule',
@@ -143,6 +146,10 @@ for (const required of [
   "tab:'明码标价'",
   "tab:'搜索广告'",
   "tab:'投诉举报'",
+  "tab:'解除理由'",
+  "tab:'调岗边界'",
+  "tab:'批量裁员'",
+  "tab:'补偿计算'",
 ]) {
   if (!legalUpdates.includes(required)) fail(`Missing rights-pulse rule contract: ${required}`);
 }
@@ -167,6 +174,7 @@ for (const required of [
   "'./cases.js'",
   "'./appliance-repair-case.js'",
   "'./thailand-travel-safety-case.js'",
+  "'./layoff-compensation-case.js'",
   "'./pwa.js'",
   'self.skipWaiting()',
   "networkFirst(request,'./index.html')",
@@ -221,6 +229,25 @@ for (const required of [
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
 if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair opening must identify search ranking as the start of the risk chain');
+
+for (const required of [
+  "id:'013'",
+  "slug:'layoff-compensation'",
+  "name:'公司要裁你：先别签个人离职'",
+  "panic:{",
+  "scenarios:[",
+  "evidence:{",
+  "route:{",
+  "template:{",
+  "discussion:{",
+  'N+1不是所有裁员的统一答案',
+  '最后再升级',
+  '2027年12月14日',
+  '全国劳动人事争议在线调解服务平台',
+]) {
+  if (!layoffCase.includes(required)) fail(`Layoff compensation case contract is missing: ${required}`);
+}
+if (layoffCase.includes("layout:'compact'")) fail('Layoff compensation case must use the standard scenario-first reader');
 
 const manifest = JSON.parse(manifestRaw);
 if (manifest.display !== 'standalone') fail('PWA manifest must use standalone display mode');

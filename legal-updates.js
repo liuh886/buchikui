@@ -499,6 +499,74 @@
           ]
         }
       ]
+    },
+    'layoff-compensation':{
+      rules:[
+        {
+          id:'termination-proof',
+          tab:'解除理由',
+          status:'现行',
+          type:'司法解释 · 指导性案例',
+          authority:'最高人民法院',
+          verified:'2026-08-27',
+          document:'劳动争议司法解释（一）第四十四条 + 指导案例18号',
+          title:'公司说“你不胜任”，不是你先证明自己没问题。',
+          text:'因用人单位作出的辞退、解除劳动合同、减少劳动报酬、计算工作年限等决定发生劳动争议，用人单位承担相应举证责任。最高法指导案例18号进一步明确，绩效考核排名末位不等同于“不能胜任工作”，公司仍要证明符合法定解除条件。',
+          action:'要求公司把解除理由固定成书面：具体事实、适用制度或法定条款、考核数据，以及培训或调岗记录（如适用）。不要只接受“组织优化”“绩效不佳”这种结论词。',
+          sources:[
+            {title:'【司法解释】最高法劳动争议司法解释（一）',href:'https://www.court.gov.cn/fabu/xiangqing/282121.html'},
+            {title:'【指导性案例】指导案例18号',href:'https://www.court.gov.cn/shenpan/xiangqing/6002.html'}
+          ]
+        },
+        {
+          id:'job-transfer',
+          tab:'调岗边界',
+          status:'现行',
+          type:'法律 · 生效裁判',
+          authority:'全国人大常委会 · 人民法院',
+          verified:'2026-08-27',
+          document:'《劳动合同法》第三十五条 + 2026年公布生效调岗裁判',
+          title:'调岗不是“公司一句话，你只能服从”。',
+          text:'劳动合同约定内容原则上应协商变更；即使合同约定公司在一定条件下有调岗权，司法实践仍会审查必要性、合理性和正当性。2026年公布的一起生效案件中，工程师被调去流水线操作工，因岗位内容、模式、工时等差异显著，员工书面反对并继续出勤后被以旷工解除，法院认定违法解除。',
+          action:'书面提出异议并要求说明岗位职责、地点、工时、薪酬、期限、考核和调整依据，同时持续表达愿意正常提供劳动；不要因为不同意调岗就自行停止出勤。',
+          sources:[
+            {title:'【法律】《中华人民共和国劳动合同法》',href:'https://www.mohrss.gov.cn/xxgk2020/fdzdgknr/zcfg/fl/202011/t20201102_394622.html'},
+            {title:'【生效裁判】工程师拒绝调岗生产流水线被解雇案',href:'https://www.hncourt.gov.cn/public/detail.php?id=202850'}
+          ]
+        },
+        {
+          id:'economic-layoff',
+          tab:'批量裁员',
+          status:'现行',
+          type:'法律',
+          authority:'全国人大常委会',
+          effective:'2008-01-01',
+          verified:'2026-08-27',
+          document:'《中华人民共和国劳动合同法》第四十一至四十二条',
+          title:'达到经济性裁员门槛，事由、程序和留用规则都不能省。',
+          text:'裁减20人以上，或者不足20人但占企业职工总数10%以上时，经济性裁员必须落到法定事由，并履行提前30日向工会或全体职工说明、听取意见、将方案向劳动行政部门报告等程序；法律同时规定优先留用人员和部分不得依第四十、四十一条解除的保护情形。',
+          action:'要求公司说明本轮裁员人数和职工总数、采用的法定事由、职工说明和报告程序、你的筛选依据；属于优先留用或法定保护情形的，立即书面提出并附证明。',
+          sources:[
+            {title:'【法律】《中华人民共和国劳动合同法》第四十一至四十二条',href:'https://www.mohrss.gov.cn/xxgk2020/fdzdgknr/zcfg/fl/202011/t20201102_394622.html'}
+          ]
+        },
+        {
+          id:'compensation-formula',
+          tab:'补偿计算',
+          status:'现行',
+          type:'法律 · 行政法规',
+          authority:'全国人大常委会 · 国务院',
+          verified:'2026-08-27',
+          document:'《劳动合同法》第四十六至四十八条、第八十七条 + 《劳动合同法实施条例》',
+          title:'N、N+1、2N先看解除路径，不能混着算。',
+          text:'N通常指第四十七条经济补偿：每满一年一个月工资，六个月以上不满一年按一年，不满六个月按半个月；“+1”主要是用人单位依第四十条解除时，以额外一个月工资替代提前30日书面通知，并非所有裁员都自动有；违法解除或终止的赔偿金按经济补偿标准二倍计算，依法支付赔偿金后不再另叠一份经济补偿。',
+          action:'先确定公司到底依据哪条解除，再分别算工龄、经济补偿月工资基数和通知方式。要求公司给出逐项结算表，不接受只有“N+1”“0.5N”结论、没有计算路径的方案。',
+          sources:[
+            {title:'【法律】《中华人民共和国劳动合同法》',href:'https://www.mohrss.gov.cn/xxgk2020/fdzdgknr/zcfg/fl/202011/t20201102_394622.html'},
+            {title:'【行政法规】《中华人民共和国劳动合同法实施条例》',href:'https://www.beijing.gov.cn/zhengce/gwywj/201105/t20110506_780976.html'}
+          ]
+        }
+      ]
     }
   };
 
@@ -506,6 +574,8 @@
   const link=source=>source?`<a href="${esc(source.href)}" target="_blank" rel="noopener">${esc(source.title)} →</a>`:'';
   const ruleSources=rule=>rule.sources||[];
   const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];
+  const ruleVerified=rule=>rule&&rule.verified?rule.verified:VERIFIED;
+  const itemVerified=item=>normalizeRules(item).reduce((latest,rule)=>ruleVerified(rule)>latest?ruleVerified(rule):latest,VERIFIED);
 
   function allSources(item){
     const seen=new Set();
@@ -543,7 +613,7 @@
       ${ruleBasis(rule)?`<span>${esc(ruleBasis(rule))}</span>`:''}
       ${rule.effective?`<span>实施 ${esc(rule.effective)}</span>`:''}
       ${count>1?`<span>${count} 项关键规则</span>`:''}
-      <span>核验 ${VERIFIED}</span>`;
+      <span>核验 ${esc(ruleVerified(rule))}</span>`;
   }
 
   function panelHtml(rule){
@@ -560,6 +630,7 @@
     const list=document.getElementById('sourceList');
     if(!list) return;
     const sources=allSources(item);
+    const verified=itemVerified(item);
     const existing=new Set([...list.querySelectorAll('a[href]')].map(anchor=>anchor.href));
     sources.forEach(source=>{
       let normalized=source.href;
@@ -571,12 +642,12 @@
       a.target='_blank';
       a.rel='noopener';
       a.textContent=source.title;
-      li.append(a,document.createTextNode(` — 当前权利更新依据；法律核验 ${VERIFIED}。`));
+      li.append(a,document.createTextNode(` — 当前权利更新依据；法律核验 ${verified}。`));
       list.appendChild(li);
       existing.add(normalized);
     });
     const title=document.getElementById('sourcesTitle');
-    if(title&&!title.textContent.includes('权利核验')) title.textContent+=` · 权利核验 ${VERIFIED}`;
+    if(title&&!title.textContent.includes('权利核验')) title.textContent+=` · 权利核验 ${verified}`;
   }
 
   function bindRuleTabs(host,rules){

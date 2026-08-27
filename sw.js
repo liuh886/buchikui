@@ -16,6 +16,7 @@ const CORE_ASSETS=[
   './airport-sales-case.js',
   './dating-safety-case.js',
   './thailand-travel-safety-case.js',
+  './layoff-compensation-case.js',
   './app.js',
   './legal-updates.js',
   './membership-config.js',

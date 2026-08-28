@@ -192,6 +192,48 @@
     byId('templateText').textContent=active.template.text;
   }
 
+  function renderRouteComparison(){
+    let host=byId('routeComparison');
+    if(!host){
+      host=document.createElement('section');
+      host.id='routeComparison';
+      byId('routeGrid').insertAdjacentElement('afterend',host);
+    }
+
+    const comparison=active.route.comparison;
+    host.hidden=!comparison;
+    if(!comparison){
+      host.className='';
+      host.innerHTML='';
+      return;
+    }
+
+    const kinds=new Set(['product','custody','trading','advisor']);
+    const totals=comparison.rows.map(row=>(row.segments||[]).reduce((sum,segment)=>sum+Number(segment.value||0),0));
+    const max=Number(comparison.max)||Math.max(1,...totals);
+    const legend=(comparison.legend||[]).map(item=>{
+      const kind=kinds.has(item.kind)?item.kind:'product';
+      return `<span class="fee-legend-item"><i class="fee-swatch fee-${kind}" aria-hidden="true"></i>${escapeHtml(item.label)}</span>`;
+    }).join('');
+    const rows=comparison.rows.map((row,index)=>{
+      const total=totals[index];
+      const segments=(row.segments||[]).map(segment=>{
+        const kind=kinds.has(segment.kind)?segment.kind:'product';
+        const value=Math.max(0,Number(segment.value||0));
+        const width=Math.min(100,(value/max)*100);
+        return `<span class="fee-segment fee-${kind}" style="width:${width.toFixed(3)}%" title="${escapeAttr(`${value.toFixed(2)}%`)}"></span>`;
+      }).join('');
+      return `<div class="fee-row${row.highlight?' is-highlight':''}">
+        <div class="fee-label"><strong>${escapeHtml(row.label)}</strong>${row.extra?`<small>${escapeHtml(row.extra)}</small>`:''}</div>
+        <div class="fee-track" role="img" aria-label="${escapeAttr(`${row.label}：${row.totalLabel||`${total.toFixed(2)}%`}`)}">${segments}</div>
+        <div class="fee-total">${escapeHtml(row.totalLabel||`${total.toFixed(2)}%`)}</div>
+      </div>`;
+    }).join('');
+
+    host.className='fee-comparison';
+    host.innerHTML=`<div class="fee-comparison-head"><div><span class="fee-comparison-kicker">费用对比</span><h3>${escapeHtml(comparison.title)}</h3><p>${escapeHtml(comparison.intro||'')}</p></div><div class="fee-legend">${legend}</div></div><div class="fee-chart">${rows}</div>${comparison.footnote?`<p class="fee-footnote">${escapeHtml(comparison.footnote)}</p>`:''}`;
+  }
+
   function renderRoute(){
     setCanonicalHtml('routeTitle',active.route.title||'处理路径');
     byId('routeGrid').innerHTML=active.route.steps.map((step,index)=>{
@@ -199,6 +241,7 @@
       const external=/^https?:\/\//i.test(href);
       return `<article class="route-step"><span class="n">${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(step.title)}</h3><p>${sanitizeCanonicalHtml(step.text)}</p><a href="${escapeAttr(href)}"${external?' target="_blank" rel="noopener"':''}>${escapeHtml(step.link)}</a></article>`;
     }).join('');
+    renderRouteComparison();
     const note=byId('routeNote');
     note.hidden=!active.route.note;
     if(active.route.note) setCanonicalHtml('routeNote',active.route.note);

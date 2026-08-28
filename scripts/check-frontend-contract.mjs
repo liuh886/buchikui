@@ -36,8 +36,10 @@ for (const required of [
   'function renderEvidence()',
   'function renderServiceStandard()',
   'function renderStandardCase()',
+  'function renderRouteComparison()',
   'function renderRoute()',
   'function renderSources()',
+  'renderRouteComparison();',
   'const href=safeHref(step.href);',
   'const href=safeHref(source.href);',
   "main.addEventListener('transitionend'",
@@ -113,6 +115,9 @@ for (const required of [
   '.service-standard-details',
   '.template-details',
   '.case-list',
+  '.fee-comparison',
+  '.fee-row.is-highlight',
+  '.fee-track',
 ]) {
   if (!styles.includes(required)) fail(`Missing simplified design contract: ${required}`);
 }
@@ -130,6 +135,7 @@ for (const required of [
 
 for (const required of [
   'const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];',
+  'const ruleVerified=rule=>rule&&rule.verified?rule.verified:VERIFIED;',
   'function bindRuleTabs(host,rules)',
   'role="tablist"',
   'data-rights-rule',
@@ -145,8 +151,10 @@ for (const required of [
   "tab:'明码标价'",
   "tab:'搜索广告'",
   "tab:'投诉举报'",
-  "tab:'解除方式'",
-  "tab:'经济补偿'",
+  "tab:'解除理由'",
+  "tab:'调岗边界'",
+  "tab:'批量裁员'",
+  "tab:'补偿计算'",
 ]) {
   if (!legalUpdates.includes(required)) fail(`Missing rights-pulse rule contract: ${required}`);
 }
@@ -166,7 +174,7 @@ if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.inclu
 }
 
 for (const required of [
-  "const CACHE_NAME='buchikui-pwa-v6';",
+  "const CACHE_NAME='buchikui-pwa-v7';",
   "'./index.html'",
   "'./cases.js'",
   "'./appliance-repair-case.js'",
@@ -195,13 +203,20 @@ if (!investmentCase.includes("panic:{")) fail('Compact advisor panic data requir
 if (!investmentCase.includes("shareText:")) fail('Compact advisor share text is missing');
 if (!investmentCase.includes("ogTitle:") || !investmentCase.includes("ogDescription:")) fail('Compact advisor social metadata is missing');
 for (const required of [
-  '自己买 IQQ        约 0.10%',
-  '自己买国内纳指 ETF 约 0.60%–1.00%',
-  '支付宝投顾        底层基金费用 + 约 0.50% 投顾费',
-  '投顾不是“更高级的基金”，而是“基金 + 服务”',
+  '支付宝投顾的真实交易成本<br>犹如冰山。',
+  'comparison:{',
+  "label:'IQQ'",
+  "label:'嘉实 159501'",
+  "label:'广发 159941'",
+  "label:'支付宝投顾'",
+  "totalLabel:'约 1.72%'",
+  '交易手续费约 0.22%',
+  '运作费约 1.00%',
+  '投顾管理费约 0.50%',
 ]) {
-  if (!investmentCase.includes(required)) fail(`Compact advisor core fee-layer logic is missing: ${required}`);
+  if (!investmentCase.includes(required)) fail(`Compact advisor iceberg comparison is missing: ${required}`);
 }
+if (investmentCase.includes('把结构看成三层就够了')) fail('Retired advisor three-line summary returned');
 if (investmentCase.includes('display:none') || investmentCase.includes('<span style=')) {
   fail('Compact advisor case must not hide legacy contract text in content');
 }
@@ -235,20 +250,21 @@ if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair ope
 for (const required of [
   "id:'013'",
   "slug:'layoff-compensation'",
-  "src=\"layoff-compensation-case.js\"",
+  "name:'公司要裁你：先别签个人离职'",
+  "panic:{",
+  "scenarios:[",
+  "evidence:{",
+  "route:{",
+  "template:{",
+  "discussion:{",
+  'N+1不是所有裁员的统一答案',
+  '最后再升级',
+  '2027年12月14日',
+  '全国劳动人事争议在线调解服务平台',
 ]) {
-  const target=required.startsWith('src=')?html:layoffCase;
-  if (!target.includes(required)) fail(`Layoff guide contract is missing: ${required}`);
+  if (!layoffCase.includes(required)) fail(`Layoff compensation case contract is missing: ${required}`);
 }
-
-for (const required of [
-  '经济补偿',
-  '解除方式',
-  '违法解除',
-  '劳动仲裁',
-]) {
-  if (!layoffCase.includes(required)) fail(`Layoff guide content is missing: ${required}`);
-}
+if (layoffCase.includes("layout:'compact'")) fail('Layoff compensation case must use the standard scenario-first reader');
 
 const manifest = JSON.parse(manifestRaw);
 if (manifest.display !== 'standalone') fail('PWA manifest must use standalone display mode');

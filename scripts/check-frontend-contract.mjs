@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, layoffCase, legalUpdates] = await Promise.all([
+const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, layoffCase, alibabaAuctionCase, legalUpdates] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
@@ -13,6 +13,7 @@ const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWork
   readFile(new URL('../thailand-travel-safety-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../appliance-repair-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../layoff-compensation-case.js', import.meta.url), 'utf8'),
+  readFile(new URL('../alibaba-auction-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../legal-updates.js', import.meta.url), 'utf8'),
 ]);
 
@@ -77,6 +78,7 @@ for (const required of [
   'src="pwa.js"',
   'src="appliance-repair-case.js"',
   'src="thailand-travel-safety-case.js"',
+  'src="alibaba-auction-case.js"',
   'src="layoff-compensation-case.js"',
   'data-share',
   'data-print',
@@ -208,6 +210,30 @@ for (const retired of [
   if (legalUpdates.includes(retired)) fail(`Retired rights-pulse path returned: ${retired}`);
 }
 
+const caseSourcePaths = [
+  'cases.js',
+  'compact-cases.js',
+  'mobile-plan-case.js',
+  'court-case.js',
+  'investment-advisor-case.js',
+  'bank-wealth-case.js',
+  'rental-payment-case.js',
+  'appliance-repair-case.js',
+  'airport-sales-case.js',
+  'dating-safety-case.js',
+  'thailand-travel-safety-case.js',
+  'alibaba-auction-case.js',
+  'layoff-compensation-case.js',
+  'legal-updates.js',
+];
+const caseSources = await Promise.all(caseSourcePaths.map(path => readFile(new URL(`../${path}`, import.meta.url), 'utf8')));
+for (let index = 0; index < caseSources.length; index += 1) {
+  const source = caseSources[index];
+  const path = caseSourcePaths[index];
+  if (/先(?:确认|确定)/.test(source)) fail(`AI-style confirm opener returned in ${path}`);
+  if (/不是[^。\n]{0,80}(?:而是|而在)/.test(source)) fail(`AI-style contrast skeleton returned in ${path}`);
+}
+
 if (!pwa.includes("navigator.serviceWorker.register('./sw.js')")) fail('PWA service worker registration is missing');
 if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.includes('SKIP_WAITING')) {
   fail('PWA client must stay infrastructure-only');
@@ -220,6 +246,7 @@ for (const required of [
   "'./cases.js'",
   "'./appliance-repair-case.js'",
   "'./thailand-travel-safety-case.js'",
+  "'./alibaba-auction-case.js'",
   "'./layoff-compensation-case.js'",
   "'./pwa.js'",
   'self.skipWaiting()',
@@ -289,7 +316,7 @@ if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair ope
 for (const required of [
   "id:'013'",
   "slug:'layoff-compensation'",
-  "name:'公司要裁你：先别签个人离职'",
+  "name:'公司要裁你：别签个人离职'",
   "updated:'2026-08-28'",
   "panic:{",
   "scenarios:[",
@@ -306,6 +333,17 @@ for (const required of [
 }
 if (layoffCase.includes("layout:'compact'")) fail('Layoff compensation case must use the standard scenario-first reader');
 
+for (const required of [
+  "id:'014'",
+  "slug:'alibaba-auction-trap'",
+  "name:'阿里拍卖局中局：捡漏你就输了'",
+  "updated:'2026-08-28'",
+  '拍卖方自己抬价',
+  '三个真实案例',
+]) {
+  if (!alibabaAuctionCase.includes(required)) fail(`Alibaba auction case contract is missing: ${required}`);
+}
+
 const manifest = JSON.parse(manifestRaw);
 if (manifest.display !== 'standalone') fail('PWA manifest must use standalone display mode');
 if (manifest.start_url !== './' || manifest.scope !== './') fail('PWA start_url and scope must stay project-relative');
@@ -321,4 +359,4 @@ await Promise.all([
   readFile(new URL('../icons/icon-maskable-512.png', import.meta.url)),
 ]);
 
-console.log(`Frontend contract passed for ${localScripts.length} deferred local scripts with one simplified reader path and infrastructure-only PWA.`);
+console.log(`Frontend contract passed for ${localScripts.length} deferred local scripts with one simplified reader path, direct case language, and infrastructure-only PWA.`);

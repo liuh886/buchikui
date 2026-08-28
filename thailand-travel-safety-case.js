@@ -34,11 +34,6 @@ window.BUCHIKUI_CASES.push({
     ],
     note:'<strong>判断重点：</strong>不要因为一个细节就下结论；但当“异常利益 + 行程被控制 + 对外联系受限”开始组合出现，就不能再把它当作普通旅行插曲。'
   },
-  discussion:{
-    title:'近期案例',
-    intro:'看风险怎么开始、怎么升级。',
-    html:'<p><strong>Thailand’s Jaguar Kidnapping：</strong>网传经历集中出现<strong>湄索 / 泰缅边境、私人接送、长距离转运、人员行动受控</strong>。特点是风险不是突然出现，而是在行程被别人接管后一步步升级。</p><p><strong>8 月 23 日曼谷绑架案：</strong>一名中国游客从曼谷酒店乘坐“导游”安排的车辆后被控制并向湄索方向转移。特点是<strong>起点在正常旅游城市、接送看似正常，危险发生在车辆偏离原定行程之后</strong>。</p><p><strong>5 月商务诱骗案：</strong>四名中国公民合法入境、先在曼谷停留，随后被带往湄索并跨境进入缅甸。特点是<strong>合法入境、商务名义、前半程正常，都不代表后续交通和目的地安全</strong>。</p><p><strong>6 月虚拟绑架案：</strong>诈骗者冒充执法人员，要求受害者断联、独自行动、按指令换地点并拍摄“绑架”照片。特点是<strong>没有现场暴力，也可以先通过断联、威胁和指令控制人的行动</strong>。</p><p><strong>共同风险链：</strong><strong>陌生接送 → 临时改道 → 长距离转运 → 边境 / 非旅游区域 → 断联或手机受控</strong>。其中两项开始组合出现，尤其是“交通被控制 + 无法自由联系外界”同时出现时，就应停止继续执行对方安排。</p>'
-  },
   takeaway:'旅行安全最重要的能力，不是记住一张危险地点清单，而是及时发现自己正在失去行程、交通和信息控制权。',
   sources:[
     {title:'【网络线索】Reddit：Tourists Kidnapped and Sold in Thailand',href:'https://www.reddit.com/r/ThailandTourism/comments/1vwaq4v/tourists_kidnapped_and_sold_in_thailand/',note:'Jaguar 爆料原始帖子，用于观察湄索、泰缅边境和人员转运风险特征。'},

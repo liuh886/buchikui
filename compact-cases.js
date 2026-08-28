@@ -1,12 +1,12 @@
 window.BUCHIKUI_CASES.push({
   id:'003',
   slug:'bank-small-account-fee',
-  name:'如何追讨银行小额账户管理费',
+  name:'小额账户管理费，唯一账户可能不该扣',
   label:'BANK FEES',
   layout:'compact',
   updated:'2026-08-21',
   meta:{
-    title:'不吃亏｜如何追讨银行小额账户管理费',
+    title:'不吃亏｜小额账户管理费，唯一账户可能不该扣',
     description:'如果这是你在这家银行唯一的普通账户，2017 年后还在被收小额账户管理费，先让银行逐笔说明收费依据；符合免收条件的，要求核查并退费。',
     ogTitle:'银行扣的这几块钱，可能本来就不该扣。',
     ogDescription:'先查账户数量，再查每一笔扣费。银行说不清依据，就继续追问。'

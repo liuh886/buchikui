@@ -1,11 +1,11 @@
 window.BUCHIKUI_CASES.push({
   id:'004',
   slug:'mobile-plan-cost',
-  name:'如何降低通讯套餐费用',
+  name:'你有权利更改话费套餐',
   label:'MOBILE PLAN',
   updated:'2026-08-21',
   meta:{
-    title:'不吃亏｜如何降低通讯套餐费用：换套餐、客服工单与携号转网',
+    title:'不吃亏｜你有权利更改话费套餐',
     description:'老套餐太贵，先看真实用量，再拿一个仍在售的目标套餐问清楚：为什么别人能办，我不能？客服说不清就留工单、升级申诉。',
     ogTitle:'老套餐贵，别只问“有没有便宜的”。',
     ogDescription:'拿一个目标套餐去问：它还在不在售，我具体缺哪项条件。'

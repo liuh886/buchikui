@@ -1,6 +1,6 @@
 window.BUCHIKUI_CASES=[
   {
-    id:'001',slug:'rental',name:'如何租车维权',label:'CAR RENTAL',updated:'2026-08-20',
+    id:'001',slug:'rental',name:'租车警惕第三方平台',label:'CAR RENTAL',updated:'2026-08-20',
     meta:{
       title:'不吃亏｜租车维权：正常服务标准 + 9 个常见问题',
       description:'先看一次正常租车应完成的主体、车辆性质、收费、交车、车况、保障、救援、还车与结算标准，再处理无车、换车、提灯验损、停运损失费、信用免押划扣、拒赔等常见问题。',
@@ -161,9 +161,9 @@ window.BUCHIKUI_CASES=[
     takeaway:'租车避坑第一步：优先选择责任主体清楚的自营租赁公司。门头、平台广告和“官方授权”都不是责任主体；先查营业执照、合同出租方和收款主体，再看价格。'
   },
   {
-    id:'002',slug:'beauty-hair',name:'如何美容美发纠纷维权',label:'BEAUTY & HAIR',updated:'2026-08-20',
+    id:'002',slug:'beauty-hair',name:'美容美发避免预付费',label:'BEAUTY & HAIR',updated:'2026-08-20',
     meta:{
-      title:'不吃亏｜如何美容美发纠纷维权：办卡、加价、伤害与闭店',
+      title:'不吃亏｜美容美发避免预付费',
       description:'美容美发办卡退费、低价引流加价、擅自加项目、烫染损伤、闭店转店、生活美容越界医疗美容：一份围绕同意、价格、主体和损害证据的维权指南。',
       ogTitle:'美容美发维权：先把余额、项目、伤害和承诺对上账。',
       ogDescription:'6 个典型纠纷、关键证据和 4 条维权路径。办卡前和出事后都值得存。'

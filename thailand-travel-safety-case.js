@@ -25,16 +25,6 @@ window.BUCHIKUI_CASES.push({
       {title:'要求隔离',text:'要求保密、不要联系家人、交出手机，或以任何方式切断你的外部联系。'}
     ]
   },
-  overview:{
-    kicker:'案例介绍',
-    title:'为什么这个 CASE 值得单独看？',
-    intro:'近期多起事件把同一条风险路径呈现得很清楚：事情往往不是从“危险地点”开始，而是从一次陌生接送、临时改道或被要求断联开始。这里把网传线索和已确认事实分开。',
-    items:[
-      {status:'已确认',title:'曼谷出发，途中向湄索方向转移',text:'2026 年 8 月，一名中国游客从曼谷酒店乘坐所谓“导游”安排的车辆后遭多人控制，并被向湄索方向带走；她在途中逃脱。这个案件直接对应“陌生接送 + 行程被改变 + 交通失去控制”。'},
-      {status:'已确认',title:'合法入境、商务名义，也可能进入转运链',text:'2026 年 5 月，四名中国公民合法入境泰国后，先在曼谷停留，随后被带往湄索并跨境进入缅甸，最终被强迫从事呼叫中心诈骗。前半段“看起来正常”不能替代对下一段行程的独立核验。'},
-      {status:'网络线索',title:'Jaguar 爆料只作为线索，不作为定论',text:'相关 Reddit 第一人称爆料涉及湄索、Jaguar 旧厂区和人员转运，但具体指控尚未被完整独立核实。它的参考价值，是与已确认案件共同指向“泰缅边境转运”这一值得警惕的风险场景。'}
-    ]
-  },
   route:{
     title:'危险通常不是一个信号，<br>而是一组信号同时出现。',
     steps:[
@@ -45,14 +35,14 @@ window.BUCHIKUI_CASES.push({
     note:'<strong>判断重点：</strong>不要因为一个细节就下结论；但当“异常利益 + 行程被控制 + 对外联系受限”开始组合出现，就不能再把它当作普通旅行插曲。'
   },
   discussion:{
-    title:'近期案例怎么读？<br>先分清网传线索和已确认事实。',
-    intro:'这些案例不是为了证明“泰国不安全”，而是用来核对：哪些风险信号在真实事件里反复出现。',
-    html:'<p><strong>“Thailand’s Jaguar Kidnapping”网络爆料：</strong>8 月 23 日，一名自称长期居住在湄索泰缅边境、曾住在 Jaguar 旧厂区附近的 Reddit 用户发布大量第一人称经历，声称当地长期存在人员被控制、转运和偷渡等问题。这些具体指控目前不能全部独立核实，不能据此直接认定“Jaguar 就是绑架据点”。但它值得注意的地方是：爆料所指向的<strong>湄索、泰缅边境、人员转运</strong>这条风险链，并不是只有这一篇网帖在讲。</p><p><strong>8 月 23 日，中国游客从曼谷被绑架并被带往湄索方向：</strong>泰国警方披露，一名中国女子从曼谷酒店乘上通过所谓“导游”安排的车辆后，被多人控制、捆绑并向湄索方向转移；她在甘烹碧附近遇到警方检查点后成功逃脱。中国驻泰国使馆随后确认受害者为中国公民。这个案件最有价值的提示不是“不要去曼谷”，而是<strong>危险可以从正常旅游城市里的一个看似普通接送开始</strong>。</p><p><strong>5 月，四名中国公民以“商务活动”名义被诱骗：</strong>泰国警方公布，四人合法入境泰国后，先被带到曼谷 Lat Krabang 住宿，之后转往湄索并跨境进入缅甸，最终被强迫从事呼叫中心诈骗。它说明：<strong>前半段行程正常、合法入境、由熟人或商业联系人安排，都不能替代对下一段行程的独立核验。</strong></p><p><strong>6 月，“虚拟绑架”中国学生案：</strong>这起案件没有真实绑匪在现场控制受害者。诈骗分子冒充执法人员，通过威胁和心理操控要求受害者与家人断联、独自前往泰国并配合拍摄“被绑架”照片，再向家属索要赎金。它把一个风险信号讲得很清楚：<strong>“不要告诉家人 + 独自行动 + 按对方指令转移地点”本身就应被视为严重异常。</strong></p><p><strong>把这些案例放在一起看，真正反复出现的不是某一个地点，而是三种控制权正在同时丢失：</strong>别人开始决定你坐什么车、去哪里；你的行程不断被临时改写；你被要求减少或切断外部联系。单个信号不一定等于危险，但两个以上同时出现时，最稳妥的做法是<strong>停止执行下一步安排，回到有工作人员和监控的公共场所，并通过官方渠道重新核验。</strong></p>'
+    title:'近期案例',
+    intro:'看风险怎么开始、怎么升级。',
+    html:'<p><strong>Thailand’s Jaguar Kidnapping：</strong>网传经历集中出现<strong>湄索 / 泰缅边境、私人接送、长距离转运、人员行动受控</strong>。特点是风险不是突然出现，而是在行程被别人接管后一步步升级。</p><p><strong>8 月 23 日曼谷绑架案：</strong>一名中国游客从曼谷酒店乘坐“导游”安排的车辆后被控制并向湄索方向转移。特点是<strong>起点在正常旅游城市、接送看似正常，危险发生在车辆偏离原定行程之后</strong>。</p><p><strong>5 月商务诱骗案：</strong>四名中国公民合法入境、先在曼谷停留，随后被带往湄索并跨境进入缅甸。特点是<strong>合法入境、商务名义、前半程正常，都不代表后续交通和目的地安全</strong>。</p><p><strong>6 月虚拟绑架案：</strong>诈骗者冒充执法人员，要求受害者断联、独自行动、按指令换地点并拍摄“绑架”照片。特点是<strong>没有现场暴力，也可以先通过断联、威胁和指令控制人的行动</strong>。</p><p><strong>共同风险链：</strong><strong>陌生接送 → 临时改道 → 长距离转运 → 边境 / 非旅游区域 → 断联或手机受控</strong>。其中两项开始组合出现，尤其是“交通被控制 + 无法自由联系外界”同时出现时，就应停止继续执行对方安排。</p>'
   },
   takeaway:'旅行安全最重要的能力，不是记住一张危险地点清单，而是及时发现自己正在失去行程、交通和信息控制权。',
   sources:[
-    {title:'【网络线索】Reddit：Tourists Kidnapped and Sold in Thailand',href:'https://www.reddit.com/r/ThailandTourism/comments/1vwaq4v/tourists_kidnapped_and_sold_in_thailand/',note:'“Jaguar”爆料的原始网络帖子。属于第一人称社交媒体陈述，具体指控不能视为已被司法或官方完整确认。'},
-    {title:'【已确认案件】新华社：中国驻泰使馆确认中国公民在泰遭绑架',href:'https://www.news.cn/20260825/93ac0af9048640b3b89b0d0f231844c2/c.html',note:'2026 年 8 月 25 日。确认受害者为中国公民，泰国警方已介入并逮捕嫌疑人，案件仍在处理中。'},
+    {title:'【网络线索】Reddit：Tourists Kidnapped and Sold in Thailand',href:'https://www.reddit.com/r/ThailandTourism/comments/1vwaq4v/tourists_kidnapped_and_sold_in_thailand/',note:'Jaguar 爆料原始帖子，用于观察湄索、泰缅边境和人员转运风险特征。'},
+    {title:'【已确认案件】新华社：中国驻泰使馆确认中国公民在泰遭绑架',href:'https://www.news.cn/20260825/93ac0af9048640b3b89b0d0f231844c2/c.html',note:'2026 年 8 月 25 日。确认受害者为中国公民，泰国警方已介入并逮捕嫌疑人。'},
     {title:'【案件细节】Nation Thailand：Chinese woman escapes alleged abduction',href:'https://www.nationthailand.com/news/general/40070189',note:'2026 年 8 月 24 日。披露受害者从曼谷被控制并被带往湄索方向、在甘烹碧附近逃脱等警方通报细节。'},
     {title:'【已确认案件】TAT / Royal Thai Police：四名中国公民经泰国被带往缅甸',href:'https://www.tatnews.org/2026/05/tat-joins-royal-thai-police-briefing-on-assistance-to-four-chinese-nationals/',note:'2026 年 5 月 29 日。警方确认四人以商务活动为由来泰，之后经曼谷、湄索进入缅甸并被强迫从事呼叫中心活动。'},
     {title:'【已确认案件】TAT / Royal Thai Police：Virtual Kidnapping',href:'https://www.tatnews.org/2026/06/tat-reaffirms-visitor-safety-after-chinese-student-found-unharmed-in-virtual-kidnapping-case/',note:'2026 年 6 月 5 日。说明诈骗分子如何通过冒充执法人员、要求断联和独自旅行，远程操控受害者制造“绑架”假象。'},
@@ -61,5 +51,5 @@ window.BUCHIKUI_CASES.push({
     {title:'Thailand Tourist Police',href:'https://www.touristpolice.go.th/',note:'泰国旅游警察官方入口；Tourist Police Hotline 1155 提供 24 小时协助。'},
     {title:'中国驻泰王国大使馆',href:'https://th.china-embassy.gov.cn/',note:'领事提醒与领事保护官方入口。'}
   ],
-  legal:'本案例用于旅行风险识别教育，不代表对泰国整体安全状况作统一判断。网络爆料与已确认案件已在来源中区分；案件事实仍可能随着警方和司法调查更新。具体出行信息以当时官方旅行与领事提醒为准。'
+  legal:'本案例用于旅行风险识别教育；具体出行信息以当时官方旅行与领事提醒为准。'
 });

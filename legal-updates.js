@@ -615,7 +615,7 @@
           document:'2026-07 · 北京 · 撤销研发部门后解除员工',
           title:'部门没了，也不等于劳动合同当然可以解除。',
           text:'北京一家公司撤销研发部门后，以组织架构调整为由解除一名员工。北京三中院认为，部门撤销并不当然等于“客观情况发生重大变化”并导致劳动合同无法履行，最终判公司支付违法解除赔偿金差额、年终奖等共49万余元。',
-          action:'遇到“组织优化 / 岗位取消”，要求公司说明为什么劳动合同已经无法继续履行，而不是只接受一个组织调整结论。',
+          action:'遇到“组织优化 / 岗位取消”，要求公司说明为什么劳动合同已经无法继续履行，并提交相应事实和依据。',
           sources:[
             {title:'【生效裁判】撤销部门后解雇员工，一公司被判违法',href:'https://www.workercn.cn/c/2026-07-16/8848170.shtml'}
           ]
@@ -676,9 +676,9 @@
           authority:'全国人大常委会 · 国务院',
           verified:'2026-08-27',
           document:'《劳动合同法》第四十六至四十八条、第八十七条 + 《劳动合同法实施条例》',
-          title:'N、N+1、2N先看解除路径，不能混着算。',
+          title:'N、N+1、2N要按解除路径计算，不能混着算。',
           text:'N通常指第四十七条经济补偿：每满一年一个月工资，六个月以上不满一年按一年，不满六个月按半个月；“+1”主要是用人单位依第四十条解除时，以额外一个月工资替代提前30日书面通知，并非所有裁员都自动有；违法解除或终止的赔偿金按经济补偿标准二倍计算，依法支付赔偿金后不再另叠一份经济补偿。',
-          action:'先确定公司到底依据哪条解除，再分别算工龄、经济补偿月工资基数和通知方式。要求公司给出逐项结算表，不接受只有“N+1”“0.5N”结论、没有计算路径的方案。',
+          action:'要求公司写明解除依据，再分别计算工龄、经济补偿月工资基数和通知方式。要求公司给出逐项结算表，不接受只有“N+1”“0.5N”结论、没有计算路径的方案。',
           sources:[
             {title:'【法律】《中华人民共和国劳动合同法》',href:'https://www.mohrss.gov.cn/xxgk2020/fdzdgknr/zcfg/fl/202011/t20201102_394622.html'},
             {title:'【行政法规】《中华人民共和国劳动合同法实施条例》',href:'https://www.beijing.gov.cn/zhengce/gwywj/201105/t20110506_780976.html'}
@@ -688,7 +688,7 @@
     }
   };
 
-  const esc=value=>String(value||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  const esc=value=>String(value||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
   const link=source=>source?`<a href="${esc(source.href)}" target="_blank" rel="noopener">${esc(source.title)} →</a>`:'';
   const ruleSources=rule=>rule.sources||[];
   const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];

@@ -36,8 +36,10 @@ for (const required of [
   'function renderEvidence()',
   'function renderServiceStandard()',
   'function renderStandardCase()',
+  'function renderRouteComparison()',
   'function renderRoute()',
   'function renderSources()',
+  'renderRouteComparison();',
   'const href=safeHref(step.href);',
   'const href=safeHref(source.href);',
   "main.addEventListener('transitionend'",
@@ -113,6 +115,9 @@ for (const required of [
   '.service-standard-details',
   '.template-details',
   '.case-list',
+  '.fee-comparison',
+  '.fee-row.is-highlight',
+  '.fee-track',
 ]) {
   if (!styles.includes(required)) fail(`Missing simplified design contract: ${required}`);
 }
@@ -198,13 +203,20 @@ if (!investmentCase.includes("panic:{")) fail('Compact advisor panic data requir
 if (!investmentCase.includes("shareText:")) fail('Compact advisor share text is missing');
 if (!investmentCase.includes("ogTitle:") || !investmentCase.includes("ogDescription:")) fail('Compact advisor social metadata is missing');
 for (const required of [
-  '自己买 IQQ        约 0.10%',
-  '自己买国内纳指 ETF 约 0.60%–1.00%',
-  '支付宝投顾        底层基金费用 + 约 0.50% 投顾费',
-  '投顾不是“更高级的基金”，而是“基金 + 服务”',
+  '支付宝投顾的真实交易成本<br>犹如冰山。',
+  'comparison:{',
+  "label:'IQQ'",
+  "label:'嘉实 159501'",
+  "label:'广发 159941'",
+  "label:'支付宝投顾'",
+  "totalLabel:'约 1.72%'",
+  '交易手续费约 0.22%',
+  '运作费约 1.00%',
+  '投顾管理费约 0.50%',
 ]) {
-  if (!investmentCase.includes(required)) fail(`Compact advisor core fee-layer logic is missing: ${required}`);
+  if (!investmentCase.includes(required)) fail(`Compact advisor iceberg comparison is missing: ${required}`);
 }
+if (investmentCase.includes('把结构看成三层就够了')) fail('Retired advisor three-line summary returned');
 if (investmentCase.includes('display:none') || investmentCase.includes('<span style=')) {
   fail('Compact advisor case must not hide legacy contract text in content');
 }

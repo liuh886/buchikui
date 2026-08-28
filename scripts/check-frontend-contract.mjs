@@ -245,18 +245,21 @@ for (const required of [
   "ogTitle:",
   "ogDescription:",
   "panic:{",
-  "overview:{",
   "route:{",
+  "discussion:{",
+  "title:'近期案例'",
   "sources:[",
   "takeaway:",
   "legal:",
   '免费但不合理',
   '行程被改变',
   '要求隔离',
-  'Jaguar 爆料只作为线索，不作为定论',
+  '共同风险链',
+  '陌生接送 → 临时改道 → 长距离转运',
 ]) {
   if (!thailandCase.includes(required)) fail(`Thailand travel safety case contract is missing: ${required}`);
 }
+if (thailandCase.includes("overview:{")) fail('Thailand case overview must not duplicate the incident discussion');
 
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');

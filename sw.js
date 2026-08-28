@@ -3,6 +3,7 @@ const CORE_ASSETS=[
   './',
   './index.html',
   './styles.css',
+  './case-library.css',
   './rights-pulse.css',
   './feedback.css',
   './cases.js',

@@ -18,6 +18,7 @@ const CORE_ASSETS=[
   './dating-safety-case.js',
   './thailand-travel-safety-case.js',
   './layoff-compensation-case.js',
+  './alibaba-auction-case.js',
   './app.js',
   './legal-updates.js',
   './membership-config.js',

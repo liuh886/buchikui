@@ -9,12 +9,12 @@ window.BUCHIKUI_CASES.push({
     title:'不吃亏｜支付宝投顾的真实损耗',
     description:'把交易手续费、底层运作费和投顾管理费放在同一张图里，再和 IQQ、国内纳指 ETF 做费用对比。',
     ogTitle:'支付宝投顾的真实损耗。',
-    ogDescription:'页面上最显眼的投顾管理费只是冰山一角。真正要看的是交易手续费、底层基金运作费和投顾管理费叠加后的成本。'
+    ogDescription:'页面最显眼的是投顾管理费，真实成本还要加上交易手续费和底层基金运作费。'
   },
   shareText:'支付宝投顾的真实交易成本犹如冰山：交易手续费、底层运作费和投顾管理费要一起看。',
   hero:{
     title:'支付宝投顾的<br><em>真实损耗。</em>',
-    copy:'投顾不是一种新的资产，而是在基金之上加了一层服务。<strong>底层基金自己的费用照收，再加投顾费。</strong> 所以判断值不值，不要先看收益曲线，先把这座“费用冰山”看完整。'
+    copy:'投顾是在基金之上增加的一层服务。<strong>底层基金自己的费用照收，再加投顾费。</strong> 判断值不值，先把交易手续费、底层运作费和投顾费全部算进去。'
   },
   panic:{
     title:'买之前，<br>只问这 4 件事。',
@@ -64,7 +64,7 @@ window.BUCHIKUI_CASES.push({
     },
     note:'<strong>真正要记住：</strong>看到“投顾管理费约 0.50%”时，不要把它误当成总成本。这个案例里，交易手续费约 0.22%、底层运作费约 1.00%、投顾管理费约 0.50%，合在一起才构成完整的费用冰山。'
   },
-  takeaway:'支付宝投顾最容易被低估的，不是某一个费率，而是费用会叠层：交易手续费 + 底层运作费 + 投顾管理费。',
+  takeaway:'支付宝投顾最容易被低估的是费用叠层：交易手续费 + 底层运作费 + 投顾管理费。',
   sources:[
     {title:'iShares Nasdaq 100 ETF（IQQ）官方费用页',href:'https://www.ishares.com/us/products/351653/ishares-nasdaq-100-etf',note:'当前官方 Expense Ratio 0.12%，费率减免后的 Net Expense Ratio 为 0.10%。'},
     {title:'易方达纳斯达克100ETF（QDII）产品资料概要',href:'https://cdn.efunds.com.cn/owch/data/bulletin/20260519/%E6%98%93%E6%96%B9%E8%BE%BE%E7%BA%B3%E6%96%AF%E8%BE%BE%E5%85%8B100%E4%BA%A4%E6%98%93%E5%9E%8B%E5%BC%80%E6%94%BE%E5%BC%8F%E6%8C%87%E6%95%B0%E8%AF%81%E5%88%B8%E6%8A%95%E8%B5%84%E5%9F%BA%E9%87%91%EF%BC%88QDII%EF%BC%89%E5%9F%BA%E9%87%91%E4%BA%A7%E5%93%81%E8%B5%84%E6%96%99%E6%A6%82%E8%A6%81%E6%9B%B4%E6%96%B0.pdf?from=person',note:'159696：管理费 0.50%/年，托管费 0.10%/年。'},

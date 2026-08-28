@@ -19,6 +19,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="case-library.css">
   <link rel="stylesheet" href="rights-pulse.css">
   <link rel="stylesheet" href="https://liuh886.github.io/admin/shared/account-shell.css?v=6">
   <link rel="stylesheet" href="feedback.css">
@@ -37,13 +38,19 @@
 
       <div class="case-switcher-popover" id="caseSwitcherPopover" role="dialog" aria-label="切换案例" hidden>
         <div class="case-switcher-head">
-          <strong>切换案例</strong>
+          <strong>案例库</strong>
           <button class="case-random" id="randomCaseButton" type="button" aria-label="随机切换到另一个案例">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4 9 9"/></svg>
             随机一个
           </button>
         </div>
+        <div class="case-switcher-tools">
+          <label class="case-switcher-search-label" for="caseSwitcherSearch">搜索案例</label>
+          <input class="case-switcher-search" id="caseSwitcherSearch" type="search" placeholder="搜索标题或类型" autocomplete="off">
+          <span class="case-switcher-count" id="caseSwitcherCount"></span>
+        </div>
         <div class="case-switcher-list" id="caseSwitcherList"></div>
+        <p class="case-switcher-empty" id="caseSwitcherEmpty" hidden>没有找到匹配案例。</p>
       </div>
     </div>
 
@@ -65,6 +72,17 @@
         <h2 id="panicTitle">事情已经发生？<br>现在先做这些。</h2>
         <ol class="panic-list" id="panicList"></ol>
       </aside>
+    </div>
+  </section>
+
+  <section class="case-overview" id="caseOverview" hidden>
+    <div class="wrap case-overview-grid">
+      <div class="case-overview-head">
+        <span class="kicker" id="caseOverviewKicker">案例介绍</span>
+        <h2 id="caseOverviewTitle"></h2>
+        <p id="caseOverviewIntro"></p>
+      </div>
+      <div class="case-overview-facts" id="caseOverviewFacts"></div>
     </div>
   </section>
 
@@ -142,7 +160,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2 id="discussionTitle"></h2>
-        <p>从这个 CASE 再往前一步：哪些产品或行业机制值得改进。</p>
+        <p id="discussionIntro">从这个 CASE 再往前一步：哪些产品或行业机制值得改进。</p>
       </div>
       <div class="route-note" id="discussionBody"></div>
     </div>

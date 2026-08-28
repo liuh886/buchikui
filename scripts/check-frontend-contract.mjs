@@ -1,9 +1,10 @@
 import { readFile } from 'node:fs/promises';
 
-const [html, app, styles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, layoffCase, legalUpdates] = await Promise.all([
+const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, layoffCase, legalUpdates] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
+  readFile(new URL('../case-library.css', import.meta.url), 'utf8'),
   readFile(new URL('../rights-pulse.css', import.meta.url), 'utf8'),
   readFile(new URL('../pwa.js', import.meta.url), 'utf8'),
   readFile(new URL('../sw.js', import.meta.url), 'utf8'),
@@ -33,12 +34,15 @@ for (const required of [
   'function sanitizeCanonicalHtml(value)',
   'function renderMeta()',
   'function renderHero()',
+  'function renderOverview()',
+  "function filterSwitcher(value='')",
   'function renderEvidence()',
   'function renderServiceStandard()',
   'function renderStandardCase()',
   'function renderRouteComparison()',
   'function renderRoute()',
   'function renderSources()',
+  'renderOverview();',
   'renderRouteComparison();',
   'const href=safeHref(step.href);',
   'const href=safeHref(source.href);',
@@ -69,6 +73,7 @@ for (const retired of [
 for (const required of [
   'rel="manifest" href="manifest.webmanifest"',
   'rel="apple-touch-icon"',
+  'href="case-library.css"',
   'src="pwa.js"',
   'src="appliance-repair-case.js"',
   'src="thailand-travel-safety-case.js"',
@@ -77,6 +82,9 @@ for (const required of [
   'data-print',
   'id="caseList"',
   'id="caseSwitcherId"',
+  'id="caseSwitcherSearch"',
+  'id="caseOverview"',
+  'id="discussionIntro"',
   '<details class="service-standard-details"',
   '<details class="template-details"',
 ]) {
@@ -123,6 +131,15 @@ for (const required of [
 }
 for (const retired of ['.situation{', '.risk{', 'nav{']) {
   if (styles.includes(retired)) fail(`Retired visual layer returned: ${retired}`);
+}
+
+for (const required of [
+  '.case-switcher-search',
+  '.case-switcher-list{grid-template-columns:repeat(2,minmax(0,1fr))',
+  '.case-overview-grid',
+  '.case-overview-item',
+]) {
+  if (!caseLibraryStyles.includes(required)) fail(`Missing case library visual contract: ${required}`);
 }
 
 for (const required of [
@@ -176,6 +193,7 @@ if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.inclu
 for (const required of [
   "const CACHE_NAME='buchikui-pwa-v8';",
   "'./index.html'",
+  "'./case-library.css'",
   "'./cases.js'",
   "'./appliance-repair-case.js'",
   "'./thailand-travel-safety-case.js'",
@@ -227,6 +245,7 @@ for (const required of [
   "ogTitle:",
   "ogDescription:",
   "panic:{",
+  "overview:{",
   "route:{",
   "sources:[",
   "takeaway:",
@@ -234,6 +253,7 @@ for (const required of [
   '免费但不合理',
   '行程被改变',
   '要求隔离',
+  'Jaguar 爆料只作为线索，不作为定论',
 ]) {
   if (!thailandCase.includes(required)) fail(`Thailand travel safety case contract is missing: ${required}`);
 }

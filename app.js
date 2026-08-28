@@ -84,6 +84,20 @@
       </button>`;
     }).join('');
     byId('randomCaseButton').disabled=cases.length<2;
+    filterSwitcher(byId('caseSwitcherSearch').value);
+  }
+
+  function filterSwitcher(value=''){
+    const query=String(value).trim().toLocaleLowerCase('zh-CN');
+    let visible=0;
+    byId('caseSwitcherList').querySelectorAll('[data-switch-case]').forEach(button=>{
+      const haystack=`${button.dataset.switchCase} ${button.textContent}`.toLocaleLowerCase('zh-CN');
+      const matched=!query||haystack.includes(query);
+      button.hidden=!matched;
+      if(matched) visible+=1;
+    });
+    byId('caseSwitcherCount').textContent=query?`${visible}/${cases.length}`:`${cases.length} 个案例`;
+    byId('caseSwitcherEmpty').hidden=visible!==0;
   }
 
   function restoreEvidence(){
@@ -122,6 +136,27 @@
     setCanonicalHtml('heroCopy',active.hero.copy);
     setCanonicalHtml('panicTitle',active.panic.title);
     byId('panicList').innerHTML=active.panic.items.map(item=>`<li><strong>${escapeHtml(item.title)}</strong></li>`).join('');
+  }
+
+  function renderOverview(){
+    const section=byId('caseOverview');
+    const overview=active.overview;
+    section.hidden=!overview;
+    if(!overview){
+      byId('caseOverviewKicker').textContent='案例介绍';
+      byId('caseOverviewTitle').textContent='';
+      byId('caseOverviewIntro').textContent='';
+      byId('caseOverviewFacts').textContent='';
+      return;
+    }
+
+    byId('caseOverviewKicker').textContent=overview.kicker||'案例介绍';
+    setCanonicalHtml('caseOverviewTitle',overview.title);
+    setCanonicalHtml('caseOverviewIntro',overview.intro||'');
+    byId('caseOverviewFacts').innerHTML=(overview.items||[]).map(item=>`<article class="case-overview-item">
+      <span class="case-overview-status">${escapeHtml(item.status||'参考')}</span>
+      <div><h3>${sanitizeCanonicalHtml(item.title)}</h3><p>${sanitizeCanonicalHtml(item.text)}</p></div>
+    </article>`).join('');
   }
 
   function renderEvidence(){
@@ -250,13 +285,16 @@
   function renderDiscussion(){
     const section=byId('discussion');
     const discussion=active.discussion;
+    const defaultIntro='从这个 CASE 再往前一步：哪些产品或行业机制值得改进。';
     section.hidden=!discussion;
     if(!discussion){
       byId('discussionTitle').textContent='';
+      byId('discussionIntro').textContent=defaultIntro;
       byId('discussionBody').textContent='';
       return;
     }
     setCanonicalHtml('discussionTitle',discussion.title);
+    setCanonicalHtml('discussionIntro',discussion.intro||defaultIntro);
     setCanonicalHtml('discussionBody',discussion.html);
   }
 
@@ -275,6 +313,7 @@
     renderSwitcher();
     setLayoutMode();
     renderHero();
+    renderOverview();
 
     if(active.layout!=='compact') renderStandardCase();
 
@@ -286,11 +325,15 @@
   function isSwitcherOpen(){return !byId('caseSwitcherPopover').hidden}
 
   function openSwitcher(){
+    const search=byId('caseSwitcherSearch');
+    search.value='';
+    filterSwitcher('');
     byId('caseSwitcherPopover').hidden=false;
     byId('caseSwitcherBackdrop').hidden=false;
     byId('caseSwitcher').classList.add('open');
     byId('caseSwitcherTrigger').setAttribute('aria-expanded','true');
     document.body.classList.add('case-switcher-open');
+    if(window.matchMedia('(min-width:861px)').matches) requestAnimationFrame(()=>search.focus());
   }
 
   function closeSwitcher(){
@@ -404,6 +447,8 @@
     event.stopPropagation();
     isSwitcherOpen()?closeSwitcher():openSwitcher();
   });
+
+  byId('caseSwitcherSearch').addEventListener('input',event=>filterSwitcher(event.target.value));
 
   byId('caseSwitcherList').addEventListener('click',event=>{
     const button=event.target.closest('[data-switch-case]');

@@ -152,11 +152,14 @@ for (const required of [
 
 for (const required of [
   'const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];',
+  "const isCaseRule=rule=>rule&&rule.kind==='case';",
   'const ruleVerified=rule=>rule&&rule.verified?rule.verified:VERIFIED;',
   'function bindRuleTabs(host,rules)',
   'role="tablist"',
   'data-rights-rule',
-  '切换相关权利问题',
+  '切换关键参考',
+  '案例参考',
+  '关键提取',
   "tab:'经营主体'",
   "tab:'预付退款'",
   "tab:'套餐选择'",
@@ -168,12 +171,32 @@ for (const required of [
   "tab:'明码标价'",
   "tab:'搜索广告'",
   "tab:'投诉举报'",
+  "tab:'Jaguar'",
+  "tab:'陌生接送'",
+  "tab:'商务邀约'",
+  "tab:'断联控制'",
+  "tab:'星宇劝退'",
+  "tab:'AI替岗'",
+  "tab:'部门撤销'",
   "tab:'解除理由'",
   "tab:'调岗边界'",
   "tab:'批量裁员'",
   "tab:'补偿计算'",
 ]) {
-  if (!legalUpdates.includes(required)) fail(`Missing rights-pulse rule contract: ${required}`);
+  if (!legalUpdates.includes(required)) fail(`Missing rights-pulse reference contract: ${required}`);
+}
+
+for (const required of [
+  "'thailand-travel-safety':{",
+  '边境转运，是这类爆料真正值得警惕的部分。',
+  '酒店门口的一次接送，也可能是风险起点。',
+  '前半程正常，不代表下一程安全。',
+  '没有现场绑匪，也能先把人“隔离”。',
+  '“个人离职 / 流水线二选一”，先别替公司写解除理由。',
+  'AI能替岗，不等于公司可以直接降薪解约。',
+  '部门没了，也不等于劳动合同当然可以解除。',
+]) {
+  if (!legalUpdates.includes(required)) fail(`Missing concise case reference: ${required}`);
 }
 
 for (const retired of [
@@ -246,20 +269,18 @@ for (const required of [
   "ogDescription:",
   "panic:{",
   "route:{",
-  "discussion:{",
-  "title:'近期案例'",
   "sources:[",
   "takeaway:",
   "legal:",
   '免费但不合理',
   '行程被改变',
   '要求隔离',
-  '共同风险链',
-  '陌生接送 → 临时改道 → 长距离转运',
 ]) {
   if (!thailandCase.includes(required)) fail(`Thailand travel safety case contract is missing: ${required}`);
 }
-if (thailandCase.includes("overview:{")) fail('Thailand case overview must not duplicate the incident discussion');
+for (const retired of ["overview:{","discussion:{",'共同风险链']) {
+  if (thailandCase.includes(retired)) fail(`Thailand case must not duplicate pulse references: ${retired}`);
+}
 
 if (!applianceCase.includes("slug:'appliance-repair-trap'")) fail('Appliance repair case is missing');
 if (!applianceCase.includes('虚报故障部件')) fail('Appliance repair consumer-risk rule is missing');
@@ -269,15 +290,16 @@ for (const required of [
   "id:'013'",
   "slug:'layoff-compensation'",
   "name:'公司要裁你：先别签个人离职'",
+  "updated:'2026-08-28'",
   "panic:{",
   "scenarios:[",
   "evidence:{",
   "route:{",
   "template:{",
   "discussion:{",
+  '跨境投诉不是默认路径',
   'N+1不是所有裁员的统一答案',
   '最后再升级',
-  '2027年12月14日',
   '全国劳动人事争议在线调解服务平台',
 ]) {
   if (!layoffCase.includes(required)) fail(`Layoff compensation case contract is missing: ${required}`);

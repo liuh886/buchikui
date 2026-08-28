@@ -500,8 +500,126 @@
         }
       ]
     },
+    'thailand-travel-safety':{
+      rules:[
+        {
+          id:'jaguar-maesot',
+          tab:'Jaguar',
+          kind:'case',
+          status:'近期',
+          type:'网络爆料',
+          authority:'Reddit · Mae Sot',
+          verified:'2026-08-28',
+          document:'2026-08 · 湄索 / 泰缅边境',
+          title:'边境转运，是这类爆料真正值得警惕的部分。',
+          text:'网帖描述的共同场景是私人接送、长距离转运、人员行动受控，并指向湄索泰缅边境。对旅行者来说，“边境 + 陌生接送 + 行程被接管”本身就是异常组合。',
+          action:'陌生车辆带你远离原定路线，并持续向边境或非旅游区域移动。',
+          sources:[
+            {title:'【网络线索】Thailand’s Jaguar Kidnapping',href:'https://www.reddit.com/r/ThailandTourism/comments/1vwaq4v/tourists_kidnapped_and_sold_in_thailand/'}
+          ]
+        },
+        {
+          id:'bangkok-pickup',
+          tab:'陌生接送',
+          kind:'case',
+          status:'近期',
+          type:'已确认案件',
+          authority:'中国驻泰使馆 · 泰国警方',
+          verified:'2026-08-28',
+          document:'2026-08 · 曼谷 → 湄索方向',
+          title:'酒店门口的一次接送，也可能是风险起点。',
+          text:'一名中国游客从曼谷酒店乘坐“导游”安排的车辆后被控制，并被向湄索方向转移，途中逃脱。起点正常、接送看似正常，不代表后续路线正常。',
+          action:'上车前核对司机和目的地；一旦临时改道、增加陌生乘客或拒绝停车，立即把它当作风险升级。',
+          sources:[
+            {title:'【案件确认】中国驻泰使馆确认中国公民在泰遭绑架',href:'https://www.news.cn/20260825/93ac0af9048640b3b89b0d0f231844c2/c.html'},
+            {title:'【案件细节】Nation Thailand',href:'https://www.nationthailand.com/news/general/40070189'}
+          ]
+        },
+        {
+          id:'business-transfer',
+          tab:'商务邀约',
+          kind:'case',
+          status:'近期',
+          type:'已确认案件',
+          authority:'Royal Thai Police · TAT',
+          verified:'2026-08-28',
+          document:'2026-05 · 曼谷 → 湄索 → 缅甸',
+          title:'前半程正常，不代表下一程安全。',
+          text:'四名中国公民以商务活动名义合法入境泰国，先在曼谷停留，随后被带往湄索并跨境进入缅甸，最终被强迫从事呼叫中心诈骗。',
+          action:'熟人、商务名义、合法入境都不能替代对下一辆车、下一站和最终目的地的独立核验。',
+          sources:[
+            {title:'【已确认案件】TAT / Royal Thai Police',href:'https://www.tatnews.org/2026/05/tat-joins-royal-thai-police-briefing-on-assistance-to-four-chinese-nationals/'}
+          ]
+        },
+        {
+          id:'virtual-kidnapping',
+          tab:'断联控制',
+          kind:'case',
+          status:'近期',
+          type:'已确认案件',
+          authority:'Royal Thai Police · TAT',
+          verified:'2026-08-28',
+          document:'2026-06 · Virtual Kidnapping',
+          title:'没有现场绑匪，也能先把人“隔离”。',
+          text:'诈骗者冒充执法人员，要求受害者与家人断联、独自行动、按指令换地点并拍摄“绑架”照片，再向家属索要赎金。',
+          action:'“不要告诉家人 + 独自行动 + 按对方指令换地点”同时出现，就是严重异常。',
+          sources:[
+            {title:'【已确认案件】TAT / Royal Thai Police：Virtual Kidnapping',href:'https://www.tatnews.org/2026/06/tat-reaffirms-visitor-safety-after-chinese-student-found-unharmed-in-virtual-kidnapping-case/'}
+          ]
+        }
+      ]
+    },
     'layoff-compensation':{
       rules:[
+        {
+          id:'xingyu-layoff',
+          tab:'星宇劝退',
+          kind:'case',
+          status:'近期',
+          type:'网络热议 · 官方通报',
+          authority:'常州市人社局 · 星宇股份',
+          verified:'2026-08-28',
+          document:'2026-08 · 107名应届生解除劳动合同',
+          title:'“个人离职 / 流水线二选一”，先别替公司写解除理由。',
+          text:'公开报道显示，部分新员工被要求在“个人原因离职”和转至一线操作岗位之间选择。人社部门随后通报107人解除劳动合同，公司又公布额外补贴方案。',
+          action:'约谈录音、调岗内容、薪资变化、解除主体全部留证；公司后来给的额外补贴，不等于法定统一补偿标准。',
+          sources:[
+            {title:'【官方通报】常州市人社局关于星宇股份解聘应届毕业生情况',href:'https://js.news.cn/20260825/e59dbee2f7f945aaaed13cdd647877c7/c.html'},
+            {title:'【事件进展】星宇股份致歉与补偿方案',href:'https://www.chinanews.com/sh/2026/08-27/10685053.shtml'}
+          ]
+        },
+        {
+          id:'ai-replacement',
+          tab:'AI替岗',
+          kind:'case',
+          status:'近期',
+          type:'典型案例',
+          authority:'杭州中院',
+          verified:'2026-08-28',
+          document:'2026-04 · AI替岗降薪解约案',
+          title:'AI能替岗，不等于公司可以直接降薪解约。',
+          text:'公司拟将员工月薪从2.5万元降至1.5万元，员工拒绝后被解除。杭州两级法院认定违法解除：企业主动技术革新，并不当然构成劳动合同无法履行。',
+          action:'公司说“岗位被AI替代”时，先看解除依据、调岗是否合理、薪酬变化，以及是否真的到了合同无法履行。',
+          sources:[
+            {title:'【典型案例】“AI替岗”能否成辞退理由',href:'https://www.zj.news.cn/20260430/1f6a0708d647452fbe9a9f94a99f7421/c.html'}
+          ]
+        },
+        {
+          id:'department-closure',
+          tab:'部门撤销',
+          kind:'case',
+          status:'近期',
+          type:'生效裁判',
+          authority:'北京三中院',
+          verified:'2026-08-28',
+          document:'2026-07 · 撤销部门后解除员工',
+          title:'部门没了，也不等于劳动合同当然可以解除。',
+          text:'一家公司撤销研发部门后解除员工，北京三中院认定组织架构调整不当然构成“客观情况发生重大变化”，判付违法解除赔偿金差额、年终奖等49万余元。',
+          action:'遇到“组织优化 / 岗位取消”，要求公司说明为什么劳动合同已经无法继续履行，而不是只接受一个组织调整结论。',
+          sources:[
+            {title:'【生效裁判】撤销部门后解雇员工，一公司被判违法',href:'https://www.workercn.cn/c/2026-07-16/8848170.shtml'}
+          ]
+        },
         {
           id:'termination-proof',
           tab:'解除理由',
@@ -574,6 +692,7 @@
   const link=source=>source?`<a href="${esc(source.href)}" target="_blank" rel="noopener">${esc(source.title)} →</a>`:'';
   const ruleSources=rule=>rule.sources||[];
   const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];
+  const isCaseRule=rule=>rule&&rule.kind==='case';
   const ruleVerified=rule=>rule&&rule.verified?rule.verified:VERIFIED;
   const itemVerified=item=>normalizeRules(item).reduce((latest,rule)=>ruleVerified(rule)>latest?ruleVerified(rule):latest,VERIFIED);
 
@@ -596,7 +715,6 @@
     if(host) return host;
     host=document.createElement('section');
     host.id='rightsPulse';
-    host.setAttribute('aria-label','当前法律状态与消费者权利');
     const hero=document.querySelector('.hero');
     if(hero) hero.insertAdjacentElement('afterend',host);
     return host;
@@ -608,11 +726,11 @@
 
   function metaHtml(rule,count){
     return `
-      <span class="rights-pulse-label">权利校验</span>
+      <span class="rights-pulse-label">${isCaseRule(rule)?'案例参考':'权利校验'}</span>
       <strong>${esc(rule.status||'现行')}</strong>
       ${ruleBasis(rule)?`<span>${esc(ruleBasis(rule))}</span>`:''}
       ${rule.effective?`<span>实施 ${esc(rule.effective)}</span>`:''}
-      ${count>1?`<span>${count} 项关键规则</span>`:''}
+      ${count>1?`<span>${count} 项关键参考</span>`:''}
       <span>核验 ${esc(ruleVerified(rule))}</span>`;
   }
 
@@ -622,7 +740,7 @@
       ${rule.document?`<div class="rights-pulse-document">${esc(rule.document)}</div>`:''}
       <h2>${esc(rule.title)}</h2>
       <p>${esc(rule.text)}</p>
-      <div class="rights-pulse-action"><span>你现在可以要求</span><strong>${esc(rule.action)}</strong></div>
+      <div class="rights-pulse-action"><span>${isCaseRule(rule)?'关键提取':'你现在可以要求'}</span><strong>${esc(rule.action)}</strong></div>
       ${sources?`<div class="rights-pulse-sources">${sources}</div>`:''}`;
   }
 
@@ -642,12 +760,12 @@
       a.target='_blank';
       a.rel='noopener';
       a.textContent=source.title;
-      li.append(a,document.createTextNode(` — 当前权利更新依据；法律核验 ${verified}。`));
+      li.append(a,document.createTextNode(` — 本页参考来源；资料核验 ${verified}。`));
       list.appendChild(li);
       existing.add(normalized);
     });
     const title=document.getElementById('sourcesTitle');
-    if(title&&!title.textContent.includes('权利核验')) title.textContent+=` · 权利核验 ${verified}`;
+    if(title&&!title.textContent.includes('资料核验')) title.textContent+=` · 资料核验 ${verified}`;
   }
 
   function bindRuleTabs(host,rules){
@@ -698,7 +816,8 @@
     }
 
     const first=rules[0];
-    const tabs=rules.length>1?`<div class="rights-pulse-tabs" role="tablist" aria-label="切换相关权利问题">${rules.map((rule,index)=>`<button class="rights-pulse-tab" type="button" role="tab" id="rightsRuleTab-${index}" aria-controls="rightsPulsePanel" aria-selected="${index===0?'true':'false'}" tabindex="${index===0?'0':'-1'}" data-rights-rule="${index}">${esc(rule.tab)}</button>`).join('')}</div>`:'';
+    host.setAttribute('aria-label',rules.some(isCaseRule)?'关键规则与案例参考':'当前法律状态与消费者权利');
+    const tabs=rules.length>1?`<div class="rights-pulse-tabs" role="tablist" aria-label="切换关键参考">${rules.map((rule,index)=>`<button class="rights-pulse-tab" type="button" role="tab" id="rightsRuleTab-${index}" aria-controls="rightsPulsePanel" aria-selected="${index===0?'true':'false'}" tabindex="${index===0?'0':'-1'}" data-rights-rule="${index}">${esc(rule.tab)}</button>`).join('')}</div>`:'';
 
     host.hidden=false;
     host.innerHTML=`<div class="wrap"><div class="rights-pulse">

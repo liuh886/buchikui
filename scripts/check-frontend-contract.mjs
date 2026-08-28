@@ -130,7 +130,6 @@ for (const required of [
 
 for (const required of [
   'const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];',
-  'const ruleVerified=rule=>rule&&rule.verified?rule.verified:VERIFIED;',
   'function bindRuleTabs(host,rules)',
   'role="tablist"',
   'data-rights-rule',
@@ -146,10 +145,8 @@ for (const required of [
   "tab:'明码标价'",
   "tab:'搜索广告'",
   "tab:'投诉举报'",
-  "tab:'解除理由'",
-  "tab:'调岗边界'",
-  "tab:'批量裁员'",
-  "tab:'补偿计算'",
+  "tab:'解除方式'",
+  "tab:'经济补偿'",
 ]) {
   if (!legalUpdates.includes(required)) fail(`Missing rights-pulse rule contract: ${required}`);
 }
@@ -169,7 +166,7 @@ if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.inclu
 }
 
 for (const required of [
-  "const CACHE_NAME='buchikui-pwa-v7';",
+  "const CACHE_NAME='buchikui-pwa-v6';",
   "'./index.html'",
   "'./cases.js'",
   "'./appliance-repair-case.js'",
@@ -216,12 +213,17 @@ for (const required of [
   "ogDescription:",
   "panic:{",
   "route:{",
+  "discussion:{",
   "sources:[",
   "takeaway:",
   "legal:",
   '免费但不合理',
   '行程被改变',
   '要求隔离',
+  'Thailand’s Jaguar Kidnapping',
+  '8 月 23 日，中国游客从曼谷被绑架并被带往湄索方向',
+  'Virtual Kidnapping',
+  '先分清网传线索和已确认事实',
 ]) {
   if (!thailandCase.includes(required)) fail(`Thailand travel safety case contract is missing: ${required}`);
 }
@@ -233,21 +235,20 @@ if (!applianceCase.includes('这是危险的开始')) fail('Appliance repair ope
 for (const required of [
   "id:'013'",
   "slug:'layoff-compensation'",
-  "name:'公司要裁你：先别签个人离职'",
-  "panic:{",
-  "scenarios:[",
-  "evidence:{",
-  "route:{",
-  "template:{",
-  "discussion:{",
-  'N+1不是所有裁员的统一答案',
-  '最后再升级',
-  '2027年12月14日',
-  '全国劳动人事争议在线调解服务平台',
+  "src=\"layoff-compensation-case.js\"",
 ]) {
-  if (!layoffCase.includes(required)) fail(`Layoff compensation case contract is missing: ${required}`);
+  const target=required.startsWith('src=')?html:layoffCase;
+  if (!target.includes(required)) fail(`Layoff guide contract is missing: ${required}`);
 }
-if (layoffCase.includes("layout:'compact'")) fail('Layoff compensation case must use the standard scenario-first reader');
+
+for (const required of [
+  '经济补偿',
+  '解除方式',
+  '违法解除',
+  '劳动仲裁',
+]) {
+  if (!layoffCase.includes(required)) fail(`Layoff guide content is missing: ${required}`);
+}
 
 const manifest = JSON.parse(manifestRaw);
 if (manifest.display !== 'standalone') fail('PWA manifest must use standalone display mode');

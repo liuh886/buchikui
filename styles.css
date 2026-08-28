@@ -384,6 +384,32 @@ h1 em{font-style:normal;color:var(--red)}
 .route-step a{margin-top:auto;font-size:11px;font-weight:900;text-underline-offset:4px;text-decoration-thickness:1px}
 .route-note{margin-top:16px;padding:12px 15px;border-left:3px solid var(--blue);background:#e9edf8;color:#3d465a;font-size:11px;line-height:1.62}
 
+/* Fee comparison */
+.fee-comparison{margin-top:36px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line-strong);padding:26px 0 10px}
+.fee-comparison-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:end;margin-bottom:20px}
+.fee-comparison-kicker{display:block;margin-bottom:5px;color:var(--red);font-size:9px;font-weight:950;letter-spacing:.14em}
+.fee-comparison h3{margin:0;font-size:28px;line-height:1.08;letter-spacing:-.04em}
+.fee-comparison-head p{max-width:720px;margin:8px 0 0;color:var(--muted);font-size:11px;line-height:1.65}
+.fee-legend{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px 14px;max-width:360px;color:var(--muted);font-size:9px;font-weight:800}
+.fee-legend-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.fee-swatch{width:9px;height:9px;display:inline-block;flex:none}
+.fee-product{background:var(--ink)}
+.fee-custody{background:#8d877e}
+.fee-trading{background:var(--blue)}
+.fee-advisor{background:var(--red)}
+.fee-chart{border-top:1px solid var(--line-strong)}
+.fee-row{display:grid;grid-template-columns:180px minmax(0,1fr) 154px;gap:18px;align-items:center;min-height:58px;padding:9px 10px 9px 0;border-bottom:1px solid var(--line)}
+.fee-row.is-highlight{background:rgba(242,207,85,.22);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding-left:10px}
+.fee-label{min-width:0}
+.fee-label strong{display:block;font-size:12px;line-height:1.3;letter-spacing:-.012em}
+.fee-label small{display:block;margin-top:3px;color:var(--muted);font-size:8px;line-height:1.35}
+.fee-row.is-highlight .fee-label strong{font-size:14px;font-weight:950}
+.fee-track{height:18px;display:flex;align-items:stretch;overflow:hidden;background:#e7e1d7;border-radius:3px}
+.fee-segment{display:block;height:100%;min-width:2px}
+.fee-total{font-size:11px;font-weight:900;text-align:right;white-space:nowrap}
+.fee-row.is-highlight .fee-total{color:var(--red);font-size:17px;letter-spacing:-.025em}
+.fee-footnote{margin:12px 0 0;color:var(--muted);font-size:9px;line-height:1.55}
+
 /* Template */
 .template{padding:0;border-bottom:1px solid var(--line-strong)}
 .template-details>summary{padding-top:28px;padding-bottom:28px}
@@ -413,6 +439,7 @@ footer{padding:42px 0 86px;border-top:0}
   .route-grid{grid-template-columns:repeat(2,1fr)}
   .route-step:nth-child(odd){border-left:0}
   .route-step:nth-child(n+3){border-top:1px solid var(--line)}
+  .fee-row{grid-template-columns:150px minmax(0,1fr) 142px}
 }
 
 @media(max-width:860px){
@@ -474,6 +501,17 @@ footer{padding:42px 0 86px;border-top:0}
   .route-step:first-child{border-top:0}
   .route-step h3{margin:13px 0 8px}
 
+  .fee-comparison{margin-top:30px;padding-top:22px}
+  .fee-comparison-head{grid-template-columns:1fr;gap:14px}
+  .fee-comparison h3{font-size:24px}
+  .fee-legend{justify-content:flex-start;max-width:none}
+  .fee-row{grid-template-columns:minmax(0,1fr) auto;gap:7px 14px;padding:11px 0}
+  .fee-label{grid-column:1}
+  .fee-total{grid-column:2;grid-row:1;text-align:right;align-self:start}
+  .fee-track{grid-column:1/-1;height:16px}
+  .fee-row.is-highlight{padding:13px 8px}
+  .fee-label small{font-size:8px}
+
   .template-body{grid-template-columns:1fr;gap:24px;padding-bottom:54px}
   .script{padding:32px 18px 22px}
   .script::before{left:18px}
@@ -511,6 +549,8 @@ footer{padding:42px 0 86px;border-top:0}
   .disclosure-meta{white-space:normal}
   .check{grid-template-columns:26px minmax(0,1fr);padding:15px 12px}
   .check .when{grid-column:2;margin-top:-2px}
+  .fee-legend{gap:6px 10px}
+  .fee-row.is-highlight .fee-total{font-size:15px}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -533,5 +573,6 @@ footer{padding:42px 0 86px;border-top:0}
   .check{background:#fff;color:#000}
   .case{break-inside:avoid}
   .route-grid{grid-template-columns:repeat(2,1fr)}
+  .fee-row{break-inside:avoid}
   .script{box-shadow:none}
 }

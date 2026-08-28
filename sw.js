@@ -1,4 +1,4 @@
-const CACHE_NAME='buchikui-pwa-v7';
+const CACHE_NAME='buchikui-pwa-v8';
 const CORE_ASSETS=[
   './',
   './index.html',

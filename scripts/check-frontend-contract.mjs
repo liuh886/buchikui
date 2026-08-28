@@ -174,7 +174,7 @@ if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.inclu
 }
 
 for (const required of [
-  "const CACHE_NAME='buchikui-pwa-v7';",
+  "const CACHE_NAME='buchikui-pwa-v8';",
   "'./index.html'",
   "'./cases.js'",
   "'./appliance-repair-case.js'",

@@ -25,7 +25,7 @@ window.BUCHIKUI_CASES.push({
     ]
   },
   section:{
-    title:'公司会怎么谈，<br>你就怎么拆。',
+    title:'怎么谈，<br>全程录音',
     intro:'不要先和HR争法条。先判断公司正在把你带向哪一种解除路径，并把决定结果的事实留下来。'
   },
   scenarios:[

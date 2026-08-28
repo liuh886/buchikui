@@ -1,7 +1,7 @@
 window.BUCHIKUI_CASES.push({
   id:'009',
   slug:'appliance-repair-trap',
-  name:'如何避免家电维修被坑',
+  name:'家电维修不要相信搜索排名',
   label:'APPLIANCE REPAIR',
   updated:'2026-08-21',
   meta:{

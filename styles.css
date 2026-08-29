@@ -384,6 +384,17 @@ h1 em{font-style:normal;color:var(--red)}
 .route-step a{margin-top:auto;font-size:11px;font-weight:900;text-underline-offset:4px;text-decoration-thickness:1px}
 .route-note{margin-top:16px;padding:12px 15px;border-left:3px solid var(--blue);background:#e9edf8;color:#3d465a;font-size:11px;line-height:1.62}
 
+/* Discussion cards */
+#discussionBody{margin-top:0;padding:0;border-left:0;background:transparent;color:var(--ink);font-size:inherit;line-height:inherit}
+#discussionBody>ol{counter-reset:discussion-card;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0;padding:0;list-style:none;border-top:2px solid var(--ink)}
+#discussionBody>ol>li{counter-increment:discussion-card;position:relative;min-width:0;padding:24px 24px 26px 0;border-bottom:1px solid var(--line)}
+#discussionBody>ol>li:nth-child(even){padding-left:24px;border-left:1px solid var(--line)}
+#discussionBody>ol>li::before{content:"0" counter(discussion-card);display:block;margin-bottom:12px;color:var(--red);font-size:9px;font-weight:950;letter-spacing:.12em}
+#discussionBody>ol>li>strong{display:block;margin-bottom:9px;font-size:19px;line-height:1.2;letter-spacing:-.025em}
+#discussionBody>ol>li>p{margin:0;color:var(--muted);font-size:12px;line-height:1.7}
+#discussionBody>ol>li>small{display:block;margin-top:14px;padding-top:11px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:11px;line-height:1.65}
+#discussionBody>ol>li>small b{color:var(--red);font-size:9px;letter-spacing:.08em}
+
 /* Fee comparison */
 .fee-comparison{margin-top:36px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line-strong);padding:26px 0 10px}
 .fee-comparison-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:end;margin-bottom:20px}
@@ -480,6 +491,9 @@ footer{padding:42px 0 86px;border-top:0}
   .section-head{margin-bottom:27px}
   .section-head p{justify-self:start;font-size:13px}
   .section-head h2{font-size:clamp(36px,10.5vw,52px)}
+
+  #discussionBody>ol{grid-template-columns:1fr}
+  #discussionBody>ol>li,#discussionBody>ol>li:nth-child(even){padding:18px 0 20px;border-left:0}
 
   .case{grid-template-columns:48px 1fr;gap:14px;padding:24px 0 26px}
   .case-no{font-size:29px}

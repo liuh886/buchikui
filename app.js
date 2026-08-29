@@ -160,6 +160,13 @@
   }
 
   function renderEvidence(){
+    const section=byId('evidence');
+    if(!active.evidence){
+      if(section) section.hidden=true;
+      return;
+    }
+    if(section) section.hidden=false;
+
     setCanonicalHtml('evidenceTitle',active.evidence.title);
     setCanonicalHtml('evidenceIntro',active.evidence.intro);
 
@@ -177,7 +184,7 @@
       }).join('');
     }else{
       checklist.classList.remove('grouped');
-      checklist.innerHTML=active.evidence.items.map(renderCheck).join('');
+      checklist.innerHTML=(active.evidence.items||[]).map(renderCheck).join('');
     }
 
     restoreEvidence();

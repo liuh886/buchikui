@@ -73,32 +73,6 @@ window.BUCHIKUI_CASES.push({
       ]
     }
   ],
-  evidence:{
-    title:'这些证据，<br>按消费与游览环节留好。',
-    intro:'口头承诺与突发冲突最难补。点单手写单、计价秤读数、行车轨迹、现场音视频和退单沟通越早保存，后续调解、索赔与维权越有主动权。',
-    footnote:'付款凭证只能证明付了钱。更重要的是证明商家当初报了什么价、承诺了什么服务、实际提供了什么，以及突发侵权时的违法事实。',
-    groups:[
-      {key:'dining',title:'餐饮消费'},
-      {key:'transport',title:'交通出行'},
-      {key:'marine',title:'出海游玩'},
-      {key:'experience',title:'购物与景区'},
-      {key:'lodging',title:'住宿预订'}
-    ],
-    items:[
-      {key:'menuPrice',group:'dining',title:'点菜单 + 标价签 + 明细清单',detail:'菜品单价、计价单位（斤/只）、称重重量、加工方式及加工费明细',when:'点餐及结账时'},
-      {key:'scalePhoto',group:'dining',title:'称重现场 + 电子秤去皮显示',detail:'海鲜称重读数、去皮状态、强检合格标签及宰杀前活态视频',when:'称重时'},
-      {key:'taxiInfo',group:'transport',title:'出租车发票 / 网约车订单',detail:'车牌号码、营运证号、起止地点、行程时间及实收金额',when:'行程结束时'},
-      {key:'routeAudio',group:'transport',title:'行车轨迹 + 司机诱导带店录音',detail:'偏离原目的地的轨迹截图、司机主动推荐合作餐馆的语音记录',when:'乘车过程中'},
-      {key:'boatTicket',group:'marine',title:'船票凭证 + 码头公示牌',detail:'正规客运码头售票凭据、载明航线、时长、包含项目及船舶号牌',when:'购票及登船时'},
-      {key:'marineLog',group:'marine',title:'实际出海轨迹 + 现场视频',detail:'登船离岸时间、返航靠泊时间、中途强制加收费用或擅自返航现场',when:'出海过程中'},
-      {key:'craftPrice',group:'experience',title:'开蚌/旅拍价目表与沟通记录',detail:'配件及加工费明示清单、拍摄时长、底片赠送与精修约定的文字记录',when:'体验前'},
-      {key:'sceneVideo',group:'experience',title:'突发冲突与辱骂阻拦全程音视频',detail:'记录对方外貌、挑衅言论、辱骂过程、限制人身自由动作及现场环境',when:'突发冲突时'},
-      {key:'policeLog',group:'experience',title:'110 报警记录与接处警回执',detail:'报警通话录音、民警到场处警记录、立案与行政处罚决定书',when:'报警处置后'},
-      {key:'orderConfirm',group:'lodging',title:'民宿预订成功详情页',detail:'订单编号、入住日期、房型配置、总金额及平台违约保障条款',when:'预订成功后'},
-      {key:'cancelChat',group:'lodging',title:'房东要求加价/退订的沟通记录',detail:'微信/短信/平台聊天截图、通话录音，及房东在其他渠道高价重挂截图',when:'发生毁约时'},
-      {key:'hotelDiff',group:'lodging',title:'替代住宿发票与付款记录',detail:'因违约另行预订同地段同级房源产生的差价发票与消费流水',when:'产生实际损失后'}
-    ]
-  },
   route:{
     title:'发生纠纷，<br>按有效路径处理。',
     steps:[

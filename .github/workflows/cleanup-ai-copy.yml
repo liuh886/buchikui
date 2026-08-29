@@ -1,0 +1,128 @@
+name: One-time CASE copy cleanup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/cleanup-ai-copy.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Remove empty AI-style framing
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          replacements = {
+            'alibaba-auction-case.js': [
+              ("updated:'2026-08-28'", "updated:'2026-08-29'"),
+              ("title:'三个真实案例，<br>把这场游戏讲明白。'", "title:'这可能是一个局'"),
+            ],
+            'appliance-repair-case.js': [
+              ("真正要看的是：维修前有没有明码标价，新增项目有没有得到同意，声称更换的配件是否真的换了，结算金额能不能对应实际服务。", "付款前要核对：有没有明码标价，新增项目有没有得到同意，声称更换的配件是否真的换了，结算金额能不能对应实际服务。"),
+              ("takeaway:'家电维修，真正省钱的一步在付款前：第一次换件没修好就先停；官方身份查不到、故障解释说不清、价目表拿不出，不要继续换件，不付争议款。'", "takeaway:'家电维修：第一次换件没修好就停；官方身份查不到、故障解释说不清、价目表拿不出，不继续换件，不付争议款。'"),
+            ],
+            'dating-safety-case.js': [
+              ("title:'真正危险的，<br>通常是下一步动作。'", "title:'出现这些动作，<br>直接提高警惕。'"),
+            ],
+            'investment-advisor-case.js': [
+              ("组合真正持有什么基金", "组合持有什么基金"),
+              ("真正的成本还包括底层组合的运作费和交易手续费。", "总成本还包括底层组合的运作费和交易手续费。"),
+              ("<strong>真正要记住：</strong>", "<strong>费用合计：</strong>"),
+            ],
+            'mobile-plan-case.js': [
+              ("title:'四步把月费<br>真正降下来。'", "title:'四步把月费<br>降下来。'"),
+              ("title:'先算清<br>自己真正需要多少'", "title:'先算清<br>自己需要多少'"),
+            ],
+            'airport-sales-case.js': [
+              ("真正决定你和谁交易的，是公司全称、合同主体、收款主体以及其与机场 / 航司的实际关系。", "要核对公司全称、合同主体、收款主体，以及其与机场 / 航司的实际关系。"),
+              ("最关键的是<strong class=\"key\">本金和赠送分别是什么性质、每次能抵多少、哪些航班 / 日期 / 渠道能用、是否有最低消费、有效期和退款规则</strong>。", "要核对<strong class=\"key\">本金和赠送分别是什么性质、每次能抵多少、哪些航班 / 日期 / 渠道能用、是否有最低消费、有效期和退款规则</strong>。"),
+              ("每次真正能抵多少", "每次能抵多少"),
+              ("真正要看的是页面上正在申请什么、签约主体是谁、是否产生费用或持续义务。", "看页面上正在申请什么、签约主体是谁、是否产生费用或持续义务。"),
+            ],
+            'cases.js': [
+              ("真正承担租赁责任的可能是另一家公司", "承担租赁责任的可能是另一家公司"),
+              ("投诉、鉴定或诉讼真正会看的是", "投诉、鉴定或诉讼会看"),
+              ("真正值得的优惠，不应以失去未来选择权为代价。", "优惠不应以失去未来选择权为代价。"),
+            ],
+            'court-case.js': [
+              ("双方真正有争议的事实、责任和金额", "双方有争议的事实、责任和金额"),
+            ],
+            'rental-payment-case.js': [
+              ("<strong>事情的关键点只有两个：</strong>", "<strong>扣款争议分两件事：</strong>"),
+            ],
+            'compact-cases.js': [
+              ("这是最值得追查的情况。让银行确认每次扣费时，你名下是否只有这一个符合规则的账户。", "让银行确认每次扣费时，你名下是否只有这一个符合规则的账户。"),
+            ],
+            'bank-wealth-case.js': [
+              ("需要分清的是：<strong>正常投资亏损</strong>，还是销售时对风险、收益、期限或你的风险承受能力存在误导。", "这里要区分<strong>正常投资亏损</strong>和销售时对风险、收益、期限或风险承受能力的误导。"),
+            ],
+            'thailand-travel-safety-case.js': [
+              ("link:'记住：不合理的好处 →'", "link:'不合理的好处 →'"),
+              ("link:'记住：控制权变化 →'", "link:'控制权变化 →'"),
+              ("link:'记住：隔离最危险 →'", "link:'隔离最危险 →'"),
+            ],
+            'legal-updates.js': [
+              ("title:'边境转运，是这类爆料真正值得警惕的部分。'", "title:'边境转运是明确的风险信号。'"),
+            ],
+            'docs/case-content-standard.md': [
+              ("## 3. Hero：只负责把事情讲明白", "## 3. Hero：直接给判断"),
+              ("这件事真正要小心什么", "这件事要小心什么"),
+              ("这里真正决定责任、金额、授权或证据判断的是什么？", "这里哪些事实决定责任、金额、授权或证据判断？"),
+              ("Buchikui 的文字要像一个熟悉消费纠纷的人当面把事情讲清楚：短、准、具体。", "Buchikui 的文字要像一个熟悉消费纠纷的人直接说明问题：短、准、具体。"),
+              ("- 删除正确但无用的句子。", "- 删除正确但无用的句子。\n- **禁止没有信息增量的总结腔和元话语。** 例如“把这件事讲明白 / 讲清楚”“真正要看的是”“真正要记住”“最重要的是”“最关键的是”“说到底”“归根结底”“本质上”“换句话说”。标题直接写结论，正文直接写事实或动作。\n- 判断方法：删掉“真正 / 关键 / 最重要 / 讲明白”后，如果事实和动作完全不变，就删掉这些词；如果整句只是在告诉读者“下面我要解释什么”，整句删除或改成结论。"),
+            ],
+            'scripts/check-frontend-contract.mjs': [
+              ("'边境转运，是这类爆料真正值得警惕的部分。'", "'边境转运是明确的风险信号。'"),
+              ("if (/不是[^。\\n]{0,80}(?:而是|而在)/.test(source)) fail(`AI-style contrast skeleton returned in ${path}`);", "if (/不是[^。\\n]{0,80}(?:而是|而在)/.test(source)) fail(`AI-style contrast skeleton returned in ${path}`);\n  if (/(?:把[^。\\n]{0,24}(?:讲明白|讲清楚|说透)|真正(?:要看的是|要记住|危险的|值得警惕的部分|省钱的一步|降下来)|说到底|归根结底|换句话说|本质上)/.test(source)) fail(`Empty AI-style framing returned in ${path}`);"),
+            ],
+          }
+
+          for path, pairs in replacements.items():
+            p = Path(path)
+            text = p.read_text(encoding='utf-8')
+            original = text
+            for old, new in pairs:
+              if old not in text:
+                raise SystemExit(f'Missing expected text in {path}: {old[:100]}')
+              text = text.replace(old, new)
+            if text != original:
+              p.write_text(text, encoding='utf-8')
+
+          case_paths = [
+            'cases.js','compact-cases.js','mobile-plan-case.js','court-case.js',
+            'investment-advisor-case.js','bank-wealth-case.js','rental-payment-case.js',
+            'appliance-repair-case.js','airport-sales-case.js','dating-safety-case.js',
+            'thailand-travel-safety-case.js','alibaba-auction-case.js','layoff-compensation-case.js',
+            'legal-updates.js'
+          ]
+          banned = re.compile(r'(?:把[^。\n]{0,24}(?:讲明白|讲清楚|说透)|真正(?:要看的是|要记住|危险的|值得警惕的部分|省钱的一步|降下来)|说到底|归根结底|换句话说|本质上)')
+          for path in case_paths:
+            text = Path(path).read_text(encoding='utf-8')
+            m = banned.search(text)
+            if m:
+              raise SystemExit(f'AI-style framing remains in {path}: {m.group(0)}')
+          PY
+      - name: Validate
+        run: |
+          find . -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
+          node scripts/check-frontend-contract.mjs
+      - name: Commit cleanup
+        run: |
+          if git diff --quiet; then
+            echo 'No changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m 'Remove empty AI-style framing from CASE copy'
+          git push origin HEAD:main

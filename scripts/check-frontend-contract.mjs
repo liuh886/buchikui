@@ -190,7 +190,7 @@ for (const required of [
 
 for (const required of [
   "'thailand-travel-safety':{",
-  '边境转运，是这类爆料真正值得警惕的部分。',
+  '边境转运是明确的风险信号。',
   '酒店门口的一次接送，也可能是风险起点。',
   '前半程正常，不代表下一程安全。',
   '没有现场绑匪，也能先把人“隔离”。',
@@ -232,6 +232,7 @@ for (let index = 0; index < caseSources.length; index += 1) {
   const path = caseSourcePaths[index];
   if (/先(?:确认|确定)/.test(source)) fail(`AI-style confirm opener returned in ${path}`);
   if (/不是[^。\n]{0,80}(?:而是|而在)/.test(source)) fail(`AI-style contrast skeleton returned in ${path}`);
+  if (/(?:把[^。\n]{0,24}(?:讲明白|讲清楚|说透)|真正(?:要看的是|要记住|危险的|值得警惕的部分|省钱的一步|降下来)|说到底|归根结底|换句话说|本质上)/.test(source)) fail(`Empty AI-style framing returned in ${path}`);
 }
 
 if (!pwa.includes("navigator.serviceWorker.register('./sw.js')")) fail('PWA service worker registration is missing');
@@ -339,9 +340,9 @@ for (const required of [
   "id:'014'",
   "slug:'alibaba-auction-trap'",
   "name:'阿里拍卖局中局：捡漏你就输了'",
-  "updated:'2026-08-28'",
+  "updated:'2026-08-29'",
   '拍卖方自己抬价',
-  '三个真实案例',
+  '这可能是一个局',
 ]) {
   if (!alibabaAuctionCase.includes(required)) fail(`Alibaba auction case contract is missing: ${required}`);
 }

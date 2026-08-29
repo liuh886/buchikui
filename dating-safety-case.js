@@ -26,7 +26,7 @@ window.BUCHIKUI_CASES.push({
   },
   section:{
     kicker:'六个高风险时刻',
-    title:'真正危险的，<br>通常是下一步动作。',
+    title:'出现这些动作，<br>直接提高警惕。',
     intro:'按你现在遇到的情况找最接近的一项。盯住那些一旦顺手做掉，之后最难追回、最难取证或最难脱身的动作。'
   },
   scenarios:[

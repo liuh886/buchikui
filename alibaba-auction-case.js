@@ -3,7 +3,7 @@ window.BUCHIKUI_CASES.push({
   slug:'alibaba-auction-trap',
   name:'阿里拍卖局中局：捡漏你就输了',
   label:'ONLINE AUCTION',
-  updated:'2026-08-28',
+  updated:'2026-08-29',
   meta:{
     title:'不吃亏｜阿里拍卖局中局：捡漏你就输了',
     description:'阿里拍卖里既有法院司法拍卖，也有商业机构组织的拍卖。商业拍卖要查处置主体、拍卖人、委托人、标的权属和竞价关系，尤其警惕拍卖方或关联方参与竞价抬价。',
@@ -26,7 +26,7 @@ window.BUCHIKUI_CASES.push({
   },
   overview:{
     kicker:'案例参考',
-    title:'三个真实案例，<br>把这场游戏讲明白。',
+    title:'这可能是一个局',
     intro:'三个案例分别暴露了竞价操纵、信息披露和悔拍责任。任何一项都足以让所谓“捡漏”变成高额损失。',
     items:[
       {

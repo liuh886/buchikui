@@ -128,6 +128,7 @@ for (const required of [
   '.fee-comparison',
   '.fee-row.is-highlight',
   '.fee-track',
+  '#discussionBody>ol{counter-reset:discussion-card;display:grid',
 ]) {
   if (!styles.includes(required)) fail(`Missing simplified design contract: ${required}`);
 }
@@ -297,6 +298,13 @@ for (const required of [
   "ogDescription:",
   "panic:{",
   "route:{",
+  "discussion:{",
+  "title:'常见旅游骗局'",
+  'Grand Palace 今天关闭',
+  '20 泰铢 tuk-tuk 城市游',
+  'ATM / 刷卡机 DCC',
+  '摩托 / 水上摩托“损坏索赔”',
+  '免税宝石投资 / 回国转卖赚钱',
   "sources:[",
   "takeaway:",
   "legal:",
@@ -306,7 +314,7 @@ for (const required of [
 ]) {
   if (!thailandCase.includes(required)) fail(`Thailand travel safety case contract is missing: ${required}`);
 }
-for (const retired of ["overview:{","discussion:{",'共同风险链']) {
+for (const retired of ["overview:{",'共同风险链']) {
   if (thailandCase.includes(retired)) fail(`Thailand case must not duplicate pulse references: ${retired}`);
 }
 

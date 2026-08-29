@@ -26,6 +26,26 @@
 .case-overview-item h3{margin:0 0 5px;font-size:16px;line-height:1.25;letter-spacing:-.02em}
 .case-overview-item p{margin:0;color:var(--muted);font-size:11px;line-height:1.65}
 
+/* Discussion: payment-flow comparison */
+#discussionBody:has(>ul:first-child>li>ol){margin-top:0;padding:0;border-left:0;background:transparent;color:var(--ink);font-size:13px;line-height:1.72}
+#discussionBody:has(>ul:first-child>li>ol)>ul:first-child{list-style:none;margin:0 0 26px;padding:0;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);border-top:2px solid var(--ink);border-bottom:1px solid var(--line-strong)}
+#discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li{min-width:0;margin:0;padding:22px 22px 24px 0}
+#discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li+li{border-left:1px solid var(--line);padding-left:24px;padding-right:0}
+#discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li>strong{display:block;font-size:19px;line-height:1.18;letter-spacing:-.03em}
+#discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li>small{display:block;margin-top:5px;color:var(--muted);font-size:10px;line-height:1.5}
+#discussionBody:has(>ul:first-child>li>ol) ol{counter-reset:payment-flow;list-style:none;margin:18px 0 0;padding:0;border-top:1px solid var(--line-strong)}
+#discussionBody:has(>ul:first-child>li>ol) ol>li{position:relative;counter-increment:payment-flow;display:grid;grid-template-columns:34px minmax(0,1fr);gap:1px 10px;margin:0;padding:13px 0;border-bottom:1px solid var(--line)}
+#discussionBody:has(>ul:first-child>li>ol) ol>li::before{content:counter(payment-flow,decimal-leading-zero);grid-column:1;grid-row:1/3;color:var(--red);font-size:9px;font-weight:950;letter-spacing:.1em;padding-top:2px}
+#discussionBody:has(>ul:first-child>li>ol) ol>li::after{content:"↓";position:absolute;left:8px;bottom:-10px;z-index:1;padding:0 3px;background:var(--paper);color:var(--muted);font-size:11px;line-height:18px}
+#discussionBody:has(>ul:first-child>li>ol) ol>li:last-child::after{display:none}
+#discussionBody:has(>ul:first-child>li>ol) ol>li>strong{grid-column:2;display:block;font-size:13px;line-height:1.35;letter-spacing:-.01em}
+#discussionBody:has(>ul:first-child>li>ol) ol>li>small{grid-column:2;display:block;color:var(--muted);font-size:9px;line-height:1.48}
+#discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li:first-child ol>li:nth-child(2),#discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li:first-child ol>li:nth-child(3){margin-left:-8px;margin-right:-8px;padding-left:8px;padding-right:8px;background:rgba(242,207,85,.2)}
+#discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li:nth-child(2) ol>li:nth-child(2){margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px;border-left:3px solid var(--blue);background:#e9edf8}
+#discussionBody:has(>ul:first-child>li>ol)>p{max-width:860px;margin:0 0 12px;color:var(--ink-soft);font-size:12px;line-height:1.72}
+#discussionBody:has(>ul:first-child>li>ol)>p:last-child{margin-bottom:0}
+#discussionBody:has(>ul:first-child>li>ol)>p strong{color:var(--ink)}
+
 @media(max-width:860px){
   .case-switcher-popover{overflow:hidden}
   .case-switcher-tools{padding:11px 14px}
@@ -35,6 +55,10 @@
   .case-overview-grid{grid-template-columns:1fr;gap:24px}
   .case-overview-head h2{font-size:29px}
   .case-overview-item{grid-template-columns:76px minmax(0,1fr);gap:12px;padding:14px 0 15px}
+  #discussionBody:has(>ul:first-child>li>ol)>ul:first-child{grid-template-columns:1fr}
+  #discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li{padding:18px 0 22px}
+  #discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li+li{border-left:0;border-top:2px solid var(--ink);padding-left:0;padding-right:0}
+  #discussionBody:has(>ul:first-child>li>ol)>ul:first-child>li>strong{font-size:18px}
 }
 
 @media(max-width:480px){
@@ -43,10 +67,12 @@
   .case-switcher-item-copy strong{font-size:12px}
   .case-overview-item{grid-template-columns:1fr;gap:4px}
   .case-overview-status{padding-top:0}
+  #discussionBody:has(>ul:first-child>li>ol) ol>li{grid-template-columns:30px minmax(0,1fr);gap-left:8px}
 }
 
 @media print{
   .case-overview{padding:20px 0;background:#fff}
   .case-overview-grid{display:block}
   .case-overview-facts{margin-top:18px}
+  #discussionBody:has(>ul:first-child>li>ol)>ul:first-child{display:grid;grid-template-columns:1fr 1fr}
 }

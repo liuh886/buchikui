@@ -375,13 +375,24 @@ for (let index = 0; index < caseSources.length; index += 1) {
     for (const required of [
       `<link rel="canonical" href="https://liuh886.github.io/buchikui/c/${slug}/">`,
       `<meta property="og:url" content="https://liuh886.github.io/buchikui/c/${slug}/">`,
-      'src="../app.js"',
-      'href="../styles.css"',
+      'src="../../app.js"',
+      'href="../../styles.css"',
+      'href="../../"',
     ]) {
       if (!page.includes(required)) fail(`Prerendered page is missing ${required} for case: ${slug}`);
     }
-    for (const leaked of ['src="cases.js"', 'href="styles.css"', 'src="app.js"', '.././']) {
+    for (const leaked of ['src="cases.js"', 'href="styles.css"', 'src="app.js"']) {
       if (page.includes(leaked)) fail(`Prerendered page has unrewritten ref ${leaked} for case: ${slug}`);
+    }
+    // 单层 ../ 即漏改写（正确应为 ../../）；保留裸相对引用检查。
+    if (/(?:src|href)="\.\.\/(?!\.\.\/)/.test(page)) fail(`Prerendered page has single-level ../ ref for case: ${slug}`);
+    // 可解析性：相对引用按规范地址解析后必须落到站点根，绝不能留在 /c/ 下（曾漏测导致全站 404，回退教训）。
+    for (const match of page.matchAll(/(?:src|href)="([^"]+)"/g)) {
+      const ref = match[1];
+      if (/^(https?:|#)/.test(ref)) continue;
+      const resolved = new URL(ref, `https://liuh886.github.io/buchikui/c/${slug}/`).href;
+      if (!resolved.startsWith('https://liuh886.github.io/buchikui/')) fail(`Prerendered ref escapes site root: ${ref} in ${slug}`);
+      if (/\/c\//.test(new URL(resolved).pathname)) fail(`Prerendered ref resolves under /c/: ${ref} in ${slug}`);
     }
   }
 }

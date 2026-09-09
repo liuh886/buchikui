@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 // 预渲染：一 CASE 一静态页（<outDir>/c/<slug>/index.html），解决单页多 CASE 共用同一 URL 导致搜索引擎不可发现的问题。
-// 策略：克隆 index.html，按 CASE 改写 head（title/description/og/canonical），本地资源引用改写为 ../ 相对路径（不硬编码部署子路径）。
+// 策略：克隆 index.html，按 CASE 改写 head（title/description/og/canonical），本地资源引用改写为 ../../ 相对路径（不硬编码部署子路径）。
 // ?case= 继续兼容（老分享链接与回退）；/c/<slug>/ 为规范地址（canonical + 分享 + sitemap 均指向它）。
 // 运行：node scripts/prerender-cases.mjs <outDir>（部署流在 rsync 之后、analytics 注入之前执行，仓库本身不提交生成物）。
-
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import vm from 'node:vm';
 import path from 'node:path';
@@ -61,9 +60,9 @@ export async function prerender(outDir) {
         /(<meta property="og:locale" content="zh_CN">)/,
         `$1\n  <link rel="canonical" href="${canonical}">\n  <meta property="og:url" content="${canonical}">`,
       )
-      // 本地资源改写为 ../（外部 https、页内 # 锚点不动；品牌首页链接 ./ 因此回到站点根）
-      .replace(/((?:src|href)=")(?!https?:|#|\/)([^"]+)"/g, '$1../$2"')
-      .replace(/"(\.\.\/)+\.?\/"/g, '"../"');
+      // 生成页位于 c/<slug>/（站点根下两级），本地资源改写为 ../../（外部 https、页内 # 锚点不动；品牌首页链接 ./ 因此回到站点根）
+      .replace(/((?:src|href)=")(?!https?:|#|\/)([^"]+)"/g, '$1../../$2"')
+      .replace(/"(\.\.\/)+\.?\/"/g, '"../../"');
     const dir = path.join(outDir, 'c', c.slug);
     await mkdir(dir, { recursive: true });
     const file = path.join(dir, 'index.html');

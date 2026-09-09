@@ -1,4 +1,6 @@
-const CACHE_NAME='buchikui-pwa-v8';
+// PWA 版本规则：CORE_ASSETS 增删任何一项，必须同步 bump CACHE_NAME（v9→v10…），
+// 并同步更新 scripts/check-frontend-contract.mjs 中的版本断言；否则旧缓存阴影新文件。
+const CACHE_NAME='buchikui-pwa-v9';
 const CORE_ASSETS=[
   './',
   './index.html',
@@ -19,6 +21,7 @@ const CORE_ASSETS=[
   './thailand-travel-safety-case.js',
   './layoff-compensation-case.js',
   './alibaba-auction-case.js',
+  './qingdao-travel-case.js',
   './transport-platform-case.js',
   './app.js',
   './legal-updates.js',

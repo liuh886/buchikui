@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://liuh886.github.io/buchikui/sitemap.xml

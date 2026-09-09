@@ -1,5 +1,8 @@
 # 不吃亏 — 运营策略
 
+> ⚠️ **DEPRECATED（已归档，部分过时）**：本文的渠道矩阵与指标目标写于 Astro 规划期，仅保留作历史参考。
+> 当前反馈闭环以 `docs/consumer-feedback.md` + `docs/agent-feedback-workflow.md` + `AGENTS.md` 为准；合规边界（匿名化、免责声明）仍然有效。
+
 > 版本：v1.0 | 更新日期：2026-08-14
 
 ---

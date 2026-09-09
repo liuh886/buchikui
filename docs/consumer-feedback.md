@@ -36,14 +36,20 @@
 
 ## 机器人防护
 
-Turnstile 不是前端装饰，而是写入合同的一部分：
+当前已落地（`feedback.js` + `supabase/functions/feedback-submit/index.ts`）：
 
-1. Reader 动态渲染 Cloudflare Turnstile；成功后得到一次性 token。
-2. Reader 只调用 Supabase Edge Function `feedback-submit`，不再直接 INSERT `product_feedback`。
-3. `feedback-submit` 先验证登录用户，再调用 Cloudflare Siteverify。
-4. 只有 `success = true`、`action = buchikui_feedback`、`hostname = liuh886.github.io` 同时成立时才写入数据库。
-5. `user_id`、`product_code = buchikui`、`category = content`、`status = new` 都由服务端确定，不接受客户端覆盖。
-6. 数据库不再给 `authenticated` / `anon` 直接 INSERT 权限；因此绕过按钮直接调用 Data API 也不能提交。
+1. Reader 只调用 Edge Function `feedback-submit`，不再直接 INSERT `product_feedback`。
+2. `feedback-submit` 先验证登录用户（`auth.getUser`），再校验 Origin 白名单（`https://liuh886.github.io`）。
+3. `user_id`、`product_code = buchikui`、`category = content`、`status = new` 都由服务端确定，不接受客户端覆盖。
+4. 服务端锁定字段格式与长度（类型白名单、`case_id` 三位数字、`slug` 正则、quote 2–1200 字、起止位置、sha256、整页 URL 归一化、24KB 上限）。
+5. 数据库不给 `authenticated` / `anon` 直接 INSERT 权限；绕过按钮直接调用 Data API 也不能提交。
+
+Planned（未落地，不得对外宣称已防护）：Cloudflare Turnstile。
+
+1. 配齐 `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` 两项 Function Secret；
+2. Reader 动态渲染 Turnstile，成功后得到一次性 token，随提交上报；
+3. `feedback-submit` 调 Cloudflare Siteverify，且 `success = true`、`action = buchikui_feedback`、`hostname = liuh886.github.io` 同时成立才写入；
+4. 两项 secret 任缺其一，Reader 必须 fail closed（提交锁定并提示），不恢复浏览器直写路径。
 
 生产配置只有两项 Function Secret：
 
@@ -108,7 +114,7 @@ status       = new
 
 Reader 写权限只有一条：
 
-- `feedback-submit` 验证登录用户 + Turnstile 后，以服务端权限 INSERT；
+- `feedback-submit` 验证登录用户 + Origin + 字段格式后，以服务端权限 INSERT；
 - `authenticated` / `anon` 不能直接 INSERT `product_feedback`；
 - 用户仍只能读取自己的反馈；
 - 管理员通过现有 `feedback-admin` Edge Function review；

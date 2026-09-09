@@ -1,5 +1,9 @@
 # 不吃亏 — 技术路线
 
+> ⚠️ **DEPRECATED（已归档，不再执行）**：本文档描述的 Astro + Tailwind + Alpine + Markdown 方案从未落地，仅保留作历史参考。
+> 当前实现以 `README.md`“当前技术实现”一节为准：纯静态 GitHub Pages，无框架、无构建，`index.html` + 数据 JS + `app.js`/`legal-updates.js`/`feedback.js` 直出。
+> 规范权威依次为 `docs/product-experience-spec.md`、`docs/case-content-standard.md`、`docs/design-system.md`、`docs/legal-freshness-standard.md`。
+
 > 版本：v2.0 | 更新日期：2026-08-14
 > 技术选型原则：简单、可持续、易部署、低成本。
 

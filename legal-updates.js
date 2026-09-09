@@ -465,6 +465,58 @@
         }
       ]
     },
+    'alibaba-auction-trap':{
+      rules:[
+        {
+          id:'self-bidding-ban',
+          tab:'自竞禁止',
+          status:'现行',
+          type:'法律',
+          authority:'全国人大常委会',
+          verified:'2026-08-29',
+          document:'《中华人民共和国拍卖法》第二十二条、第三十条',
+          title:'组织拍卖的人，不能自己下场竞价。',
+          text:'拍卖人及其工作人员不得参与自己组织的拍卖，也不得委托他人代为竞买；委托人同样不得参与竞买或委托他人代为竞买。无锡已有拍卖公司自己下场竞价，被法院认定价格欺诈并判三倍赔偿的情形。',
+          action:'发现同一竞买号反复贴着你加价、节奏异常，立即停止追价，保存完整竞价页、竞买号、每次出价时间和金额，并向平台书面要求保全相关竞买号的实名、报名和完整竞价日志。',
+          sources:[
+            {title:'【法律】《中华人民共和国拍卖法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d43e5c5380444abb9b2e4522e2e6fbcf.html'},
+            {title:'【官方典型案例】无锡市市场监管局：拍卖公司参与自己组织的竞价',href:'https://www.wuxi.gov.cn/doc/2024/03/20/4253812.shtml'}
+          ]
+        },
+        {
+          id:'defect-disclosure',
+          tab:'瑕疵说明',
+          status:'现行',
+          type:'法律 · 部门规章',
+          authority:'全国人大常委会 · 市场监管总局',
+          verified:'2026-08-29',
+          document:'《中华人民共和国拍卖法》 + 《拍卖监督管理办法》',
+          title:'标的有什么毛病，开拍前就该说清。',
+          text:'拍卖人应向竞买人说明标的瑕疵，委托人也应说明标的来源和瑕疵；竞买人有权了解瑕疵、查验标的并查阅资料。公告里常见的“按现状交付”不能替代开拍前的必要信息披露，武汉旧产权证争议就是页面信息失效的例子。',
+          action:'交保证金前，把房产最新权属、车辆车架号与检测、真伪敏感标的的鉴定依据从页面外独立核一遍，并保存带时间的页面原始版本；发现关键事实与公示不一致，立刻固定证据并书面提出异议。',
+          sources:[
+            {title:'【法律】《中华人民共和国拍卖法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d43e5c5380444abb9b2e4522e2e6fbcf.html'},
+            {title:'【部门规章】《拍卖监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d526ba7ddd9a4f978e73ca0b2abb3c63.html'}
+          ]
+        },
+        {
+          id:'platform-preservation',
+          tab:'平台保全',
+          status:'现行',
+          type:'部门规章',
+          authority:'市场监管总局 · 国家网信办',
+          effective:'2026-02-01',
+          verified:'2026-08-29',
+          document:'《网络交易平台规则监督管理办法》',
+          title:'怀疑有人抬价，先让平台把后台日志保住。',
+          text:'平台依据平台规则对消费者采取不利措施时，应说明事实、理由和依据并提供便捷申诉。竞买账户实名、报名资料、后台日志等关键证据通常掌握在平台或经营者手里，个人无法直接取得。',
+          action:'立即提交书面工单：标的编号、竞价时间段、可疑竞买号、争议事实和明确诉求，重点要求保全后台竞买身份和完整竞价日志，并拿到工单号和书面处理结论，供监管或法院依法调取。',
+          sources:[
+            {title:'【部门规章】《网络交易平台规则监督管理办法》',href:'https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html'}
+          ]
+        }
+      ]
+    },
     'dating-safety':{
       rules:[
         {
@@ -828,6 +880,20 @@
   }
 
   function getActiveCase(){
+    // 主路径：app.js 在每次切 CASE 后写入 body[data-active-case-slug] 并直调 renderForSlug。
+    // 兼容路径：?case= 参数；最后才回退到 #caseName 文本匹配（重名即错，仅兜底）。
+    const slug=document.body?.dataset?.activeCaseSlug;
+    if(slug){
+      const bySlug=(window.BUCHIKUI_CASES||[]).find(item=>item.slug===slug);
+      if(bySlug) return bySlug;
+    }
+    try{
+      const param=new URLSearchParams(location.search).get('case');
+      if(param){
+        const byParam=(window.BUCHIKUI_CASES||[]).find(item=>item.slug===param);
+        if(byParam) return byParam;
+      }
+    }catch(error){}
     const name=document.getElementById('caseName')?.textContent?.trim();
     return (window.BUCHIKUI_CASES||[]).find(item=>item.name===name)||null;
   }
@@ -953,9 +1019,17 @@
     bindRuleTabs(host,rules);
   }
 
+  function renderForSlug(slug){
+    if(slug && document.body) document.body.dataset.activeCaseSlug=slug;
+    render();
+  }
+
+  window.BuchikuiRights={render:renderForSlug,renderActive:render};
+
   window.addEventListener('DOMContentLoaded',()=>{
     render();
+    // 兜底：app.js 直调为主；Observer 仅兼容直调不可用时的旧行为。
     const name=document.getElementById('caseName');
-    if(name) new MutationObserver(render).observe(name,{childList:true,subtree:true,characterData:true});
+    if(name) new MutationObserver(()=>{render();}).observe(name,{childList:true,subtree:true,characterData:true});
   });
 })();

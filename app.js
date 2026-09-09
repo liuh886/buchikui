@@ -327,6 +327,12 @@
     renderRoute();
     renderDiscussion();
     renderSources();
+
+    // 主路径：以 slug 直调权利层；legal-updates 内部 Observer 仅作兜底。
+    try{
+      document.body.dataset.activeCaseSlug=active.slug;
+      if(window.BuchikuiRights&&typeof window.BuchikuiRights.render==='function') window.BuchikuiRights.render(active.slug);
+    }catch(error){}
   }
 
   function isSwitcherOpen(){return !byId('caseSwitcherPopover').hidden}

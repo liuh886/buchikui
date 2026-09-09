@@ -288,7 +288,10 @@
     const account = window.HaoAccount;
     const accountState = account?.getState?.();
     if (!account || !accountState?.user) {
-      showToast('登录后会继续这条段落反馈。');
+      // 外部 account-shell（跨仓库）加载失败时明确告知：阅读不受影响，反馈稍后重试。
+      showToast(window.HaoAccountLoadFailed
+        ? '登录组件加载失败，阅读不受影响，请稍后重试。'
+        : '登录后会继续这条段落反馈。');
       account?.open?.();
       return;
     }

@@ -1,5 +1,8 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdtemp } from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import vm from 'node:vm';
+import { prerender } from './prerender-cases.mjs';
 
 const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, layoffCase, alibabaAuctionCase, legalUpdates, feedbackClient, feedbackFunction] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
@@ -55,9 +58,18 @@ for (const required of [
   "shareMeritToast.textContent='功德 +1';",
   "showShareMerit('已复制到粘贴板');",
   "const requestedCase=cases.find(item=>item.slug===requested);",
-  "url.searchParams.set('case',active.slug);",
+  "url.searchParams.set('case',next.slug);",
   'document.body.dataset.activeCaseSlug=active.slug;',
   "window.BuchikuiRights.render(active.slug);",
+  'is-critical',
+  'critical-star',
+  'criticalCount',
+  'progressBar',
+  'function caseCanonicalUrl(slug){',
+  'function isCasePath(){',
+  'function siteBase(){',
+  '/c/${next.slug}/',
+  '/c/${slug}/',
 ]) {
   if (!app.includes(required)) fail(`Missing frontend contract: ${required}`);
 }
@@ -81,6 +93,7 @@ for (const required of [
   'rel="apple-touch-icon"',
   'href="case-library.css"',
   'src="pwa.js"',
+  'src="read-progress.js"',
   'src="appliance-repair-case.js"',
   'src="thailand-travel-safety-case.js"',
   'src="alibaba-auction-case.js"',
@@ -133,6 +146,7 @@ for (const required of [
   '.fee-comparison',
   '.fee-row.is-highlight',
   '.fee-track',
+  '.read-progress{',
   '#discussionBody>ol{counter-reset:discussion-card;display:grid',
 ]) {
   if (!styles.includes(required)) fail(`Missing simplified design contract: ${required}`);
@@ -154,6 +168,8 @@ for (const required of [
   '.rights-pulse-tabs',
   '.rights-pulse-tab[aria-selected="true"]',
   '.rights-pulse-document',
+  '.rights-pulse-badge',
+  '.rights-pulse-badge.is-statute',
 ]) {
   if (!rightsPulseStyles.includes(required)) fail(`Missing rights-pulse visual contract: ${required}`);
 }
@@ -170,6 +186,7 @@ for (const required of [
   '关键提取',
   'window.BuchikuiRights={render:renderForSlug,renderActive:render};',
   'function renderForSlug(slug){',
+  'function ruleBadge(rule){',
   'document.body.dataset.activeCaseSlug',
   "tab:'经营主体'",
   "tab:'预付退款'",
@@ -329,19 +346,44 @@ for (let index = 0; index < caseSources.length; index += 1) {
       need(!c.scenarios, `Compact case ${c.slug} must not carry scenarios`);
     }
     if (c.evidence) need(Array.isArray(c.evidence.items) && c.evidence.items.length >= 1, `Case ${c.slug} has an empty evidence block`);
+    for (const item of (c.evidence?.items || [])) {
+      need(item.critical === undefined || typeof item.critical === 'boolean', `Case ${c.slug} evidence item ${item.key} has bad critical flag`);
+    }
     if (c.serviceStandard) need(Array.isArray(c.serviceStandard.items) && c.serviceStandard.items.length >= 1, `Case ${c.slug} has an empty serviceStandard block`);
     if (c.overview) need(Array.isArray(c.overview.items) && c.overview.items.length >= 1, `Case ${c.slug} has an empty overview block`);
     const keyQuoted = `'${c.slug}':{`;
     const keyBare = `${c.slug}:{`;
     need(legalUpdates.includes(keyQuoted) || legalUpdates.includes(keyBare), `Missing rights-pulse entry for case: ${c.slug}`);
   }
-  // Sitemap 覆盖率：16 个 slug 必须全部可发现
+  // Sitemap 覆盖率：16 个 slug 必须全部有规范地址（/c/<slug>/）；?case= 仅为兼容入口，不进 sitemap。
   const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
   for (const c of allCases) {
-    if (!sitemap.includes(`?case=${c.slug}`)) fail(`Sitemap is missing case: ${c.slug}`);
+    if (!sitemap.includes(`/c/${c.slug}/`)) fail(`Sitemap is missing case: ${c.slug}`);
+    if (sitemap.includes(`?case=${c.slug}`)) fail(`Sitemap must use canonical /c/ URLs, not ?case=: ${c.slug}`);
   }
   const robots = await readFile(new URL('../robots.txt', import.meta.url), 'utf8');
   if (!robots.includes('sitemap.xml')) fail('robots.txt must reference sitemap.xml');
+}
+
+// 预渲染验证：真实执行生成器，16 页齐全、head 专属化、资源引用 ../ 化、无漏改写。
+{
+  const tmp = await mkdtemp(path.join(os.tmpdir(), 'buchikui-prerender-'));
+  const pages = await prerender(tmp);
+  if (pages.length !== 16) fail(`Prerender expected 16 pages, got ${pages.length}`);
+  for (const { slug, file } of pages) {
+    const page = await readFile(file, 'utf8');
+    for (const required of [
+      `<link rel="canonical" href="https://liuh886.github.io/buchikui/c/${slug}/">`,
+      `<meta property="og:url" content="https://liuh886.github.io/buchikui/c/${slug}/">`,
+      'src="../app.js"',
+      'href="../styles.css"',
+    ]) {
+      if (!page.includes(required)) fail(`Prerendered page is missing ${required} for case: ${slug}`);
+    }
+    for (const leaked of ['src="cases.js"', 'href="styles.css"', 'src="app.js"', '.././']) {
+      if (page.includes(leaked)) fail(`Prerendered page has unrewritten ref ${leaked} for case: ${slug}`);
+    }
+  }
 }
 
 if (!pwa.includes("navigator.serviceWorker.register('./sw.js')")) fail('PWA service worker registration is missing');
@@ -350,7 +392,7 @@ if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.inclu
 }
 
 for (const required of [
-  "const CACHE_NAME='buchikui-pwa-v9';",
+  "const CACHE_NAME='buchikui-pwa-v10';",
   "'./index.html'",
   "'./case-library.css'",
   "'./cases.js'",

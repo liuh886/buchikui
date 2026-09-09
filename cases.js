@@ -254,6 +254,7 @@ window.BUCHIKUI_CASES = [
           "key": "entity",
           "group": "core",
           "title": "平台 + 实际经营主体",
+          "critical": true,
           "detail": "平台入口、商家页、营业执照、合同出租方、实际交车方和租赁经营备案",
           "when": "下单 / 到店"
         },
@@ -261,6 +262,7 @@ window.BUCHIKUI_CASES = [
           "key": "orderContract",
           "group": "core",
           "title": "订单 + 租赁合同",
+          "critical": true,
           "detail": "车型、价格、出租方、取消、换车、押金和附加收费",
           "when": "签字前后"
         },
@@ -296,6 +298,7 @@ window.BUCHIKUI_CASES = [
           "key": "authorization",
           "group": "dispute",
           "title": "信用免押 / 扣款授权",
+          "critical": true,
           "detail": "扣款情形、授权对象、通知、审查和申诉",
           "when": "被扣款"
         },
@@ -563,18 +566,21 @@ window.BUCHIKUI_CASES = [
         {
           "key": "payment",
           "title": "付款 / 充值记录",
+          "critical": true,
           "detail": "金额、时间、收款主体、支付渠道",
           "when": "付款后"
         },
         {
           "key": "contract",
           "title": "会员协议 / 卡规则",
+          "critical": true,
           "detail": "退费、有效期、转店、赠送、违约条款",
           "when": "签约时"
         },
         {
           "key": "ledger",
           "title": "余额 + 消费流水",
+          "critical": true,
           "detail": "剩余本金、次数、每次核销项目和金额",
           "when": "现在就存"
         },

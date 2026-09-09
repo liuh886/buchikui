@@ -151,6 +151,7 @@ window.BUCHIKUI_CASES.push({
         "key": "company",
         "group": "identity",
         "title": "销售公司全称 + 关系说明",
+        "critical": true,
         "detail": "营业主体、合同主体、收款主体，以及其自称与机场 / 航司的关系",
         "when": "付款前"
       },
@@ -165,6 +166,7 @@ window.BUCHIKUI_CASES.push({
         "key": "terms",
         "group": "promise",
         "title": "完整产品 / 权益规则",
+        "critical": true,
         "detail": "使用范围、抵扣比例、次数、有效期、预约、限制和退款条件",
         "when": "付款前"
       },

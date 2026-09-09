@@ -28,6 +28,23 @@
   letter-spacing:.16em;
 }
 
+.rights-pulse-badge{
+  display:inline-block;
+  margin-bottom:6px;
+  padding:3px 8px 4px;
+  border:1px solid var(--muted);
+  border-radius:2px;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.1em;
+  white-space:nowrap;
+}
+
+.rights-pulse-badge.is-statute{border-color:var(--red);color:var(--red)}
+.rights-pulse-badge.is-regulatory{border-color:var(--ink);color:var(--ink)}
+.rights-pulse-badge.is-case{border-color:var(--blue);color:var(--blue)}
+
 .rights-pulse-meta strong{
   font-size:16px;
   line-height:1.25;
@@ -119,7 +136,9 @@
   max-width:900px;
   margin-top:15px;
   padding-top:12px;
+  padding-left:14px;
   border-top:1px solid var(--ink);
+  border-left:4px solid var(--yellow);
 }
 
 .rights-pulse-action span{

@@ -150,6 +150,7 @@ window.BUCHIKUI_CASES.push({
         "key": "deviceBefore",
         "group": "visit",
         "title": "维修前设备状态",
+        "critical": true,
         "detail": "型号 / 序列号、故障现象、报错代码、能否开机和外观",
         "when": "拆机前"
       },
@@ -157,6 +158,7 @@ window.BUCHIKUI_CASES.push({
         "key": "diagnosis",
         "group": "visit",
         "title": "每次故障判断 + 维修结果",
+        "critical": true,
         "detail": "A 为什么坏、换完是否修好；再提 B / C 时依据是什么",
         "when": "每次追加项目前"
       },
@@ -164,6 +166,7 @@ window.BUCHIKUI_CASES.push({
         "key": "quote",
         "group": "visit",
         "title": "价目表 + 每次新增报价",
+        "critical": true,
         "detail": "上门、检测、人工、配件、总价；新增换件重新确认",
         "when": "确认维修前"
       },

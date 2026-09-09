@@ -236,6 +236,7 @@ window.BUCHIKUI_CASES.push({
         "key": "jurisdiction",
         "group": "filing",
         "title": "管辖依据",
+        "critical": true,
         "detail": "案由、被告住所、合同履行地 / 侵权地、管辖条款及互联网法院适用依据",
         "when": "立案前"
       },
@@ -243,6 +244,7 @@ window.BUCHIKUI_CASES.push({
         "key": "complaint",
         "group": "filing",
         "title": "起诉状 + 请求计算表",
+        "critical": true,
         "detail": "编号请求、金额计算、事实时间线、证据索引",
         "when": "提交前"
       },
@@ -285,6 +287,7 @@ window.BUCHIKUI_CASES.push({
         "key": "deadlines",
         "group": "hearing",
         "title": "法院通知 + 期限清单",
+        "critical": true,
         "detail": "补正、举证、交换证据、开庭、上诉和履行节点",
         "when": "收到即记"
       }

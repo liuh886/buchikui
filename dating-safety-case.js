@@ -186,6 +186,7 @@ window.BUCHIKUI_CASES.push({
         "key": "payment",
         "group": "during",
         "title": "转账 + 支付凭证",
+        "critical": true,
         "detail": "金额、时间、收款账号 / 商户、交易单号和支付渠道；不要只留一张聊天截图",
         "when": "付款后立即"
       },
@@ -207,6 +208,7 @@ window.BUCHIKUI_CASES.push({
         "key": "reports",
         "group": "after",
         "title": "报警 / 投诉受理记录",
+        "critical": true,
         "detail": "报警回执、受理编号、12315 投诉编号、平台举报记录和后续书面答复",
         "when": "提交后"
       }

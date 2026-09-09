@@ -888,7 +888,8 @@
       if(bySlug) return bySlug;
     }
     try{
-      const param=new URLSearchParams(location.search).get('case');
+      const param=new URLSearchParams(location.search).get('case')
+        ||((location.pathname.match(/\/c\/([a-z0-9][a-z0-9-]*)\/?$/)||[])[1]||'');
       if(param){
         const byParam=(window.BUCHIKUI_CASES||[]).find(item=>item.slug===param);
         if(byParam) return byParam;
@@ -912,9 +913,20 @@
     return [rule.type,rule.authority].filter(Boolean).join(' · ');
   }
 
+  // 权重徽标：把“这条依据有多硬”变成一眼可辨的签名；标签取类型首段原文，不重写效力排序。
+  function ruleBadge(rule){
+    if(isCaseRule(rule)) return `<span class="rights-pulse-badge is-case">${esc(rule.type||'案例参考')}</span>`;
+    const head=String(rule.type||'').split('·')[0].trim();
+    let cls='is-policy';
+    if(/法律|行政法规|司法解释/.test(head)) cls='is-statute';
+    else if(/部门规章|监管|证监|规范/.test(head)) cls='is-regulatory';
+    return `<span class="rights-pulse-badge ${cls}">${esc(head||'规则')}</span>`;
+  }
+
   function metaHtml(rule,count){
     return `
       <span class="rights-pulse-label">${isCaseRule(rule)?'案例参考':'权利校验'}</span>
+      ${ruleBadge(rule)}
       <strong>${esc(rule.status||'现行')}</strong>
       ${ruleBasis(rule)?`<span>${esc(ruleBasis(rule))}</span>`:''}
       ${rule.effective?`<span>实施 ${esc(rule.effective)}</span>`:''}

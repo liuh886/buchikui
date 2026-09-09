@@ -165,6 +165,7 @@ window.BUCHIKUI_CASES.push({
         "key": "productDocs",
         "group": "purchase",
         "title": "产品说明书 + 风险揭示书",
+        "critical": true,
         "detail": "管理人、产品类型、投资范围、风险等级、期限、赎回和不保证本金收益的提示",
         "when": "购买时版本"
       },
@@ -172,6 +173,7 @@ window.BUCHIKUI_CASES.push({
         "key": "assessment",
         "group": "purchase",
         "title": "风险测评 + 匹配结果",
+        "critical": true,
         "detail": "你的风险承受能力等级、评估时间、产品风险等级和适当性匹配意见",
         "when": "购买前"
       },
@@ -179,6 +181,7 @@ window.BUCHIKUI_CASES.push({
         "key": "marketing",
         "group": "purchase",
         "title": "推荐页 + 销售话术",
+        "critical": true,
         "detail": "首页榜单、短期年化、短信微信、电话 / 面谈中关于保本、稳健、回本的表述",
         "when": "购买前后"
       },

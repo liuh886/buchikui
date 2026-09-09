@@ -9,8 +9,11 @@
   const params=new URLSearchParams(location.search);
   const requested=params.get('case');
   const requestedCase=cases.find(item=>item.slug===requested);
-  let pinnedMode=Boolean(requestedCase);
-  let active=requestedCase||cases[Math.floor(Math.random()*cases.length)];
+  // 规范地址 /c/<slug>/ 与 ?case= 双轨：query 优先（老分享链接），路径次之，根路径随机。
+  const pathSlug=((location.pathname.match(/\/c\/([a-z0-9][a-z0-9-]*)\/?$/)||[])[1]||'');
+  const pathCase=pathSlug?cases.find(item=>item.slug===pathSlug):null;
+  let pinnedMode=Boolean(requestedCase||pathCase);
+  let active=requestedCase||pathCase||cases[Math.floor(Math.random()*cases.length)];
   let caseTransitionController=null;
 
   if(requested&&!requestedCase){
@@ -104,10 +107,21 @@
     const evidenceKey=`buchikui-${active.slug}-evidence-v1`;
     const boxes=[...document.querySelectorAll('[data-evidence]')];
     const count=byId('progressCount');
+    const criticalCount=byId('criticalCount');
+    const progressBar=byId('progressBar');
+    const items=active.evidence?active.evidence.items:[];
+    const criticalKeys=new Set(items.filter(item=>item.critical).map(item=>item.key));
 
     function persistEvidence(){
-      const n=boxes.filter(box=>box.checked).length;
-      count.textContent=String(n);
+      const checked=boxes.filter(box=>box.checked);
+      count.textContent=`${checked.length}/${boxes.length}`;
+      if(criticalKeys.size){
+        const hit=checked.filter(box=>criticalKeys.has(box.dataset.evidence)).length;
+        criticalCount.textContent=` · 致命 ${hit}/${criticalKeys.size}`;
+      }else{
+        criticalCount.textContent='';
+      }
+      if(progressBar) progressBar.style.width=boxes.length?`${Math.round((checked.length/boxes.length)*100)}%`:'0%';
       localStorage.setItem(evidenceKey,JSON.stringify(Object.fromEntries(boxes.map(box=>[box.dataset.evidence,box.checked]))));
     }
 
@@ -171,7 +185,7 @@
     setCanonicalHtml('evidenceIntro',active.evidence.intro);
 
     const checklist=byId('checklist');
-    const renderCheck=item=>`<label class="check"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${escapeHtml(item.title)}</strong>${item.detail?`<small>${escapeHtml(item.detail)}</small>`:''}</span>${item.when?`<span class="when">${escapeHtml(item.when)}</span>`:''}</label>`;
+    const renderCheck=item=>`<label class="check${item.critical?' is-critical':''}"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${item.critical?'<span class="critical-star" aria-hidden="true">✶</span>':''}${escapeHtml(item.title)}</strong>${item.detail?`<small>${escapeHtml(item.detail)}</small>`:''}</span>${item.when?`<span class="when">${escapeHtml(item.when)}</span>`:''}</label>`;
 
     if(active.evidence.groups&&active.evidence.groups.length){
       checklist.classList.add('grouped');
@@ -359,6 +373,10 @@
 
   function updatePinnedUrl(next){
     if(!pinnedMode) return;
+    if(isCasePath()){
+      history.pushState({case:next.slug},'',`${siteBase()}/c/${next.slug}/`);
+      return;
+    }
     const url=new URL(location.href);
     url.searchParams.set('case',next.slug);
     url.hash='';
@@ -395,6 +413,20 @@
     },{signal:controller.signal});
   }
 
+  // 站点根（不硬编码 /buchikui 子路径）：/c/<slug>/ 前缀即部署根。
+  function siteBase(){
+    return location.pathname.replace(/\/c\/[a-z0-9][a-z0-9-]*\/?$/,'').replace(/\/$/,'');
+  }
+
+  function isCasePath(){
+    return /\/c\/[a-z0-9][a-z0-9-]*\/?$/.test(location.pathname);
+  }
+
+  // 分享一律发规范地址，把生态迁移到 /c/；?case= 仅作为兼容入口继续识别。
+  function caseCanonicalUrl(slug){
+    return `${location.origin}${siteBase()}/c/${slug}/`;
+  }
+
   function randomOtherCase(){
     if(cases.length<2) return active;
     const others=cases.filter(item=>item.slug!==active.slug);
@@ -402,10 +434,7 @@
   }
 
   function shareUrl(){
-    const url=new URL(location.href);
-    url.searchParams.set('case',active.slug);
-    url.hash='';
-    return url.toString();
+    return caseCanonicalUrl(active.slug);
   }
 
   function createShareMeritToast(){
@@ -476,7 +505,8 @@
 
   window.addEventListener('popstate',()=>{
     if(!pinnedMode) return;
-    const slug=new URLSearchParams(location.search).get('case');
+    const slug=new URLSearchParams(location.search).get('case')
+      ||((location.pathname.match(/\/c\/([a-z0-9][a-z0-9-]*)\/?$/)||[])[1]||'');
     const next=cases.find(item=>item.slug===slug);
     if(next&&next.slug!==active.slug) switchCase(next,{updateUrl:false});
   });

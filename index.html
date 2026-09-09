@@ -121,7 +121,10 @@
       </div>
       <div class="checklist" id="checklist"></div>
       <div class="evidence-foot">
-        <div class="progress-text">已保存 <strong id="progressCount">0</strong> 项关键材料。</div>
+        <div class="progress-wrap">
+          <div class="progress-text">已保存 <strong id="progressCount">0</strong> 项关键材料<span id="criticalCount"></span>。</div>
+          <div class="evidence-progress" aria-hidden="true"><i id="progressBar"></i></div>
+        </div>
         <button class="btn btn-on-dark" data-print>打印清单</button>
       </div>
     </div>
@@ -208,7 +211,8 @@
 <script defer src="legal-updates.js"></script>
   <script defer src="membership-config.js"></script>
   <script defer src="https://liuh886.github.io/admin/shared/account-shell.js?v=7" onerror="window.HaoAccountLoadFailed=true"></script>
-<script defer src="feedback.js"></script>
-<script defer src="pwa.js"></script>
+  <script defer src="feedback.js"></script>
+  <script defer src="read-progress.js"></script>
+  <script defer src="pwa.js"></script>
 </body>
 </html>

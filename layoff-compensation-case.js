@@ -191,6 +191,7 @@ window.BUCHIKUI_CASES.push({
         "key": "meeting",
         "group": "pressure",
         "title": "第一次约谈录音 + 书面方案",
+        "critical": true,
         "detail": "谁提出离职、给了哪些选择、是否提到背调 / 奖励 / 当天签字",
         "when": "当天"
       },
@@ -205,6 +206,7 @@ window.BUCHIKUI_CASES.push({
         "key": "notices",
         "group": "pressure",
         "title": "调岗 / PIP / 警告 / 解除通知",
+        "critical": true,
         "detail": "日期、事实理由、制度或法律依据、签发主体",
         "when": "每次收到时"
       },
@@ -247,6 +249,7 @@ window.BUCHIKUI_CASES.push({
         "key": "pay",
         "group": "money",
         "title": "工资条 + 银行流水 + 奖金津贴记录",
+        "critical": true,
         "detail": "核对平均应得工资、未结工资和奖金",
         "when": "谈补偿前"
       },

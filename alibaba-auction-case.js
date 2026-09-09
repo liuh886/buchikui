@@ -193,6 +193,7 @@ window.BUCHIKUI_CASES.push({
         "key": "parties",
         "group": "identity",
         "title": "拍卖人 + 委托人 + 标的所有人",
+        "critical": true,
         "detail": "营业执照、公告中的委托关系、收款和交付主体，留意关联公司",
         "when": "交保证金前"
       },
@@ -221,6 +222,7 @@ window.BUCHIKUI_CASES.push({
         "key": "bidLog",
         "group": "bidding",
         "title": "完整竞价记录",
+        "critical": true,
         "detail": "竞买号、每次出价金额、时间、加价幅度和延时过程；不要只截最后成交页",
         "when": "竞价中 / 成交后"
       },
@@ -228,6 +230,7 @@ window.BUCHIKUI_CASES.push({
         "key": "platformPreserve",
         "group": "bidding",
         "title": "平台数据保全请求 + 工单号",
+        "critical": true,
         "detail": "明确要求保全相关竞买号实名、报名、设备 / IP及竞价日志，供监管或法院依法调取",
         "when": "发现异常后立即"
       },

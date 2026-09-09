@@ -18,7 +18,8 @@
 首页现在是一套 **随机 Case 阅读器**：
 
 - 直接访问首页时，每次加载从现有 Case 中随机展示一份；
-- 分享当前 Case 时，链接会自动附带 `?case=...`，确保接收者打开的是同一份内容；
+- 每个 CASE 有独立规范地址 `/c/<slug>/`（部署流由 `scripts/prerender-cases.mjs` 生成，head 含该 CASE 专属 title/description/og/canonical），分享与 sitemap 均使用规范地址；
+- 老分享链接 `?case=...` 继续兼容识别，打开的是同一份内容；
 - 页面长度服从问题复杂度：复杂问题优先让用户按具体场景进入，每个场景只保留关键事实和立即动作；简单问题可以使用 1–2 屏的 `compact` 短页。
 
 ### CASE 001：如何租车维权
@@ -194,6 +195,7 @@
 - `transport-platform-case.js`：CASE 016 出行平台抽成内容数据
 - `legal-updates.js`：全部 16 个 CASE 的权利校验（Rights Check）数据，按 `slug` 索引
 - `app.js`：随机选择、standard/compact 渲染、证据状态与可选证据分组、Case 语义标签、分享、打印、复制模板
+- `scripts/prerender-cases.mjs`：部署时为每个 CASE 生成 `/c/<slug>/` 静态页（专属 head + 规范地址）；`?case=` 仅为兼容入口
 - `membership-config.js`：接入现有 Hao Account；阅读不设登录门槛，也不启用计费
 - `feedback.js` / `feedback.css`：文字选区、稳定语义 anchor、反馈 drawer / bottom sheet 与提交
 - Supabase `product_feedback`：复用现有表、RLS 和状态字段；不新增 Buchikui 专属反馈表或 Edge Function

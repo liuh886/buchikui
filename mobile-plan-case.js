@@ -119,6 +119,7 @@ window.BUCHIKUI_CASES.push({
       {
         "key": "bills",
         "title": "近 3 个月账单",
+        "critical": true,
         "detail": "月租、增值业务、额外流量 / 语音扣费",
         "when": "先查"
       },
@@ -143,6 +144,7 @@ window.BUCHIKUI_CASES.push({
       {
         "key": "ticket",
         "title": "客服工单 + 升级回复",
+        "critical": true,
         "detail": "申请内容、拒绝原因、工单号和处理结果",
         "when": "被拒时"
       },

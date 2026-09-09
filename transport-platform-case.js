@@ -166,6 +166,7 @@ window.BUCHIKUI_CASES.push({
         "key": "customerBill",
         "group": "customer",
         "title": "最终支付 / 最终报价页面",
+        "critical": true,
         "detail": "订单号、预估价及构成、优惠、最终结算、实际支付及收费项目",
         "when": "订单完成后立即"
       },
@@ -187,6 +188,7 @@ window.BUCHIKUI_CASES.push({
         "key": "driverPayout",
         "group": "driver",
         "title": "司机端结算与实收",
+        "critical": true,
         "detail": "乘客支付总额、司机劳动报酬、抽成比例、平台服务费及到账金额",
         "when": "结算后"
       },
@@ -194,6 +196,7 @@ window.BUCHIKUI_CASES.push({
         "key": "transferChain",
         "group": "chain",
         "title": "完整订单流转主体",
+        "critical": true,
         "detail": "订单依次进入哪些平台、每次流转时间和最终实际承运主体",
         "when": "发现差额后索取"
       },

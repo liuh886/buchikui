@@ -237,10 +237,9 @@
     if (start < 0) return null;
     const end = start + exact.length;
 
-    const canonical = new URL(window.location.href);
-    canonical.search = '';
-    canonical.hash = '';
-    canonical.searchParams.set('case', active.slug);
+    // 入库用规范地址（/c/<slug>/），与分享、sitemap 口径一致；?case= 仅为兼容入口。
+    const siteBase = window.location.pathname.replace(/\/c\/[a-z0-9][a-z0-9-]*\/?$/, '').replace(/\/$/, '');
+    const canonical = new URL(`${window.location.origin}${siteBase}/c/${active.slug}/`);
 
     return {
       created_at: new Date().toISOString(),

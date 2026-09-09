@@ -203,9 +203,9 @@ body.case-changing main,body.case-changing footer{opacity:.2;transform:translate
 }
 .hero-grid{
   display:grid;
-  grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);
-  gap:64px;
-  align-items:end;
+  grid-template-columns:minmax(0,1fr);
+  gap:36px;
+  align-items:start;
 }
 .hero-main{min-width:0}
 h1{
@@ -234,15 +234,15 @@ h1 em{font-style:normal;color:var(--red)}
   border-top:3px solid var(--red);
 }
 .panic-card h2{margin:0 0 14px;font-size:20px;line-height:1.18;letter-spacing:-.03em}
-.panic-list{counter-reset:panic;list-style:none;margin:0;padding:0;display:grid}
+.panic-list{counter-reset:panic;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 30px}
 .panic-list li{
   counter-increment:panic;
   display:grid;
   grid-template-columns:24px minmax(0,1fr);
   gap:10px;
-  align-items:center;
-  padding:10px 0;
-  border-top:1px solid #3d3b36;
+  align-items:start;
+  padding:2px 0;
+  border-top:0;
 }
 .panic-list li:first-child{border-top:0}
 .panic-list li::before{content:"0" counter(panic);color:var(--yellow);font-size:9px;font-weight:950;letter-spacing:.08em}
@@ -366,11 +366,17 @@ h1 em{font-style:normal;color:var(--red)}
 .check input:checked+.box{background:var(--yellow);border-color:var(--yellow)}
 .check input:checked+.box::after{content:"✓"}
 .check strong{display:block;color:#f8f3ea;font-size:13px;line-height:1.35}
+.check.is-critical{box-shadow:inset 3px 0 0 var(--red)}
+.check .critical-star{color:var(--red);margin-right:6px}
 .check small{display:block;margin-top:2px;color:#989188;font-size:10px;line-height:1.42}
 .check .when{color:#8f8981;font-size:8px;font-weight:800;letter-spacing:.07em;white-space:nowrap}
 .evidence-foot{margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.progress-wrap{min-width:0}
 .progress-text{color:#aaa39a;font-size:11px}
 .progress-text strong{color:var(--yellow);font-size:12px}
+#criticalCount{color:var(--red);font-weight:800}
+.evidence-progress{height:3px;max-width:280px;margin-top:8px;background:#3b3935}
+.evidence-progress i{display:block;height:100%;width:0;background:var(--yellow)}
 
 /* Route */
 .route{padding:78px 0 82px;border-bottom:1px solid var(--line-strong)}
@@ -444,9 +450,15 @@ footer{padding:42px 0 86px;border-top:0}
 .legal{margin-top:15px;color:#90897f;font-size:9px}
 .mobile-bar{display:none}
 
+/* Reading progress: position only, never a second nav */
+.read-progress{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;gap:10px;height:18px;padding:0 12px;pointer-events:none}
+.read-progress-track{display:block;flex:1;height:2px;background:rgba(23,23,21,.14)}
+.read-progress-track i{display:block;height:100%;width:0;background:var(--red)}
+.read-progress-label{flex:0 0 auto;color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.1em;white-space:nowrap}
+
 /* Responsive */
 @media(max-width:960px){
-  .hero-grid{grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:40px}
+  .panic-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 28px}
   .route-grid{grid-template-columns:repeat(2,1fr)}
   .route-step:nth-child(odd){border-left:0}
   .route-step:nth-child(n+3){border-top:1px solid var(--line)}
@@ -477,7 +489,9 @@ footer{padding:42px 0 86px;border-top:0}
   .hero-copy{font-size:15px;line-height:1.58}
   .panic-card{padding:19px 18px 15px}
   .panic-card h2{font-size:19px}
-  .panic-list li{padding:9px 0}
+  .panic-list{grid-template-columns:1fr;gap:0}
+  .panic-list li{padding:9px 0;border-top:1px solid #3d3b36}
+  .panic-list li:first-child{border-top:0}
 
   .service-standard-details>summary,.template-details>summary{padding:20px 30px 20px 0;gap:4px 14px}
   .service-standard-details>summary strong,.template-details>summary strong{font-size:21px}

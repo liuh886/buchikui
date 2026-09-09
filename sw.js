@@ -1,6 +1,6 @@
 // PWA 版本规则：CORE_ASSETS 增删任何一项，必须同步 bump CACHE_NAME（v9→v10…），
 // 并同步更新 scripts/check-frontend-contract.mjs 中的版本断言；否则旧缓存阴影新文件。
-const CACHE_NAME='buchikui-pwa-v9';
+const CACHE_NAME='buchikui-pwa-v10';
 const CORE_ASSETS=[
   './',
   './index.html',
@@ -27,6 +27,7 @@ const CORE_ASSETS=[
   './legal-updates.js',
   './membership-config.js',
   './feedback.js',
+  './read-progress.js',
   './pwa.js',
   './manifest.webmanifest',
   './icons/icon-180.png',
@@ -85,6 +86,8 @@ self.addEventListener('fetch',event=>{
   if(url.origin!==self.location.origin) return;
 
   if(request.mode==='navigate'){
+    // /c/<slug>/ 预渲染页不进 CORE_ASSETS（16 页全量预缓存太重）；首次在线访问即被 networkFirst 写入缓存，
+    // 离线回退 ./index.html 后 app 按路径锁定同一 CASE，体验不断。
     event.respondWith(networkFirst(request,'./index.html'));
     return;
   }

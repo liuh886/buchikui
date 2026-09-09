@@ -22,7 +22,7 @@
 
 .rights-pulse-label{
   margin-bottom:4px;
-  color:var(--red);
+  color:var(--red-deep);
   font-size:9px;
   font-weight:950;
   letter-spacing:.16em;
@@ -41,7 +41,7 @@
   white-space:nowrap;
 }
 
-.rights-pulse-badge.is-statute{border-color:var(--red);color:var(--red)}
+.rights-pulse-badge.is-statute{border-color:var(--red-deep);color:var(--red-deep)}
 .rights-pulse-badge.is-regulatory{border-color:var(--ink);color:var(--ink)}
 .rights-pulse-badge.is-case{border-color:var(--blue);color:var(--blue)}
 
@@ -143,7 +143,7 @@
 
 .rights-pulse-action span{
   padding-top:2px;
-  color:var(--red);
+  color:var(--red-deep);
   font-size:9px;
   font-weight:950;
   letter-spacing:.12em;

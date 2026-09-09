@@ -1,6 +1,11 @@
 (function(){
   const cases=window.BUCHIKUI_CASES||[];
-  if(!cases.length) return;
+  if(!cases.length){
+    const host=document.getElementById('loadError');
+    if(host) host.hidden=false;
+    console.error('Buchikui: no case data loaded.');
+    return;
+  }
 
   const byId=id=>document.getElementById(id);
   const escapeAttr=value=>String(value).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -15,6 +20,7 @@
   let pinnedMode=Boolean(requestedCase||pathCase);
   let active=requestedCase||pathCase||cases[Math.floor(Math.random()*cases.length)];
   let caseTransitionController=null;
+  let focusTriggerAfterSwitch=false;
 
   if(requested&&!requestedCase){
     const cleanUrl=new URL(location.href);
@@ -351,6 +357,29 @@
 
   function isSwitcherOpen(){return !byId('caseSwitcherPopover').hidden}
 
+  function switcherFocusable(){
+    return [...byId('caseSwitcherPopover').querySelectorAll('button:not([disabled]),input,[href]')]
+      .filter(element=>!element.hidden&&element.offsetParent!==null);
+  }
+
+  function trapSwitcherFocus(event){
+    if(event.key!=='Tab'||!isSwitcherOpen()) return;
+    const focusable=switcherFocusable();
+    if(!focusable.length) return;
+    const first=focusable[0];
+    const last=focusable[focusable.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  }
+
+  function stepSwitcherItem(direction){
+    const items=[...byId('caseSwitcherList').querySelectorAll('[data-switch-case]')].filter(button=>!button.hidden);
+    if(!items.length) return;
+    const current=items.indexOf(document.activeElement);
+    const next=items[(current+direction+items.length)%items.length];
+    if(next) next.focus();
+  }
+
   function openSwitcher(){
     const search=byId('caseSwitcherSearch');
     search.value='';
@@ -360,15 +389,20 @@
     byId('caseSwitcher').classList.add('open');
     byId('caseSwitcherTrigger').setAttribute('aria-expanded','true');
     document.body.classList.add('case-switcher-open');
-    if(window.matchMedia('(min-width:861px)').matches) requestAnimationFrame(()=>search.focus());
+    // 桌面端焦点进搜索框；移动端聚焦容器，避免弹出键盘。
+    requestAnimationFrame(()=>{
+      if(window.matchMedia('(min-width:861px)').matches) search.focus();
+      else byId('caseSwitcherPopover').focus();
+    });
   }
 
-  function closeSwitcher(){
+  function closeSwitcher(returnFocus){
     byId('caseSwitcherPopover').hidden=true;
     byId('caseSwitcherBackdrop').hidden=true;
     byId('caseSwitcher').classList.remove('open');
     byId('caseSwitcherTrigger').setAttribute('aria-expanded','false');
     document.body.classList.remove('case-switcher-open');
+    if(returnFocus) byId('caseSwitcherTrigger').focus();
   }
 
   function updatePinnedUrl(next){
@@ -388,11 +422,13 @@
     if(options.updateUrl!==false) updatePinnedUrl(next);
     renderCase();
     window.scrollTo({top:0,left:0,behavior:'auto'});
+    if(focusTriggerAfterSwitch){focusTriggerAfterSwitch=false;byId('caseSwitcherTrigger').focus({preventScroll:true});}
     requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.remove('case-changing')));
   }
 
   function switchCase(next,options={}){
-    if(!next||next.slug===active.slug){closeSwitcher();return}
+    if(!next||next.slug===active.slug){closeSwitcher(true);return}
+    focusTriggerAfterSwitch=byId('caseSwitcher').contains(document.activeElement);
     closeSwitcher();
     caseTransitionController?.abort();
     document.body.classList.add('case-changing');
@@ -405,8 +441,16 @@
     const main=document.querySelector('main');
     caseTransitionController=new AbortController();
     const controller=caseTransitionController;
+    // transitionend 可能因样式缺失而不触发，加超时回退，页面永不卡死。
+    const fallback=setTimeout(()=>{
+      if(caseTransitionController!==controller) return;
+      controller.abort();
+      caseTransitionController=null;
+      applyCaseSwitch(next,options);
+    },450);
     main.addEventListener('transitionend',event=>{
       if(event.target!==main||event.propertyName!=='opacity') return;
+      clearTimeout(fallback);
       controller.abort();
       if(caseTransitionController===controller) caseTransitionController=null;
       applyCaseSwitch(next,options);
@@ -487,7 +531,7 @@
 
   byId('caseSwitcherTrigger').addEventListener('click',event=>{
     event.stopPropagation();
-    isSwitcherOpen()?closeSwitcher():openSwitcher();
+    isSwitcherOpen()?closeSwitcher(true):openSwitcher();
   });
 
   byId('caseSwitcherSearch').addEventListener('input',event=>filterSwitcher(event.target.value));
@@ -499,9 +543,15 @@
   });
 
   byId('randomCaseButton').addEventListener('click',()=>switchCase(randomOtherCase()));
-  byId('caseSwitcherBackdrop').addEventListener('click',closeSwitcher);
+  byId('caseSwitcherBackdrop').addEventListener('click',()=>closeSwitcher(true));
   document.addEventListener('click',event=>{if(isSwitcherOpen()&&!byId('caseSwitcher').contains(event.target)) closeSwitcher()});
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&isSwitcherOpen()){closeSwitcher();byId('caseSwitcherTrigger').focus()}});
+  document.addEventListener('keydown',event=>{
+    if(!isSwitcherOpen()) return;
+    if(event.key==='Escape'){closeSwitcher(true);return}
+    if(event.key==='ArrowDown'&&byId('caseSwitcher').contains(document.activeElement)){event.preventDefault();stepSwitcherItem(1)}
+    if(event.key==='ArrowUp'&&byId('caseSwitcher').contains(document.activeElement)){event.preventDefault();stepSwitcherItem(-1)}
+  });
+  byId('caseSwitcherPopover').addEventListener('keydown',trapSwitcherFocus);
 
   window.addEventListener('popstate',()=>{
     if(!pinnedMode) return;

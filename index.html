@@ -25,6 +25,30 @@
   <link rel="stylesheet" href="feedback.css">
 </head>
 <body>
+<a class="skip-link" href="#top">跳到主内容</a>
+<noscript>
+  <div class="wrap noscript-note">
+    <p><strong>不吃亏｜消费纠纷行动指南</strong>需要启用 JavaScript 才能按案例阅读。你也可以直接打开任一案例的固定地址：</p>
+    <ul>
+      <li><a href="https://liuh886.github.io/buchikui/c/rental/">租车警惕第三方平台</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/beauty-hair/">美容美发避免预付费</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/bank-small-account-fee/">小额账户管理费，唯一账户可能不该扣</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/mobile-plan-cost/">你有权利更改话费套餐</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/internet-court-self-litigation/">第一次自己打民事官司</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/alipay-advisor-cost/">支付宝投顾：0.5% 不是总成本</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/bank-wealth-not-guaranteed/">银行理财不一定保本</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/rental-credit-card-first/">信用免押？优先信用卡预授权</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/appliance-repair-trap/">家电维修不要相信搜索排名</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/airport-sales-pitch/">机场推销：他到底是谁</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/dating-safety/">相亲约会：第一次见面要保留随时离开的能力</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/thailand-travel-safety/">泰国旅游安全：识别异常风险信号</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/alibaba-auction-trap/">阿里拍卖局中局：先查谁在拍、谁在竞价</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/layoff-compensation/">公司要裁你：别签个人离职</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/qingdao-travel/">青岛旅游消费避坑与维权</a></li>
+      <li><a href="https://liuh886.github.io/buchikui/c/transport-platform-layered-fees/">出行平台的层层抽成：你付的钱去哪了</a></li>
+    </ul>
+  </div>
+</noscript>
 <header class="topbar">
   <div class="wrap topbar-inner">
     <a class="brand" href="./" aria-label="不吃亏首页">不吃亏<span class="brand-mark" aria-hidden="true"></span></a>
@@ -36,7 +60,7 @@
         <svg class="case-switcher-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
       </button>
 
-      <div class="case-switcher-popover" id="caseSwitcherPopover" role="dialog" aria-label="切换案例" hidden>
+      <div class="case-switcher-popover" id="caseSwitcherPopover" role="dialog" aria-label="切换案例" tabindex="-1" hidden>
         <div class="case-switcher-head">
           <strong>案例库</strong>
           <button class="case-random" id="randomCaseButton" type="button" aria-label="随机切换到另一个案例">
@@ -62,6 +86,9 @@
 <div class="case-switcher-backdrop" id="caseSwitcherBackdrop" hidden></div>
 
 <main id="top">
+  <div class="wrap load-error" id="loadError" hidden>
+    <p><strong>内容加载失败。</strong>请检查网络连接后刷新重试；也可直接打开下方任一案例固定地址（关闭 JavaScript 时可见列表）。</p>
+  </div>
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-main">

@@ -327,7 +327,7 @@
     action.classList.remove('is-mobile');
     const width = 118;
     const left = Math.max(12, Math.min(window.innerWidth - width - 12, selection.rect.right - width / 2));
-    const top = Math.max(12, selection.rect.top - 46);
+    const top = Math.max(12, selection.rect.top - 54);
     action.style.left = `${left}px`;
     action.style.top = `${top}px`;
   }

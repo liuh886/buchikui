@@ -22,7 +22,7 @@
 .case-overview-head p{max-width:440px;margin:0;color:var(--muted);font-size:13px;line-height:1.72}
 .case-overview-facts{border-top:2px solid var(--ink)}
 .case-overview-item{display:grid;grid-template-columns:88px minmax(0,1fr);gap:16px;padding:16px 0 17px;border-bottom:1px solid var(--line)}
-.case-overview-status{padding-top:2px;color:var(--red);font-size:9px;font-weight:950;letter-spacing:.1em}
+.case-overview-status{padding-top:2px;color:var(--red-deep);font-size:9px;font-weight:950;letter-spacing:.1em}
 .case-overview-item h3{margin:0 0 5px;font-size:16px;line-height:1.25;letter-spacing:-.02em}
 .case-overview-item p{margin:0;color:var(--muted);font-size:11px;line-height:1.65}
 

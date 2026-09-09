@@ -1,4 +1,4 @@
-import { readFile, mkdtemp } from 'node:fs/promises';
+import { readFile, mkdtemp, stat, readdir } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -26,6 +26,21 @@ const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWork
 const fail = (message) => {
   throw new Error(message);
 };
+
+// 体积预算（零构建的性能治理）：单 CASE 数据文件 <70KB，顶层 JS 总和 <500KB。
+// 预算撞线之日，就是必须做按需加载拆分之时——到时再议，不提前抽象。
+{
+  const root = new URL('../', import.meta.url);
+  const entries = await readdir(root);
+  let total = 0;
+  for (const entry of entries) {
+    if (!entry.endsWith('.js')) continue;
+    const size = (await stat(new URL(`../${entry}`, import.meta.url))).size;
+    total += size;
+    if (size > 70 * 1024) fail(`JS budget exceeded by ${entry}: ${Math.round(size / 1024)}KB > 70KB`);
+  }
+  if (total > 500 * 1024) fail(`Total JS budget exceeded: ${Math.round(total / 1024)}KB > 500KB`);
+}
 
 const localScripts = [...html.matchAll(/<script\s+([^>]*?)src="([^"]+)"([^>]*)><\/script>/g)]
   .filter(([, , src]) => !/^https?:\/\//i.test(src));
@@ -65,6 +80,11 @@ for (const required of [
   'critical-star',
   'criticalCount',
   'progressBar',
+  'trapSwitcherFocus',
+  'stepSwitcherItem',
+  'focusTriggerAfterSwitch',
+  'clearTimeout(fallback)',
+  'no case data loaded',
   'function caseCanonicalUrl(slug){',
   'function isCasePath(){',
   'function siteBase(){',
@@ -100,6 +120,10 @@ for (const required of [
   'src="layoff-compensation-case.js"',
   'data-share',
   'data-print',
+  'class="skip-link"',
+  '<noscript>',
+  'id="loadError"',
+  'tabindex="-1"',
   'id="caseList"',
   'id="caseSwitcherId"',
   'id="caseSwitcherSearch"',
@@ -147,6 +171,9 @@ for (const required of [
   '.fee-row.is-highlight',
   '.fee-track',
   '.read-progress{',
+  '.skip-link{',
+  '.load-error{',
+  '.noscript-note{',
   '#discussionBody>ol{counter-reset:discussion-card;display:grid',
 ]) {
   if (!styles.includes(required)) fail(`Missing simplified design contract: ${required}`);
@@ -363,6 +390,12 @@ for (let index = 0; index < caseSources.length; index += 1) {
   }
   const robots = await readFile(new URL('../robots.txt', import.meta.url), 'utf8');
   if (!robots.includes('sitemap.xml')) fail('robots.txt must reference sitemap.xml');
+  // noscript 回退必须覆盖全部 16 个规范地址（无 JS 时唯一的站内导航）
+  const noscript = html.slice(html.indexOf('<noscript>'), html.indexOf('</noscript>'));
+  if (!html.includes('<noscript>')) fail('Missing noscript fallback');
+  for (const c of allCases) {
+    if (!noscript.includes(`/c/${c.slug}/`)) fail(`Noscript is missing case: ${c.slug}`);
+  }
 }
 
 // 预渲染验证：真实执行生成器，16 页齐全、head 专属化、资源引用 ../ 化、无漏改写。

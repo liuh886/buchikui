@@ -397,7 +397,8 @@ for (let index = 0; index < caseSources.length; index += 1) {
   }
 }
 
-if (!pwa.includes("navigator.serviceWorker.register('./sw.js')")) fail('PWA service worker registration is missing');
+if (!pwa.includes("navigator.serviceWorker.register(swUrl)")) fail('PWA service worker registration is missing');
+if (!pwa.includes('location.pathname.replace(/\\/c\\/')) fail('PWA registration must resolve the site root for /c/ pages');
 if (pwa.includes('beforeinstallprompt') || pwa.includes('pwaToast') || pwa.includes('SKIP_WAITING')) {
   fail('PWA client must stay infrastructure-only');
 }

@@ -4,6 +4,11 @@
   const PENDING_KEY = 'buchikui-pending-feedback-v1';
   const MAX_QUOTE_LENGTH = 1200;
   const CONTEXT_LENGTH = 32;
+  // Turnstile 与共享 Hao Account 壳复用同一公开 sitekey 与同一 widget 域名；
+  // sitekey 本身公开，但仍由后端 config 下发，避免前端写死，缺配置时直接 fail closed。
+  const TURNSTILE_SCRIPT_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  const TURNSTILE_ACTION = 'buchikui_feedback';
+  const TURNSTILE_UNAVAILABLE = '机器人验证暂不可用，提交已锁定';
   const cases = window.BUCHIKUI_CASES || [];
 
   const state = {
@@ -11,7 +16,93 @@
     composerOpen: false,
     submitting: false,
     selectionTimer: null,
+    turnstileToken: '',
   };
+
+  let turnstileLoader = null;
+  let turnstileWidgetId = null;
+
+  function clearTurnstile() {
+    if (turnstileWidgetId !== null && window.turnstile?.remove) {
+      try { window.turnstile.remove(turnstileWidgetId); } catch { /* already gone */ }
+    }
+    turnstileWidgetId = null;
+    state.turnstileToken = '';
+  }
+
+  function loadTurnstile() {
+    if (window.turnstile?.render) return Promise.resolve(window.turnstile);
+    if (turnstileLoader) return turnstileLoader;
+    turnstileLoader = new Promise((resolve, reject) => {
+      // 兼容共享壳已注入的 script（data-hao-turnstile），避免重复加载。
+      let script = document.querySelector('script[data-hao-turnstile], script[src^="https://challenges.cloudflare.com/turnstile/"]');
+      const finish = () => window.turnstile?.render
+        ? resolve(window.turnstile)
+        : reject(new Error('Turnstile API did not initialize.'));
+      const fail = () => reject(new Error('Turnstile API failed to load.'));
+      if (!script) {
+        script = document.createElement('script');
+        script.src = TURNSTILE_SCRIPT_URL;
+        script.async = true;
+        script.defer = true;
+        script.dataset.buchikuiTurnstile = '';
+        document.head.appendChild(script);
+      }
+      script.addEventListener('load', finish, { once: true });
+      script.addEventListener('error', fail, { once: true });
+      if (window.turnstile?.render) finish();
+    }).catch((error) => {
+      turnstileLoader = null;
+      throw error;
+    });
+    return turnstileLoader;
+  }
+
+  async function mountTurnstile() {
+    const host = composer.querySelector('#consumerFeedbackTurnstile');
+    const status = composer.querySelector('#consumerFeedbackStatus');
+    clearTurnstile();
+    syncSubmitState();
+    try {
+      const account = window.HaoAccount;
+      const client = await account.getClient();
+      const { data, error } = await client.functions.invoke('feedback-submit', {
+        body: { action: 'config' },
+      });
+      if (error || !data?.ok) throw error || new Error('Turnstile config failed');
+      const turnstileConfig = data.turnstile || {};
+      if (!turnstileConfig.configured || !turnstileConfig.sitekey) {
+        throw new Error('Turnstile is not configured.');
+      }
+      if (!state.composerOpen) return;
+      const turnstile = await loadTurnstile();
+      if (!host.isConnected || !state.composerOpen) return;
+      turnstileWidgetId = turnstile.render(host, {
+        sitekey: turnstileConfig.sitekey,
+        action: TURNSTILE_ACTION,
+        theme: 'auto',
+        callback(token) {
+          state.turnstileToken = String(token || '');
+          syncSubmitState();
+        },
+        'expired-callback'() {
+          state.turnstileToken = '';
+          syncSubmitState();
+          if (state.composerOpen) status.textContent = '验证已过期，请重新验证。';
+        },
+        'error-callback'() {
+          state.turnstileToken = '';
+          syncSubmitState();
+          if (state.composerOpen) status.textContent = '验证失败，请重新验证。';
+        },
+      });
+    } catch (error) {
+      console.warn('Buchikui feedback Turnstile unavailable:', error);
+      state.turnstileToken = '';
+      syncSubmitState();
+      if (state.composerOpen) status.textContent = `${TURNSTILE_UNAVAILABLE}。`;
+    }
+  }
 
   const normalizeText = (value) => String(value ?? '')
     .replace(/\u00a0/g, ' ')
@@ -332,6 +423,10 @@
             <textarea id="consumerFeedbackMessage" maxlength="4000" rows="7" required placeholder="尽量写清：发生了什么、对方怎么处理、你做了什么、结果怎样。"></textarea>
           </label>
           <p class="consumer-feedback-privacy">请不要提交不必要的身份证号、手机号、订单号等个人信息。</p>
+          <div class="consumer-feedback-captcha">
+            <div id="consumerFeedbackTurnstile"></div>
+            <p class="consumer-feedback-captcha-note">提交前请完成人机验证；验证过期或提交失败后需重新验证。</p>
+          </div>
           <p class="consumer-feedback-status" id="consumerFeedbackStatus" role="status" aria-live="polite"></p>
           <div class="consumer-feedback-actions">
             <button type="button" class="btn btn-quiet" data-feedback-close>取消</button>
@@ -350,7 +445,8 @@
   function syncSubmitState() {
     const submit = composer.querySelector('#consumerFeedbackSubmit');
     if (!submit) return;
-    submit.disabled = state.submitting;
+    // 默认锁定：人机验证通过前不允许提交；fail closed。
+    submit.disabled = state.submitting || !state.turnstileToken;
     submit.textContent = state.submitting ? '提交中…' : '提交给编辑';
   }
 
@@ -364,15 +460,18 @@
     composer.querySelector('#consumerFeedbackQuote').textContent = `“${selection.selector.exact}”`;
     composer.querySelector('#consumerFeedbackStatus').textContent = '';
     composer.querySelector('#consumerFeedbackMessage').value = '';
+    state.turnstileToken = '';
     syncSubmitState();
     window.getSelection()?.removeAllRanges();
     window.setTimeout(() => composer.querySelector('#consumerFeedbackMessage')?.focus(), 0);
+    void mountTurnstile();
   }
 
   function closeComposer({ keepPending = false } = {}) {
     if (state.submitting) return;
     state.composerOpen = false;
     state.selection = null;
+    clearTurnstile();
     composer.hidden = true;
     document.documentElement.classList.remove('consumer-feedback-open');
     if (!keepPending) clearPending();
@@ -401,6 +500,10 @@
     if (!message) return;
     const feedbackType = composer.querySelector('input[name="feedbackType"]:checked')?.value || 'experience';
     const status = composer.querySelector('#consumerFeedbackStatus');
+    if (!state.turnstileToken) {
+      status.textContent = '请先完成人机验证。';
+      return;
+    }
     state.submitting = true;
     syncSubmitState();
     status.textContent = '正在把这条经验送进编辑收件箱…';
@@ -413,6 +516,7 @@
           action: 'submit',
           feedback_type: feedbackType,
           message: message.slice(0, 4000),
+          turnstile_token: state.turnstileToken,
           page_url: state.selection.page_url,
           case_id: state.selection.case_id,
           case_slug: state.selection.case_slug,
@@ -432,6 +536,8 @@
 
       clearPending();
       state.submitting = false;
+      state.turnstileToken = '';
+      clearTurnstile();
       syncSubmitState();
       status.textContent = '已提交。';
       window.setTimeout(() => {
@@ -441,8 +547,12 @@
     } catch (error) {
       console.warn('Buchikui anchored feedback:', error);
       state.submitting = false;
+      // token 单次有效：失败后清掉并重新挂载验证，必须重新验证才能再提交。
+      state.turnstileToken = '';
+      clearTurnstile();
       syncSubmitState();
-      status.textContent = '提交失败，请稍后再试。';
+      status.textContent = '提交失败，请重新验证后再试。';
+      void mountTurnstile();
     }
   }
 

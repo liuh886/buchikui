@@ -28,9 +28,8 @@
       { zh: '反馈只进入编辑收件箱，不形成公开评论区', en: 'Feedback goes to an editorial inbox, not a public comment thread' },
     ],
     // feedbackEnabled:false 仅关闭 Hao Account 壳自带的通用反馈挂件；
-    // 不吃亏的段落级反馈由 feedback.js 独立实现（选中文字 → 补充经验 → feedback-submit），不受此开关影响。
-    // 当前服务端防护 = 登录鉴权 + Origin 白名单 + 服务端字段锁定 + 长度/格式校验（见 docs/consumer-feedback.md）。
-    // Cloudflare Turnstile 为 Planned 加固项：配齐 sitekey/secret 后再启用 fail-closed 校验，在此之前不得宣称已防护机器人。
+    // 不吃亏的段落级反馈由 feedback.js 独立实现（选中文字 → 人机验证 → feedback-submit），不受此开关影响。
+    // 当前服务端防护 = 登录鉴权 + Turnstile（与壳复用同一 widget）+ Origin 白名单 + 服务端字段锁定（见 docs/consumer-feedback.md）。
     feedbackEnabled: false,
   });
 })();

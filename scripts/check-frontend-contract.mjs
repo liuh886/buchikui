@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
-const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, layoffCase, alibabaAuctionCase, legalUpdates] = await Promise.all([
+const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWorker, manifestRaw, investmentCase, thailandCase, applianceCase, layoffCase, alibabaAuctionCase, legalUpdates, feedbackClient, feedbackFunction] = await Promise.all([
   readFile(new URL('../index.html', import.meta.url), 'utf8'),
   readFile(new URL('../app.js', import.meta.url), 'utf8'),
   readFile(new URL('../styles.css', import.meta.url), 'utf8'),
@@ -16,6 +16,8 @@ const [html, app, styles, caseLibraryStyles, rightsPulseStyles, pwa, serviceWork
   readFile(new URL('../layoff-compensation-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../alibaba-auction-case.js', import.meta.url), 'utf8'),
   readFile(new URL('../legal-updates.js', import.meta.url), 'utf8'),
+  readFile(new URL('../feedback.js', import.meta.url), 'utf8'),
+  readFile(new URL('../supabase/functions/feedback-submit/index.ts', import.meta.url), 'utf8'),
 ]);
 
 const fail = (message) => {
@@ -380,6 +382,32 @@ for (const retired of [
   "'./account-integration.css'",
 ]) {
   if (serviceWorker.includes(retired)) fail(`Retired offline asset returned: ${retired}`);
+}
+
+// Turnstile 人机验证：前后端 wiring 缺一即红灯，杜绝“文档说有、实现没有”二次分叉。
+for (const required of [
+  'challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
+  'buchikui_feedback',
+  'turnstile_token',
+  "action: 'config'",
+  'expired-callback',
+  'error-callback',
+  '!state.turnstileToken',
+  '机器人验证暂不可用，提交已锁定',
+  '请先完成人机验证。',
+]) {
+  if (!feedbackClient.includes(required)) fail(`Missing feedback Turnstile contract: ${required}`);
+}
+for (const required of [
+  'siteverify',
+  'TURNSTILE_SECRET_KEY',
+  'TURNSTILE_SITE_KEY',
+  'buchikui_feedback',
+  'TURNSTILE_HOSTNAME',
+  '"config"',
+  'Human verification is unavailable.',
+]) {
+  if (!feedbackFunction.includes(required)) fail(`Missing feedback-submit Turnstile contract: ${required}`);
 }
 
 const hasAny = (source, ...variants) => variants.some(variant => source.includes(variant));

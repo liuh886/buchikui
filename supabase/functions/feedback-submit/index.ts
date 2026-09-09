@@ -4,6 +4,10 @@ const ALLOWED_ORIGIN = "https://liuh886.github.io";
 const FEEDBACK_TYPES = new Set(["experience", "correction", "process", "other"]);
 const CASE_SLUG = /^[a-z0-9][a-z0-9-]{0,79}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
+// 与共享 Hao Account 壳复用同一 Cloudflare Turnstile widget；sitekey 公开，secret 只活在 Function Secret。
+const TURNSTILE_ACTION = "buchikui_feedback";
+const TURNSTILE_HOSTNAME = "liuh886.github.io";
+const TURNSTILE_SITEVERIFY = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 function namedKey(name: string): string {
   const raw = Deno.env.get(name) ?? "";
@@ -58,6 +62,36 @@ function pageUrl(value: unknown): string {
   return url.toString();
 }
 
+function turnstileSecret(): string {
+  const raw = Deno.env.get("TURNSTILE_SECRET_KEY") ?? "";
+  return raw.trim();
+}
+
+function turnstileSitekey(): string {
+  const raw = Deno.env.get("TURNSTILE_SITE_KEY") ?? "";
+  return raw.trim();
+}
+
+async function verifyTurnstile(token: string, remoteIp: string | null): Promise<void> {
+  const secret = turnstileSecret();
+  // fail closed：secret 缺失时直接拒绝，绝不降级放行。
+  if (!secret) throw new Error("Human verification is unavailable.");
+  const cleaned = String(token ?? "").trim();
+  if (!cleaned || cleaned.length > 2048) throw new Error("Human verification is required.");
+  const form = new URLSearchParams({ secret, response: cleaned });
+  if (remoteIp) form.set("remoteip", remoteIp);
+  let verdict: { success?: boolean; action?: string; hostname?: string };
+  try {
+    const response = await fetch(TURNSTILE_SITEVERIFY, { method: "POST", body: form });
+    verdict = await response.json() as { success?: boolean; action?: string; hostname?: string };
+  } catch {
+    throw new Error("Human verification failed.");
+  }
+  if (verdict.success !== true) throw new Error("Human verification failed.");
+  if (verdict.action !== TURNSTILE_ACTION) throw new Error("Human verification failed.");
+  if (verdict.hostname !== TURNSTILE_HOSTNAME) throw new Error("Human verification failed.");
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders(req) });
   if (req.method !== "POST") return json(req, { error: "Method not allowed." }, 405);
@@ -91,12 +125,21 @@ Deno.serve(async (req: Request) => {
     return json(req, { error: "Invalid JSON payload." }, 400);
   }
 
-  if (String(body.action ?? "") !== "submit") {
+  if (String(body.action ?? "") !== "submit" && String(body.action ?? "") !== "config") {
     return json(req, { error: "Unknown action." }, 400);
+  }
+
+  // config：前端探测 Turnstile 是否就绪并获取公开 sitekey；同样需要登录。
+  if (String(body.action ?? "") === "config") {
+    const sitekey = turnstileSitekey();
+    const configured = Boolean(sitekey && turnstileSecret());
+    return json(req, { ok: true, turnstile: { sitekey, configured } });
   }
 
   try {
     const message = text(body.message, 4000, "message");
+    const turnstileToken = text(body.turnstile_token, 2048, "human verification token", 1);
+    await verifyTurnstile(turnstileToken, req.headers.get("cf-connecting-ip") ?? req.headers.get("x-forwarded-for"));
     const feedbackType = text(body.feedback_type, 24, "feedback type");
     if (!FEEDBACK_TYPES.has(feedbackType)) throw new Error("Invalid feedback type.");
 

@@ -36,20 +36,17 @@
 
 ## 机器人防护
 
-当前已落地（`feedback.js` + `supabase/functions/feedback-submit/index.ts`）：
+已落地（`feedback.js` + `supabase/functions/feedback-submit/index.ts`，与共享 Hao Account 壳复用同一 Cloudflare widget）：
 
 1. Reader 只调用 Edge Function `feedback-submit`，不再直接 INSERT `product_feedback`。
-2. `feedback-submit` 先验证登录用户（`auth.getUser`），再校验 Origin 白名单（`https://liuh886.github.io`）。
-3. `user_id`、`product_code = buchikui`、`category = content`、`status = new` 都由服务端确定，不接受客户端覆盖。
-4. 服务端锁定字段格式与长度（类型白名单、`case_id` 三位数字、`slug` 正则、quote 2–1200 字、起止位置、sha256、整页 URL 归一化、24KB 上限）。
-5. 数据库不给 `authenticated` / `anon` 直接 INSERT 权限；绕过按钮直接调用 Data API 也不能提交。
+2. composer 打开即经 `config` action 获取公开 sitekey 并渲染 Turnstile（`action = buchikui_feedback`）；`提交给编辑` 默认锁定，验证通过前不可点。
+3. token 单次有效：过期、错误、提交失败后必须重新验证；验证组件不可用或后端未配置时 fail closed，显示“机器人验证暂不可用，提交已锁定”。
+4. `feedback-submit` 先验证登录用户，再调 Cloudflare Siteverify；`success = true`、`action = buchikui_feedback`、`hostname = liuh886.github.io` 三项同时成立才写入。
+5. `user_id`、`product_code = buchikui`、`category = content`、`status = new` 都由服务端确定，不接受客户端覆盖。
+6. 数据库不给 `authenticated` / `anon` 直接 INSERT 权限；绕过按钮直接调用 Data API 也不能提交。
+7. secret 缺失时后端直接拒绝（503 语义的“验证不可用”），绝不降级放行。
 
-Planned（未落地，不得对外宣称已防护）：Cloudflare Turnstile。
-
-1. 配齐 `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` 两项 Function Secret；
-2. Reader 动态渲染 Turnstile，成功后得到一次性 token，随提交上报；
-3. `feedback-submit` 调 Cloudflare Siteverify，且 `success = true`、`action = buchikui_feedback`、`hostname = liuh886.github.io` 同时成立才写入；
-4. 两项 secret 任缺其一，Reader 必须 fail closed（提交锁定并提示），不恢复浏览器直写路径。
+生产配置只有两项 Function Secret（经 Supabase Dashboard / CLI 设置，不进仓库）：
 
 生产配置只有两项 Function Secret：
 

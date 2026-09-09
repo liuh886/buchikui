@@ -1,4 +1,8 @@
 project_id = "buchikui"
 
+# Function Secrets（经 Supabase Dashboard / CLI 设置，不进仓库）：
+# TURNSTILE_SITE_KEY / TURNSTILE_SECRET_KEY —— 与共享 Hao Account 壳复用同一 Cloudflare widget。
+# 两项任缺其一，feedback-submit 对提交一律 fail closed（config.configured=false，submit 拒绝）。
+
 [functions.feedback-submit]
 verify_jwt = false

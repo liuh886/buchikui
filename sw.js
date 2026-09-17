@@ -1,11 +1,11 @@
-const CACHE_NAME='buchikui-pwa-v11';
+const CACHE_NAME='buchikui-pwa-v12';
 const CORE_ASSETS=[
-  './','./index.html','./styles.css','./rights-pulse.css','./feedback.css',
+  './','./index.html','./styles.css','./rights-pulse.css',
   './cases.js','./compact-cases.js','./mobile-plan-case.js','./court-case.js','./investment-advisor-case.js',
   './bank-wealth-case.js','./rental-payment-case.js','./appliance-repair-case.js','./airport-sales-case.js',
   './dating-safety-case.js','./thailand-travel-safety-case.js','./layoff-compensation-case.js','./alibaba-auction-case.js',
-  './qingdao-travel-case.js','./transport-platform-case.js','./app.js','./legal-updates.js','./membership-config.js',
-  './feedback.js','./pwa.js','./manifest.webmanifest','./icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png'
+  './qingdao-travel-case.js','./transport-platform-case.js','./app.js','./legal-updates.js','./pwa.js','./manifest.webmanifest',
+  './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png'
 ];
 
 self.addEventListener('install',event=>{

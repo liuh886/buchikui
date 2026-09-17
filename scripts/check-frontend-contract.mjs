@@ -34,6 +34,9 @@ for(const retired of [
   'data-print',
   'read-progress.js',
   'case-library.css',
+  'feedback.js',
+  'feedback.css',
+  'membership-config.js',
 ]) if(html.includes(retired)) fail(`Retired reader UI returned: ${retired}`);
 
 for(const required of [
@@ -78,10 +81,10 @@ for(const required of [
   '.rights-pulse-sources',
 ]) if(!rights.includes(required)) fail(`Missing authority layer style: ${required}`);
 
-for(const retired of ['case-library.css','read-progress.js']){
+for(const retired of ['case-library.css','read-progress.js','feedback.css','feedback.js','membership-config.js']){
   if(sw.includes(retired)) fail(`Retired asset still cached by service worker: ${retired}`);
 }
-if(!sw.includes("const CACHE_NAME='buchikui-pwa-v11'")) fail('PWA cache version must be v11 after shell replacement');
+if(!sw.includes("const CACHE_NAME='buchikui-pwa-v12'")) fail('PWA cache version must be v12 after shell replacement');
 
 const parsedManifest=JSON.parse(manifest);
 if(!String(parsedManifest.name||'').includes('消费普法')) fail('Manifest must use the consumer legal-literacy positioning');

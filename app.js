@@ -1,32 +1,23 @@
 (function(){
-  const cases=window.BUCHIKUI_CASES||[];
-  if(!cases.length){
-    const host=document.getElementById('loadError');
-    if(host) host.hidden=false;
-    console.error('Buchikui: no case data loaded.');
-    return;
-  }
+  'use strict';
 
-  const byId=id=>document.getElementById(id);
-  const escapeAttr=value=>String(value).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const escapeHtml=value=>String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  const cases=Array.isArray(window.BUCHIKUI_CASES)?window.BUCHIKUI_CASES:[];
+  const app=document.getElementById('app');
+  if(!app) return;
+
+  const esc=value=>String(value??'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+
   const allowedRichTags=new Set(['A','B','BR','CODE','EM','LI','OL','P','SMALL','SPAN','STRONG','UL']);
-  const params=new URLSearchParams(location.search);
-  const requested=params.get('case');
-  const requestedCase=cases.find(item=>item.slug===requested);
-  // 规范地址 /c/<slug>/ 与 ?case= 双轨：query 优先（老分享链接），路径次之，根路径随机。
-  const pathSlug=((location.pathname.match(/\/c\/([a-z0-9][a-z0-9-]*)\/?$/)||[])[1]||'');
-  const pathCase=pathSlug?cases.find(item=>item.slug===pathSlug):null;
-  let pinnedMode=Boolean(requestedCase||pathCase);
-  let active=requestedCase||pathCase||cases[Math.floor(Math.random()*cases.length)];
-  let caseTransitionController=null;
-  let focusTriggerAfterSwitch=false;
-
-  if(requested&&!requestedCase){
-    const cleanUrl=new URL(location.href);
-    cleanUrl.searchParams.delete('case');
-    history.replaceState(null,'',cleanUrl.pathname+cleanUrl.search+cleanUrl.hash);
-  }
+  const stripHtml=value=>{
+    const node=document.createElement('div');
+    node.innerHTML=String(value||'');
+    return (node.textContent||'').replace(/\s+/g,' ').trim();
+  };
 
   function safeHref(value){
     const href=String(value||'').trim();
@@ -39,7 +30,7 @@
     return '#';
   }
 
-  function sanitizeCanonicalHtml(value){
+  function sanitizeRichHtml(value){
     const template=document.createElement('template');
     template.innerHTML=String(value||'');
     template.content.querySelectorAll('*').forEach(node=>{
@@ -69,509 +60,250 @@
     return template.innerHTML;
   }
 
-  function setCanonicalHtml(id,value){
-    byId(id).innerHTML=sanitizeCanonicalHtml(value);
-  }
-
-  function renderMeta(){
-    document.title=active.meta.title;
-    document.querySelector('meta[name="description"]').setAttribute('content',active.meta.description);
-    document.querySelector('meta[property="og:title"]').setAttribute('content',active.meta.ogTitle);
-    document.querySelector('meta[property="og:description"]').setAttribute('content',active.meta.ogDescription);
-  }
-
-  function renderSwitcher(){
-    byId('caseSwitcherId').textContent=`CASE ${active.id}`;
-    byId('caseName').textContent=active.name;
-    byId('caseSwitcherTrigger').setAttribute('aria-label',`${active.name}，点击切换案例`);
-    byId('caseSwitcherList').innerHTML=cases.map(item=>{
-      const isActive=item.slug===active.slug;
-      return `<button class="case-switcher-item${isActive?' active':''}" type="button" data-switch-case="${escapeAttr(item.slug)}"${isActive?' aria-current="true"':''}>
-        <span class="case-switcher-item-id">CASE ${escapeHtml(item.id)}</span>
-        <span class="case-switcher-item-copy"><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.label)}</small></span>
-        ${isActive?'<span class="case-switcher-active-dot" aria-label="当前案例"></span>':'<span aria-hidden="true">→</span>'}
-      </button>`;
-    }).join('');
-    byId('randomCaseButton').disabled=cases.length<2;
-    filterSwitcher(byId('caseSwitcherSearch').value);
-  }
-
-  function filterSwitcher(value=''){
-    const query=String(value).trim().toLocaleLowerCase('zh-CN');
-    let visible=0;
-    byId('caseSwitcherList').querySelectorAll('[data-switch-case]').forEach(button=>{
-      const haystack=`${button.dataset.switchCase} ${button.textContent}`.toLocaleLowerCase('zh-CN');
-      const matched=!query||haystack.includes(query);
-      button.hidden=!matched;
-      if(matched) visible+=1;
-    });
-    byId('caseSwitcherCount').textContent=query?`${visible}/${cases.length}`:`${cases.length} 个案例`;
-    byId('caseSwitcherEmpty').hidden=visible!==0;
-  }
-
-  function restoreEvidence(){
-    const evidenceKey=`buchikui-${active.slug}-evidence-v1`;
-    const boxes=[...document.querySelectorAll('[data-evidence]')];
-    const count=byId('progressCount');
-    const criticalCount=byId('criticalCount');
-    const progressBar=byId('progressBar');
-    const items=active.evidence?active.evidence.items:[];
-    const criticalKeys=new Set(items.filter(item=>item.critical).map(item=>item.key));
-
-    function persistEvidence(){
-      const checked=boxes.filter(box=>box.checked);
-      count.textContent=`${checked.length}/${boxes.length}`;
-      if(criticalKeys.size){
-        const hit=checked.filter(box=>criticalKeys.has(box.dataset.evidence)).length;
-        criticalCount.textContent=` · 致命 ${hit}/${criticalKeys.size}`;
-      }else{
-        criticalCount.textContent='';
-      }
-      if(progressBar) progressBar.style.width=boxes.length?`${Math.round((checked.length/boxes.length)*100)}%`:'0%';
-      localStorage.setItem(evidenceKey,JSON.stringify(Object.fromEntries(boxes.map(box=>[box.dataset.evidence,box.checked]))));
-    }
-
-    try{
-      const saved=JSON.parse(localStorage.getItem(evidenceKey)||'{}');
-      boxes.forEach(box=>box.checked=!!saved[box.dataset.evidence]);
-    }catch(error){}
-
-    boxes.forEach(box=>box.addEventListener('change',persistEvidence));
-    persistEvidence();
-  }
-
-  function setLayoutMode(){
-    const compact=active.layout==='compact';
-    const standardOnly=[byId('serviceStandard'),byId('cases'),byId('evidence'),byId('template')];
-    standardOnly.forEach(element=>element.hidden=compact);
-
-    const mobilePrimary=byId('mobilePrimaryAction');
-    mobilePrimary.href=compact?'#route':'#cases';
-    mobilePrimary.textContent=compact?'查看处理步骤':'找到我的问题';
-    mobilePrimary.setAttribute('aria-label',compact?'跳到处理步骤':'跳到问题场景');
-  }
-
-  function renderHero(){
-    setCanonicalHtml('heroTitle',active.hero.title);
-    setCanonicalHtml('heroCopy',active.hero.copy);
-    setCanonicalHtml('panicTitle',active.panic.title);
-    byId('panicList').innerHTML=active.panic.items.map(item=>`<li><strong>${escapeHtml(item.title)}</strong></li>`).join('');
-  }
-
-  function renderOverview(){
-    const section=byId('caseOverview');
-    const overview=active.overview;
-    section.hidden=!overview;
-    if(!overview){
-      byId('caseOverviewKicker').textContent='案例介绍';
-      byId('caseOverviewTitle').textContent='';
-      byId('caseOverviewIntro').textContent='';
-      byId('caseOverviewFacts').textContent='';
-      return;
-    }
-
-    byId('caseOverviewKicker').textContent=overview.kicker||'案例介绍';
-    setCanonicalHtml('caseOverviewTitle',overview.title);
-    setCanonicalHtml('caseOverviewIntro',overview.intro||'');
-    byId('caseOverviewFacts').innerHTML=(overview.items||[]).map(item=>`<article class="case-overview-item">
-      <span class="case-overview-status">${escapeHtml(item.status||'参考')}</span>
-      <div><h3>${sanitizeCanonicalHtml(item.title)}</h3><p>${sanitizeCanonicalHtml(item.text)}</p></div>
-    </article>`).join('');
-  }
-
-  function renderEvidence(){
-    const section=byId('evidence');
-    if(!active.evidence){
-      if(section) section.hidden=true;
-      return;
-    }
-    if(section) section.hidden=false;
-
-    setCanonicalHtml('evidenceTitle',active.evidence.title);
-    setCanonicalHtml('evidenceIntro',active.evidence.intro);
-
-    const checklist=byId('checklist');
-    const renderCheck=item=>`<label class="check${item.critical?' is-critical':''}"><input type="checkbox" data-evidence="${escapeAttr(item.key)}"><span class="box"></span><span><strong>${item.critical?'<span class="critical-star" aria-hidden="true">✶</span>':''}${escapeHtml(item.title)}</strong>${item.detail?`<small>${escapeHtml(item.detail)}</small>`:''}</span>${item.when?`<span class="when">${escapeHtml(item.when)}</span>`:''}</label>`;
-
-    if(active.evidence.groups&&active.evidence.groups.length){
-      checklist.classList.add('grouped');
-      checklist.innerHTML=active.evidence.groups.map((group,index)=>{
-        const items=active.evidence.items.filter(item=>item.group===group.key);
-        return `<section class="evidence-group" role="group" aria-labelledby="evidence-group-${index}">
-          <div class="evidence-group-head"><strong id="evidence-group-${index}">${escapeHtml(group.title)}</strong></div>
-          <div class="evidence-group-list">${items.map(renderCheck).join('')}</div>
-        </section>`;
-      }).join('');
-    }else{
-      checklist.classList.remove('grouped');
-      checklist.innerHTML=(active.evidence.items||[]).map(renderCheck).join('');
-    }
-
-    restoreEvidence();
-  }
-
-  function renderServiceStandard(){
-    const section=byId('serviceStandard');
-    const details=byId('serviceStandardDetails');
-    const standard=active.serviceStandard;
-    if(!standard){
-      section.hidden=true;
-      return;
-    }
-
-    section.hidden=false;
-    details.open=false;
-    byId('serviceStandardKicker').textContent=standard.kicker||'正常服务基线';
-    setCanonicalHtml('serviceStandardTitle',standard.title);
-    byId('serviceStandardCount').textContent=`${standard.items.length} 项 · 展开查看`;
-    setCanonicalHtml('serviceStandardIntro',standard.intro);
-    byId('serviceStandardGrid').innerHTML=standard.items.map((item,index)=>`<article class="standard-step"><span class="n">${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(item.title)}</h3><p>${sanitizeCanonicalHtml(item.text)}</p></article>`).join('');
-    const note=byId('serviceStandardNote');
-    note.hidden=!standard.note;
-    if(standard.note) setCanonicalHtml('serviceStandardNote',standard.note);
-  }
-
-  function renderStandardCase(){
-    renderServiceStandard();
-    setCanonicalHtml('casesTitle',active.section.title);
-    setCanonicalHtml('casesIntro',active.section.intro);
-    byId('caseList').innerHTML=active.scenarios.map((item,index)=>{
-      const blocks=item.blocks.map(block=>{
-        const classes=['case-block'];
-        if(block.full) classes.push('full');
-        if(block.kind==='action') classes.push('action');
-        return `<div class="${classes.join(' ')}"><b>${escapeHtml(block.label)}</b>${sanitizeCanonicalHtml(block.html)}</div>`;
-      }).join('');
-      return `<article class="case" id="case-${index+1}"><div class="case-no">${String(index+1).padStart(2,'0')}</div><div class="case-title"><h3>${escapeHtml(item.title)}</h3></div><div class="case-body">${blocks}</div></article>`;
-    }).join('');
-
-    renderEvidence();
-
-    byId('templateDetails').open=false;
-    byId('templateCard').dataset.label=active.template.label||'书面沟通模板';
-    setCanonicalHtml('templateTitle',active.template.title);
-    setCanonicalHtml('templateIntro',active.template.intro);
-    byId('templateText').textContent=active.template.text;
-  }
-
-  function renderRouteComparison(){
-    let host=byId('routeComparison');
-    if(!host){
-      host=document.createElement('section');
-      host.id='routeComparison';
-      byId('routeGrid').insertAdjacentElement('afterend',host);
-    }
-
-    const comparison=active.route.comparison;
-    host.hidden=!comparison;
-    if(!comparison){
-      host.className='';
-      host.innerHTML='';
-      return;
-    }
-
-    const kinds=new Set(['product','custody','trading','advisor']);
-    const totals=comparison.rows.map(row=>(row.segments||[]).reduce((sum,segment)=>sum+Number(segment.value||0),0));
-    const max=Number(comparison.max)||Math.max(1,...totals);
-    const legend=(comparison.legend||[]).map(item=>{
-      const kind=kinds.has(item.kind)?item.kind:'product';
-      return `<span class="fee-legend-item"><i class="fee-swatch fee-${kind}" aria-hidden="true"></i>${escapeHtml(item.label)}</span>`;
-    }).join('');
-    const rows=comparison.rows.map((row,index)=>{
-      const total=totals[index];
-      const segments=(row.segments||[]).map(segment=>{
-        const kind=kinds.has(segment.kind)?segment.kind:'product';
-        const value=Math.max(0,Number(segment.value||0));
-        const width=Math.min(100,(value/max)*100);
-        return `<span class="fee-segment fee-${kind}" style="width:${width.toFixed(3)}%" title="${escapeAttr(`${value.toFixed(2)}%`)}"></span>`;
-      }).join('');
-      return `<div class="fee-row${row.highlight?' is-highlight':''}">
-        <div class="fee-label"><strong>${escapeHtml(row.label)}</strong>${row.extra?`<small>${escapeHtml(row.extra)}</small>`:''}</div>
-        <div class="fee-track" role="img" aria-label="${escapeAttr(`${row.label}：${row.totalLabel||`${total.toFixed(2)}%`}`)}">${segments}</div>
-        <div class="fee-total">${escapeHtml(row.totalLabel||`${total.toFixed(2)}%`)}</div>
-      </div>`;
-    }).join('');
-
-    host.className='fee-comparison';
-    host.innerHTML=`<div class="fee-comparison-head"><div><span class="fee-comparison-kicker">费用对比</span><h3>${escapeHtml(comparison.title)}</h3><p>${escapeHtml(comparison.intro||'')}</p></div><div class="fee-legend">${legend}</div></div><div class="fee-chart">${rows}</div>${comparison.footnote?`<p class="fee-footnote">${escapeHtml(comparison.footnote)}</p>`:''}`;
-  }
-
-  function renderRoute(){
-    setCanonicalHtml('routeTitle',active.route.title||'处理路径');
-    byId('routeGrid').innerHTML=active.route.steps.map((step,index)=>{
-      const href=safeHref(step.href);
-      const external=/^https?:\/\//i.test(href);
-      return `<article class="route-step"><span class="n">${String(index+1).padStart(2,'0')}</span><h3>${sanitizeCanonicalHtml(step.title)}</h3><p>${sanitizeCanonicalHtml(step.text)}</p><a href="${escapeAttr(href)}"${external?' target="_blank" rel="noopener"':''}>${escapeHtml(step.link)}</a></article>`;
-    }).join('');
-    renderRouteComparison();
-    const note=byId('routeNote');
-    note.hidden=!active.route.note;
-    if(active.route.note) setCanonicalHtml('routeNote',active.route.note);
-  }
-
-  function renderDiscussion(){
-    const section=byId('discussion');
-    const discussion=active.discussion;
-    const defaultIntro='从这个 CASE 再往前一步：哪些产品或行业机制值得改进。';
-    section.hidden=!discussion;
-    if(!discussion){
-      byId('discussionTitle').textContent='';
-      byId('discussionIntro').textContent=defaultIntro;
-      byId('discussionBody').textContent='';
-      return;
-    }
-    setCanonicalHtml('discussionTitle',discussion.title);
-    setCanonicalHtml('discussionIntro',discussion.intro||defaultIntro);
-    setCanonicalHtml('discussionBody',discussion.html);
-  }
-
-  function renderSources(){
-    byId('sourcesTitle').textContent=`本页依据与官方入口（更新：${active.updated}）`;
-    byId('sourceList').innerHTML=active.sources.map(source=>{
-      const href=safeHref(source.href);
-      return `<li><a href="${escapeAttr(href)}" target="_blank" rel="noopener">${escapeHtml(source.title)}</a> — ${sanitizeCanonicalHtml(source.note)}</li>`;
-    }).join('');
-    byId('legalText').textContent=active.legal;
-    byId('takeawayText').textContent=active.takeaway;
-  }
-
-  function renderCase(){
-    renderMeta();
-    renderSwitcher();
-    setLayoutMode();
-    renderHero();
-    renderOverview();
-
-    if(active.layout!=='compact') renderStandardCase();
-
-    renderRoute();
-    renderDiscussion();
-    renderSources();
-
-    // 主路径：以 slug 直调权利层；legal-updates 内部 Observer 仅作兜底。
-    try{
-      document.body.dataset.activeCaseSlug=active.slug;
-      if(window.BuchikuiRights&&typeof window.BuchikuiRights.render==='function') window.BuchikuiRights.render(active.slug);
-    }catch(error){}
-  }
-
-  function isSwitcherOpen(){return !byId('caseSwitcherPopover').hidden}
-
-  function switcherFocusable(){
-    return [...byId('caseSwitcherPopover').querySelectorAll('button:not([disabled]),input,[href]')]
-      .filter(element=>!element.hidden&&element.offsetParent!==null);
-  }
-
-  function trapSwitcherFocus(event){
-    if(event.key!=='Tab'||!isSwitcherOpen()) return;
-    const focusable=switcherFocusable();
-    if(!focusable.length) return;
-    const first=focusable[0];
-    const last=focusable[focusable.length-1];
-    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
-    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
-  }
-
-  function stepSwitcherItem(direction){
-    const items=[...byId('caseSwitcherList').querySelectorAll('[data-switch-case]')].filter(button=>!button.hidden);
-    if(!items.length) return;
-    const current=items.indexOf(document.activeElement);
-    const next=items[(current+direction+items.length)%items.length];
-    if(next) next.focus();
-  }
-
-  function openSwitcher(){
-    const search=byId('caseSwitcherSearch');
-    search.value='';
-    filterSwitcher('');
-    byId('caseSwitcherPopover').hidden=false;
-    byId('caseSwitcherBackdrop').hidden=false;
-    byId('caseSwitcher').classList.add('open');
-    byId('caseSwitcherTrigger').setAttribute('aria-expanded','true');
-    document.body.classList.add('case-switcher-open');
-    // 桌面端焦点进搜索框；移动端聚焦容器，避免弹出键盘。
-    requestAnimationFrame(()=>{
-      if(window.matchMedia('(min-width:861px)').matches) search.focus();
-      else byId('caseSwitcherPopover').focus();
-    });
-  }
-
-  function closeSwitcher(returnFocus){
-    byId('caseSwitcherPopover').hidden=true;
-    byId('caseSwitcherBackdrop').hidden=true;
-    byId('caseSwitcher').classList.remove('open');
-    byId('caseSwitcherTrigger').setAttribute('aria-expanded','false');
-    document.body.classList.remove('case-switcher-open');
-    if(returnFocus) byId('caseSwitcherTrigger').focus();
-  }
-
-  function updatePinnedUrl(next){
-    if(!pinnedMode) return;
-    if(isCasePath()){
-      history.pushState({case:next.slug},'',`${siteBase()}/c/${next.slug}/`);
-      return;
-    }
-    const url=new URL(location.href);
-    url.searchParams.set('case',next.slug);
-    url.hash='';
-    history.pushState({case:next.slug},'',url.pathname+url.search);
-  }
-
-  function applyCaseSwitch(next,options){
-    active=next;
-    if(options.updateUrl!==false) updatePinnedUrl(next);
-    renderCase();
-    window.scrollTo({top:0,left:0,behavior:'auto'});
-    if(focusTriggerAfterSwitch){focusTriggerAfterSwitch=false;byId('caseSwitcherTrigger').focus({preventScroll:true});}
-    requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.remove('case-changing')));
-  }
-
-  function switchCase(next,options={}){
-    if(!next||next.slug===active.slug){closeSwitcher(true);return}
-    focusTriggerAfterSwitch=byId('caseSwitcher').contains(document.activeElement);
-    closeSwitcher();
-    caseTransitionController?.abort();
-    document.body.classList.add('case-changing');
-
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      applyCaseSwitch(next,options);
-      return;
-    }
-
-    const main=document.querySelector('main');
-    caseTransitionController=new AbortController();
-    const controller=caseTransitionController;
-    // transitionend 可能因样式缺失而不触发，加超时回退，页面永不卡死。
-    const fallback=setTimeout(()=>{
-      if(caseTransitionController!==controller) return;
-      controller.abort();
-      caseTransitionController=null;
-      applyCaseSwitch(next,options);
-    },450);
-    main.addEventListener('transitionend',event=>{
-      if(event.target!==main||event.propertyName!=='opacity') return;
-      clearTimeout(fallback);
-      controller.abort();
-      if(caseTransitionController===controller) caseTransitionController=null;
-      applyCaseSwitch(next,options);
-    },{signal:controller.signal});
-  }
-
-  // 站点根（不硬编码 /buchikui 子路径）：/c/<slug>/ 前缀即部署根。
   function siteBase(){
-    return location.pathname.replace(/\/c\/[a-z0-9][a-z0-9-]*\/?$/,'').replace(/\/$/,'');
+    const match=location.pathname.match(/^(.*?\/)(?:c\/[^/]+\/?)?$/);
+    return match?match[1]:'./';
   }
 
-  function isCasePath(){
-    return /\/c\/[a-z0-9][a-z0-9-]*\/?$/.test(location.pathname);
+  const base=siteBase();
+  const pathSlug=((location.pathname.match(/\/c\/([a-z0-9][a-z0-9-]*)\/?$/)||[])[1]||'');
+  const active=pathSlug?cases.find(item=>item.slug===pathSlug):null;
+
+  const categories={
+    rental:'租车',
+    'rental-credit-card-first':'租车',
+    'beauty-hair':'预付消费',
+    'bank-small-account-fee':'银行',
+    'bank-wealth-not-guaranteed':'银行与理财',
+    'alipay-advisor-cost':'投资与费用',
+    'mobile-plan-cost':'通信',
+    'internet-court-self-litigation':'诉讼',
+    'appliance-repair-trap':'维修',
+    'airport-sales-pitch':'线下推销',
+    'dating-safety':'人身与财产安全',
+    'thailand-travel-safety':'旅行',
+    'alibaba-auction-trap':'拍卖',
+    'layoff-compensation':'劳动',
+    'qingdao-travel':'旅行消费',
+    'transport-platform-layered-fees':'平台交易'
+  };
+
+  const categoryOf=item=>categories[item.slug]||'消费场景';
+  const caseUrl=item=>`${base}c/${encodeURIComponent(item.slug)}/`;
+
+  function setMeta(title,description){
+    document.title=title;
+    const meta=document.querySelector('meta[name="description"]');
+    if(meta) meta.setAttribute('content',description);
   }
 
-  // 分享一律发规范地址，把生态迁移到 /c/；?case= 仅作为兼容入口继续识别。
-  function caseCanonicalUrl(slug){
-    return `${location.origin}${siteBase()}/c/${slug}/`;
+  function renderHeader(caseName=''){
+    const header=document.getElementById('siteHeader');
+    if(!header) return;
+    header.innerHTML=`<div class="shell header-inner">
+      <a class="brand" href="${esc(base)}" aria-label="不吃亏首页">不吃亏</a>
+      <span class="header-note">${caseName?esc(caseName):'消费普法 · 只看关键依据'}</span>
+    </div>`;
   }
 
-  function randomOtherCase(){
-    if(cases.length<2) return active;
-    const others=cases.filter(item=>item.slug!==active.slug);
-    return others[Math.floor(Math.random()*others.length)];
+  function renderHome(){
+    document.body.dataset.page='home';
+    delete document.body.dataset.activeCaseSlug;
+    setMeta('不吃亏｜从判决和监管规则里学会避坑','从裁判文书、法律法规、部门规章、监管文件和典型案例中提炼现实交易最容易忽视的关键点。');
+    renderHeader();
+
+    const recent=[...cases]
+      .sort((a,b)=>String(b.updated||'').localeCompare(String(a.updated||'')))
+      .slice(0,6);
+
+    app.innerHTML=`
+      <section class="home-hero shell">
+        <p class="eyebrow">消费普法</p>
+        <h1>很多纠纷，<br>本可以在付款前避免。</h1>
+        <p class="home-lead">我们从裁判文书、法律法规、管理办法、监管文件和典型案例里提取关键点，再翻译成现实交易中真正需要留意的一件事。</p>
+        <label class="search-box" for="caseSearch">
+          <span>搜索消费问题</span>
+          <input id="caseSearch" type="search" autocomplete="off" placeholder="租车押金、预付卡、维修、平台扣款……">
+        </label>
+      </section>
+
+      <section class="home-section shell" aria-labelledby="recentTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">最近更新</p>
+            <h2 id="recentTitle">最近值得知道</h2>
+          </div>
+          <p>不是新闻流，只收录会改变现实交易判断的内容。</p>
+        </div>
+        <div class="recent-list">${recent.map((item,index)=>homeRow(item,index===0)).join('')}</div>
+      </section>
+
+      <section class="home-section shell" aria-labelledby="allTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">按场景找</p>
+            <h2 id="allTitle">我正在遇到什么问题？</h2>
+          </div>
+          <p id="searchCount">${cases.length} 个主题</p>
+        </div>
+        <div class="topic-list" id="topicList">${cases.map(topicRow).join('')}</div>
+        <p class="empty-state" id="emptyState" hidden>暂时没有匹配的主题。换一个更短的关键词试试。</p>
+      </section>`;
+
+    const search=document.getElementById('caseSearch');
+    search?.addEventListener('input',()=>filterTopics(search.value));
   }
 
-  function shareUrl(){
-    return caseCanonicalUrl(active.slug);
+  function searchableText(item){
+    const scenarioText=(item.scenarios||[]).map(entry=>entry.title).join(' ');
+    const panicText=(item.panic?.items||[]).map(entry=>`${entry.title} ${entry.text||''}`).join(' ');
+    return [item.name,item.meta?.description,item.hero?.copy,categoryOf(item),scenarioText,panicText].join(' ').toLocaleLowerCase('zh-CN');
   }
 
-  function createShareMeritToast(){
-    const toast=document.createElement('div');
-    toast.className='consumer-feedback-toast share-merit-toast';
-    toast.setAttribute('role','status');
-    toast.setAttribute('aria-live','polite');
-    toast.hidden=true;
-    document.body.appendChild(toast);
-    return toast;
+  function filterTopics(query){
+    const term=String(query||'').trim().toLocaleLowerCase('zh-CN');
+    let count=0;
+    document.querySelectorAll('[data-topic]').forEach(row=>{
+      const item=cases.find(candidate=>candidate.slug===row.dataset.topic);
+      const matched=!!item&&(!term||searchableText(item).includes(term));
+      row.hidden=!matched;
+      if(matched) count+=1;
+    });
+    const countNode=document.getElementById('searchCount');
+    if(countNode) countNode.textContent=term?`${count} 个结果`:`${cases.length} 个主题`;
+    const empty=document.getElementById('emptyState');
+    if(empty) empty.hidden=count!==0;
   }
 
-  const shareMeritToast=createShareMeritToast();
-  let shareMeritTimer=null;
-
-  function hideShareMerit(){
-    shareMeritToast.classList.remove('is-visible');
-    setTimeout(()=>{shareMeritToast.hidden=true},180);
+  function homeRow(item,featured=false){
+    return `<a class="recent-row${featured?' is-featured':''}" href="${esc(caseUrl(item))}">
+      <div class="row-meta"><span>${esc(categoryOf(item))}</span><time datetime="${esc(item.updated||'')}">${esc(item.updated||'持续更新')}</time></div>
+      <div class="row-copy"><h3>${esc(item.name)}</h3><p>${esc(item.meta?.description||stripHtml(item.hero?.copy)||'')}</p></div>
+      <span class="row-arrow" aria-hidden="true">→</span>
+    </a>`;
   }
 
-  function showShareMerit(nextText=''){
-    clearTimeout(shareMeritTimer);
-    shareMeritToast.textContent='功德 +1';
-    shareMeritToast.hidden=false;
-    requestAnimationFrame(()=>shareMeritToast.classList.add('is-visible'));
-    shareMeritTimer=setTimeout(()=>{
-      if(nextText){
-        shareMeritToast.textContent=nextText;
-        shareMeritTimer=setTimeout(hideShareMerit,1400);
-        return;
-      }
-      hideShareMerit();
-    },900);
+  function topicRow(item){
+    return `<a class="topic-row" data-topic="${esc(item.slug)}" href="${esc(caseUrl(item))}">
+      <span class="topic-category">${esc(categoryOf(item))}</span>
+      <strong>${esc(item.name)}</strong>
+      <span aria-hidden="true">→</span>
+    </a>`;
   }
 
-  async function sharePage(){
-    const data={title:active.meta.ogTitle,text:active.shareText,url:shareUrl()};
-    try{
-      if(navigator.share){
-        await navigator.share(data);
-        showShareMerit();
-        return;
-      }
-      await navigator.clipboard.writeText(data.url);
-      showShareMerit('已复制到粘贴板');
-    }catch(error){
-      if(error?.name!=='AbortError'&&!navigator.share) window.prompt('复制这个 CASE 的链接：',data.url);
+  function renderCase(item){
+    document.body.dataset.page='case';
+    document.body.dataset.activeCaseSlug=item.slug;
+    setMeta(item.meta?.title||`${item.name}｜不吃亏`,item.meta?.description||stripHtml(item.hero?.copy));
+    renderHeader(item.name);
+
+    const reminders=caseReminders(item);
+    const evidence=item.evidence?.items||[];
+    const steps=item.route?.steps||[];
+    const sources=item.sources||[];
+
+    app.innerHTML=`
+      <article class="case-page">
+        <header class="case-intro shell">
+          <a class="back-link" href="${esc(base)}">← 返回全部主题</a>
+          <div class="case-meta"><span>${esc(categoryOf(item))}</span>${item.updated?`<time datetime="${esc(item.updated)}">更新 ${esc(item.updated)}</time>`:''}</div>
+          <h1>${esc(item.name)}</h1>
+          <p class="case-lead">${esc(stripHtml(item.hero?.copy)||item.meta?.description||'')}</p>
+        </header>
+
+        <section class="authority-section" aria-labelledby="authorityTitle">
+          <div class="shell">
+            <p class="eyebrow">权威依据</p>
+            <h2 id="authorityTitle">规则和裁判怎么说</h2>
+            <p class="section-intro">优先展示法律法规、司法解释、部门规章、监管文件、典型案例和高价值裁判。结论以原文适用范围为边界。</p>
+          </div>
+          <div id="rightsPulse"></div>
+        </section>
+
+        ${reminders.length?`<section class="reading-section shell" aria-labelledby="reminderTitle">
+          <div class="section-heading compact"><div><p class="eyebrow">现实交易</p><h2 id="reminderTitle">这些地方最容易被忽视</h2></div></div>
+          <div class="reminder-list">${reminders.map((entry,index)=>reminderRow(entry,index)).join('')}</div>
+        </section>`:''}
+
+        ${evidence.length?`<section class="reading-section shell" aria-labelledby="evidenceTitle">
+          <div class="section-heading compact"><div><p class="eyebrow">发生纠纷后</p><h2 id="evidenceTitle">先保留这些材料</h2></div></div>
+          <ul class="plain-list evidence-list">${evidence.map(entry=>`<li><strong>${esc(entry.title)}</strong>${entry.detail?`<span>${esc(entry.detail)}</span>`:''}</li>`).join('')}</ul>
+        </section>`:''}
+
+        ${steps.length?`<section class="reading-section shell" id="route" aria-labelledby="routeTitle">
+          <div class="section-heading compact"><div><p class="eyebrow">需要继续处理时</p><h2 id="routeTitle">处理路径</h2></div></div>
+          <ol class="route-list">${steps.map((step,index)=>routeRow(step,index)).join('')}</ol>
+          ${item.route?.note?`<div class="route-note">${sanitizeRichHtml(item.route.note)}</div>`:''}
+        </section>`:''}
+
+        ${sources.length?`<section class="source-section shell" aria-labelledby="sourceTitle">
+          <div class="section-heading compact"><div><p class="eyebrow">原文</p><h2 id="sourceTitle">依据与出处</h2></div></div>
+          <ol class="source-list">${sources.map(sourceRow).join('')}</ol>
+          ${item.legal?`<p class="legal-note">${esc(item.legal)}</p>`:''}
+        </section>`:''}
+
+        ${item.takeaway?`<footer class="case-takeaway shell"><span>记住这一点</span><strong>${esc(item.takeaway)}</strong></footer>`:''}
+      </article>`;
+
+    if(window.BuchikuiRights?.render){
+      window.BuchikuiRights.render(item.slug);
+      const label=document.querySelector('.rights-pulse-label');
+      if(label) label.textContent=label.textContent.includes('案例')?'裁判参考':'权威依据';
+      document.querySelectorAll('.rights-pulse-action span').forEach(node=>{node.textContent=node.textContent.includes('关键')?'裁判要点':'现实提醒';});
+      const pulse=document.getElementById('rightsPulse');
+      pulse?.setAttribute('aria-label','与本主题直接相关的权威依据');
     }
   }
 
-  byId('caseSwitcherTrigger').addEventListener('click',event=>{
-    event.stopPropagation();
-    isSwitcherOpen()?closeSwitcher(true):openSwitcher();
+  function caseReminders(item){
+    if(Array.isArray(item.scenarios)&&item.scenarios.length){
+      return item.scenarios.map(entry=>({
+        title:entry.title,
+        fact:entry.blocks?.find(block=>block.kind!=='action')?.html||'',
+        action:entry.blocks?.find(block=>block.kind==='action')?.html||''
+      }));
+    }
+    return (item.panic?.items||[]).map(entry=>({title:entry.title,fact:'',action:entry.text||''}));
+  }
+
+  function reminderRow(entry,index){
+    return `<article class="reminder-row">
+      <span class="reminder-index">${String(index+1).padStart(2,'0')}</span>
+      <div class="reminder-copy"><h3>${esc(entry.title)}</h3>
+        ${entry.fact?`<div class="fact-line"><b>关键事实</b>${sanitizeRichHtml(entry.fact)}</div>`:''}
+        ${entry.action?`<div class="action-line"><b>现实提醒</b>${sanitizeRichHtml(entry.action)}</div>`:''}
+      </div>
+    </article>`;
+  }
+
+  function routeRow(step,index){
+    const href=safeHref(step.href);
+    const external=/^https?:\/\//i.test(href);
+    return `<li><span>${String(index+1).padStart(2,'0')}</span><div><h3>${sanitizeRichHtml(step.title||'')}</h3><p>${sanitizeRichHtml(step.text||'')}</p>${step.link&&href!=='#'?`<a href="${esc(href)}"${external?' target="_blank" rel="noopener"':''}>${esc(step.link)}</a>`:''}</div></li>`;
+  }
+
+  function sourceRow(source){
+    const href=safeHref(source.href);
+    const external=/^https?:\/\//i.test(href);
+    return `<li><a href="${esc(href)}"${external?' target="_blank" rel="noopener"':''}>${esc(source.title||'查看原文')}</a>${source.note?`<p>${esc(source.note)}</p>`:''}</li>`;
+  }
+
+  document.addEventListener('click',event=>{
+    const share=event.target.closest('[data-share]');
+    if(!share) return;
+    const url=location.href;
+    const title=active?.shareText||active?.name||'不吃亏';
+    if(navigator.share){navigator.share({title:'不吃亏',text:title,url}).catch(()=>{});return;}
+    navigator.clipboard?.writeText(url).then(()=>{share.textContent='链接已复制';setTimeout(()=>{share.textContent='分享'},1400);}).catch(()=>{});
   });
 
-  byId('caseSwitcherSearch').addEventListener('input',event=>filterSwitcher(event.target.value));
-
-  byId('caseSwitcherList').addEventListener('click',event=>{
-    const button=event.target.closest('[data-switch-case]');
-    if(!button) return;
-    switchCase(cases.find(item=>item.slug===button.dataset.switchCase));
-  });
-
-  byId('randomCaseButton').addEventListener('click',()=>switchCase(randomOtherCase()));
-  byId('caseSwitcherBackdrop').addEventListener('click',()=>closeSwitcher(true));
-  document.addEventListener('click',event=>{if(isSwitcherOpen()&&!byId('caseSwitcher').contains(event.target)) closeSwitcher()});
-  document.addEventListener('keydown',event=>{
-    if(!isSwitcherOpen()) return;
-    if(event.key==='Escape'){closeSwitcher(true);return}
-    if(event.key==='ArrowDown'&&byId('caseSwitcher').contains(document.activeElement)){event.preventDefault();stepSwitcherItem(1)}
-    if(event.key==='ArrowUp'&&byId('caseSwitcher').contains(document.activeElement)){event.preventDefault();stepSwitcherItem(-1)}
-  });
-  byId('caseSwitcherPopover').addEventListener('keydown',trapSwitcherFocus);
-
-  window.addEventListener('popstate',()=>{
-    if(!pinnedMode) return;
-    const slug=new URLSearchParams(location.search).get('case')
-      ||((location.pathname.match(/\/c\/([a-z0-9][a-z0-9-]*)\/?$/)||[])[1]||'');
-    const next=cases.find(item=>item.slug===slug);
-    if(next&&next.slug!==active.slug) switchCase(next,{updateUrl:false});
-  });
-
-  document.querySelectorAll('[data-print]').forEach(button=>button.addEventListener('click',()=>window.print()));
-  document.querySelectorAll('[data-share]').forEach(button=>button.addEventListener('click',sharePage));
-
-  byId('copyTemplate').addEventListener('click',async function(){
-    const text=byId('templateText').innerText;
-    try{
-      await navigator.clipboard.writeText(text);
-      this.textContent='已复制';
-      setTimeout(()=>this.textContent='复制',1400);
-    }catch(error){window.prompt('复制以下内容：',text)}
-  });
-
-  renderCase();
+  if(pathSlug&&!active){
+    renderHeader();
+    setMeta('没有找到这个主题｜不吃亏','这个消费主题不存在或已经调整。');
+    app.innerHTML=`<section class="missing shell"><p class="eyebrow">404</p><h1>这个主题不存在。</h1><p>可能已经调整名称或移除。</p><a href="${esc(base)}">返回全部主题 →</a></section>`;
+  }else if(active){
+    renderCase(active);
+  }else{
+    renderHome();
+  }
 })();

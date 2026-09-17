@@ -1,35 +1,20 @@
 {
   "id": "./",
-  "name": "不吃亏｜消费纠纷行动指南",
+  "name": "不吃亏｜消费普法",
   "short_name": "不吃亏",
-  "description": "把消费纠纷变成可验证、可推进的证据链：先固定事实，再留证据，再选处理路径。",
+  "description": "从裁判文书、法律法规、管理办法和监管文件里提炼现实交易最容易忽视的关键点。",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#f6f3ec",
-  "theme_color": "#f6f3ec",
-  "categories": ["education", "utilities"],
+  "background_color": "#f7f5ef",
+  "theme_color": "#f7f5ef",
+  "categories": ["education", "reference"],
   "prefer_related_applications": false,
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-maskable-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"icons/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
   ]
 }

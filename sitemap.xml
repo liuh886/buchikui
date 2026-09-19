@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 注意：每个 CASE 有独立规范地址 /c/<slug>/（部署流由 scripts/prerender-cases.mjs 生成对应静态页，
-     head 含该 CASE 专属 title/description/og/canonical）；?case= 仅为老分享链接兼容入口。
-     新增 CASE 时同步追加一条 <url>，并同步更新 contract 的 sitemap 覆盖率检查。 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://liuh886.github.io/buchikui/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/rental/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/beauty-hair/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/bank-small-account-fee/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/mobile-plan-cost/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/internet-court-self-litigation/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/alipay-advisor-cost/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/bank-wealth-not-guaranteed/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/rental-credit-card-first/</loc><lastmod>2026-09-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/appliance-repair-trap/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://liuh886.github.io/buchikui/c/airport-sales-pitch/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/dating-safety/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://liuh886.github.io/buchikui/c/thailand-travel-safety/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://liuh886.github.io/buchikui/c/alibaba-auction-trap/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/alipay-advisor-cost/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/appliance-repair-trap/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/bank-small-account-fee/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/bank-wealth-not-guaranteed/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/beauty-hair/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/dating-safety/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/internet-court-self-litigation/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://liuh886.github.io/buchikui/c/layoff-compensation/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/mobile-plan-cost/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://liuh886.github.io/buchikui/c/qingdao-travel/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/rental/</loc><lastmod>2026-08-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/rental-credit-card-first/</loc><lastmod>2026-09-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://liuh886.github.io/buchikui/c/thailand-travel-safety/</loc><lastmod>2026-08-29</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://liuh886.github.io/buchikui/c/transport-platform-layered-fees/</loc><lastmod>2026-09-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

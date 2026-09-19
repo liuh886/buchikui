@@ -3,7 +3,6 @@ window.BUCHIKUI_CASES.push({
   "slug": "rental-credit-card-first",
   "name": "信用免押？优先信用卡预授权",
   "label": "PAYMENT CONTROL",
-  "layout": "compact",
   "updated": "2026-09-01",
   "meta": {
     "title": "不吃亏｜信用免押？优先信用卡预授权",

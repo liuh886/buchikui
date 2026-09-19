@@ -3,7 +3,6 @@ window.BUCHIKUI_CASES.push({
   "slug": "thailand-travel-safety",
   "name": "泰国旅游安全：识别异常风险信号",
   "label": "TRAVEL SAFETY",
-  "layout": "compact",
   "updated": "2026-08-29",
   "meta": {
     "title": "不吃亏｜泰国旅游安全：识别异常风险信号",

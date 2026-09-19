@@ -3,7 +3,6 @@ window.BUCHIKUI_CASES.push({
   "slug": "alipay-advisor-cost",
   "name": "支付宝投顾：0.5% 不是总成本",
   "label": "INVESTMENT ADVISORY",
-  "layout": "compact",
   "updated": "2026-08-28",
   "meta": {
     "title": "不吃亏｜支付宝投顾：0.5% 不是总成本",

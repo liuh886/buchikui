@@ -44,8 +44,12 @@ CASE 默认阅读顺序：
 
 ```bash
 node --check app.js
+node --check render-cases.js
 node --check legal-updates.js
+node scripts/bundle-cases.mjs        # 修改 CASE 源文件后重建 cases-data.js
 node scripts/check-frontend-contract.mjs
 ```
 
-部署由 `.github/workflows/deploy-pages.yml` 完成，并在发布阶段为每个 CASE 生成 `/c/<slug>/index.html`。
+模板结构在 `render-cases.js`，浏览器渲染与预渲染共用；首页只加载打包后的 `cases-data.js` 和 `render-cases.js`，`legal-updates.js` 只在 CASE 页加载。
+
+部署由 `.github/workflows/deploy-pages.yml` 完成，发布阶段生成每个 CASE 的静态页 `/c/<slug>/index.html`、`404.html` 和 `sitemap.xml`。

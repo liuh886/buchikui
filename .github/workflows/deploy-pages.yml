@@ -35,6 +35,7 @@ jobs:
       - name: Validate JavaScript syntax
         run: |
           find . -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
+          node --check scripts/bundle-cases.mjs
           node --check scripts/inject-cloudflare-web-analytics.mjs
           node --check scripts/check-frontend-contract.mjs
           node --check scripts/prerender-cases.mjs

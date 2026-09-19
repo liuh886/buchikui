@@ -927,7 +927,7 @@
 
   function metaHtml(rule,count){
     return `
-      <span class="rights-pulse-label">${isCaseRule(rule)?'案例参考':'权利校验'}</span>
+      <span class="rights-pulse-label">${isCaseRule(rule)?'裁判参考':'权威依据'}</span>
       ${ruleBadge(rule)}
       <strong>${esc(rule.status||'现行')}</strong>
       ${ruleBasis(rule)?`<span>${esc(ruleBasis(rule))}</span>`:''}
@@ -940,9 +940,9 @@
     const sources=ruleSources(rule).map(link).join('<span aria-hidden="true"> · </span>');
     return `
       ${rule.document?`<div class="rights-pulse-document">${esc(rule.document)}</div>`:''}
-      <h2>${esc(rule.title)}</h2>
+      <h3>${esc(rule.title)}</h3>
       <p>${esc(rule.text)}</p>
-      <div class="rights-pulse-action"><span>${isCaseRule(rule)?'关键提取':'你现在可以要求'}</span><strong>${esc(rule.action)}</strong></div>
+      <div class="rights-pulse-action"><span>${isCaseRule(rule)?'裁判要点':'现实提醒'}</span><strong>${esc(rule.action)}</strong></div>
       ${sources?`<div class="rights-pulse-sources">${sources}</div>`:''}`;
   }
 
@@ -1038,12 +1038,15 @@
     render();
   }
 
-  window.BuchikuiRights={render:renderForSlug,renderActive:render};
+  window.BuchikuiAuthority={
+    getRules:slug=>normalizeRules(updates[slug]),
+    staticBlock:slug=>{
+      const rules=normalizeRules(updates[slug]);
+      if(!rules.length) return '';
+      const blocks=rules.map(rule=>`<div class="rights-pulse"><div class="rights-pulse-meta">${metaHtml(rule,rules.length)}</div><div class="rights-pulse-content">${panelHtml(rule)}</div></div>`).join('');
+      return `<div class="wrap">${blocks}</div>`;
+    }
+  };
 
-  window.addEventListener('DOMContentLoaded',()=>{
-    render();
-    // 兜底：app.js 直调为主；Observer 仅兼容直调不可用时的旧行为。
-    const name=document.getElementById('caseName');
-    if(name) new MutationObserver(()=>{render();}).observe(name,{childList:true,subtree:true,characterData:true});
-  });
+  window.BuchikuiRights={render:renderForSlug,renderActive:render};
 })();

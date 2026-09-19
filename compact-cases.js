@@ -3,7 +3,6 @@ window.BUCHIKUI_CASES.push({
   "slug": "bank-small-account-fee",
   "name": "小额账户管理费，唯一账户可能不该扣",
   "label": "BANK FEES",
-  "layout": "compact",
   "updated": "2026-08-29",
   "meta": {
     "title": "不吃亏｜小额账户管理费，唯一账户可能不该扣",

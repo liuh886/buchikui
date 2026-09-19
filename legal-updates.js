@@ -910,7 +910,9 @@
   }
 
   function ruleBasis(rule){
-    return [rule.type,rule.authority].filter(Boolean).join(' · ');
+    const type=String(rule.type||'').trim();
+    const rest=type.split('·').slice(1).map(part=>part.trim()).filter(Boolean);
+    return [...rest,rule.authority].filter(Boolean).join(' · ');
   }
 
   // 权重徽标：把“这条依据有多硬”变成一眼可辨的签名；标签取类型首段原文，不重写效力排序。

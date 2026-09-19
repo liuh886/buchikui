@@ -1,20 +1,22 @@
-#rightsPulse{margin-top:28px}
+#rightsPulse{margin-top:24px}
 #rightsPulse>.wrap{width:min(var(--max),calc(100% - 40px));margin:0 auto}
-.rights-pulse{display:grid;grid-template-columns:170px minmax(0,1fr);gap:34px;padding:24px 0 0;border-top:2px solid var(--ink)}
-.rights-pulse-meta{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding-right:24px;border-right:1px solid var(--line)}
-.rights-pulse-label{color:var(--accent);font-size:0;font-weight:800;letter-spacing:.1em}
-.rights-pulse-label::after{content:"权威依据";font-size:10px}
+.rights-pulse{display:grid;grid-template-columns:minmax(0,196px) minmax(0,1fr);gap:30px;padding:22px 0 0;border-top:2px solid var(--ink)}
+.rights-pulse-meta{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:0 22px 0 0;border-right:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7}
+.rights-pulse-label{color:var(--accent);font-size:0;font-weight:800;letter-spacing:.12em}
+.rights-pulse-label::after{content:"权威依据";font-size:11px}
 .rights-pulse-meta:has(.rights-pulse-badge.is-case) .rights-pulse-label::after{content:"裁判参考"}
-.rights-pulse-badge{display:inline-block;margin:4px 0;padding:3px 7px;border:1px solid var(--line-strong);color:var(--ink-soft);font-size:10px;font-weight:700}
-.rights-pulse-meta strong{font-size:14px}.rights-pulse-meta span:not(.rights-pulse-label):not(.rights-pulse-badge){color:var(--muted);font-size:10px;line-height:1.55}
-.rights-pulse-content{min-width:0}.rights-pulse-tabs{display:flex;gap:18px;margin:0 0 20px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}.rights-pulse-tabs::-webkit-scrollbar{display:none}
-.rights-pulse-tab{flex:0 0 auto;margin:0 0 -1px;padding:0 0 9px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer}
-.rights-pulse-tab[aria-selected="true"]{border-bottom-color:var(--accent);color:var(--ink)}.rights-pulse-tab:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.rights-pulse-document{margin:0 0 7px;color:var(--muted);font-size:11px;font-weight:650;line-height:1.5}
-.rights-pulse-content h2{max-width:850px;margin:0 0 10px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(25px,3vw,36px);font-weight:500;line-height:1.18;letter-spacing:-.025em}
-.rights-pulse-content p{max-width:860px;margin:0;color:var(--ink-soft);font-size:13px;line-height:1.75}
-.rights-pulse-action{display:grid;grid-template-columns:90px minmax(0,1fr);gap:16px;max-width:900px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
-.rights-pulse-action span{color:var(--accent);font-size:0;font-weight:800;letter-spacing:.08em}.rights-pulse-action span::after{content:"现实提醒";font-size:10px}.rights-pulse:has(.rights-pulse-badge.is-case) .rights-pulse-action span::after{content:"裁判要点"}.rights-pulse-action strong{font-size:13px;line-height:1.7}
-.rights-pulse-sources{max-width:900px;margin-top:14px;color:var(--muted);font-size:11px;line-height:1.7}.rights-pulse-sources a{text-underline-offset:3px}
-@media(max-width:720px){#rightsPulse>.wrap{width:min(100% - 28px,var(--max))}.rights-pulse{grid-template-columns:1fr;gap:16px}.rights-pulse-meta{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:5px 9px;padding:0 0 14px;border-right:0;border-bottom:1px solid var(--line)}.rights-pulse-label{width:100%}.rights-pulse-tabs{gap:16px}.rights-pulse-content h2{font-size:25px}.rights-pulse-action{grid-template-columns:1fr;gap:5px}}
+.rights-pulse-badge{display:inline-block;margin:2px 0 4px;padding:3px 8px;border:1px solid var(--line-strong);color:var(--ink);font-size:11px;font-weight:700}
+.rights-pulse-meta strong{color:var(--ink);font-size:15px;font-weight:650;line-height:1.5}
+.rights-pulse-meta span:not(.rights-pulse-label):not(.rights-pulse-badge){color:var(--muted);font-size:12px;line-height:1.7}
+.rights-pulse-content{min-width:0}.rights-pulse-tabs{display:flex;gap:18px;margin:0 0 18px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}.rights-pulse-tabs::-webkit-scrollbar{display:none}
+.rights-pulse-tab{flex:0 0 auto;margin:0 0 -1px;padding:0 0 10px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);font-size:13px;font-weight:650;cursor:pointer}
+.rights-pulse-tab[aria-selected="true"]{border-bottom-color:var(--accent);color:var(--ink)}.rights-pulse-tab:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.rights-pulse-document{margin:0 0 8px;color:var(--muted);font-size:13px;font-weight:650;line-height:1.6}
+.rights-pulse-content h2{max-width:850px;margin:0 0 12px;font-family:var(--font-serif);font-size:clamp(21px,2.2vw,29px);font-weight:500;line-height:1.36;letter-spacing:-.01em}
+.rights-pulse-content p{max-width:860px;margin:0;color:var(--ink-soft);font-size:15px;line-height:1.8}
+.rights-pulse-action{display:grid;grid-template-columns:92px minmax(0,1fr);gap:16px;max-width:900px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.rights-pulse-action span{color:var(--accent);font-size:0;font-weight:800;letter-spacing:.1em}.rights-pulse-action span::after{content:"现实提醒";font-size:11px}.rights-pulse:has(.rights-pulse-badge.is-case) .rights-pulse-action span::after{content:"裁判要点"}
+.rights-pulse-action strong{font-size:15px;font-weight:650;line-height:1.8}
+.rights-pulse-sources{max-width:900px;margin-top:14px;color:var(--muted);font-size:12px;line-height:1.75}.rights-pulse-sources a{text-underline-offset:3px}
+@media(max-width:720px){#rightsPulse>.wrap{width:min(100% - 28px,var(--max))}.rights-pulse{grid-template-columns:1fr;gap:16px}.rights-pulse-meta{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:0 0 14px;border-right:0;border-bottom:1px solid var(--line)}.rights-pulse-label{width:100%}.rights-pulse-tabs{gap:16px}.rights-pulse-content h2{font-size:21px}.rights-pulse-action{grid-template-columns:1fr;gap:5px}}
 @media print{#rightsPulse>.wrap{width:100%}.rights-pulse{break-inside:avoid}.rights-pulse-tabs{display:none}}

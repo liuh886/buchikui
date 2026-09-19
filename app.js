@@ -127,7 +127,7 @@
         </label>
       </section>
 
-      <section class="home-section shell" aria-labelledby="recentTitle">
+      <section class="home-section shell" id="recentSection" aria-labelledby="recentTitle">
         <div class="section-heading">
           <div>
             <p class="eyebrow">最近更新</p>
@@ -169,8 +169,10 @@
       row.hidden=!matched;
       if(matched) count+=1;
     });
+    const recentSection=document.getElementById('recentSection');
+    if(recentSection) recentSection.hidden=!!term;
     const countNode=document.getElementById('searchCount');
-    if(countNode) countNode.textContent=term?`${count} 个结果`:`${cases.length} 个主题`;
+    if(countNode) countNode.textContent=term?`${count} 个相关主题`:`${cases.length} 个主题`;
     const empty=document.getElementById('emptyState');
     if(empty) empty.hidden=count!==0;
   }
@@ -213,7 +215,6 @@
 
         <section class="authority-section" aria-labelledby="authorityTitle">
           <div class="shell">
-            <p class="eyebrow">权威依据</p>
             <h2 id="authorityTitle">规则和裁判怎么说</h2>
             <p class="section-intro">优先展示法律法规、司法解释、部门规章、监管文件、典型案例和高价值裁判。结论以原文适用范围为边界。</p>
           </div>

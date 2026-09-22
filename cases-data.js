@@ -85,6 +85,7 @@ window.BUCHIKUI_CASES = [
     },
     "scenarios": [
       {
+        "ruleId": "operator",
         "short": "门头 ≠ 责任主体",
         "risk": "品牌名 ≠ 合同出租方",
         "title": "门头写着“滴滴租车 / 悟空租车”，承担租赁责任的可能是另一家公司",
@@ -117,6 +118,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "vehicle-status",
         "short": "临时换车",
         "risk": "系统里的车必须对得上你开的车",
         "title": "现场换了另一辆车，系统和实际车辆必须对上",
@@ -165,6 +167,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "vehicle-status",
         "short": "停运损失费",
         "risk": "先查车辆性质，再查真实损失",
         "title": "修车几天就按天收“停运损失费”？先别直接认",
@@ -181,6 +184,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "platform-appeal",
         "short": "信用免押被扣",
         "risk": "该赔多少 ≠ 平台能不能直接扣",
         "title": "平台直接划扣了钱，把“赔不赔”和“能不能扣”拆开",
@@ -463,6 +467,7 @@ window.BUCHIKUI_CASES = [
     },
     "scenarios": [
       {
+        "ruleId": "prepaid-refund",
         "short": "办卡后想退",
         "risk": "“概不退款”不是全部规则",
         "title": "充了值，店里一句“会员卡概不退款”",
@@ -479,6 +484,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "price-change",
         "short": "低价进店被加价",
         "risk": "价格应在服务前说清",
         "title": "低价引流，做到一半才告诉你要加钱",
@@ -495,6 +501,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "price-change",
         "short": "没同意却加项目",
         "risk": "“已经给你做了”不是同意",
         "title": "擅自加项目、换产品、换技师",
@@ -527,6 +534,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "relocation-transfer",
         "short": "搬店 / 换老板 / 闭店",
         "risk": "别用新协议把旧责任盖掉",
         "title": "店搬了、转让了，旧卡突然不好使",
@@ -543,6 +551,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "medical-beauty",
         "short": "普通美容变医美",
         "risk": "侵入性项目先看资质",
         "title": "生活美容店开始做注射、破皮等医疗美容项目",
@@ -4386,3 +4395,26 @@ window.BUCHIKUI_CASES.push({
   ],
   "legal": "安吉网约车内容是一笔公开报道个案，不能推定所有聚合订单都按相同路径流转。货拉拉“500多→300→320→290”的具体价格序列来自司机口述线索，公开资料不足以证明其为固定算法；本页可确认的监管事实是市场监管总局已要求货拉拉停止利用算法不合理压低货运价格。本页关于“累计抽成上限、接单前双边透明、最低保障收入锁定、限制个体化底价试探”的内容属于 Buchikui 治理建议，不是现行法律已经统一要求的制度。具体费用和责任仍应以订单、合同、平台规则、属地监管要求及后台数据为准。"
 });
+
+// 生成文件的数据定义：编辑本文件后运行 node scripts/bundle-cases.mjs。
+// 处境（stage）是编辑判断，不是从 CASE 文本推导出来的，因此单独集中维护。
+window.BUCHIKUI_FACET_STAGE = {
+  'rental': ['pre', 'during', 'dispute'],
+  'rental-credit-card-first': ['pre', 'dispute'],
+  'beauty-hair': ['pre', 'during', 'dispute'],
+  'bank-small-account-fee': ['dispute'],
+  'bank-wealth-not-guaranteed': ['pre', 'during', 'dispute'],
+  'alipay-advisor-cost': ['pre', 'during'],
+  'mobile-plan-cost': ['during', 'dispute'],
+  'internet-court-self-litigation': ['dispute'],
+  'appliance-repair-trap': ['during', 'dispute'],
+  'airport-sales-pitch': ['pre', 'during'],
+  'dating-safety': ['pre', 'during'],
+  'thailand-travel-safety': ['during'],
+  'alibaba-auction-trap': ['pre', 'during', 'dispute'],
+  'layoff-compensation': ['during', 'dispute'],
+  'qingdao-travel': ['pre', 'during', 'dispute'],
+  'transport-platform-layered-fees': ['during', 'dispute']
+};
+
+window.BUCHIKUI_FACETS={"rental":{"category":"租车","stage":["pre","during","dispute"],"types":["regulation","rule"],"related":[{"slug":"rental-credit-card-first","name":"信用免押？优先信用卡预授权"},{"slug":"alibaba-auction-trap","name":"阿里拍卖局中局：先查谁在拍、谁在竞价"},{"slug":"beauty-hair","name":"美容美发避免预付费"}]},"beauty-hair":{"category":"预付消费","stage":["pre","during","dispute"],"types":["interpretation","regulation","rule"],"related":[{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"},{"slug":"rental","name":"租车警惕第三方平台"}]},"bank-small-account-fee":{"category":"银行","stage":["dispute"],"types":["rule","case"],"related":[]},"mobile-plan-cost":{"category":"通信","stage":["during","dispute"],"types":["rule"],"related":[]},"internet-court-self-litigation":{"category":"诉讼","stage":["dispute"],"types":["interpretation","rule"],"related":[]},"alipay-advisor-cost":{"category":"投资与费用","stage":["pre","during"],"types":["rule"],"related":[]},"bank-wealth-not-guaranteed":{"category":"银行与理财","stage":["pre","during","dispute"],"types":["rule"],"related":[]},"rental-credit-card-first":{"category":"租车","stage":["pre","dispute"],"types":["rule","interpretation","regulation"],"related":[{"slug":"rental","name":"租车警惕第三方平台"},{"slug":"alibaba-auction-trap","name":"阿里拍卖局中局：先查谁在拍、谁在竞价"}]},"appliance-repair-trap":{"category":"维修","stage":["during","dispute"],"types":["rule"],"related":[]},"airport-sales-pitch":{"category":"线下推销","stage":["pre","during"],"types":["law","regulation","rule"],"related":[{"slug":"dating-safety","name":"相亲约会：第一次见面要保留随时离开的能力"}]},"dating-safety":{"category":"人身与财产安全","stage":["pre","during"],"types":["law","regulation","rule"],"related":[{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"}]},"thailand-travel-safety":{"category":"旅行","stage":["during"],"types":["other","case"],"related":[]},"alibaba-auction-trap":{"category":"拍卖","stage":["pre","during","dispute"],"types":["law","rule"],"related":[{"slug":"rental","name":"租车警惕第三方平台"},{"slug":"rental-credit-card-first","name":"信用免押？优先信用卡预授权"}]},"layoff-compensation":{"category":"劳动","stage":["during","dispute"],"types":["case","interpretation","law","regulation"],"related":[]},"qingdao-travel":{"category":"旅行消费","stage":["pre","during","dispute"],"types":["rule","law","regulation","case"],"related":[{"slug":"beauty-hair","name":"美容美发避免预付费"},{"slug":"dating-safety","name":"相亲约会：第一次见面要保留随时离开的能力"},{"slug":"rental","name":"租车警惕第三方平台"}]},"transport-platform-layered-fees":{"category":"平台交易","stage":["during","dispute"],"types":["rule"],"related":[]}};

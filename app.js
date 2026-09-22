@@ -9,6 +9,7 @@
   const esc=R.esc;
   const stripTags=R.stripTags;
   const rich=value=>sanitizeRichHtml(value);
+  const facets=window.BUCHIKUI_FACETS||{};
 
   const legacySlug=new URLSearchParams(location.search).get('case');
   if(legacySlug&&/^[a-z0-9][a-z0-9-]*$/.test(legacySlug)&&!location.pathname.includes('/c/')){
@@ -118,18 +119,108 @@
           </div>
           <p id="searchCount" aria-live="polite">${cases.length} 个主题</p>
         </div>
-        <div class="topic-list" id="topicList">${cases.map(item=>R.topicRow(item,base)).join('')}</div>
+        ${facetControls()}
+        <div class="topic-list" id="topicList">${cases.map(item=>R.topicRow(item,base,facets)).join('')}</div>
         <p class="empty-state" id="emptyState" aria-live="polite" hidden>暂时没有匹配的主题。换一个更短的关键词试试。</p>
       </section>`;
 
     const search=document.getElementById('caseSearch');
     if(!search) return;
-    search.addEventListener('input',()=>filterTopics(search.value));
+    search.addEventListener('input',()=>{filterTopics(search.value);syncFacetUrl();});
+    bindFacets();
+    applyFilters();
     const initial=new URLSearchParams(location.search).get('q');
     if(initial){
       search.value=initial;
       filterTopics(initial);
     }
+  }
+
+  const STAGE_ORDER=['pre','during','dispute'];
+  const STAGE_LABELS={pre:'下单 / 付款前',during:'履约中',dispute:'已产生纠纷'};
+  const TYPE_ORDER=['law','regulation','interpretation','rule','case','other'];
+  const TYPE_LABELS={law:'法律',regulation:'行政法规',interpretation:'司法解释',rule:'部门规章 / 监管文件',case:'典型案例 / 裁判',other:'其他'};
+  const activeFilters={stage:new Set(),type:new Set(),category:new Set()};
+  let currentQuery='';
+
+  function presentCategories(){
+    const seen=[];
+    for(const item of cases){
+      const category=facets[item.slug]?.category||categoryOf(item);
+      if(!seen.includes(category)) seen.push(category);
+    }
+    return seen;
+  }
+
+  function presentTypes(){
+    const seen=[];
+    for(const item of cases) for(const type of facets[item.slug]?.types||[]) if(!seen.includes(type)) seen.push(type);
+    return TYPE_ORDER.filter(type=>seen.includes(type));
+  }
+
+  function facetChip(group,value,label){
+    return `<button class="facet-chip" type="button" data-facet="${esc(group)}" data-value="${esc(value)}" aria-pressed="false">${esc(label)}</button>`;
+  }
+
+  function facetControls(){
+    const groups=[`<div class="facet-group"><span>你现在处于哪一步</span><div class="facet-options">${STAGE_ORDER.map(stage=>facetChip('stage',stage,STAGE_LABELS[stage])).join('')}</div></div>`];
+    const types=presentTypes();
+    if(types.length>1) groups.push(`<div class="facet-group"><span>依据类型</span><div class="facet-options">${types.map(type=>facetChip('type',type,TYPE_LABELS[type])).join('')}</div></div>`);
+    const categories=presentCategories();
+    if(categories.length>1) groups.push(`<div class="facet-group"><span>消费场景</span><div class="facet-options">${categories.map(category=>facetChip('category',category,category)).join('')}</div></div>`);
+    return `<div class="topic-facets" id="topicFacets"><div class="topic-facets-head"><span>筛选</span><button class="facet-clear" type="button" id="facetClear" hidden>清空筛选</button></div>${groups.join('')}<p class="facet-note">同一组可多选（或），不同组取交集（且），也可直接搜索。</p></div>`;
+  }
+
+  function bindFacets(){
+    const host=document.getElementById('topicFacets');
+    if(!host) return;
+    host.addEventListener('click',event=>{
+      const clear=event.target.closest('#facetClear');
+      if(clear){
+        activeFilters.stage.clear();
+        activeFilters.type.clear();
+        activeFilters.category.clear();
+        host.querySelectorAll('.facet-chip[aria-pressed="true"]').forEach(node=>node.setAttribute('aria-pressed','false'));
+        const search=document.getElementById('caseSearch');
+        if(search) search.value='';
+        filterTopics('');
+        syncFacetUrl();
+        return;
+      }
+      const chip=event.target.closest('[data-facet]');
+      if(!chip) return;
+      const set=activeFilters[chip.dataset.facet];
+      if(!set) return;
+      const value=chip.dataset.value;
+      if(set.has(value)) set.delete(value); else set.add(value);
+      chip.setAttribute('aria-pressed',set.has(value)?'true':'false');
+      applyFilters();
+      syncFacetUrl();
+    });
+    const params=new URLSearchParams(location.search);
+    for(const [group,key] of [['stage','stage'],['type','type'],['category','cat']]){
+      const raw=params.get(key);
+      if(!raw) continue;
+      for(const value of raw.split(',')){
+        if(!value||!activeFilters[group]) continue;
+        const chip=host.querySelector(`[data-facet="${group}"][data-value="${CSS.escape(value)}"]`);
+        if(!chip) continue;
+        activeFilters[group].add(value);
+        chip.setAttribute('aria-pressed','true');
+      }
+    }
+  }
+
+  function syncFacetUrl(){
+    const params=new URLSearchParams(location.search);
+    const put=(key,set)=>{if(set.size) params.set(key,[...set].join(',')); else params.delete(key);};
+    put('stage',activeFilters.stage);
+    put('type',activeFilters.type);
+    put('cat',activeFilters.category);
+    const query=currentQuery.trim();
+    if(query) params.set('q',query); else params.delete('q');
+    const qs=params.toString();
+    history.replaceState(null,'',qs?`${location.pathname}?${qs}`:location.pathname);
   }
 
   function searchableText(item){
@@ -143,20 +234,34 @@
   }
 
   function filterTopics(query){
-    const term=String(query||'').trim().toLocaleLowerCase('zh-CN');
+    currentQuery=String(query||'');
+    applyFilters();
+  }
+
+  function applyFilters(){
+    const term=currentQuery.trim().toLocaleLowerCase('zh-CN');
+    const anyFilter=!!term||activeFilters.stage.size>0||activeFilters.type.size>0||activeFilters.category.size>0;
     let count=0;
     document.querySelectorAll('[data-topic]').forEach(row=>{
-      const item=cases.find(candidate=>candidate.slug===row.dataset.topic);
-      const matched=!!item&&(!term||searchableText(item).includes(term));
+      const slug=row.dataset.topic;
+      const item=cases.find(candidate=>candidate.slug===slug);
+      const facet=facets[slug]||{};
+      let matched=!!item;
+      if(matched&&term) matched=searchableText(item).includes(term);
+      if(matched&&activeFilters.stage.size) matched=(facet.stage||[]).some(stage=>activeFilters.stage.has(stage));
+      if(matched&&activeFilters.type.size) matched=(facet.types||[]).some(type=>activeFilters.type.has(type));
+      if(matched&&activeFilters.category.size) matched=activeFilters.category.has(facet.category);
       row.hidden=!matched;
       if(matched) count+=1;
     });
     const recentSection=document.getElementById('recentSection');
-    if(recentSection) recentSection.hidden=!!term;
+    if(recentSection) recentSection.hidden=anyFilter;
     const countNode=document.getElementById('searchCount');
-    if(countNode) countNode.textContent=term?`${count} 个相关主题`:`${cases.length} 个主题`;
+    if(countNode) countNode.textContent=anyFilter?`${count} 个相关主题`:`${cases.length} 个主题`;
     const empty=document.getElementById('emptyState');
     if(empty) empty.hidden=count!==0;
+    const clear=document.getElementById('facetClear');
+    if(clear) clear.hidden=!anyFilter;
   }
 
   function renderCase(item){
@@ -164,7 +269,7 @@
     document.body.dataset.activeCaseSlug=item.slug;
     setMeta(item.meta?.title||`${item.name}｜不吃亏`,item.meta?.description||stripTags(item.hero?.copy));
     renderHeader(item.name);
-    app.innerHTML=R.caseArticleHtml(item,{base,rich});
+    app.innerHTML=R.caseArticleHtml(item,{base,rich,related:facets[item.slug]?.related||[]});
 
     if(window.BuchikuiRights?.render){
       window.BuchikuiRights.render(item.slug);

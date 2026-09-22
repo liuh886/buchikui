@@ -3,6 +3,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import vm from 'node:vm';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildFacets } from './facets.mjs';
 
 export const SITE='https://liuh886.github.io/buchikui';
 export const BASE_PATH=`${new URL(SITE).pathname.replace(/\/$/,'')}/`;
@@ -11,7 +12,7 @@ export const DATA_FILES=[
   'cases.js','compact-cases.js','mobile-plan-case.js','court-case.js','investment-advisor-case.js',
   'bank-wealth-case.js','rental-payment-case.js','appliance-repair-case.js','airport-sales-case.js',
   'dating-safety-case.js','thailand-travel-safety-case.js','alibaba-auction-case.js','layoff-compensation-case.js',
-  'qingdao-travel-case.js','transport-platform-case.js',
+  'qingdao-travel-case.js','transport-platform-case.js','case-facets.js',
 ];
 const RENDER_FILES=['render-cases.js','legal-updates.js'];
 
@@ -33,7 +34,12 @@ export async function loadCases(){
 
 export async function loadRuntime(){
   const runtime=await loadSandbox([...DATA_FILES,...RENDER_FILES]);
-  return {cases:runtime.BUCHIKUI_CASES,render:runtime.BuchikuiRender,authority:runtime.BuchikuiAuthority};
+  return {
+    cases:runtime.BUCHIKUI_CASES,
+    render:runtime.BuchikuiRender,
+    authority:runtime.BuchikuiAuthority,
+    stage:runtime.BUCHIKUI_FACET_STAGE||{}
+  };
 }
 
 const esc=value=>String(value??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -76,7 +82,8 @@ function replaceJsonLd(html,data){
 }
 
 export async function prerender(outDir){
-  const {cases,render,authority}=await loadRuntime();
+  const {cases,render,authority,stage}=await loadRuntime();
+  const facets=buildFacets(cases,authority,render.CATEGORIES,stage);
   const shell=await readFile(path.join(root,'index.html'),'utf8');
   const outputs=[];
   for(const item of cases){
@@ -85,6 +92,7 @@ export async function prerender(outDir){
     const body=render.caseArticleHtml(item,{
       base:'../../',
       rich:value=>esc(plain(value)),
+      related:facets[item.slug]?.related||[],
       authorityHtml:`<div id="rightsPulse">${authorityHtml}</div>`,
     });
 

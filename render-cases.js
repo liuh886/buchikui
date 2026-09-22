@@ -45,6 +45,7 @@
   function caseReminders(item){
     if(Array.isArray(item.scenarios)&&item.scenarios.length){
       return item.scenarios.map(entry=>({
+        ruleId:entry.ruleId||'',
         title:entry.title,
         fact:entry.blocks?.find(block=>block.kind!=='action')?.html||'',
         action:entry.blocks?.find(block=>block.kind==='action')?.html||''
@@ -62,9 +63,11 @@
     </a>`;
   }
 
-  function topicRow(item,base){
-    return `<a class="topic-row" data-topic="${esc(item.slug)}" href="${esc(caseUrl(item,base))}">
-      <span class="topic-category">${esc(categoryOf(item))}</span>
+  function topicRow(item,base,facets){
+    const facet=facets&&facets[item.slug]||{};
+    const category=facet.category||categoryOf(item);
+    return `<a class="topic-row" data-topic="${esc(item.slug)}" data-category="${esc(category)}" data-types="${esc((facet.types||[]).join(' '))}" data-stage="${esc((facet.stage||[]).join(' '))}" href="${esc(caseUrl(item,base))}">
+      <span class="topic-category">${esc(category)}</span>
       <strong>${esc(item.name)}</strong>
       <span aria-hidden="true">→</span>
     </a>`;
@@ -76,8 +79,13 @@
       <div class="reminder-copy"><h3>${esc(entry.title)}</h3>
         ${entry.fact?`<div class="fact-line"><b>关键事实</b>${rich(entry.fact)}</div>`:''}
         ${entry.action?`<div class="action-line"><b>现实提醒</b>${rich(entry.action)}</div>`:''}
+        ${entry.ruleId?`<a class="reminder-basis" href="#rule-${esc(entry.ruleId)}">对应依据 →</a>`:''}
       </div>
     </article>`;
+  }
+
+  function relatedRow(entry,base){
+    return `<li><a href="${esc(caseUrl(entry,base))}">${esc(entry.name)}<span aria-hidden="true"> →</span></a></li>`;
   }
 
   function routeRow(step,index,rich){
@@ -103,6 +111,7 @@
     const evidence=item.evidence?.items||[];
     const steps=item.route?.steps||[];
     const sources=item.sources||[];
+    const related=opts.related||[];
     const heading=item.hero?.title||item.name;
     const lead=item.hero?.copy||item.meta?.description||'';
 
@@ -144,6 +153,11 @@
           ${item.legal?`<p class="legal-note">${esc(item.legal)}</p>`:''}
         </section>`:''}
 
+        ${related.length?`<section class="related-topics shell" aria-labelledby="relatedTitle">
+          <div class="section-heading compact"><div><p class="eyebrow">相关主题</p><h2 id="relatedTitle">你可能还需要</h2></div></div>
+          <ul class="related-list">${related.map(entry=>relatedRow(entry,base)).join('')}</ul>
+        </section>`:''}
+
         ${item.takeaway?`<footer class="case-takeaway shell"><span>记住这一点</span><strong>${esc(item.takeaway)}</strong></footer>`:''}
       </article>`;
   }
@@ -164,6 +178,7 @@
     homeRow,
     topicRow,
     reminderRow,
+    relatedRow,
     routeRow,
     sourceRow,
     caseArticleHtml,

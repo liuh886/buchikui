@@ -866,6 +866,7 @@
   const link=source=>source?`<a href="${esc(source.href)}" target="_blank" rel="noopener">${esc(source.title)} →</a>`:'';
   const ruleSources=rule=>rule.sources||[];
   const normalizeRules=item=>item&&Array.isArray(item.rules)?item.rules:[];
+  const ruleId=(rule,index)=>String((rule&&rule.id)||`item-${index||0}`);
   const isCaseRule=rule=>rule&&rule.kind==='case';
   const ruleVerified=rule=>rule&&rule.verified?rule.verified:VERIFIED;
   const itemVerified=item=>normalizeRules(item).reduce((latest,rule)=>ruleVerified(rule)>latest?ruleVerified(rule):latest,VERIFIED);
@@ -988,6 +989,8 @@
       meta.innerHTML=metaHtml(rule,rules.length);
       panel.innerHTML=panelHtml(rule);
       panel.setAttribute('aria-labelledby',buttons[index].id);
+      const wrap=host.querySelector('.rights-pulse');
+      if(wrap) wrap.id=`rule-${ruleId(rule,index)}`;
       if(focus) buttons[index].focus();
     }
 
@@ -1006,6 +1009,26 @@
     });
   }
 
+  function bindHash(host,rules){
+    if(rules.length<2) return;
+    const apply=()=>{
+      const match=(location.hash||'').match(/^#rule-(.+)$/);
+      if(!match) return;
+      const index=rules.findIndex((rule,position)=>ruleId(rule,position)===match[1]);
+      if(index<0) return;
+      if(index>0){
+        const button=host.querySelector(`[data-rights-rule="${index}"]`);
+        if(button) button.click();
+      }
+      host.scrollIntoView({block:'start'});
+    };
+    if(!bindHash.bound){
+      window.addEventListener('hashchange',apply);
+      bindHash.bound=true;
+    }
+    apply();
+  }
+
   function render(){
     const host=ensureHost();
     const active=getActiveCase();
@@ -1022,7 +1045,7 @@
     const tabs=rules.length>1?`<div class="rights-pulse-tabs" role="tablist" aria-label="切换关键参考">${rules.map((rule,index)=>`<button class="rights-pulse-tab" type="button" role="tab" id="rightsRuleTab-${index}" aria-controls="rightsPulsePanel" aria-selected="${index===0?'true':'false'}" tabindex="${index===0?'0':'-1'}" data-rights-rule="${index}">${esc(rule.tab)}</button>`).join('')}</div>`:'';
 
     host.hidden=false;
-    host.innerHTML=`<div class="wrap"><div class="rights-pulse">
+    host.innerHTML=`<div class="wrap"><div class="rights-pulse" id="rule-${esc(ruleId(first,0))}">
       <div class="rights-pulse-meta">${metaHtml(first,rules.length)}</div>
       <div class="rights-pulse-content">
         ${tabs}
@@ -1031,6 +1054,7 @@
     </div></div>`;
     syncSources(item);
     bindRuleTabs(host,rules);
+    bindHash(host,rules);
   }
 
   function renderForSlug(slug){
@@ -1043,7 +1067,7 @@
     staticBlock:slug=>{
       const rules=normalizeRules(updates[slug]);
       if(!rules.length) return '';
-      const blocks=rules.map(rule=>`<div class="rights-pulse"><div class="rights-pulse-meta">${metaHtml(rule,rules.length)}</div><div class="rights-pulse-content">${panelHtml(rule)}</div></div>`).join('');
+      const blocks=rules.map((rule,index)=>`<div class="rights-pulse" id="rule-${esc(ruleId(rule,index))}"><div class="rights-pulse-meta">${metaHtml(rule,rules.length)}</div><div class="rights-pulse-content">${panelHtml(rule)}</div></div>`).join('');
       return `<div class="wrap">${blocks}</div>`;
     }
   };

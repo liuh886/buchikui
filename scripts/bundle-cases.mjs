@@ -2,7 +2,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DATA_FILES } from './prerender-cases.mjs';
+import { DATA_FILES, loadRuntime } from './prerender-cases.mjs';
+import { buildFacets } from './facets.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEADER='// 生成文件：请编辑各 CASE 源文件，再运行 node scripts/bundle-cases.mjs 重新拼接。';
@@ -13,6 +14,9 @@ export async function buildBundle(){
     const code=(await readFile(path.join(root,file),'utf8')).replace(/\r\n/g,'\n').trimEnd();
     parts.push(code);
   }
+  const {cases,authority,render,stage}=await loadRuntime();
+  const facets=buildFacets(cases,authority,render.CATEGORIES,stage);
+  parts.push(`window.BUCHIKUI_FACETS=${JSON.stringify(facets)};`);
   return `${HEADER}\n${parts.join('\n\n')}\n`;
 }
 

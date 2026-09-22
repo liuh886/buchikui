@@ -84,6 +84,7 @@ window.BUCHIKUI_CASES = [
     },
     "scenarios": [
       {
+        "ruleId": "operator",
         "short": "门头 ≠ 责任主体",
         "risk": "品牌名 ≠ 合同出租方",
         "title": "门头写着“滴滴租车 / 悟空租车”，承担租赁责任的可能是另一家公司",
@@ -116,6 +117,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "vehicle-status",
         "short": "临时换车",
         "risk": "系统里的车必须对得上你开的车",
         "title": "现场换了另一辆车，系统和实际车辆必须对上",
@@ -164,6 +166,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "vehicle-status",
         "short": "停运损失费",
         "risk": "先查车辆性质，再查真实损失",
         "title": "修车几天就按天收“停运损失费”？先别直接认",
@@ -180,6 +183,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "platform-appeal",
         "short": "信用免押被扣",
         "risk": "该赔多少 ≠ 平台能不能直接扣",
         "title": "平台直接划扣了钱，把“赔不赔”和“能不能扣”拆开",
@@ -462,6 +466,7 @@ window.BUCHIKUI_CASES = [
     },
     "scenarios": [
       {
+        "ruleId": "prepaid-refund",
         "short": "办卡后想退",
         "risk": "“概不退款”不是全部规则",
         "title": "充了值，店里一句“会员卡概不退款”",
@@ -478,6 +483,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "price-change",
         "short": "低价进店被加价",
         "risk": "价格应在服务前说清",
         "title": "低价引流，做到一半才告诉你要加钱",
@@ -494,6 +500,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "price-change",
         "short": "没同意却加项目",
         "risk": "“已经给你做了”不是同意",
         "title": "擅自加项目、换产品、换技师",
@@ -526,6 +533,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "relocation-transfer",
         "short": "搬店 / 换老板 / 闭店",
         "risk": "别用新协议把旧责任盖掉",
         "title": "店搬了、转让了，旧卡突然不好使",
@@ -542,6 +550,7 @@ window.BUCHIKUI_CASES = [
         ]
       },
       {
+        "ruleId": "medical-beauty",
         "short": "普通美容变医美",
         "risk": "侵入性项目先看资质",
         "title": "生活美容店开始做注射、破皮等医疗美容项目",

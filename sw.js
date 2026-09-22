@@ -1,4 +1,4 @@
-const CACHE_NAME='buchikui-pwa-v13';
+const CACHE_NAME='buchikui-pwa-v14';
 const CORE_ASSETS=[
   './','./index.html','./styles.css','./rights-pulse.css',
   './render-cases.js','./cases-data.js','./app.js','./legal-updates.js','./pwa.js','./manifest.webmanifest',

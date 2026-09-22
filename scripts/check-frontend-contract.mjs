@@ -55,11 +55,15 @@ for(const required of [
   'function renderHome()',
   'function renderCase(item)',
   'function filterTopics(query)',
+  'function applyFilters()',
   'function renderNotFound()',
   "document.body.dataset.page='home'",
   "document.body.dataset.page='case'",
   'window.BuchikuiRights.render(item.slug)',
   'BuchikuiRender',
+  'BUCHIKUI_FACETS',
+  'topic-facets',
+  'facet-chip',
   "new URLSearchParams(location.search).get('case')",
   '最近值得知道',
 ]) if(!app.includes(required)) fail(`Missing public-legal-literacy contract: ${required}`);
@@ -78,11 +82,15 @@ for(const required of [
   'caseArticleHtml',
   'caseReminders',
   'reminderRow',
+  'relatedRow',
   'routeRow',
   'sourceRow',
   'homeRow',
   'topicRow',
   'missingHtml',
+  'related-topics',
+  'reminder-basis',
+  'data-category',
   'hero?.title',
   'item.panic?.title',
   'item.route?.intro',
@@ -96,6 +104,10 @@ for(const required of [
   '.search-box',
   '.recent-row',
   '.topic-row',
+  '.topic-facets',
+  '.facet-chip',
+  '.related-list',
+  '.reminder-basis',
   '.authority-section',
   '.reminder-row',
   '.source-list',
@@ -122,7 +134,7 @@ for(const retired of ['case-library.css','read-progress.js','feedback.css','feed
 if(!sw.includes('render-cases.js')) fail('Service worker must cache the shared renderer');
 if(!sw.includes('cases-data.js')) fail('Service worker must cache the CASE bundle');
 for(const file of DATA_FILES) if(sw.includes(`'./${file}'`)) fail(`Service worker still precaches the loose CASE source: ${file}`);
-if(!sw.includes("const CACHE_NAME='buchikui-pwa-v13'")) fail('PWA cache version must be v13 after shell replacement');
+if(!sw.includes("const CACHE_NAME='buchikui-pwa-v14'")) fail('PWA cache version must be v14 after facet/cross-link release');
 
 const normalizeEol=value=>value.replace(/\r\n/g,'\n');
 const bundle=await readFile(new URL('../cases-data.js',import.meta.url),'utf8');

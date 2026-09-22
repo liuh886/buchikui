@@ -1,5 +1,7 @@
 # 不吃亏 — 里程碑计划
 
+> 📦 **已归档（Archived）**：现行文档索引见 `docs/README.md`。
+
 > ⚠️ **DEPRECATED（已归档，不再执行）**：本文的 Week 1–12 / Month 4–12 计划写于 Astro 规划期，实际已演进为 Living CASE 随机阅读器（16 个 CASE 在线）。
 > 当前交付状态以 `README.md`“当前 Demo”一节为准；新增 CASE 流程以 `AGENTS.md` 为准。
 

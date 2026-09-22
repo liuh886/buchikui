@@ -30,7 +30,7 @@ CASE 默认阅读顺序：
 
 `legal-updates.js` 是权威材料层的唯一数据源。CASE 数据文件负责现实场景、证据和处理路径，不重复维护另一套法规新闻列表。
 
-来源优先级和更新纪律见：
+完整文档索引见 `docs/README.md`。来源优先级和更新纪律见：
 
 - `docs/legal-freshness-standard.md`
 - `docs/case-content-standard.md`
@@ -39,6 +39,13 @@ CASE 默认阅读顺序：
 
 - `docs/product-experience-spec.md`
 - `docs/design-system.md`
+
+结构设计与 CASE 目录：
+
+- `docs/information-architecture.md`
+- `docs/content-index.md`
+
+描述已废弃 Astro + 工具产品方向的旧文档已移入 `docs/archive/`，不再作为规范。
 
 ## 本地校验
 

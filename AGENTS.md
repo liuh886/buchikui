@@ -17,6 +17,8 @@ Before changing a CASE, read:
 3. `docs/legal-freshness-standard.md`
 4. `docs/design-system.md`
 
+The document index is `docs/README.md`; `docs/information-architecture.md` holds structural design (and `docs/content-index.md` is the CASE directory). Superseded Astro/tool-product documents are archived under `docs/archive/` and are not authority.
+
 The product must not drift back into a diagnostic dashboard, checklist app, legal chatbot, random CASE reader, or AI-generated action-plan experience.
 
 ## Source hierarchy

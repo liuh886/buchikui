@@ -146,12 +146,7 @@ Only publish the level of certainty supported by evidence.
 
 GitHub `main` is the publication authority.
 
-Locate the CASE in the current content source. Current files include:
-
-- `cases.js`
-- `compact-cases.js`
-- `mobile-plan-case.js`
-- `court-case.js`
+Locate the CASE in the current content source. The canonical CASE source file list is `DATA_FILES` in `scripts/prerender-cases.mjs` (15 source files, 16 CASES); `docs/content-index.md` is the human-readable directory of every CASE.
 
 Do not create an Agent-generated mirror of CASE content.
 

@@ -87,10 +87,14 @@ Buchikui 的视觉目标是**可信的编辑型普法资料库**，不是 SaaS D
 
 ## 生成物
 
-前端有三处构建产物，改动源文件后必须重新生成，`node scripts/check-frontend-contract.mjs` 会拦截漂移：
+改动源文件后必须重新生成，`node scripts/check-frontend-contract.mjs` 会拦截漂移：
 
 - `cases-data.js`：由 `scripts/bundle-cases.mjs` 拼接各 CASE 源文件；首页只加载这一个数据脚本；
 - `_site/c/<slug>/` 与 `_site/404.html`：由 `scripts/prerender-cases.mjs` 生成，含静态正文、canonical、og/twitter 与 `Article` 结构化数据；
-- `sitemap.xml`：由 CASE 数据生成，不再手写。
+- `sitemap.xml`：由 CASE 数据生成，不再手写；
+- `docs/content-index.md`：由 `scripts/build-content-index.mjs` 生成，不再手写。
 
-模板结构由 `render-cases.js` 提供（无 DOM 依赖），浏览器与预渲染共用同一套 HTML；`legal-updates.js` 只在 CASE 页加载。
+模板结构由 `render-cases.js` 提供（无 DOM 依赖），浏览器与预渲染共用同一套 HTML；
+预渲染的富文本走 `prerender-cases.mjs` 的 `richStatic()` 白名单序列化，与 `app.js`
+的 `sanitizeRichHtml` 保持同一口径，因此静态正文与浏览器渲染一致。
+`legal-updates.js` 只在 CASE 页加载。

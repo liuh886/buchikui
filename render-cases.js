@@ -51,7 +51,20 @@
         action:entry.blocks?.find(block=>block.kind==='action')?.html||''
       }));
     }
-    return (item.panic?.items||[]).map(entry=>({title:entry.title,fact:'',action:entry.text||''}));
+    return (item.panic?.items||[]).map(entry=>({ruleId:entry.ruleId||'',title:entry.title,fact:'',action:entry.text||''}));
+  }
+
+  // 「原文」段合并 CASE 自带来源与权威依据层来源，按 href 去重、CASE 在前。
+  function mergedSources(item,authoritySources){
+    const seen=new Set();
+    const list=[];
+    for(const source of [...(item.sources||[]),...(authoritySources||[])]){
+      const href=String(source&&source.href||'').trim();
+      if(!href||seen.has(href)) continue;
+      seen.add(href);
+      list.push(source);
+    }
+    return list;
   }
 
   function homeRow(item,featured,base,rich){
@@ -110,7 +123,8 @@
     const reminders=caseReminders(item);
     const evidence=item.evidence?.items||[];
     const steps=item.route?.steps||[];
-    const sources=item.sources||[];
+    const sources=mergedSources(item,opts.authoritySources);
+    const verified=opts.verified||'';
     const related=opts.related||[];
     const heading=item.hero?.title||item.name;
     const lead=item.hero?.copy||item.meta?.description||'';
@@ -148,7 +162,7 @@
         </section>`:''}
 
         ${sources.length?`<section class="source-section shell" aria-labelledby="sourceTitle">
-          ${sectionHead('sourceTitle','原文','依据与出处','')}
+          ${sectionHead('sourceTitle','原文','依据与出处',`本节收录正文与权威依据层引用的全部一手来源，按href去重。${verified?`最近核验 ${esc(verified)}。`:''}`)}
           <ol class="source-list">${sources.map(sourceRow).join('')}</ol>
           ${item.legal?`<p class="legal-note">${esc(item.legal)}</p>`:''}
         </section>`:''}
@@ -175,6 +189,7 @@
     categoryOf,
     caseUrl,
     caseReminders,
+    mergedSources,
     homeRow,
     topicRow,
     reminderRow,

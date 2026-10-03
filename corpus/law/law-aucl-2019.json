@@ -1,0 +1,20 @@
+{
+  "id": "law-aucl-2019",
+  "kind": "law",
+  "title": "中华人民共和国反不正当竞争法（2019 年修正）",
+  "type": "法律",
+  "issuer": "全国人民代表大会常务委员会",
+  "revision": "2019-04-23 修正",
+  "effective": "2019-04-23",
+  "status": "已取代",
+  "supersededBy": "law-aucl-2025",
+  "articles": [
+    {
+      "no": "第八条",
+      "topic": "商业贿赂"
+    }
+  ],
+  "url": "https://www.npc.gov.cn/npc/c2/c12435/201904/t20190424_254884.html",
+  "verified": "2026-10-03",
+  "note": "仅用于记录版本关系；不得作为现行依据引用。"
+}

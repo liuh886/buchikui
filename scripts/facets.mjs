@@ -1,5 +1,6 @@
 // 构建期派生 CASE 的筛选维度（处境、依据类型、相关主题），
 // 由 scripts/bundle-cases.mjs 写入 cases-data.js，首页据此筛选，不加载 legal-updates.js。
+import { LAW_TYPES, CASE_WEIGHTS } from './lib/corpus.mjs';
 
 export const STAGE_ORDER = ['pre', 'during', 'dispute'];
 export const STAGE_LABELS = {
@@ -18,18 +19,38 @@ export const TYPE_LABELS = {
   other: '其他'
 };
 
-const TYPE_MATCHERS = [
-  ['law', /法律/],
-  ['regulation', /行政法规/],
-  ['interpretation', /司法解释/],
-  ['rule', /部门规章|监管|规范|政策文件|规则|证监会|八部门|办法|价格/],
-  ['case', /指导性案例|典型案例|生效裁判|裁判|案件|通报/]
-];
+// 语料层的 type / weight 是受校验的枚举，所以按枚举精确映射，
+// 不要用正则去猜「这条依据大概算什么类型」——那会让筛选维度随措辞漂移。
+const TYPE_OF_LAW = {
+  '法律': 'law',
+  '行政法规': 'regulation',
+  '司法解释': 'interpretation',
+  '部门规章': 'rule',
+  '规范性文件': 'rule',
+  '政策文件': 'rule',
+  '地方规章': 'rule',
+  '监管规范性文件': 'rule'
+};
+const TYPE_OF_CASE = Object.fromEntries(CASE_WEIGHTS.map(weight => [weight, 'case']));
 
+/**
+ * 一条依据可能同时挂在多类来源上，rule.type 因此是复合串（如「法律 · 行政法规」）。
+ * 拆开后逐项精确映射到枚举；全部不认识才落到「其他」。
+ * 不用正则猜措辞，是为了让「部门规章」和「政策文件」稳定进同一个桶。
+ */
 export function typeBuckets(type) {
-  const text = String(type || '').trim();
-  const keys = TYPE_MATCHERS.filter(([, match]) => match.test(text)).map(([key]) => key);
+  const tokens = String(type || '').split(/[·、,，\/]/).map(t => t.trim()).filter(Boolean);
+  const keys = [];
+  for (const token of tokens) {
+    const key = TYPE_OF_LAW[token] || TYPE_OF_CASE[token];
+    if (key && !keys.includes(key)) keys.push(key);
+  }
   return keys.length ? keys : ['other'];
+}
+
+/** 语料层枚举与这里的映射必须一一对应：漏掉的类型会被静默归到「其他」。 */
+export function unmappedTypes() {
+  return [...LAW_TYPES.filter(t => !TYPE_OF_LAW[t]), ...CASE_WEIGHTS.filter(w => !TYPE_OF_CASE[w])];
 }
 
 function sourcesOf(authority, slug) {

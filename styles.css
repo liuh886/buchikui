@@ -142,7 +142,7 @@ a:focus:not(:focus-visible),button:focus:not(:focus-visible),input:focus:not(:fo
   .fact-line,.action-line{grid-template-columns:1fr;gap:3px}.fact-line b,.action-line b{padding-top:0}.plain-list li{grid-template-columns:1fr;gap:6px}.route-list li{grid-template-columns:36px minmax(0,1fr);gap:10px}
   .case-takeaway{grid-template-columns:1fr;gap:8px;padding-bottom:48px}.case-takeaway strong{font-size:21px}
   .footer-inner{grid-template-columns:1fr;gap:6px}.footer-inner .text-button{min-height:44px;padding:10px 0;justify-self:start}
-  .topic-facets{padding:16px 0}.facet-group{grid-template-columns:1fr;gap:6px}.facet-chip{min-height:40px}
+  .topic-facets{padding:16px 0}.facet-group{grid-template-columns:1fr;gap:6px}.facet-chip{min-height:44px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media print{.site-header,.site-footer,.back-link,.search-box,.topic-facets{display:none!important}.shell{width:100%}body{background:#fff}.authority-section{background:#fff}.home-section,.reading-section,.source-section{padding:24px 0}}

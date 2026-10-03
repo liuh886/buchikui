@@ -1,0 +1,60 @@
+name: Corpus Link Check
+
+# Phase C：语料层链接体检。
+# 项目的唯一承诺是「可核验」，而链接腐烂是头号死因，所以每天跑一次。
+# 有坏链才开 issue；没有坏链就把上一轮开的关掉。用 label 作为句柄。
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+    inputs:
+      only:
+        description: '只检查 id 包含该子串的记录（留空则全查）'
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: buchikui-link-check
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Validate corpus
+        run: node scripts/check-corpus.mjs
+
+      - name: Check source links
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.only }}" ]; then ARGS="--only=${{ github.event.inputs.only }}"; fi
+          node scripts/check-links.mjs $ARGS --issue-file="$RUNNER_TEMP/links.md"
+          cat "$RUNNER_TEMP/links.md"
+
+      - name: Close stale issue when everything is reachable
+        if: ${{ hashFiles(format('{0}/links.md', runner.temp)) == '' }}
+        run: |
+          for n in $(gh issue list --label corpus-link-check --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "本次体检全部可达（${{ github.run_id }}），自动关闭。"
+          done
+
+      - name: Open issue when links are broken
+        if: ${{ hashFiles(format('{0}/links.md', runner.temp)) != '' }}
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: '链接体检：语料层有来源打不开'
+          content-filepath: ${{ runner.temp }}/links.md
+          labels: |
+            maintenance
+            corpus-link-check

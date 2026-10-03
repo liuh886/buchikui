@@ -1,0 +1,26 @@
+{
+  "name": "buchikui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "不吃亏 / Buchikui — 消费普法与决策指南。零运行时依赖的静态站。",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build-authority.mjs && node scripts/bundle-cases.mjs && node scripts/build-content-index.mjs",
+    "build:authority": "node scripts/build-authority.mjs",
+    "build:cases": "node scripts/bundle-cases.mjs",
+    "build:index": "node scripts/build-content-index.mjs",
+    "build:site": "node scripts/prepare-site.mjs _site",
+    "check": "node scripts/check-corpus.mjs && node scripts/check-frontend-contract.mjs",
+    "check:corpus": "node scripts/check-corpus.mjs",
+    "check:frontend": "node scripts/check-frontend-contract.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "test": "node --test \"tests/**/*.test.mjs\"",
+    "orphans": "node scripts/check-corpus.mjs --orphans",
+    "verify": "npm run build && npm run test && npm run check",
+    "site": "npm run build:site && node scripts/serve.mjs",
+    "serve": "node scripts/serve.mjs"
+  }
+}

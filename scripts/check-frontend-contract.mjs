@@ -1,17 +1,24 @@
 import { readFile, mkdtemp, stat } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { loadCases, prerender, prerenderNotFound, buildSitemap, BASE_PATH, DATA_FILES } from './prerender-cases.mjs';
+import { loadCases, loadRawCases, loadRuntime, prerender, prerenderNotFound, buildSitemap, BASE_PATH, listDataFiles } from './prerender-cases.mjs';
 import { buildBundle } from './bundle-cases.mjs';
+import { buildContentIndex, CONTENT_INDEX } from './build-content-index.mjs';
+import { checkCorpus } from './check-corpus.mjs';
+import { buildAuthority } from './build-authority.mjs';
+import { validateCases } from './lib/case-schema.mjs';
+import { unmappedTypes } from './facets.mjs';
+import { loadCorpus, urlIndex } from './lib/corpus.mjs';
 
 const fail=message=>{throw new Error(message);};
-const [html,app,render,styles,rights,legal,manifest,sw,sitemap]=await Promise.all([
+const dataFileList=await listDataFiles();
+const [html,app,render,styles,rights,authorityRuntime,manifest,sw,sitemap]=await Promise.all([
   readFile(new URL('../index.html',import.meta.url),'utf8'),
   readFile(new URL('../app.js',import.meta.url),'utf8'),
   readFile(new URL('../render-cases.js',import.meta.url),'utf8'),
   readFile(new URL('../styles.css',import.meta.url),'utf8'),
   readFile(new URL('../rights-pulse.css',import.meta.url),'utf8'),
-  readFile(new URL('../legal-updates.js',import.meta.url),'utf8'),
+  readFile(new URL('../editorial/authority-runtime.js',import.meta.url),'utf8'),
   readFile(new URL('../manifest.webmanifest',import.meta.url),'utf8'),
   readFile(new URL('../sw.js',import.meta.url),'utf8'),
   readFile(new URL('../sitemap.xml',import.meta.url),'utf8'),
@@ -49,7 +56,7 @@ for(const retired of [
 ]) if(html.includes(retired)) fail(`Retired reader UI returned: ${retired}`);
 
 if(html.includes('src="legal-updates.js"')) fail('legal-updates.js must stay off the home page for payload reasons');
-for(const file of DATA_FILES) if(html.includes(`src="${file}"`)) fail(`Home page must ship the bundle, not the loose CASE source: ${file}`);
+for(const file of dataFileList) if(html.includes(`src="${file}"`)) fail(`Home page must ship the bundle, not the loose CASE source: ${file}`);
 
 for(const required of [
   'function renderHome()',
@@ -81,6 +88,7 @@ for(const retired of [
 for(const required of [
   'caseArticleHtml',
   'caseReminders',
+  'mergedSources',
   'reminderRow',
   'relatedRow',
   'routeRow',
@@ -94,6 +102,8 @@ for(const required of [
   'hero?.title',
   'item.panic?.title',
   'item.route?.intro',
+  'opts.authoritySources',
+  'opts.verified',
   '这些地方最容易被忽视',
   '依据与出处',
 ]) if(!render.includes(required)) fail(`Shared renderer missing contract: ${required}`);
@@ -106,6 +116,7 @@ for(const required of [
   '.topic-row',
   '.topic-facets',
   '.facet-chip',
+  '.facet-chip{min-height:44px}',
   '.related-list',
   '.reminder-basis',
   '.authority-section',
@@ -124,8 +135,11 @@ for(const required of [
   '.rights-pulse-content h3',
 ]) if(!rights.includes(required)) fail(`Missing authority layer style: ${required}`);
 
-for(const required of ['裁判参考','裁判要点','权威依据','现实提醒']){
-  if(!legal.includes(required)) fail(`Authority layer is missing canonical terminology: ${required}`);
+for(const required of ['裁判参考','裁判要点','权威依据','现实提醒','本批核验','allSources:slug=>','verifiedAt:slug=>']){
+  if(!authorityRuntime.includes(required)) fail(`Authority runtime is missing canonical terminology: ${required}`);
+}
+for(const retired of ['syncSources','sourceList','sourcesTitle',"getElementById('caseName')","querySelector('.hero')"]){
+  if(authorityRuntime.includes(retired)) fail(`Authority layer still carries dead code: ${retired}`);
 }
 
 for(const retired of ['case-library.css','read-progress.js','feedback.css','feedback.js','membership-config.js']){
@@ -133,8 +147,8 @@ for(const retired of ['case-library.css','read-progress.js','feedback.css','feed
 }
 if(!sw.includes('render-cases.js')) fail('Service worker must cache the shared renderer');
 if(!sw.includes('cases-data.js')) fail('Service worker must cache the CASE bundle');
-for(const file of DATA_FILES) if(sw.includes(`'./${file}'`)) fail(`Service worker still precaches the loose CASE source: ${file}`);
-if(!sw.includes("const CACHE_NAME='buchikui-pwa-v14'")) fail('PWA cache version must be v14 after facet/cross-link release');
+for(const file of dataFileList) if(sw.includes(`'./${file}'`)) fail(`Service worker still precaches the loose CASE source: ${file}`);
+if(!sw.includes("const CACHE_NAME='buchikui-pwa-v15'")) fail('PWA cache version must be v15 after the source-hygiene release');
 
 const normalizeEol=value=>value.replace(/\r\n/g,'\n');
 const bundle=await readFile(new URL('../cases-data.js',import.meta.url),'utf8');
@@ -148,8 +162,34 @@ if(!Array.isArray(cases)||cases.length<10) fail('CASE data failed to load');
 const slugs=new Set();
 for(const item of cases){
   if(!item?.slug||!item?.name||!item?.meta?.title||!item?.meta?.description) fail(`Invalid CASE record: ${item?.slug||'unknown'}`);
+  if(!item?.meta?.question) fail(`CASE is missing meta.question (docs/content-index.md is generated from it): ${item?.slug||'unknown'}`);
   if(slugs.has(item.slug)) fail(`Duplicate CASE slug: ${item.slug}`);
   slugs.add(item.slug);
+}
+
+// 权威依据层纪律：每条依据必须有可打开的一手或明确标注的报道链接，媒体与网络爆料不得单独作依据。
+const {authority,render:caseRender}=await loadRuntime();
+const MEDIA_ONLY=/网络爆料|网传|网络热议|舆论热议|自媒体|论坛|Reddit/i;
+let missingVerified=0;
+for(const item of cases){
+  const rules=authority.getRules(item.slug)||[];
+  if(!rules.length) fail(`CASE has no authoritative material: ${item.slug}`);
+  const ids=new Set(rules.map(rule=>rule.id));
+  for(const rule of rules){
+    if(MEDIA_ONLY.test(String(rule.type||''))) fail(`Authority rule leans on unverified media: ${item.slug}/${rule.id} (${rule.type})`);
+    const sources=rule.sources||[];
+    if(!sources.length) fail(`Authority rule has no source: ${item.slug}/${rule.id}`);
+    for(const source of sources){
+      let url;
+      try{ url=new URL(source.href); }catch{ fail(`Authority source is not a URL: ${item.slug}/${rule.id} -> ${source.href}`); continue; }
+      if(url.protocol!=='https:'&&url.protocol!=='http:') fail(`Authority source is not http(s): ${item.slug}/${rule.id}`);
+      if(!url.pathname.replace(/\/+$/,'')) fail(`Authority source points at a bare domain, not the document: ${item.slug}/${rule.id} -> ${source.href}`);
+    }
+  }
+  for(const reminder of caseRender.caseReminders(item)){
+    if(reminder.ruleId&&!ids.has(reminder.ruleId)) fail(`Scenario links to a missing rule: ${item.slug} -> #rule-${reminder.ruleId}`);
+  }
+  if(!authority.verifiedAt(item.slug)) missingVerified+=1;
 }
 
 const sitemapLocs=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1]);
@@ -186,4 +226,80 @@ if(!notFoundHtml.includes('noindex')) fail('404.html must be noindex');
 if(!notFoundHtml.includes(`href="${BASE_PATH}styles.css"`)) fail('404.html assets must be root-absolute');
 if(!notFoundHtml.includes('<main id="app" tabindex="-1"><section class="missing shell">')) fail('404.html lacks static fallback content');
 
+// 语料层门禁：所有对外链接必须在 corpus/ 登记，且不得指向已取代 / 已废止的法源。
+const corpusPeek=await loadCorpus();
+const peekIndex=urlIndex(corpusPeek);
+const corpusReferences=[];
+for(const item of cases){
+  for(const source of item.sources||[]) { const id=peekIndex.get(String(source.href||'')); if(id) corpusReferences.push({from:`${item.slug}/*`,sourceId:id}); }
+  for(const rule of authority.getRules(item.slug)||[]){
+    for(const source of rule.sources||[]) { const id=peekIndex.get(String(source.href||'')); if(id) corpusReferences.push({from:`${item.slug}/${rule.id}`,sourceId:id}); }
+  }
+}
+const corpusRun=await checkCorpus(corpusReferences);
+for(const problem of corpusRun.problems.filter(p=>p.level==='error')) fail(`语料层：${problem.id} ${problem.message}`);
+const corpusByUrl=urlIndex(corpusRun.corpus);
+for(const item of cases){
+  const links=[...(item.sources||[]).map(s=>({from:`${item.slug}/*`,...s}))];
+  for(const rule of authority.getRules(item.slug)||[]){
+    for(const source of rule.sources||[]) links.push({from:`${item.slug}/${rule.id}`,...source});
+  }
+  for(const link of links){
+    const sourceId=corpusByUrl.get(String(link.href||''));
+    if(!sourceId) fail(`链接未在 corpus/ 登记，先补记录再引用: ${link.from} -> ${link.href}`);
+    const record=corpusRun.corpus.get(sourceId);
+    if(record&&record.kind==='law'&&(record.status==='已取代'||record.status==='已废止')){
+      fail(`引用了失效法源（${record.status}）: ${link.from} -> ${sourceId}，现行版本是 ${record.supersededBy||'见 note'}`);
+    }
+  }
+}
+
+// 编辑层不得手抄事实字段
+const editorialRules=await readFile(new URL('../editorial/rules.js',import.meta.url),'utf8');
+for(const fact of ['type','authority','effective','verified','href']){
+  if(new RegExp(`^\\s*${fact}:`, 'm').test(editorialRules)) fail(`编辑层不得手抄事实字段（应由 corpus 提供）: ${fact}:`);
+}
+if(/sources:\s*\[/.test(editorialRules)) fail('编辑层必须用 sourceIds 引用 corpus，不得内联来源');
+
+// legal-updates.js 是生成物：必须与 corpus + editorial 同步
+const normalizeEol2=value=>value.replace(/\r\n/g,'\n');
+const built=await buildAuthority();
+if(normalizeEol2(await readFile(new URL('../legal-updates.js',import.meta.url),'utf8'))!==normalizeEol2(built)){
+  fail('legal-updates.js 已过期；运行 node scripts/build-authority.mjs');
+}
+
+// CASE 编辑层 schema：结构问题一律 error。事实问题（sourceId 是否登记、是否指向失效法源）由上面的语料层门禁负责。
+const raw=await loadRawCases();
+for(const problem of validateCases(raw.cases,raw.stage)){
+  const at=`CASE schema：${problem.id} ${problem.message}`;
+  if(problem.level==='error') fail(at); else console.warn(`WARN ${at}`);
+}
+
+// 筛选维度靠语料层枚举精确映射；新增法源类型而忘了映射，会静默落进「其他」。
+const unmapped=unmappedTypes();
+if(unmapped.length) fail(`scripts/facets.mjs 缺少这些语料类型的筛选映射：${unmapped.join('、')}`);
+
+const indexFile=new URL(`../${CONTENT_INDEX}`,import.meta.url);
+if(normalizeEol(await readFile(indexFile,'utf8'))!==normalizeEol(await buildContentIndex())){
+  fail(`${CONTENT_INDEX} is stale; run node scripts/build-content-index.mjs`);
+}
+
+const escapeAttr=value=>String(value).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+const sampleCase=cases.find(item=>item.slug==='qingdao-travel')||cases[0];
+const sampleOut=await readFile(path.join(out,'c',sampleCase.slug,'index.html'),'utf8');
+for(const source of authority.allSources(sampleCase.slug)){
+  if(!sampleOut.includes(`href="${escapeAttr(source.href)}"`)) fail(`Prerendered CASE cannot open an authority source: ${source.href}`);
+}
+if(!sampleOut.includes('最近核验 ')) fail('Prerendered CASE does not show the source verification date');
+
+let reminderTotal=0;
+let linkedTotal=0;
+for(const item of cases){
+  const reminders=caseRender.caseReminders(item);
+  reminderTotal+=reminders.length;
+  linkedTotal+=reminders.filter(entry=>entry.ruleId).length;
+}
+
 console.log(`Frontend contract OK: ${cases.length} topics, static case bodies, sitemap coverage, 404 shell.`);
+console.log(`  authority rules ${cases.reduce((n,c)=>n+(authority.getRules(c.slug)||[]).length,0)} · scenario→rule links ${linkedTotal}/${reminderTotal} · ${cases.length - missingVerified}/${cases.length} topics carry a per-rule verified date`);
+console.log(`  corpus ${corpusRun.stats.total} records (law ${corpusRun.stats.law} · case ${corpusRun.stats.case} · reference ${corpusRun.stats.reference} · portal ${corpusRun.stats.portal}) · 待核验 ${corpusRun.stats.pending} · needsReview ${corpusRun.stats.needsReview} · 零引用 ${corpusRun.stats.unreferenced}`);

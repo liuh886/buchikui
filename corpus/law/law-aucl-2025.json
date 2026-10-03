@@ -1,0 +1,24 @@
+{
+  "id": "law-aucl-2025",
+  "kind": "law",
+  "title": "中华人民共和国反不正当竞争法（2025 年修订）",
+  "type": "法律",
+  "issuer": "全国人民代表大会常务委员会",
+  "revision": "2025-06-27 第二次修订",
+  "effective": "2025-10-15",
+  "status": "现行",
+  "supersedes": [
+    "law-aucl-2019"
+  ],
+  "articles": [
+    {
+      "no": "第八条",
+      "topic": "商业贿赂"
+    }
+  ],
+  "url": "https://www.npc.gov.cn/npc/c2/c30834/202506/t20250627_446247.html",
+  "verified": "2026-10-03",
+  "aliasUrls": [
+    "https://www.npc.gov.cn/npc/c2/c30834/202506/t20250627_446247.html"
+  ]
+}

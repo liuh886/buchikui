@@ -223,14 +223,19 @@
     history.replaceState(null,'',qs?`${location.pathname}?${qs}`:location.pathname);
   }
 
+  const searchIndexCache=new Map();
+
   function searchableText(item){
-    const scenarioText=(item.scenarios||[]).map(entry=>entry.title).join(' ');
+    if(searchIndexCache.has(item.slug)) return searchIndexCache.get(item.slug);
+    const scenarioText=(item.scenarios||[]).map(entry=>[entry.title,...(entry.blocks||[]).map(block=>block.html)].join(' ')).join(' ');
     const panicText=(item.panic?.items||[]).map(entry=>`${entry.title} ${entry.text||''}`).join(' ');
     const sourceText=(item.sources||[]).map(source=>source.title).join(' ');
-    return [item.name,item.hero?.title,item.meta?.description,item.hero?.copy,item.takeaway,item.legal,categoryOf(item),scenarioText,panicText,sourceText]
+    const text=[item.name,item.hero?.title,item.meta?.description,item.hero?.copy,item.takeaway,item.legal,categoryOf(item),scenarioText,panicText,sourceText]
       .join(' ')
       .replace(/<[^>]*>/g,' ')
       .toLocaleLowerCase('zh-CN');
+    searchIndexCache.set(item.slug,text);
+    return text;
   }
 
   function filterTopics(query){
@@ -269,7 +274,14 @@
     document.body.dataset.activeCaseSlug=item.slug;
     setMeta(item.meta?.title||`${item.name}｜不吃亏`,item.meta?.description||stripTags(item.hero?.copy));
     renderHeader(item.name);
-    app.innerHTML=R.caseArticleHtml(item,{base,rich,related:facets[item.slug]?.related||[]});
+    const authority=window.BuchikuiAuthority;
+    app.innerHTML=R.caseArticleHtml(item,{
+      base,
+      rich,
+      related:facets[item.slug]?.related||[],
+      authoritySources:authority?authority.allSources(item.slug):[],
+      verified:authority?authority.verifiedAt(item.slug):''
+    });
 
     if(window.BuchikuiRights?.render){
       window.BuchikuiRights.render(item.slug);

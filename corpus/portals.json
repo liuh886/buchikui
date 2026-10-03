@@ -1,0 +1,102 @@
+{
+  "portals": [
+    {
+      "id": "portal-12315",
+      "title": "全国 12315 平台",
+      "operator": "国家市场监督管理总局",
+      "url": "https://www.12315.cn/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-court-online",
+      "title": "人民法院在线服务网",
+      "operator": "最高人民法院",
+      "url": "https://zxfw.court.gov.cn/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-telecom-appeal",
+      "title": "电信用户申诉受理",
+      "operator": "工业和信息化部",
+      "url": "https://yhssglxt.miit.gov.cn/web/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-labour-mediation",
+      "title": "全国劳动人事争议在线调解服务平台",
+      "operator": "人力资源社会保障部",
+      "url": "https://tiaojie.12333.gov.cn/portal",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-thai-tourist-police",
+      "title": "Thailand Tourist Police",
+      "operator": "泰国旅游警察",
+      "url": "https://www.touristpolice.go.th/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-embassy-th",
+      "title": "中国驻泰王国大使馆",
+      "operator": "中国驻泰国大使馆",
+      "url": "https://th.china-embassy.gov.cn/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-12345-qingdao",
+      "title": "青岛市 12345 政务服务便民热线",
+      "operator": "青岛市政务服务便民热线",
+      "url": "https://12345.qingdao.gov.cn/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-nfra-home",
+      "title": "国家金融监督管理总局网站",
+      "operator": "国家金融监督管理总局",
+      "url": "https://www.nfra.gov.cn/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-cmcc",
+      "title": "中国移动网上营业厅",
+      "operator": "中国移动",
+      "url": "https://www.10086.cn/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-cu",
+      "title": "中国联通网上营业厅",
+      "operator": "中国联通",
+      "url": "https://www.10010.com/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    },
+    {
+      "id": "portal-ct",
+      "title": "中国电信网上营业厅",
+      "operator": "中国电信",
+      "url": "https://www.189.cn/",
+      "status": "现行",
+      "verified": "2026-09-22"
+    }
+  ],
+  "aliases": [
+    [
+      "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1130947&generaltype=0&itemId=4099",
+      "portal-nfra-home"
+    ],
+    [
+      "https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=272670",
+      "portal-nfra-home"
+    ]
+  ]
+}

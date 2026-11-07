@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-training-relocation",
+  "kind": "case",
+  "title": "2025年最高法消费典型案例：培训地点变更",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2025-03-14",
+  "issued": "2025-03-14",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/zixun/xiangqing/459331.html",
+  "facts": "消费者因离家近支付3000元报名舞蹈班。机构停用原教学点，要求改选三个较远地点，消费者因此起诉要求解约退费。",
+  "holding": "法院认为新地点明显增加时间与交通成本，影响就近上课目的，支持解约并判退2473.97元。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例一。边界：轻微不便不足；本案为培训。",
+  "locator": "案例一",
+  "consumerTopic": "beauty-hair",
+  "selectionTags": [
+    "搬迁",
+    "替代门店"
+  ],
+  "boundary": "轻微不便不足；本案为培训。"
+}

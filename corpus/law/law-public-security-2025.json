@@ -1,0 +1,32 @@
+{
+  "id": "law-public-security-2025",
+  "kind": "law",
+  "title": "中华人民共和国治安管理处罚法（2025年修订）",
+  "type": "法律",
+  "issuer": "全国人民代表大会常务委员会",
+  "status": "现行",
+  "effective": "2026-01-01",
+  "issued": "2025-06-27",
+  "verified": "2026-10-23",
+  "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2025/art_8a1c722747214869b28c0ad7a0f8bb7a.html",
+  "supersedes": "law-public-security-2012",
+  "articles": [
+    {
+      "no": "第十三条",
+      "topic": "精神病人和智力残疾人的责任能力"
+    },
+    {
+      "no": "第二十六条",
+      "topic": "扰乱公共场所秩序"
+    },
+    {
+      "no": "第三十条",
+      "topic": "追逐拦截等寻衅滋事行为"
+    },
+    {
+      "no": "第一百四十四条",
+      "topic": "施行日期"
+    }
+  ],
+  "note": "核验市场监管总局公布的2025修订全文及最高法转载主席令第四十九号。具体行为是否违法、责任能力及处罚由公安机关依法调查认定；公开空间也不当然排除隐私、肖像等其他限制。"
+}

@@ -1,11 +1,30 @@
 {
   "id": "law-auction-1996",
   "kind": "law",
-  "title": "中华人民共和国拍卖法",
+  "title": "中华人民共和国拍卖法（2015年修正）",
   "type": "法律",
   "issuer": "全国人民代表大会常务委员会",
-  "status": "待核验",
-  "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d43e5c5380444abb9b2e4522e2e6fbcf.html",
-  "verified": "2026-08-29",
-  "needsReview": true
+  "status": "现行",
+  "url": "https://www.samr.gov.cn/zfjcj/tzgg/art/2023/art_b0cc21115c3545a58f3c27cdea7912b3.html",
+  "verified": "2026-10-23",
+  "effective": "2015-04-24",
+  "aliasUrls": [
+    "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d43e5c5380444abb9b2e4522e2e6fbcf.html"
+  ],
+  "revision": "2015-04-24第二次修正",
+  "articles": [
+    {
+      "no": "第十八条、第二十七条、第三十五条",
+      "topic": "瑕疵说明和查验权"
+    },
+    {
+      "no": "第二十二条、第三十条",
+      "topic": "拍卖人及委托人自竞禁止"
+    },
+    {
+      "no": "第六十一条",
+      "topic": "瑕疵担保责任及声明例外"
+    }
+  ],
+  "note": "核验市场监管总局全文及商务部公布的2015年修改决定；该次修改自2015-04-24公布施行。历史id保留1996年制定年份。适用于拍卖企业进行的拍卖，不能直接套用于人民法院网络司法拍卖；瑕疵担保还受第六十一条例外约束。"
 }

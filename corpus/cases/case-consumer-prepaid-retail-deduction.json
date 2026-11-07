@@ -1,0 +1,22 @@
+{
+  "id": "case-consumer-prepaid-retail-deduction",
+  "kind": "case",
+  "title": "最高法预付式消费典型案例：退卡按门市原价折算",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2025-03-14",
+  "issued": "2025-03-14",
+  "verified": "2026-10-25",
+  "url": "https://www.court.gov.cn/zixun/xiangqing/459331.html",
+  "facts": "消费者充值办美发打折卡后申请退款，门店要求按单次最高门市原价重新折算此前项目并扣光余额。",
+  "holding": "认定退费按原价倒扣条款无效，判令按合同约定折扣分摊已消费金额并退还剩余本金。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例四衍生裁判要旨。边界：消费者自身原因解除无违约合同的，商家可主张合理手续费，但不能单方加价倒扣。",
+  "locator": "案例四",
+  "consumerTopic": "beauty-hair",
+  "selectionTags": [
+    "预付卡",
+    "退款折算",
+    "门市原价"
+  ],
+  "boundary": "消费者自身原因解除无违约合同的，商家可主张合理手续费，但不能单方加价倒扣。"
+}

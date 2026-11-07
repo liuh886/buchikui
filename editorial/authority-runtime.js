@@ -64,11 +64,13 @@
 
   function metaHtml(rule,count){
     return `
-      <span class="rights-pulse-label">${isCaseRule(rule)?'裁判参考':'权威依据'}</span>
+      <span class="rights-pulse-label">${rule.type==='官方提示'?'官方提示':isCaseRule(rule)?'裁判参考':'权威依据'}</span>
       ${ruleBadge(rule)}
       <strong>${esc(rule.status||'现行')}</strong>
       ${ruleBasis(rule)?`<span>${esc(ruleBasis(rule))}</span>`:''}
       ${rule.effective?`<span>实施 ${esc(rule.effective)}</span>`:''}
+      ${!rule.effective&&rule.issued?`<span>发布 ${esc(rule.issued)}</span>`:''}
+      ${!rule.effective&&!rule.issued&&rule.date?`<span>裁判／通报 ${esc(rule.date)}</span>`:''}
       ${count>1?`<span>${count} 项关键参考</span>`:''}
       <span>${esc(verifiedLabel(rule))}</span>`;
   }

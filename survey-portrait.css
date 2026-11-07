@@ -1,0 +1,54 @@
+/* Consumer portrait: one warm reading path from character to useful stories. */
+.survey-promise{margin:0 0 4px;text-align:center;font-size:13px;line-height:1.7;color:var(--muted)}
+.survey-step{float:right;padding-top:5px;font-family:var(--font-sans);font-size:12px;font-weight:400;color:var(--muted);letter-spacing:.08em}
+.portrait-result{padding:22px 0 28px}.portrait-hero{text-align:center}.portrait-eyebrow{margin:0;color:var(--muted);font-size:12px;letter-spacing:.08em;line-height:1.8}
+.portrait-art{position:relative;width:240px;height:240px;margin:10px auto 0;isolation:isolate}.portrait-art::before{content:"";position:absolute;inset:22px;border-radius:48% 52% 54% 46%;background:#e9eddf;z-index:-1;transform:rotate(-8deg)}
+[data-portrait="capybara"] .portrait-art::before{background:#eee6ef}[data-portrait="raccoon"] .portrait-art::before{background:#f2e5d9}[data-portrait="fox"] .portrait-art::before{background:#f3e6d8}[data-portrait="bird"] .portrait-art::before{background:#eeeccc}[data-portrait="cloud"] .portrait-art::before{background:#e3eced}
+.portrait-art{max-width:100%;aspect-ratio:1;height:auto}.portrait-art img{display:block;width:100%;height:auto;object-fit:contain}.portrait-art img[hidden]{display:none}.portrait-art-fallback{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-soft);font-size:15px}.portrait-art-fallback[hidden]{display:none}
+.portrait-hero h1{margin:4px 0 12px;font-family:var(--font-serif);font-weight:700;font-size:44px;line-height:1.35;letter-spacing:.04em}
+.portrait-description{max-width:350px;margin:0 auto;font-size:17px;line-height:1.8;color:var(--ink-soft);text-wrap:pretty}
+.portrait-reason{max-width:390px;margin:16px auto 0;font-size:14px;line-height:1.9;color:var(--muted)}.portrait-coverage,.portrait-caption{color:var(--muted);font-size:12px;line-height:1.8}.portrait-coverage{margin:6px 0 0}.portrait-caption{margin:12px 0 0}
+.portrait-action{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;border:1px solid #424c3b;border-radius:999px;background:#424c3b;color:#fff;font-size:15px;font-weight:500;text-decoration:none;cursor:pointer}.portrait-action:hover{background:#303d2b}.portrait-action:disabled{opacity:.65;cursor:wait}.portrait-hero .portrait-action{margin-top:16px}.portrait-action-quiet{background:transparent;color:var(--ink)}.portrait-action-quiet:hover{background:var(--paper-sunken)}
+.portrait-key-takeaway{max-width:380px;margin:16px auto 0;padding:14px 16px;background:#eef2e6;border:1px solid #d4dec8;border-radius:8px;text-align:left}.takeaway-badge{font-size:12px;font-weight:600;color:#3b4d2b;letter-spacing:.04em;margin-bottom:6px}.takeaway-notice{margin:0;font-size:14px;line-height:1.75;color:var(--ink)}.takeaway-action{margin-top:8px;text-align:right}.takeaway-action button{min-height:44px;display:inline-flex;align-items:center;font-size:13px;font-weight:500;color:#3b4d2b;cursor:pointer}
+.portrait-hero-actions{margin-top:16px}.portrait-action-secondary{background:transparent;color:#424c3b;border:1px solid #424c3b}.portrait-action-secondary:hover{background:#e9eddf}.portrait-single-clue{font-size:13px;color:var(--muted);margin-top:8px;font-style:italic}
+.portrait-why{margin:28px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px;line-height:1.9}.portrait-why summary,.portrait-record summary{min-height:48px;padding:12px 0;cursor:pointer}.portrait-why p{color:var(--muted)}.portrait-why ul{padding-left:22px}.portrait-why li{margin:8px 0}
+.portrait-lessons{padding-top:36px}.portrait-lessons h2{margin:8px 0 24px;font-family:var(--font-serif);font-size:30px;line-height:1.5}.portrait-lesson{padding:26px 0;border-top:1px solid var(--line)}.portrait-lesson h3{margin:12px 0 18px;font-family:var(--font-serif);font-size:23px;font-weight:600;line-height:1.6}.portrait-lesson>p{font-size:14px;line-height:1.9}.portrait-lesson>p>strong{display:block;margin-bottom:6px;font-size:12px;font-weight:500;color:var(--muted)}.portrait-lesson .lesson-boundary{color:var(--ink-soft)}
+.lesson-notice{display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;padding:16px 18px;margin:18px 0;background:#e9eddf;border-radius:4px}.lesson-notice>span{font-size:12px;line-height:1.9;color:#424c3b}.lesson-notice p{margin:0;font-size:14px;line-height:1.9}.lesson-links{display:flex;align-items:center;gap:24px;flex-wrap:wrap;font-size:13px}.lesson-links a,.lesson-links button{min-height:44px;display:inline-flex;align-items:center}.portrait-lesson .lesson-source{margin:0;color:var(--muted);font-size:11px;line-height:1.8}
+.portrait-record{border-top:1px solid var(--line);font-size:14px;line-height:1.8}.portrait-record .survey-summary-number{font-size:17px;margin-top:8px}.portrait-record .survey-summary-number strong{font-size:28px}.portrait-record>div{margin-bottom:20px}.portrait-record .survey-summary-counts{margin-bottom:12px}.portrait-record .survey-note{margin:12px 0 22px;font-size:12px}
+.portrait-share{width:min(420px,calc(100% - 28px));max-height:90svh;padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--paper);color:var(--ink);overflow:auto}.portrait-share::backdrop{background:#27271f88}.portrait-share h2{margin:0;font-family:var(--font-serif);font-size:26px}.portrait-share>p{font-size:13px;line-height:1.8;color:var(--muted)}.portrait-share>img{display:block;width:100%;height:auto;max-height:52svh;object-fit:contain}.portrait-share-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:18px 0 12px}.portrait-share>a,.portrait-share>button{display:flex;align-items:center;justify-content:center;min-height:44px;margin:auto;font-size:13px}.portrait-share-actions .text-button{min-height:44px;font-size:13px}.portrait-share-status input{width:100%;min-height:44px}.portrait-share-status:empty{display:none}
+@media(max-width:720px){
+  .survey-shell{margin-top:12px;width:calc(100% - 28px);max-width:440px}
+  .survey-card{min-height:clamp(260px,calc(100svh - 290px),430px);padding:18px 20px 16px}
+  .survey-card .scenario-stage{padding-bottom:12px;font-size:19px}
+  .survey-question{margin-top:14px;font-size:21px;line-height:1.6}
+  .game-decisions.has-choices{margin-top:12px;gap:32px}
+  .decision-button.choice-button{width:76px;height:76px;font-size:21px}
+  .gesture-hint{margin-top:6px;font-size:12px}
+  .survey-storage{margin-top:6px;font-size:12px}
+  .portrait-result{padding-top:6px}
+  .portrait-art{width:170px;height:170px;margin-top:6px}
+  .portrait-hero h1{font-size:30px;margin:2px 0 8px}
+  .portrait-description{font-size:15px;line-height:1.65}
+  .portrait-reason{margin-top:12px;font-size:13px;line-height:1.7}
+  .portrait-lessons h2{font-size:25px}
+  .portrait-lesson h3{font-size:20px}
+  .lesson-notice{padding:14px 12px;gap:8px}
+  .survey-promise{font-size:12px}
+  .portrait-result .survey-stat-row{grid-template-columns:80px minmax(0,1fr) 64px;gap:8px}
+}
+@media(max-height:700px) and (max-width:720px){
+  .survey-shell{margin-top:6px}
+  .survey-card{min-height:clamp(210px,calc(100svh - 260px),330px);padding:12px 14px 10px}
+  .survey-card .scenario-stage{padding-bottom:6px;font-size:15px}
+  .survey-question{margin-top:6px;font-size:20px;line-height:1.55}
+  .game-decisions.has-choices{margin-top:8px;gap:24px}
+  .decision-button.choice-button{width:68px;height:68px;font-size:19px}
+  .gesture-hint{margin-top:4px;font-size:11px}
+  .portrait-art{width:130px;height:130px;margin-top:4px}
+  .portrait-hero h1{font-size:26px;margin:2px 0 6px}
+  .portrait-description{font-size:14px}
+  .portrait-reason{margin-top:8px;font-size:12px}
+  .portrait-key-takeaway{margin-top:8px;padding:10px 12px}
+  .takeaway-notice{font-size:13px}
+  .portrait-hero-actions{margin-top:10px}
+}

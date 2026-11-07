@@ -5,7 +5,7 @@ window.BUCHIKUI_CASES.push({
   "slug": "alibaba-auction-trap",
   "name": "阿里拍卖局中局：先查谁在拍、谁在竞价",
   "label": "ONLINE AUCTION",
-  "updated": "2026-08-29",
+  "updated": "2026-10-23",
   "meta": {
     "title": "不吃亏｜阿里拍卖局中局：先查谁在拍、谁在竞价",
     "description": "阿里拍卖里既有法院司法拍卖，也有商业机构组织的拍卖。商业拍卖要查处置主体、拍卖人、委托人、标的权属和竞价关系，尤其警惕拍卖方或关联方参与竞价抬价。",

@@ -1,9 +1,12 @@
 {
   "id": "law-商业银行服务价格管理办法",
   "kind": "law",
-  "title": "《商业银行服务价格管理办法》",
-  "status": "待核验",
-  "url": "https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=274908&itemId=4214",
-  "note": "由链接登记补入，待人工核对类型、发布机关与施行日期。被 1 处引用。",
-  "needsReview": true
+  "title": "商业银行服务价格管理办法",
+  "status": "现行",
+  "url": "https://www.ndrc.gov.cn/xwdt/ztzl/gbmjcbzc/yjh/201807/t20180704_1209900.html",
+  "note": "中国银监会、国家发展改革委令2014年第1号；第三十条规定服务价格投诉登记、调查、处理、报告等流程。核验国家发展改革委公开全文。",
+  "type": "部门规章",
+  "issuer": "中国银行业监督管理委员会 · 国家发展和改革委员会",
+  "effective": "2014-08-01",
+  "verified": "2026-10-23"
 }

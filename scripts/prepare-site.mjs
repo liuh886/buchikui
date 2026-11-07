@@ -2,21 +2,30 @@
 // 把发布产物准备到目标目录：白名单静态文件 + 预渲染 CASE 页 + sitemap + 404。
 // 本地预览（scripts/serve.mjs）与 GitHub Pages 部署共用这一个入口，
 // 避免「本地能过、线上缺文件」这类只在 CI 才暴露的问题。
-import { mkdir, copyFile, readdir, stat, writeFile } from 'node:fs/promises';
+import { mkdir, copyFile, readdir, stat, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { prerender, prerenderNotFound, buildSitemap } from './prerender-cases.mjs';
 import { SITE_FILES, GENERATED_FILES, SITE_DIRS, FORBIDDEN_IN_ARTIFACT } from './lib/site-manifest.mjs';
+import {portraitAssets} from './lib/portrait-assets.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 export async function prepareSite(target) {
   const site = path.resolve(target);
   await mkdir(site, { recursive: true });
+  for(const retired of ['scenario-checks.js','scenario-ui.js']) await rm(path.join(site,retired),{force:true});
 
   for (const file of [...SITE_FILES, ...GENERATED_FILES]) {
     await copyFile(path.join(root, file), path.join(site, file));
   }
+  const portraitDir=path.join(site,'portraits');
+  await mkdir(portraitDir,{recursive:true});
+  const assets=await portraitAssets(),current=new Set(assets.map(a=>path.basename(a.target)));
+  for(const name of await readdir(portraitDir)){
+    if(/^[a-z-]+\.[a-f0-9]{12}\.webp$/.test(name)&&!current.has(name))await rm(path.join(portraitDir,name));
+  }
+  for(const asset of assets)await copyFile(asset.source,path.join(site,asset.target));
   await mkdir(path.join(site, 'icons'), { recursive: true });
   for (const dir of SITE_DIRS) {
     const from = path.join(root, dir);

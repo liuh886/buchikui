@@ -70,63 +70,46 @@
     if(meta) meta.setAttribute('content',description);
   }
 
-  function renderHeader(caseName=''){
+  function renderHeader(){
     const header=document.getElementById('siteHeader');
     if(!header) return;
     header.innerHTML=`<div class="shell header-inner">
-      <a class="brand" href="${esc(base)}" aria-label="不吃亏首页">不吃亏</a>
-      <span class="header-note">${caseName?esc(caseName):'消费普法 · 只看关键依据'}</span>
+      <div class="brand-block"><a class="brand" href="${esc(base)}" aria-label="不吃亏首页">不吃亏</a>
+      <span class="header-note">不花钱，也能买到教训。</span></div>
+      <nav class="header-nav" aria-label="主要导航">${document.body.dataset.page==='case'&&window.BuchikuiSurveyApp?.hasSaved()?`<a href="${esc(base)}?resume=1">返回问卷</a>`:''}${document.body.dataset.page==='library'?`<a href="${esc(base)}?resume=1">${window.BuchikuiSurveyApp?.hasSaved()?'返回问卷':'填写问卷'}</a>`:`<a href="${esc(base)}?view=library">资料库</a>`}</nav>
     </div>`;
   }
 
   function renderHome(){
     document.body.dataset.page='home';
     delete document.body.dataset.activeCaseSlug;
-    setMeta('不吃亏｜从判决和监管规则里学会避坑','从裁判文书、法律法规、部门规章、监管文件和典型案例中提炼现实交易最容易忽视的关键点。');
+    setMeta('不吃亏｜测测你的消费经历角色','测测你的消费经历角色，不花钱，也买教训。简单记录真实遭遇，带走可爱的角色和真实案例提醒。');
     renderHeader();
+    window.BuchikuiSurveyApp.mount({app,base});
+  }
 
-    const recent=[...cases]
-      .sort((a,b)=>String(b.updated||'').localeCompare(String(a.updated||''))||String(a.id||'').localeCompare(String(b.id||'')))
-      .slice(0,6);
-
-    app.innerHTML=`
-      <section class="home-hero shell">
-        <p class="eyebrow">消费普法</p>
-        <h1>很多纠纷，<br>本可以在付款前避免。</h1>
-        <p class="home-lead">我们从裁判文书、法律法规、管理办法、监管文件和典型案例里提取关键点，再翻译成现实交易中真正需要留意的一件事。</p>
+  function renderLibrary(){
+    document.body.dataset.page='library';
+    delete document.body.dataset.activeCaseSlug;
+    setMeta('资料库｜不吃亏','按卷章阅读消费问题、权威依据和现实提醒，也可以搜索具体问题。');
+    renderHeader();
+    const book=window.BuchikuiBook;
+    app.innerHTML=`<section class="library-intro shell" aria-labelledby="libraryTitle">
+        <h1 id="libraryTitle">资料库</h1>
         <label class="search-box" for="caseSearch">
-          <span>搜索消费问题</span>
-          <input id="caseSearch" type="search" autocomplete="off" placeholder="租车押金、预付卡、维修、平台扣款……">
+          <span class="sr-only">搜索消费问题</span>
+          <input id="caseSearch" type="search" autocomplete="off" placeholder="租车、办卡、维修……">
         </label>
-      </section>
-
-      <section class="home-section shell" id="recentSection" aria-labelledby="recentTitle">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">最近更新</p>
-            <h2 id="recentTitle">最近值得知道</h2>
-          </div>
-          <p>不是新闻流，只收录会改变现实交易判断的内容。</p>
-        </div>
-        <div class="recent-list">${recent.map((item,index)=>R.homeRow(item,index===0,base)).join('')}</div>
-      </section>
-
-      <section class="home-section shell" aria-labelledby="allTitle">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">按场景找</p>
-            <h2 id="allTitle">我正在遇到什么问题？</h2>
-          </div>
-          <p id="searchCount" aria-live="polite">${cases.length} 个主题</p>
-        </div>
-        ${facetControls()}
-        <div class="topic-list" id="topicList">${cases.map(item=>R.topicRow(item,base,facets)).join('')}</div>
-        <p class="empty-state" id="emptyState" aria-live="polite" hidden>暂时没有匹配的主题。换一个更短的关键词试试。</p>
-      </section>`;
+        <div class="library-tools"><p id="searchCount" role="status" aria-live="polite">${cases.length} 个主题</p><details class="library-filters"><summary>按条件筛选</summary>${facetControls()}</details></div>
+      </section><div class="library-book shell" id="topicList">${book.volumes.map((volume,index)=>`<section class="book-volume" data-book-volume aria-labelledby="volume-${index}"><h2 id="volume-${index}"><small>第${book.number(index)}卷</small>${esc(volume.title)}</h2><div class="topic-list">${volume.chapters.map(([slug])=>cases.find(item=>item.slug===slug)).filter(Boolean).map(item=>R.topicRow(item,base,facets)).join('')}</div></section>`).join('')}</div><section class="library-empty shell" id="emptyState" aria-live="polite" hidden><h2>暂时没有匹配的主题</h2><p>换个关键词试试，也可以回到目录。</p><button class="decision-button" type="button" id="searchClear">清空搜索与筛选</button></section>`;
 
     const search=document.getElementById('caseSearch');
     if(!search) return;
     search.addEventListener('input',()=>{filterTopics(search.value);syncFacetUrl();});
+    document.getElementById('searchClear').addEventListener('click',()=>{
+      document.getElementById('facetClear').click();
+      search.focus();
+    });
     bindFacets();
     applyFilters();
     const initial=new URLSearchParams(location.search).get('q');
@@ -213,6 +196,7 @@
 
   function syncFacetUrl(){
     const params=new URLSearchParams(location.search);
+    params.set('view','library');
     const put=(key,set)=>{if(set.size) params.set(key,[...set].join(',')); else params.delete(key);};
     put('stage',activeFilters.stage);
     put('type',activeFilters.type);
@@ -259,8 +243,9 @@
       row.hidden=!matched;
       if(matched) count+=1;
     });
-    const recentSection=document.getElementById('recentSection');
-    if(recentSection) recentSection.hidden=anyFilter;
+    document.querySelectorAll('[data-book-volume]').forEach(volume=>{
+      volume.hidden=![...volume.querySelectorAll('[data-topic]')].some(row=>!row.hidden);
+    });
     const countNode=document.getElementById('searchCount');
     if(countNode) countNode.textContent=anyFilter?`${count} 个相关主题`:`${cases.length} 个主题`;
     const empty=document.getElementById('emptyState');
@@ -273,14 +258,15 @@
     document.body.dataset.page='case';
     document.body.dataset.activeCaseSlug=item.slug;
     setMeta(item.meta?.title||`${item.name}｜不吃亏`,item.meta?.description||stripTags(item.hero?.copy));
-    renderHeader(item.name);
+    renderHeader();
     const authority=window.BuchikuiAuthority;
     app.innerHTML=R.caseArticleHtml(item,{
       base,
       rich,
       related:facets[item.slug]?.related||[],
       authoritySources:authority?authority.allSources(item.slug):[],
-      verified:authority?authority.verifiedAt(item.slug):''
+      verified:authority?authority.verifiedAt(item.slug):'',
+      resume:!!window.BuchikuiSurveyApp?.hasSaved()
     });
 
     if(window.BuchikuiRights?.render){
@@ -316,6 +302,8 @@
     renderNotFound();
   }else if(active){
     renderCase(active);
+  }else if(new URLSearchParams(location.search).get('view')==='library'||['q','stage','type','cat'].some(key=>new URLSearchParams(location.search).has(key))){
+    renderLibrary();
   }else{
     renderHome();
   }

@@ -5,7 +5,7 @@ window.BUCHIKUI_CASES.push({
   "slug": "rental-credit-card-first",
   "name": "信用免押？优先信用卡预授权",
   "label": "PAYMENT CONTROL",
-  "updated": "2026-09-01",
+  "updated": "2026-10-23",
   "meta": {
     "title": "不吃亏｜信用免押？优先信用卡预授权",
     "description": "信用免押更方便，信用卡预授权更可控。两种方式都能选时，优先信用卡预授权：金额边界更清楚，争议时可以找发卡行核查、调单，交易证据也更容易进入独立复核。",

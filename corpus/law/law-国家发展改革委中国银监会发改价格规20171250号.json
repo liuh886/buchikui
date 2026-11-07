@@ -1,8 +1,12 @@
 {
   "id": "law-国家发展改革委中国银监会发改价格规20171250号",
   "kind": "law",
-  "title": "中国银监会发改价格规20171250号",
-  "status": "待核验",
-  "url": "https://www.ndrc.gov.cn/xwdt/ztzl/gbmjcbzc/gjfzggw/201801/t20180122_1209033.html",
-  "needsReview": true
+  "title": "关于取消和暂停商业银行部分基础金融服务收费的通知",
+  "status": "现行",
+  "url": "https://www.ndrc.gov.cn/xxgk/zcfb/ghxwj/201707/t20170710_960917.html",
+  "type": "规范性文件",
+  "issuer": "国家发展和改革委员会 · 中国银行业监督管理委员会",
+  "effective": "2017-08-01",
+  "verified": "2026-10-23",
+  "note": "发改价格规〔2017〕1250号。第三项的唯一账户或指定免费账户不含信用卡、贵宾账户；适用于境内人民币业务。"
 }

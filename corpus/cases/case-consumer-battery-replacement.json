@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-battery-replacement",
+  "kind": "case",
+  "title": "2022年最高法消费典型案例：电池换新",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2022-03-15",
+  "issued": "2022-03-15",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/shenpan/xiangqing/350961.html",
+  "facts": "网店承诺半年内质量问题换新。锂电池使用三个月出问题，商家确认后仅换电芯，仍有故障，消费者要求更换整块电池遭拒。",
+  "holding": "换新按普通理解应为整块电池，并非仅换零件。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例10。边界：须有具体换新承诺和质量问题。",
+  "locator": "案例10",
+  "consumerTopic": "after-sales",
+  "selectionTags": [
+    "换新",
+    "承诺"
+  ],
+  "boundary": "须有具体换新承诺和质量问题。"
+}

@@ -13,12 +13,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadRuntime } from './prerender-cases.mjs';
 import { buildFacets } from './facets.mjs';
+import { readDatabaseTopics } from './lib/content-db.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const HEADER='// 生成文件：请编辑 editorial/cases/<slug>.js 与 editorial/rules.js，再运行 npm run build。';
 
 export async function buildBundle(){
-  const {cases,authority,render,stage}=await loadRuntime();
+  const {authority,render,stage}=await loadRuntime();
+  const cases=readDatabaseTopics();
   const facets=buildFacets(cases,authority,render.CATEGORIES,stage);
   return [
     HEADER,

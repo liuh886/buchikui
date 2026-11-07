@@ -1,6 +1,6 @@
 // 构建期派生 CASE 的筛选维度（处境、依据类型、相关主题），
 // 由 scripts/bundle-cases.mjs 写入 cases-data.js，首页据此筛选，不加载 legal-updates.js。
-import { LAW_TYPES, CASE_WEIGHTS } from './lib/corpus.mjs';
+import { LAW_TYPES, CASE_WEIGHTS, OFFICIAL_ADVISORY_TYPE } from './lib/corpus.mjs';
 
 export const STAGE_ORDER = ['pre', 'during', 'dispute'];
 export const STAGE_LABELS = {
@@ -42,7 +42,7 @@ export function typeBuckets(type) {
   const tokens = String(type || '').split(/[·、,，\/]/).map(t => t.trim()).filter(Boolean);
   const keys = [];
   for (const token of tokens) {
-    const key = TYPE_OF_LAW[token] || TYPE_OF_CASE[token];
+    const key = TYPE_OF_LAW[token] || TYPE_OF_CASE[token] || (token === OFFICIAL_ADVISORY_TYPE ? 'other' : '');
     if (key && !keys.includes(key)) keys.push(key);
   }
   return keys.length ? keys : ['other'];

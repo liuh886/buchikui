@@ -5,7 +5,7 @@ window.BUCHIKUI_CASES.push({
   "slug": "layoff-compensation",
   "name": "公司要裁你：别签个人离职",
   "label": "LAYOFF",
-  "updated": "2026-08-29",
+  "updated": "2026-10-23",
   "meta": {
     "title": "不吃亏｜遭遇裁员：别签“个人离职”",
     "description": "收到裁员、调岗、PIP或纪律处理信号后，先看公司准备把解除理由落在哪条法定路径，再固定工作量、调岗、绩效、考勤和解除证据，最后计算N、代通知金或2N。",

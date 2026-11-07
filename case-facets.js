@@ -16,5 +16,7 @@ window.BUCHIKUI_FACET_STAGE = {
   'alibaba-auction-trap': ['pre', 'during', 'dispute'],
   'layoff-compensation': ['during', 'dispute'],
   'qingdao-travel': ['pre', 'during', 'dispute'],
+  'after-sales': ['during', 'dispute'],
+  'travel-booking': ['pre', 'dispute'],
   'transport-platform-layered-fees': ['during', 'dispute']
 };

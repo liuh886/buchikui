@@ -1,35 +1,24 @@
 #!/usr/bin/env node
 // 语料层门禁：结构、必填字段、版本关系、引用完整性、引用计数与待核验数量。
 // 被 check-frontend-contract.mjs 调用，也可单独运行。
-import { loadCorpus, validateCorpus, validateReferences, referenceCounts, urlIndex } from './lib/corpus.mjs';
-import { loadRuntime } from './prerender-cases.mjs';
-
-const corpusPromise=new Map();
-/** 已解析的来源只剩 href，用 urlIndex 映回语料 id；映不回说明来源不在语料层登记。 */
-function corpusIdOf(source, where) {
-  if (!source.href) return source.sourceId || `无来源:${where}`;
-  let index=corpusPromise.get('index');
-  if(!index){
-    index=loadCorpus().then(urlIndex);
-    corpusPromise.set('index',index);
-  }
-  return index.then(map=>map.get(source.href) || `未登记:${where}:${source.href}`);
-}
+import { loadCorpus, validateCorpus, validateReferences, referenceCounts } from './lib/corpus.mjs';
+import { loadRawCases } from './prerender-cases.mjs';
+import { loadEditorialRules } from './build-authority.mjs';
 
 /**
  * 收集「谁引用了哪条语料」。走编辑层的 sourceId，而不是解析后的 href，
  * 所以统计口径与 CASE 实际引用一致，不受显示名变化影响。
  */
 export async function collectReferences() {
-  const { cases, authority } = await loadRuntime();
+  const [{cases},{editorial}]=await Promise.all([loadRawCases(),loadEditorialRules()]);
   const references = [];
   for (const item of cases) {
     for (const source of item.sources || []) {
-      references.push({ from: `${item.slug}/*`, sourceId: await corpusIdOf(source, item.slug) });
+      references.push({ from: `${item.slug}/*`, sourceId: source.sourceId });
     }
-    for (const rule of authority.getRules(item.slug) || []) {
-      for (const source of rule.sources || []) {
-        references.push({ from: `${item.slug}/${rule.id}`, sourceId: await corpusIdOf(source, `${item.slug}/${rule.id}`) });
+    for (const rule of editorial[item.slug]?.rules || []) {
+      for (const sourceId of rule.sourceIds || []) {
+        references.push({ from: `${item.slug}/${rule.id}`, sourceId });
       }
     }
   }

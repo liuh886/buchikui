@@ -3,8 +3,10 @@
   "kind": "law",
   "title": "中华人民共和国劳动合同法实施条例",
   "type": "行政法规",
-  "status": "待核验",
-  "url": "https://www.beijing.gov.cn/zhengce/gwywj/201105/t20110506_780976.html",
-  "verified": "2026-08-27",
-  "needsReview": true
+  "status": "现行",
+  "url": "https://xzfg.moj.gov.cn/front/law/detail?LawID=284",
+  "verified": "2026-10-23",
+  "issuer": "国务院",
+  "effective": "2008-09-18",
+  "note": "国务院令第535号，2008-09-18公布施行。第二十条为代通知金基数，第二十五条为依法支付违法解除赔偿金后不再另付经济补偿。"
 }

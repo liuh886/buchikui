@@ -1,0 +1,146 @@
+{
+  "rulesVersion": "portrait-2",
+  "questionnaireVersion": "29692a9cecb175732f32",
+  "cases": [
+    {
+      "name": "mechanism-unanswered-but-classified",
+      "answers": [
+        "yes",
+        "skip",
+        "no",
+        "no",
+        "skip",
+        "no",
+        "yes",
+        "no"
+      ],
+      "result": {
+        "status": "classified",
+        "rulesVersion": "portrait-2",
+        "questionnaireVersion": "29692a9cecb175732f32",
+        "answeredCount": 6,
+        "skippedCount": 2,
+        "reasonQuestionIds": [
+          "survey-tour-museum",
+          "survey-battery-replacement"
+        ],
+        "portraitId": "otter"
+      },
+      "recommendations": [
+        {
+          "questionId": "survey-tour-museum",
+          "matched": true
+        },
+        {
+          "questionId": "survey-battery-replacement",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "mechanisms-covered-but-rejected",
+      "answers": [
+        "skip",
+        "skip",
+        "no",
+        "no",
+        "yes",
+        "no",
+        "no",
+        "no"
+      ],
+      "result": {
+        "status": "insufficient",
+        "rulesVersion": "portrait-2",
+        "questionnaireVersion": "29692a9cecb175732f32",
+        "answeredCount": 6,
+        "skippedCount": 2,
+        "reasonQuestionIds": [],
+        "portraitId": "cloud"
+      },
+      "recommendations": [
+        {
+          "questionId": "survey-training-relocation",
+          "matched": true
+        },
+        {
+          "questionId": "survey-tour-museum",
+          "matched": false
+        }
+      ]
+    },
+    {
+      "name": "tie-misses-other-winning-mechanism",
+      "answers": [
+        "no",
+        "yes",
+        "yes",
+        "no",
+        "no",
+        "yes",
+        "yes",
+        "yes"
+      ],
+      "result": {
+        "status": "classified",
+        "rulesVersion": "portrait-2",
+        "questionnaireVersion": "29692a9cecb175732f32",
+        "answeredCount": 8,
+        "skippedCount": 0,
+        "reasonQuestionIds": [
+          "survey-battery-replacement",
+          "survey-secondhand-business",
+          "survey-prepaid-gift",
+          "survey-photo-unfinished"
+        ],
+        "portraitId": "fox"
+      },
+      "recommendations": [
+        {
+          "questionId": "survey-prepaid-gift",
+          "matched": true
+        },
+        {
+          "questionId": "survey-arrival-payment",
+          "matched": true
+        }
+      ]
+    },
+    {
+      "name": "no-and-skip-copy",
+      "answers": [
+        "no",
+        "skip",
+        "no",
+        "no",
+        "skip",
+        "no",
+        "no",
+        "no"
+      ],
+      "result": {
+        "status": "no-reported",
+        "rulesVersion": "portrait-2",
+        "questionnaireVersion": "29692a9cecb175732f32",
+        "answeredCount": 6,
+        "skippedCount": 2,
+        "reasonQuestionIds": [],
+        "portraitId": "bird"
+      },
+      "recommendations": [
+        {
+          "questionId": "survey-tour-museum",
+          "matched": false
+        },
+        {
+          "questionId": "survey-prepaid-gift",
+          "matched": false
+        }
+      ]
+    }
+  ],
+  "malformed": {
+    "validation": [],
+    "installed": true
+  }
+}

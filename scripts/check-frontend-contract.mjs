@@ -9,10 +9,11 @@ import { buildAuthority } from './build-authority.mjs';
 import { validateCases } from './lib/case-schema.mjs';
 import { unmappedTypes } from './facets.mjs';
 import { loadCorpus, urlIndex } from './lib/corpus.mjs';
+import {portraitAssets,portraitSwBlock} from './lib/portrait-assets.mjs';
 
 const fail=message=>{throw new Error(message);};
 const dataFileList=await listDataFiles();
-const [html,app,render,styles,rights,authorityRuntime,manifest,sw,sitemap]=await Promise.all([
+const [html,app,render,styles,rights,authorityRuntime,manifest,sw,sitemap,scenarioUi]=await Promise.all([
   readFile(new URL('../index.html',import.meta.url),'utf8'),
   readFile(new URL('../app.js',import.meta.url),'utf8'),
   readFile(new URL('../render-cases.js',import.meta.url),'utf8'),
@@ -22,6 +23,7 @@ const [html,app,render,styles,rights,authorityRuntime,manifest,sw,sitemap]=await
   readFile(new URL('../manifest.webmanifest',import.meta.url),'utf8'),
   readFile(new URL('../sw.js',import.meta.url),'utf8'),
   readFile(new URL('../sitemap.xml',import.meta.url),'utf8'),
+  readFile(new URL('../survey-ui.js',import.meta.url),'utf8'),
 ]);
 
 for(const required of [
@@ -30,7 +32,15 @@ for(const required of [
   'src="render-cases.js"',
   'src="cases-data.js"',
   'src="app.js"',
+  'src="book-order.js"',
+  'src="content-data.js"',
+  'src="survey-state.js"',
+  'src="survey-portrait.js"',
+  'src="survey-portrait-share.js"',
+  'src="survey-ui.js"',
   'href="styles.css"',
+  'href="survey-analysis.css"',
+  'href="survey-portrait.css"',
   'href="rights-pulse.css"',
   'class="skip-link"',
   '<noscript>',
@@ -40,6 +50,7 @@ for(const required of [
   'application/ld+json',
   'id="shareStatus"',
 ]) if(!html.includes(required)) fail(`Missing reader shell contract: ${required}`);
+if(!sw.includes(portraitSwBlock(await portraitAssets())))fail('Portrait SW asset manifest drifted; run npm run build');
 
 for(const retired of [
   'caseSwitcher',
@@ -55,11 +66,14 @@ for(const retired of [
   'membership-config.js',
 ]) if(html.includes(retired)) fail(`Retired reader UI returned: ${retired}`);
 
-if(html.includes('src="legal-updates.js"')) fail('legal-updates.js must stay off the home page for payload reasons');
+if(html.includes('src="legal-updates.js"')) fail('Home must load canonical authority on demand through the scenario UI, not a second inline rule registry');
+if(!scenarioUi.includes('data-response="no"')||!scenarioUi.includes('data-response="yes"')||!scenarioUi.includes('api/survey-responses')) fail('Survey must record self-reported decisions');
+for(const retired of ['正解','答错','data-choice','state.verdict','correctWhy','wrongWhy']) if(scenarioUi.includes(retired)) fail(`Survey must not grade responses: ${retired}`);
 for(const file of dataFileList) if(html.includes(`src="${file}"`)) fail(`Home page must ship the bundle, not the loose CASE source: ${file}`);
 
 for(const required of [
   'function renderHome()',
+  'function renderLibrary()',
   'function renderCase(item)',
   'function filterTopics(query)',
   'function applyFilters()',
@@ -72,7 +86,8 @@ for(const required of [
   'topic-facets',
   'facet-chip',
   "new URLSearchParams(location.search).get('case')",
-  '最近值得知道',
+  'BuchikuiSurveyApp.mount({app,base})',
+  'data-book-volume',
 ]) if(!app.includes(required)) fail(`Missing public-legal-literacy contract: ${required}`);
 
 for(const retired of [
@@ -93,9 +108,10 @@ for(const required of [
   'relatedRow',
   'routeRow',
   'sourceRow',
-  'homeRow',
   'topicRow',
   'missingHtml',
+  'chapter-neighbors',
+  '返回问卷',
   'related-topics',
   'reminder-basis',
   'data-category',
@@ -110,9 +126,14 @@ for(const required of [
 if(render.includes('document.')) fail('Shared renderer must stay DOM-free so prerender and browser share it');
 
 for(const required of [
-  '.home-hero',
   '.search-box',
-  '.recent-row',
+  '.scenario-card',
+  '.game-decisions',
+  '.survey-question',
+  '.survey-prefix',
+  '.decision-button',
+  '.library-book',
+  '.book-volume',
   '.topic-row',
   '.topic-facets',
   '.facet-chip',
@@ -148,14 +169,15 @@ for(const retired of ['case-library.css','read-progress.js','feedback.css','feed
 if(!sw.includes('render-cases.js')) fail('Service worker must cache the shared renderer');
 if(!sw.includes('cases-data.js')) fail('Service worker must cache the CASE bundle');
 for(const file of dataFileList) if(sw.includes(`'./${file}'`)) fail(`Service worker still precaches the loose CASE source: ${file}`);
-if(!sw.includes("const CACHE_NAME='buchikui-pwa-v15'")) fail('PWA cache version must be v15 after the source-hygiene release');
+if(!/const CACHE_NAME='buchikui-pwa-v\d+'/.test(sw)) fail('PWA must use a versioned project cache name; cleanup behaviour is covered by the SW regression test');
+for(const file of ['book-order.js','content-data.js','survey-state.js','survey-ui.js']) if(!sw.includes(`'./${file}'`)) fail(`PWA cache is missing ${file}`);
 
 const normalizeEol=value=>value.replace(/\r\n/g,'\n');
 const bundle=await readFile(new URL('../cases-data.js',import.meta.url),'utf8');
 if(normalizeEol(bundle)!==normalizeEol(await buildBundle())) fail('cases-data.js is stale; run node scripts/bundle-cases.mjs');
 
 const parsedManifest=JSON.parse(manifest);
-if(!String(parsedManifest.name||'').includes('消费普法')) fail('Manifest must use the consumer legal-literacy positioning');
+if(!String(parsedManifest.name||'').includes('消费经历调研')) fail('Manifest must describe the survey');
 
 const cases=await loadCases();
 if(!Array.isArray(cases)||cases.length<10) fail('CASE data failed to load');
@@ -168,11 +190,20 @@ for(const item of cases){
 }
 
 // 权威依据层纪律：每条依据必须有可打开的一手或明确标注的报道链接，媒体与网络爆料不得单独作依据。
-const {authority,render:caseRender}=await loadRuntime();
+const {authority,render:caseRender,scenarios,book}=await loadRuntime();
+for(const error of scenarios.validate(authority)) fail(`Scenario content: ${error}`);
+const chapterSlugs=book.chapters.map(chapter=>chapter.slug);
+if(new Set(chapterSlugs).size!==chapterSlugs.length||chapterSlugs.length!==cases.length) fail('Book chapters must cover each CASE exactly once');
+for(const item of cases) if(!chapterSlugs.includes(item.slug)) fail(`Book directory is missing ${item.slug}`);
+for(const retired of ['data-skip','leaderboard','progress-bar']) if(scenarioUi.includes(retired)) fail(`Scenario game added forbidden machinery: ${retired}`);
 const MEDIA_ONLY=/网络爆料|网传|网络热议|舆论热议|自媒体|论坛|Reddit/i;
 let missingVerified=0;
 for(const item of cases){
   const rules=authority.getRules(item.slug)||[];
+  const article=caseRender.caseArticleHtml(item,{authorityHtml:authority.staticBlock(item.slug)});
+  const anchors=new Set([...article.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]));
+  for(const match of article.matchAll(/href="#([^"]+)"/g)) if(!anchors.has(match[1])) fail(`Chapter link has no target: ${item.slug}/#${match[1]}`);
+  if(article.includes('href="#template"')) fail(`Chapter links to the retired template UI: ${item.slug}`);
   if(!rules.length) fail(`CASE has no authoritative material: ${item.slug}`);
   const ids=new Set(rules.map(rule=>rule.id));
   for(const rule of rules){
@@ -205,6 +236,12 @@ for(const url of sitemapLocs) if(!generatedUrls.has(url)) fail(`Sitemap entry is
 if((await stat(new URL('../app.js',import.meta.url))).size>30*1024) fail('app.js exceeded 30KB simplicity budget');
 if((await stat(new URL('../styles.css',import.meta.url))).size>24*1024) fail('styles.css exceeded 24KB simplicity budget');
 if((await stat(new URL('../render-cases.js',import.meta.url))).size>12*1024) fail('render-cases.js exceeded 12KB simplicity budget');
+if((await stat(new URL('../survey-ui.js',import.meta.url))).size>24*1024) fail('survey-ui.js exceeded 24KB simplicity budget');
+if((await stat(new URL('../survey-state.js',import.meta.url))).size>20*1024) fail('survey-state.js exceeded 20KB content and state budget');
+for(const [file,budget] of [['survey-portrait.css',10],['survey-portrait.js',12],['survey-portrait-share.js',12]]){
+  if((await stat(new URL(`../${file}`,import.meta.url))).size>budget*1024)fail(`${file} exceeded portrait asset budget`);
+  if(!sw.includes(`'./${file}'`))fail(`Portrait core missing from offline bundle: ${file}`);
+}
 
 const out=await mkdtemp(path.join(os.tmpdir(),'buchikui-prerender-'));
 const outputs=await prerender(out);
@@ -213,6 +250,7 @@ const sample=await readFile(path.join(out,'c',cases[0].slug,'index.html'),'utf8'
 if(!sample.includes(`rel="canonical" href="https://liuh886.github.io/buchikui/c/${cases[0].slug}/"`)) fail('Prerendered CASE lacks canonical URL');
 if(!sample.includes('src="../../app.js"')) fail('Prerendered CASE assets are not rooted correctly');
 if(!sample.includes('src="../../legal-updates.js"')) fail('Prerendered CASE must load the authority layer');
+if(!sample.includes('chapter-neighbors')||!sample.includes('?view=library')) fail('Prerendered CASE must read as a chapter with directory and chapter navigation');
 if(!sample.includes('<main id="app" tabindex="-1"><article class="case-page">')) fail('Prerendered CASE has no static body content');
 if(!sample.includes('application/ld+json')) fail('Prerendered CASE lacks structured data');
 if(!sample.includes(`"@type":"Article"`)) fail('Prerendered CASE lacks Article structured data');
@@ -227,16 +265,7 @@ if(!notFoundHtml.includes(`href="${BASE_PATH}styles.css"`)) fail('404.html asset
 if(!notFoundHtml.includes('<main id="app" tabindex="-1"><section class="missing shell">')) fail('404.html lacks static fallback content');
 
 // 语料层门禁：所有对外链接必须在 corpus/ 登记，且不得指向已取代 / 已废止的法源。
-const corpusPeek=await loadCorpus();
-const peekIndex=urlIndex(corpusPeek);
-const corpusReferences=[];
-for(const item of cases){
-  for(const source of item.sources||[]) { const id=peekIndex.get(String(source.href||'')); if(id) corpusReferences.push({from:`${item.slug}/*`,sourceId:id}); }
-  for(const rule of authority.getRules(item.slug)||[]){
-    for(const source of rule.sources||[]) { const id=peekIndex.get(String(source.href||'')); if(id) corpusReferences.push({from:`${item.slug}/${rule.id}`,sourceId:id}); }
-  }
-}
-const corpusRun=await checkCorpus(corpusReferences);
+const corpusRun=await checkCorpus();
 for(const problem of corpusRun.problems.filter(p=>p.level==='error')) fail(`语料层：${problem.id} ${problem.message}`);
 const corpusByUrl=urlIndex(corpusRun.corpus);
 for(const item of cases){
@@ -256,7 +285,7 @@ for(const item of cases){
 
 // 编辑层不得手抄事实字段
 const editorialRules=await readFile(new URL('../editorial/rules.js',import.meta.url),'utf8');
-for(const fact of ['type','authority','effective','verified','href']){
+for(const fact of ['type','authority','effective','issued','date','verified','href']){
   if(new RegExp(`^\\s*${fact}:`, 'm').test(editorialRules)) fail(`编辑层不得手抄事实字段（应由 corpus 提供）: ${fact}:`);
 }
 if(/sources:\s*\[/.test(editorialRules)) fail('编辑层必须用 sourceIds 引用 corpus，不得内联来源');
@@ -301,5 +330,6 @@ for(const item of cases){
 }
 
 console.log(`Frontend contract OK: ${cases.length} topics, static case bodies, sitemap coverage, 404 shell.`);
+console.log(`  survey questions ${scenarios.questions.length} · book chapters ${book.chapters.length} · published content validation OK`);
 console.log(`  authority rules ${cases.reduce((n,c)=>n+(authority.getRules(c.slug)||[]).length,0)} · scenario→rule links ${linkedTotal}/${reminderTotal} · ${cases.length - missingVerified}/${cases.length} topics carry a per-rule verified date`);
 console.log(`  corpus ${corpusRun.stats.total} records (law ${corpusRun.stats.law} · case ${corpusRun.stats.case} · reference ${corpusRun.stats.reference} · portal ${corpusRun.stats.portal}) · 待核验 ${corpusRun.stats.pending} · needsReview ${corpusRun.stats.needsReview} · 零引用 ${corpusRun.stats.unreferenced}`);

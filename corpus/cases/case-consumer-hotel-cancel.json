@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-hotel-cancel",
+  "kind": "case",
+  "title": "2026年最高法消费典型案例：限时退订客房",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2026-03-15",
+  "issued": "2026-03-15",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/zixun/xiangqing/494701.html",
+  "facts": "提前14日订国庆客房，两小时后因车票未购成取消。",
+  "holding": "房费1281元判退1000元，结合再销售与损失判断。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例2。边界：不是取消一律全退。",
+  "locator": "案例2",
+  "consumerTopic": "travel-booking",
+  "selectionTags": [
+    "格式条款",
+    "退订"
+  ],
+  "boundary": "不是取消一律全退。"
+}

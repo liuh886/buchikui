@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-renewal-notice",
+  "kind": "case",
+  "title": "2026年最高法消费典型案例：续费提醒",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2026-03-15",
+  "issued": "2026-03-15",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/zixun/xiangqing/494701.html",
+  "facts": "续费站内提醒难找、混广告，短信失败后未再提醒。",
+  "holding": "认定未充分提醒；诉中退款后另判利息损失。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例1。边界：未读消息不自动等于违法。",
+  "locator": "案例1",
+  "consumerTopic": null,
+  "selectionTags": [
+    "自动续费",
+    "提示"
+  ],
+  "boundary": "未读消息不自动等于违法。"
+}

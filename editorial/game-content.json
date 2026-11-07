@@ -1,0 +1,157 @@
+{
+  "mode": "self-report",
+  "questions": [
+    {
+      "id": "survey-tour-museum",
+      "caseSlug": "travel-booking",
+      "ruleId": "consumer-tour-museum",
+      "realCaseId": "case-consumer-tour-museum",
+      "origin": "case-inspired-survey",
+      "reviewState": "published",
+      "mode": "self-report",
+      "decisionType": "选择",
+      "stage": "跟团旅游",
+      "action": "你是否遭遇过：报了“无购物”团，行程里却多了“玉石博物馆”？",
+      "researchPurpose": "记录无购物承诺与落地行程不符的经历；不推定受访者已购买玉石、遭受财产损失或被强迫购物。",
+      "selectionReason": "博物馆外观与无购物承诺形成容易忽略的行程落差；原案明确认定宣传与实际行程不符，不以场所名称推定欺诈。"
+    },
+    {
+      "id": "survey-arrival-payment",
+      "caseSlug": "travel-booking",
+      "ruleId": "consumer-arrival-payment",
+      "realCaseId": "case-consumer-arrival-payment",
+      "origin": "case-inspired-survey",
+      "reviewState": "published",
+      "mode": "self-report",
+      "decisionType": "选择",
+      "stage": "酒店订房",
+      "action": "你是否遭遇过：订房时选的是“到店付款”，还没入住就被扣了全款？",
+      "researchPurpose": "记录具体消费决策后的波折经历；不据此推定最终损失金额、责任或消费者做错了。",
+      "selectionReason": "付款标签与实际扣款时点相反，受访者能直接对照自己的订单经历。"
+    },
+    {
+      "id": "survey-prepaid-gift",
+      "caseSlug": "beauty-hair",
+      "ruleId": "consumer-prepaid-gift",
+      "realCaseId": "case-consumer-prepaid-gift",
+      "origin": "case-inspired-survey",
+      "reviewState": "published",
+      "mode": "self-report",
+      "decisionType": "购买",
+      "stage": "健身办卡",
+      "action": "你是否遭遇过：办健身卡时送了次数，店关门后剩下的钱却没退清？",
+      "researchPurpose": "记录具体消费决策后的波折经历；不据此推定最终损失金额、责任或消费者做错了。",
+      "selectionReason": "赠送次数和未用余额的处理容易混淆；问卷只记录退费波折，算法留在案例阅读。"
+    },
+    {
+      "id": "survey-prepaid-retail-deduction",
+      "caseSlug": "beauty-hair",
+      "ruleId": "consumer-prepaid-retail-deduction",
+      "realCaseId": "case-consumer-prepaid-retail-deduction",
+      "origin": "case-inspired-survey",
+      "reviewState": "published",
+      "mode": "self-report",
+      "decisionType": "购买",
+      "stage": "储值办卡",
+      "action": "你是否遭遇过：充值卡没用完想退款，商家却按门市最高原价倒扣已消费的项目？",
+      "researchPurpose": "记录具体消费决策后的波折经历；不据此推定最终损失金额、责任或消费者做错了。",
+      "selectionReason": "充值优惠与门市原价倒扣形成鲜明结算落差，是可直接辨认的高频预付消费遭遇。"
+    },
+    {
+      "id": "survey-training-relocation",
+      "caseSlug": "beauty-hair",
+      "ruleId": "consumer-training-relocation",
+      "realCaseId": "case-consumer-training-relocation",
+      "origin": "case-inspired-survey",
+      "reviewState": "published",
+      "mode": "self-report",
+      "decisionType": "选择",
+      "stage": "培训报名",
+      "action": "你是否遭遇过：因为离家近报了培训班，后来却被通知换到更远的地方上课？",
+      "researchPurpose": "记录具体消费决策后的波折经历；不据此推定最终损失金额、责任或消费者做错了。",
+      "selectionReason": "报名目的被单方迁址改变，不问抽象合同权利。"
+    },
+    {
+      "id": "survey-photo-unfinished",
+      "caseSlug": "after-sales",
+      "ruleId": "consumer-photo-unfinished",
+      "realCaseId": "case-consumer-photo-unfinished",
+      "origin": "case-inspired-survey",
+      "reviewState": "published",
+      "mode": "self-report",
+      "decisionType": "选择",
+      "stage": "写真拍摄",
+      "action": "你是否遭遇过：写真套餐里还没做的独立项目，申请取消时被拒绝？",
+      "researchPurpose": "记录具体消费决策后的波折经历；不据此推定最终损失金额、责任或消费者做错了。",
+      "selectionReason": "未完成独立项目难退，直接呈现承揽合同中未履行部分的解除争议。"
+    },
+    {
+      "id": "survey-battery-replacement",
+      "caseSlug": "after-sales",
+      "ruleId": "consumer-battery-replacement",
+      "realCaseId": "case-consumer-battery-replacement",
+      "origin": "case-inspired-survey",
+      "reviewState": "published",
+      "mode": "self-report",
+      "decisionType": "相信",
+      "stage": "电池售后",
+      "action": "你是否遭遇过：买电池时承诺质量问题“换新”，出了问题却只肯换里面的零件？",
+      "researchPurpose": "记录具体消费决策后的波折经历；不据此推定最终损失金额、责任或消费者做错了。",
+      "selectionReason": "整块换新被偷换成换内部零件，保留原案最有辨识度的承诺落差。"
+    },
+    {
+      "id": "survey-secondhand-business",
+      "caseSlug": "after-sales",
+      "ruleId": "consumer-secondhand-business",
+      "realCaseId": "case-consumer-secondhand-business",
+      "origin": "case-inspired-survey",
+      "reviewState": "published",
+      "mode": "self-report",
+      "decisionType": "相信",
+      "stage": "二手购物",
+      "action": "你是否遭遇过：二手卖家说是“个人闲置”，买到手却发现是假货？",
+      "researchPurpose": "记录具体消费决策后的波折经历；不据此推定最终损失金额、责任或消费者做错了。",
+      "selectionReason": "个人闲置的信任线索与到手假货形成具体冲突；不据此推定所有二手卖家都是经营者。"
+    }
+  ],
+  "journeys": [
+    {
+      "id": "travel",
+      "title": "旅游与订房",
+      "ending": "这组经历已记录。",
+      "recap": "每个人的经历不同，回答不作对错评价。",
+      "caseSlug": "travel-booking",
+      "chapterTitle": "旅游消费",
+      "questionIds": [
+        "survey-tour-museum",
+        "survey-arrival-payment"
+      ]
+    },
+    {
+      "id": "prepaid",
+      "title": "办卡与报名",
+      "ending": "这组经历已记录。",
+      "recap": "每个人的经历不同，回答不作对错评价。",
+      "caseSlug": "beauty-hair",
+      "chapterTitle": "预付消费",
+      "questionIds": [
+        "survey-prepaid-gift",
+        "survey-prepaid-retail-deduction",
+        "survey-training-relocation"
+      ]
+    },
+    {
+      "id": "after-sales",
+      "title": "购买与加购",
+      "ending": "这组经历已记录。",
+      "recap": "每个人的经历不同，回答不作对错评价。",
+      "caseSlug": "after-sales",
+      "chapterTitle": "售后与退订",
+      "questionIds": [
+        "survey-photo-unfinished",
+        "survey-battery-replacement",
+        "survey-secondhand-business"
+      ]
+    }
+  ]
+}

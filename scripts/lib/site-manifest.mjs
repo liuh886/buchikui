@@ -7,6 +7,13 @@ export const SITE_FILES = [
   'index.html',
   'app.js',
   'render-cases.js',
+  'book-order.js',
+  'survey-state.js',
+  'survey-portrait.js',
+  'survey-portrait-share.js',
+  'survey-ui.js',
+  'survey-analysis.css',
+  'survey-portrait.css',
   'rights-pulse.css',
   'styles.css',
   'pwa.js',
@@ -18,10 +25,10 @@ export const SITE_FILES = [
 
 // 这些由 npm run build 生成，不从仓库复制，但必须随产物一起发布——
 // index.html 直接引用 cases-data.js，缺了首页就是空壳。
-export const GENERATED_FILES = ['cases-data.js', 'legal-updates.js'];
+export const GENERATED_FILES = ['cases-data.js', 'legal-updates.js', 'content-data.js'];
 
 // 整目录拷入的静态资源。
 export const SITE_DIRS = ['icons'];
 
 /** 这些绝不该出现在发布产物里；作为 prepare-site 的自检。 */
-export const FORBIDDEN_IN_ARTIFACT = ['corpus', 'editorial', 'docs', 'scripts', 'tasks', 'supabase', '.github', 'node_modules', 'package.json'];
+export const FORBIDDEN_IN_ARTIFACT = ['corpus', 'editorial', 'docs', 'scripts', 'tasks', 'supabase', 'database', 'data', '.github', 'node_modules', 'package.json'];

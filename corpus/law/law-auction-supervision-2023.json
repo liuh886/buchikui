@@ -1,10 +1,13 @@
 {
   "id": "law-auction-supervision-2023",
   "kind": "law",
-  "title": "拍卖监督管理办法",
+  "title": "拍卖监督管理办法（2020年修订）",
   "type": "部门规章",
-  "status": "待核验",
+  "status": "现行",
   "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d526ba7ddd9a4f978e73ca0b2abb3c63.html",
-  "verified": "2026-08-29",
-  "needsReview": true
+  "verified": "2026-10-23",
+  "issuer": "国家市场监督管理总局",
+  "effective": "2020-10-23",
+  "revision": "2020-10-23国家市场监督管理总局令第31号第三次修订",
+  "note": "核验总局规章全文及第31号修改决定。第31号决定自公布之日起施行；原2017年版本施行日期不应误作本次修订日期。历史id中的2023为旧登记网页路径年份，不代表法规修订年份。"
 }

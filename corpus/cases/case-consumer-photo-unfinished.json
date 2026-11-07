@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-photo-unfinished",
+  "kind": "case",
+  "title": "2022年最高法消费典型案例：写真合同解除",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2022-03-15",
+  "issued": "2022-03-15",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/shenpan/xiangqing/350961.html",
+  "facts": "两名大学生看到19.9元写真广告到店，照片、相册等不断加购，最终五份协议合计2.6万余元。当天要求减少套餐遭拒，随后起诉。",
+  "holding": "法院区分尚未做、只做了一部分和已经完成的项目，支持解除未完成部分并退还1.86万元；已经完成的服务报酬及解除造成的损失仍需计算。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例2。边界：不是所有已消费项目全额退。",
+  "locator": "案例2",
+  "consumerTopic": "after-sales",
+  "selectionTags": [
+    "签字",
+    "未完成服务"
+  ],
+  "boundary": "不是所有已消费项目全额退。"
+}

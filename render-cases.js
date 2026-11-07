@@ -17,6 +17,8 @@
     'alibaba-auction-trap':'拍卖',
     'layoff-compensation':'劳动',
     'qingdao-travel':'旅行消费',
+    'after-sales':'售后服务',
+    'travel-booking':'旅行消费',
     'transport-platform-layered-fees':'平台交易'
   };
 
@@ -67,27 +69,19 @@
     return list;
   }
 
-  function homeRow(item,featured,base,rich){
-    const description=item.meta?.description||stripTags(item.hero?.copy)||'';
-    return `<a class="recent-row${featured?' is-featured':''}" href="${esc(caseUrl(item,base))}">
-      <div class="row-meta"><span>${esc(categoryOf(item))}</span><time datetime="${esc(item.updated||'')}">${esc(item.updated||'持续更新')}</time></div>
-      <div class="row-copy"><h3>${esc(item.name)}</h3><p>${esc(description)}</p></div>
-      <span class="row-arrow" aria-hidden="true">→</span>
-    </a>`;
-  }
-
   function topicRow(item,base,facets){
     const facet=facets&&facets[item.slug]||{};
     const category=facet.category||categoryOf(item);
+    const chapter=root.BuchikuiBook?.chapter(item.slug);
     return `<a class="topic-row" data-topic="${esc(item.slug)}" data-category="${esc(category)}" data-types="${esc((facet.types||[]).join(' '))}" data-stage="${esc((facet.stage||[]).join(' '))}" href="${esc(caseUrl(item,base))}">
-      <span class="topic-category">${esc(category)}</span>
-      <strong>${esc(item.name)}</strong>
-      <span aria-hidden="true">→</span>
+      <strong>${esc(chapter?`${chapter.label} · ${chapter.title}`:item.name)}</strong>
+      <span class="topic-question">${esc(item.meta?.question||item.meta?.description)}</span>
+      <span class="topic-read" aria-hidden="true">阅读</span>
     </a>`;
   }
 
   function reminderRow(entry,index,rich){
-    return `<article class="reminder-row">
+    return `<article class="reminder-row" id="case-${index+1}">
       <span class="reminder-index">${String(index+1).padStart(2,'0')}</span>
       <div class="reminder-copy"><h3>${esc(entry.title)}</h3>
         ${entry.fact?`<div class="fact-line"><b>关键事实</b>${rich(entry.fact)}</div>`:''}
@@ -103,7 +97,7 @@
 
   function routeRow(step,index,rich){
     const href=safeHref(step.href);
-    return `<li><span>${String(index+1).padStart(2,'0')}</span><div><h3>${rich(step.title||'')}</h3><p>${rich(step.text||'')}</p>${step.link&&href!=='#'?`<a href="${esc(href)}"${isExternal(href)?' target="_blank" rel="noopener"':''}>${esc(step.link)}</a>`:''}</div></li>`;
+    return `<li><span>${String(index+1).padStart(2,'0')}</span><div><h3>${rich(step.title||'')}</h3><p>${rich(step.text||'')}</p>${step.link&&href!=='#'&&href!=='#template'?`<a href="${esc(href)}"${isExternal(href)?' target="_blank" rel="noopener"':''}>${esc(step.link)}</a>`:''}</div></li>`;
   }
 
   function sourceRow(source){
@@ -128,11 +122,15 @@
     const related=opts.related||[];
     const heading=item.hero?.title||item.name;
     const lead=item.hero?.copy||item.meta?.description||'';
+    const book=root.BuchikuiBook;
+    const chapter=book?.chapter(item.slug);
+    const neighbors=chapter?[book.chapters[chapter.index-1],book.chapters[chapter.index+1]]:[];
 
     return `<article class="case-page">
         <header class="case-intro shell">
-          <nav class="case-nav" aria-label="面包屑"><a class="back-link" href="${esc(base)}">← 返回全部主题</a></nav>
-          <div class="case-meta"><span>${esc(categoryOf(item))}</span>${item.updated?`<time datetime="${esc(item.updated)}">更新 ${esc(item.updated)}</time>`:''}</div>
+          <nav class="case-nav" aria-label="章节导航">${opts.resume?`<a class="back-link" href="${esc(base)}?resume=1">返回问卷</a>`:`<a class="back-link" href="${esc(base)}?view=library">返回资料库</a>`}<a class="back-link" href="${esc(base)}?${opts.resume?'view=library':'resume=1'}">${opts.resume?'资料库':'填写问卷'}</a></nav>
+          ${chapter?`<p class="chapter-volume">第${esc(book.number(chapter.volumeIndex))}卷 · ${esc(chapter.volume)}</p>`:''}
+          <div class="case-meta"><span>${esc(chapter?`${chapter.label} · ${chapter.title}`:categoryOf(item))}</span>${item.updated?`<time datetime="${esc(item.updated)}">更新 ${esc(item.updated)}</time>`:''}</div>
           <h1>${rich(heading)}</h1>
           <p class="case-lead">${esc(stripTags(lead))}</p>
         </header>
@@ -145,12 +143,12 @@
           ${authorityHtml}
         </section>
 
-        ${reminders.length?`<section class="reading-section shell" aria-labelledby="reminderTitle">
+        ${reminders.length?`<section class="reading-section shell" id="cases" aria-labelledby="reminderTitle">
           ${sectionHead('reminderTitle','现实交易','这些地方最容易被忽视',item.panic?.title?rich(item.panic.title):'')}
           <div class="reminder-list">${reminders.map((entry,index)=>reminderRow(entry,index,rich)).join('')}</div>
         </section>`:''}
 
-        ${evidence.length?`<section class="reading-section shell" aria-labelledby="evidenceTitle">
+        ${evidence.length?`<section class="reading-section shell" id="evidence" aria-labelledby="evidenceTitle">
           ${sectionHead('evidenceTitle','发生纠纷后','先保留这些材料','')}
           <ul class="plain-list evidence-list">${evidence.map(entry=>`<li><strong>${esc(entry.title)}</strong>${entry.detail?`<span>${esc(entry.detail)}</span>`:''}</li>`).join('')}</ul>
         </section>`:''}
@@ -173,11 +171,12 @@
         </section>`:''}
 
         ${item.takeaway?`<footer class="case-takeaway shell"><span>记住这一点</span><strong>${esc(item.takeaway)}</strong></footer>`:''}
+        ${chapter?`<nav class="chapter-neighbors shell" aria-label="前后章节">${neighbors.map((neighbor,index)=>neighbor?`<a href="${esc(caseUrl(neighbor,base))}"><small>${index===0?'上一章':'下一章'}</small><strong>${esc(neighbor.label)} · ${esc(neighbor.title)}</strong></a>`:'<span></span>').join('')}<a class="chapter-directory" href="${esc(base)}?view=library">回到目录</a></nav>`:''}
       </article>`;
   }
 
   function missingHtml(base){
-    return `<section class="missing shell"><p class="eyebrow">404</p><h1>这个主题不存在。</h1><p>可能已经调整名称或移除。</p><a href="${esc(base)}">返回全部主题 →</a></section>`;
+    return `<section class="missing shell"><p class="eyebrow">404</p><h1>这个主题不存在。</h1><p>可能已经调整名称或移除。</p><a href="${esc(base)}?view=library">返回资料库</a></section>`;
   }
 
   root.BuchikuiRender={
@@ -190,7 +189,6 @@
     caseUrl,
     caseReminders,
     mergedSources,
-    homeRow,
     topicRow,
     reminderRow,
     relatedRow,

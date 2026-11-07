@@ -1,11 +1,13 @@
 {
   "id": "law-public-security-2012",
   "kind": "law",
-  "title": "中华人民共和国治安管理处罚法",
+  "title": "中华人民共和国治安管理处罚法（2012年修正）",
   "type": "法律",
   "issuer": "全国人民代表大会常务委员会",
   "effective": "2013-01-01",
-  "status": "现行",
+  "status": "已取代",
   "url": "https://www.gov.cn/flfg/2012-10/26/content_2252115.htm",
-  "needsReview": true
+  "supersededBy": "law-public-security-2025",
+  "verified": "2026-10-23",
+  "note": "已由2025-06-27修订、2026-01-01施行版本取代。仅供历史追溯，不再支撑当前规则。"
 }

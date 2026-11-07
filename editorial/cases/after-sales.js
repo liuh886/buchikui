@@ -1,0 +1,13 @@
+window.BUCHIKUI_CASES.push({
+  id:'017',slug:'after-sales',name:'售后与退订',updated:'2026-10-23',
+  meta:{title:'不吃亏｜售后与退订',description:'写真套餐未完成、电池换新承诺、二手平台经营售假：从真实纠纷看付款之后还能要求什么。',question:'签了套餐能否停下未完成项目，换新能只换零件，二手卖家何时承担经营者责任？'},
+  hero:{title:'付完款，<br>事情还没结束。',copy:'先看约定做了多少、承诺了什么、卖家实际在做什么生意。下面是不同交易中的独立纠纷，不能将一个案件的结果直接套到另一个案件。'},
+  scenarios:[
+    {ruleId:'consumer-photo-unfinished',title:'写真套餐还没做完',blocks:[{label:'关键事实',html:'<p>区分已完成与未完成项目，核对解除通知是否有效送达。签字付款不自动消灭解除权。</p>'},{label:'现在做什么',kind:'action',html:'<p>明确通知停止未完成的项目，核算已做报酬及解除造成的损失，不能把取消等同全部免费。</p>'}]},
+    {ruleId:'consumer-battery-replacement',title:'换新还是修理',blocks:[{label:'关键事实',html:'<p>承诺是整件换新还是维修，发生的故障是否属于承诺范围，都会改变结论。</p>'},{label:'现在做什么',kind:'action',html:'<p>按购买时承诺核对处理结果；不要把商家事后缩小承诺的解释当成原约定。</p>'}]},
+    {ruleId:'consumer-secondhand-business',title:'二手平台里的经营卖家',blocks:[{label:'关键事实',html:'<p>卖家是否实际持续经营，需要看来源、数量、频率等事实；平台名称不能替代这项判断。</p>'},{label:'现在做什么',kind:'action',html:'<p>将商品真伪、销售承诺与实际经营情况分别说明；普通个人闲置交易不能直接照搬经营者责任。</p>'}]}
+  ],
+  sources:[{sourceId:'case-consumer-photo-unfinished'},{sourceId:'case-consumer-battery-replacement'},{sourceId:'case-consumer-secondhand-business'}],
+  takeaway:'付款后的权利，要回到具体承诺和实际履行。',
+  legal:'本章为公开案例参考。是否适用须结合实际交易事实，不保证退款或胜诉。'
+});

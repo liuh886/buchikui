@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-secondhand-business",
+  "kind": "case",
+  "title": "2022年最高法消费典型案例：二手平台经营售假",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2022-03-15",
+  "issued": "2022-03-15",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/shenpan/xiangqing/350961.html",
+  "facts": "卖家把耳机描述为全新正品闲置，买家收货发现是假货。法院还查明，卖家短期内用相同说法成交同款耳机40余笔。",
+  "holding": "实为经营销售，支持消费者退货及惩罚性赔偿。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例9。边界：不把普通个人闲置卖家一概视为经营者。",
+  "locator": "案例9",
+  "consumerTopic": "after-sales",
+  "selectionTags": [
+    "二手平台",
+    "经营者"
+  ],
+  "boundary": "不把普通个人闲置卖家一概视为经营者。"
+}

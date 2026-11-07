@@ -1,0 +1,35 @@
+name: Validate Buchikui PR
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: buchikui-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Validate JavaScript syntax
+        run: |
+          find . -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
+          for file in scripts/*.mjs scripts/lib/*.mjs; do node --check "$file"; done
+      - name: Behaviour tests
+        run: npm run build && npm test
+      - name: Validate generated artifacts are in sync
+        run: |
+          npm run build
+          git diff --exit-code -- legal-updates.js cases-data.js content-data.js sw.js docs/content-index.md sitemap.xml
+      - name: Validate corpus and frontend contracts
+        run: npm run check
+      - name: Prepare public artifact
+        run: npm run build:site

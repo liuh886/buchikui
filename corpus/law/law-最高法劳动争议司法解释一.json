@@ -1,11 +1,21 @@
 {
   "id": "law-最高法劳动争议司法解释一",
   "kind": "law",
-  "title": "最高法劳动争议司法解释一",
+  "title": "最高人民法院关于审理劳动争议案件适用法律问题的解释（一）",
   "type": "司法解释",
   "issuer": "最高人民法院",
-  "status": "待核验",
-  "url": "https://www.court.gov.cn/fabu/xiangqing/282121.html",
-  "verified": "2026-08-27",
-  "needsReview": true
+  "status": "现行",
+  "url": "https://www.court.gov.cn/zixun/xiangqing/282121.html",
+  "verified": "2026-10-23",
+  "effective": "2021-01-01",
+  "articles": [
+    {
+      "no": "第四十四条",
+      "topic": "用人单位解除等决定的举证责任"
+    }
+  ],
+  "note": "法释〔2020〕26号。核验最高法公布全文；2025年劳动争议解释（二）仅废止本解释第三十二条第一款，第四十四条仍为本规则引用依据。",
+  "aliasUrls": [
+    "https://www.court.gov.cn/fabu/xiangqing/282121.html"
+  ]
 }

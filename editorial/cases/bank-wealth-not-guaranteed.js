@@ -5,7 +5,7 @@ window.BUCHIKUI_CASES.push({
   "slug": "bank-wealth-not-guaranteed",
   "name": "银行理财不一定保本",
   "label": "BANK WEALTH",
-  "updated": "2026-08-28",
+  "updated": "2026-10-23",
   "meta": {
     "title": "不吃亏｜银行理财不保本：收益展示、推荐、封闭期与风险测评",
     "description": "银行理财不是存款，也不保证本金和收益。看懂短期年化、首页推荐、理财经理推销、封闭期和风险测评，分清正常净值波动与销售误导。",

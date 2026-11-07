@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-prepaid-records",
+  "kind": "case",
+  "title": "2025年最高法消费典型案例：预付消费流水",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2025-03-14",
+  "issued": "2025-03-14",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/zixun/xiangqing/459331.html",
+  "facts": "美疗店掌握消费流水却不完整提交，双方余额争议。",
+  "holding": "法院结合支付及部分消费证据酌定退款。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例四。边界：不是消费者主张多少都须照退。",
+  "locator": "案例四",
+  "consumerTopic": "beauty-hair",
+  "selectionTags": [
+    "消费记录",
+    "举证"
+  ],
+  "boundary": "不是消费者主张多少都须照退。"
+}

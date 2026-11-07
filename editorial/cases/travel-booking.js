@@ -1,0 +1,13 @@
+window.BUCHIKUI_CASES.push({
+  id:'018',slug:'travel-booking',name:'订房与跟团旅游',updated:'2026-10-23',
+  meta:{title:'不吃亏｜订房与跟团旅游',description:'无购物团加进玉石博物馆行程、到店付款却预扣、退房扣全款：对照报名和下单时的承诺。',question:'说好的无购物、到店付款，实际安排为什么变了？'},
+  hero:{title:'说好的安排，<br>为什么变了？',copy:'无购物团落地后增加玉石博物馆行程，到店付款却提前扣款。先对照承诺与实际发生了什么，再看对应个案；退订客房的材料另供查阅。'},
+  scenarios:[
+    {ruleId:'consumer-hotel-cancel',title:'超过限时取消客房',blocks:[{label:'关键事实',html:'<p>离入住还有多久、订后多久取消、能否再销售和实际损失，不能被一条扣全款的约定抹掉。</p>'},{label:'现在做什么',kind:'action',html:'<p>按订单和取消时间说明情况，要求核实扣款依据及损失；不能只因提前取消就预期全额退款。</p>'}]},
+    {ruleId:'consumer-arrival-payment',title:'到店付款却提前扣款',blocks:[{label:'关键事实',html:'<p>到店付款和提前扣全款存在实质区别。是否在下单时特别提示了预扣例外，是关键事实。</p>'},{label:'现在做什么',kind:'action',html:'<p>将下单页面的付款安排与实际扣款对照，再核对例外怎样提示，不把长协议里出现过一句当成当然充分告知。</p>'}]},
+    {ruleId:'consumer-tour-museum',title:'无购物团却增加玉石博物馆行程',blocks:[{label:'关键事实',html:'<p>本案游客报名时确认没有购物环节，落地后签地接合同却增加玉石博物馆行程。问题在于行程与宣传不符，不能仅凭“博物馆”的名称判断一次交易。</p>'},{label:'现实提醒',kind:'action',html:'<p>保留报名时确认的行程，核对地接合同后来增加了什么。原通报未说明游客购买玉石、商品真假或实际损失。</p>'}]}
+  ],
+  sources:[{sourceId:'case-consumer-hotel-cancel'},{sourceId:'case-consumer-arrival-payment'},{sourceId:'case-consumer-tour-museum'}],
+  takeaway:'报名时怎么说、下单时怎么写，都要与实际行程和扣款对照。',
+  legal:'本章包含裁判参考与监管处罚案例，不能由参观或消费行为直接推定受骗。'
+});

@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-prepaid-gift",
+  "kind": "case",
+  "title": "2025年最高法消费典型案例：赠送次数退款",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2025-03-14",
+  "issued": "2025-03-14",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/zixun/xiangqing/459331.html",
+  "facts": "消费者支付2000元办理50次健身卡，另赠10次。只使用12次，门店就停止服务；消费者起诉要求退还未用48次对应的1600元。",
+  "holding": "以60次为对价，退还未用48次对应1600元。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例三。边界：经营者违约解除，不套用于自行退卡。",
+  "locator": "案例三",
+  "consumerTopic": "beauty-hair",
+  "selectionTags": [
+    "赠送",
+    "退款算法"
+  ],
+  "boundary": "经营者违约解除，不套用于自行退卡。"
+}

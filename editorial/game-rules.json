@@ -1,0 +1,162 @@
+[
+  {
+    "slug": "travel-booking",
+    "rule": {
+      "id": "consumer-hotel-cancel",
+      "tab": "退订客房",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "写着不可取消，也要看实际损失。",
+      "text": "原案1281元房费判退1000元；提前多久取消、能否再售和实际损失都会影响结果。",
+      "action": "这是限时退订个案参考，不保证所有订单都能退，也不等于必须全退。",
+      "sourceIds": [
+        "case-consumer-hotel-cancel"
+      ]
+    }
+  },
+  {
+    "slug": "travel-booking",
+    "rule": {
+      "id": "consumer-arrival-payment",
+      "tab": "预订付款",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "付款例外不能只藏在长协议里。",
+      "text": "原案对预扣全款这一例外未作特别提示，法院支持退款；判断要看下单时如何告知。",
+      "action": "原案为境外客房平台交易；若已显著说明并确认预扣安排，需另作判断。",
+      "sourceIds": [
+        "case-consumer-arrival-payment"
+      ]
+    }
+  },
+  {
+    "slug": "beauty-hair",
+    "rule": {
+      "id": "consumer-prepaid-gift",
+      "tab": "健身次卡",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "店家违约，原先承诺的赠送也要算。",
+      "text": "原案把60次作为总价的对价，未用48次退1600元；赠送并非可在停业时抹掉。",
+      "action": "前提是经营者违约停业；消费者自行解除，不能照搬这个退款算法。",
+      "sourceIds": [
+        "case-consumer-prepaid-gift"
+      ]
+    }
+  },
+  {
+    "slug": "beauty-hair",
+    "rule": {
+      "id": "consumer-annual-closure",
+      "tab": "儿童乐园年卡",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "无法使用的那段时间，也不能白扣。",
+      "text": "原案将停业至解除间无法获得服务的期间纳入剩余期限计算，不从起诉那天才算。",
+      "action": "这是不限次数的计时年卡；计次卡或仍能正常提供服务的情形另论。",
+      "sourceIds": [
+        "case-consumer-annual-closure"
+      ]
+    }
+  },
+  {
+    "slug": "beauty-hair",
+    "rule": {
+      "id": "consumer-prepaid-retail-deduction",
+      "tab": "退卡折算",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "退卡按门市原价倒扣，法律不予支持。",
+      "text": "原案认定“退费按单次门市原价重新结算”格式条款无效，判令按合同约定折扣分摊已消费金额并退还剩余本金。",
+      "action": "退卡时坚持按充值时的实际折扣比例折算已消费部分；消费者自身违约可扣除合理违约金，但不能被擅自按原价倒扣。",
+      "sourceIds": [
+        "case-consumer-prepaid-retail-deduction"
+      ]
+    }
+  },
+  {
+    "slug": "beauty-hair",
+    "rule": {
+      "id": "consumer-training-relocation",
+      "tab": "舞蹈课搬迁",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "有替代地点，不等于原合同目的还能实现。",
+      "text": "原案重视就近上课的目的和新增交通、时间成本，支持解除并退剩余培训费。",
+      "action": "核对原约定地点与新地点，说明交通和时间成本增加在哪里；已上课程另算，轻微不便不能直接套用本案结果。",
+      "sourceIds": [
+        "case-consumer-training-relocation"
+      ]
+    }
+  },
+  {
+    "slug": "after-sales",
+    "rule": {
+      "id": "consumer-photo-unfinished",
+      "tab": "写真套餐",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "能停下未完成的服务，不等于全部免费。",
+      "text": "原案按承揽合同处理，支持解除未完成部分；已完成的报酬和解除造成的损失仍需计算。",
+      "action": "分清哪些项目还没做、哪些已完成，并有效通知解除；不能要求已经完成的服务一律全退。",
+      "sourceIds": [
+        "case-consumer-photo-unfinished"
+      ]
+    }
+  },
+  {
+    "slug": "after-sales",
+    "rule": {
+      "id": "consumer-battery-replacement",
+      "tab": "电池换新",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "换新承诺，要按消费者通常理解兑现。",
+      "text": "原案认定换新指整块电池，不是仅换内部零件；商家未按承诺履行，被判退款。",
+      "action": "须有相同换新承诺及确认的质量问题；普通保修不能直接推成整机换新。",
+      "sourceIds": [
+        "case-consumer-battery-replacement"
+      ]
+    }
+  },
+  {
+    "slug": "after-sales",
+    "rule": {
+      "id": "consumer-secondhand-business",
+      "tab": "二手平台耳机",
+      "status": "现行",
+      "kind": "case",
+      "document": "最高人民法院发布的消费者权益保护或预付式消费典型案例",
+      "title": "平台叫二手，不等于卖家就是个人闲置。",
+      "text": "原案根据交易规模等认定实为经营销售，并因售假欺诈支持退货及惩罚性赔偿。",
+      "action": "须结合数量、频率等认定经营行为并证明欺诈；不能套到普通个人闲置交易。",
+      "sourceIds": [
+        "case-consumer-secondhand-business"
+      ]
+    }
+  },
+  {
+    "slug": "travel-booking",
+    "rule": {
+      "id": "consumer-tour-museum",
+      "tab": "无购物行程",
+      "status": "现行",
+      "kind": "case",
+      "document": "湖南省文化和旅游厅公布的旅游市场典型案例·案例一",
+      "title": "说好无购物，落地却加进玉石博物馆行程。",
+      "text": "本案游客确认的套餐不含购物，抵达后签地接合同时却增加玉石博物馆行程。执法部门据此认定宣传与实际行程不符并处罚。",
+      "action": "对照报名时确认的行程与落地合同，注意后来增加的参观安排。通报没有认定游客买了假玉，也不说明所有博物馆消费都有问题。",
+      "sourceIds": [
+        "case-consumer-tour-museum"
+      ]
+    }
+  }
+]

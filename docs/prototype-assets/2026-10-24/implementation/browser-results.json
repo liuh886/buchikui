@@ -1,0 +1,55 @@
+{
+  "url": "http://localhost:4190/",
+  "results": [
+    {
+      "role": "otter",
+      "mobile": true,
+      "restore": true,
+      "analysis": true,
+      "offline": true
+    },
+    {
+      "role": "capybara",
+      "mobile": true,
+      "restore": true,
+      "analysis": true,
+      "offline": true
+    },
+    {
+      "role": "raccoon",
+      "mobile": true,
+      "restore": true,
+      "analysis": true,
+      "offline": true
+    },
+    {
+      "role": "fox",
+      "mobile": true,
+      "restore": true,
+      "analysis": true,
+      "offline": true
+    },
+    {
+      "role": "bird",
+      "mobile": true,
+      "restore": true,
+      "analysis": true,
+      "offline": true
+    },
+    {
+      "role": "cloud",
+      "mobile": true,
+      "restore": true,
+      "analysis": true,
+      "offline": true
+    }
+  ],
+  "pageErrors": [],
+  "deepLink": true,
+  "corruptState": true,
+  "imageFallback": true,
+  "keyboard": true,
+  "subpath": true,
+  "cssZoom200": true,
+  "width320": true
+}

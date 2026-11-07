@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-arrival-payment",
+  "kind": "case",
+  "title": "2022年最高法消费典型案例：到店付款预扣",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2022-03-15",
+  "issued": "2022-03-15",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/shenpan/xiangqing/350961.html",
+  "facts": "消费者在旅游App预订境外客房，选择到店支付，下单后银行卡却立即被扣除全款。平台用长条款中的预扣例外拒绝退款，消费者未入住并起诉。",
+  "holding": "未特别提示预扣例外，支持退还房款。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例6。边界：不能推成所有预扣款都违规。",
+  "locator": "案例6",
+  "consumerTopic": "travel-booking",
+  "selectionTags": [
+    "预扣款",
+    "提示"
+  ],
+  "boundary": "不能推成所有预扣款都违规。"
+}

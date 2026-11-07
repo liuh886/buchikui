@@ -5,7 +5,7 @@ window.BUCHIKUI_CASES.push({
   "slug": "alipay-advisor-cost",
   "name": "支付宝投顾：0.5% 不是总成本",
   "label": "INVESTMENT ADVISORY",
-  "updated": "2026-08-28",
+  "updated": "2026-10-23",
   "meta": {
     "title": "不吃亏｜支付宝投顾：0.5% 不是总成本",
     "description": "把交易手续费、底层运作费和投顾管理费放在同一张图里，再和 IQQ、国内纳指 ETF 做费用对比。",
@@ -76,7 +76,7 @@ window.BUCHIKUI_CASES.push({
     ],
     "comparison": {
       "title": "把所有费用放在同一张图里",
-      "intro": "柱子越长，已知费用越高。ETF 的交易佣金由券商和账户决定，因此单独标注；支付宝投顾则按本案例样本，把交易手续费、运作费和投顾管理费放在同一行。",
+      "intro": "以下保留旧样本，用于比较费用结构；本轮仅复核权威规则，未重新核对所有产品现行费率。ETF交易佣金随账户变化，投顾样本则把交易、运作和投顾费用列在同一行；实际应查最新合同和产品资料。",
       "max": 1.72,
       "legend": [
         {
@@ -287,7 +287,7 @@ window.BUCHIKUI_CASES.push({
   "sources": [
     {
       "sourceId": "law-isharesnasdaq100etfiqq官方费用页",
-      "note": "当前官方 Expense Ratio 0.12%，费率减免后的 Net Expense Ratio 为 0.10%。"
+      "note": "旧样本登记Expense Ratio 0.12%、减免后Net Expense Ratio 0.10%；本轮未重新核价，现行费用以官方页面为准。"
     },
     {
       "sourceId": "law-易方达纳斯达克100etfqdii产品资料概要",

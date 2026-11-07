@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "不吃亏｜消费普法",
+  "name": "不吃亏｜消费经历调研",
   "short_name": "不吃亏",
-  "description": "从裁判文书、法律法规、管理办法和监管文件里提炼现实交易最容易忽视的关键点。",
+  "description": "统一以“你是否曾经”询问消费决策经历，相关真实案例供自行查阅。",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
@@ -10,11 +10,29 @@
   "orientation": "any",
   "background_color": "#f7f5ef",
   "theme_color": "#f7f5ef",
-  "categories": ["education", "reference"],
+  "categories": [
+    "education",
+    "reference"
+  ],
   "prefer_related_applications": false,
   "icons": [
-    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
-    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
-    {"src":"icons/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

@@ -1,6 +1,87 @@
 // 生成文件：请编辑 editorial/cases/<slug>.js 与 editorial/rules.js，再运行 npm run build。
 window.BUCHIKUI_CASES=[
   {
+    "id": "017",
+    "slug": "after-sales",
+    "name": "售后与退订",
+    "updated": "2026-10-23",
+    "meta": {
+      "title": "不吃亏｜售后与退订",
+      "description": "写真套餐未完成、电池换新承诺、二手平台经营售假：从真实纠纷看付款之后还能要求什么。",
+      "question": "签了套餐能否停下未完成项目，换新能只换零件，二手卖家何时承担经营者责任？"
+    },
+    "hero": {
+      "title": "付完款，<br>事情还没结束。",
+      "copy": "先看约定做了多少、承诺了什么、卖家实际在做什么生意。下面是不同交易中的独立纠纷，不能将一个案件的结果直接套到另一个案件。"
+    },
+    "scenarios": [
+      {
+        "ruleId": "consumer-photo-unfinished",
+        "title": "写真套餐还没做完",
+        "blocks": [
+          {
+            "label": "关键事实",
+            "html": "<p>区分已完成与未完成项目，核对解除通知是否有效送达。签字付款不自动消灭解除权。</p>"
+          },
+          {
+            "label": "现在做什么",
+            "kind": "action",
+            "html": "<p>明确通知停止未完成的项目，核算已做报酬及解除造成的损失，不能把取消等同全部免费。</p>"
+          }
+        ]
+      },
+      {
+        "ruleId": "consumer-battery-replacement",
+        "title": "换新还是修理",
+        "blocks": [
+          {
+            "label": "关键事实",
+            "html": "<p>承诺是整件换新还是维修，发生的故障是否属于承诺范围，都会改变结论。</p>"
+          },
+          {
+            "label": "现在做什么",
+            "kind": "action",
+            "html": "<p>按购买时承诺核对处理结果；不要把商家事后缩小承诺的解释当成原约定。</p>"
+          }
+        ]
+      },
+      {
+        "ruleId": "consumer-secondhand-business",
+        "title": "二手平台里的经营卖家",
+        "blocks": [
+          {
+            "label": "关键事实",
+            "html": "<p>卖家是否实际持续经营，需要看来源、数量、频率等事实；平台名称不能替代这项判断。</p>"
+          },
+          {
+            "label": "现在做什么",
+            "kind": "action",
+            "html": "<p>将商品真伪、销售承诺与实际经营情况分别说明；普通个人闲置交易不能直接照搬经营者责任。</p>"
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "title": "2022年最高法消费典型案例：写真合同解除",
+        "href": "https://www.court.gov.cn/shenpan/xiangqing/350961.html",
+        "note": ""
+      },
+      {
+        "title": "2022年最高法消费典型案例：电池换新",
+        "href": "https://www.court.gov.cn/shenpan/xiangqing/350961.html",
+        "note": ""
+      },
+      {
+        "title": "2022年最高法消费典型案例：二手平台经营售假",
+        "href": "https://www.court.gov.cn/shenpan/xiangqing/350961.html",
+        "note": ""
+      }
+    ],
+    "takeaway": "付款后的权利，要回到具体承诺和实际履行。",
+    "legal": "本章为公开案例参考。是否适用须结合实际交易事实，不保证退款或胜诉。"
+  },
+  {
     "id": "010",
     "slug": "airport-sales-pitch",
     "name": "机场推销：他到底是谁",
@@ -270,7 +351,7 @@ window.BUCHIKUI_CASES=[
     "slug": "alibaba-auction-trap",
     "name": "阿里拍卖局中局：先查谁在拍、谁在竞价",
     "label": "ONLINE AUCTION",
-    "updated": "2026-08-29",
+    "updated": "2026-10-23",
     "meta": {
       "title": "不吃亏｜阿里拍卖局中局：先查谁在拍、谁在竞价",
       "description": "阿里拍卖里既有法院司法拍卖，也有商业机构组织的拍卖。商业拍卖要查处置主体、拍卖人、委托人、标的权属和竞价关系，尤其警惕拍卖方或关联方参与竞价抬价。",
@@ -550,12 +631,12 @@ window.BUCHIKUI_CASES=[
         "note": "明确网络司法拍卖是人民法院依法通过互联网平台处置财产，并规定法院、网络服务提供者的职责以及竞价公开要求。"
       },
       {
-        "title": "【法律】《中华人民共和国拍卖法》",
-        "href": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d43e5c5380444abb9b2e4522e2e6fbcf.html",
+        "title": "【法律】《中华人民共和国拍卖法（2015年修正）》",
+        "href": "https://www.samr.gov.cn/zfjcj/tzgg/art/2023/art_b0cc21115c3545a58f3c27cdea7912b3.html",
         "note": "第二十二条禁止拍卖人及其工作人员参与自己组织的拍卖；第三十条禁止委托人参与竞买；同时规定瑕疵说明、竞买和违约责任。"
       },
       {
-        "title": "【部门规章】《拍卖监督管理办法》",
+        "title": "【部门规章】《拍卖监督管理办法（2020年修订）》",
         "href": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_d526ba7ddd9a4f978e73ca0b2abb3c63.html",
         "note": "对拍卖企业、委托人和竞买人的竞买、串通等行为作出监管要求。"
       },
@@ -592,7 +673,7 @@ window.BUCHIKUI_CASES=[
     "slug": "alipay-advisor-cost",
     "name": "支付宝投顾：0.5% 不是总成本",
     "label": "INVESTMENT ADVISORY",
-    "updated": "2026-08-28",
+    "updated": "2026-10-23",
     "meta": {
       "title": "不吃亏｜支付宝投顾：0.5% 不是总成本",
       "description": "把交易手续费、底层运作费和投顾管理费放在同一张图里，再和 IQQ、国内纳指 ETF 做费用对比。",
@@ -663,7 +744,7 @@ window.BUCHIKUI_CASES=[
       ],
       "comparison": {
         "title": "把所有费用放在同一张图里",
-        "intro": "柱子越长，已知费用越高。ETF 的交易佣金由券商和账户决定，因此单独标注；支付宝投顾则按本案例样本，把交易手续费、运作费和投顾管理费放在同一行。",
+        "intro": "以下保留旧样本，用于比较费用结构；本轮仅复核权威规则，未重新核对所有产品现行费率。ETF交易佣金随账户变化，投顾样本则把交易、运作和投顾费用列在同一行；实际应查最新合同和产品资料。",
         "max": 1.72,
         "legend": [
           {
@@ -875,7 +956,7 @@ window.BUCHIKUI_CASES=[
       {
         "title": "iSharesNasdaq100ETFIQQ官方费用页",
         "href": "https://www.ishares.com/us/products/351653/ishares-nasdaq-100-etf",
-        "note": "当前官方 Expense Ratio 0.12%，费率减免后的 Net Expense Ratio 为 0.10%。"
+        "note": "旧样本登记Expense Ratio 0.12%、减免后Net Expense Ratio 0.10%；本轮未重新核价，现行费用以官方页面为准。"
       },
       {
         "title": "易方达纳斯达克100ETFQDII产品资料概要",
@@ -1182,7 +1263,7 @@ window.BUCHIKUI_CASES=[
     "slug": "bank-small-account-fee",
     "name": "小额账户管理费，唯一账户可能不该扣",
     "label": "BANK FEES",
-    "updated": "2026-08-29",
+    "updated": "2026-10-23",
     "meta": {
       "title": "不吃亏｜小额账户管理费，唯一账户可能不该扣",
       "description": "如果这是你在这家银行唯一的普通账户，2017 年后还在被收小额账户管理费，先让银行逐笔说明收费依据；符合免收条件的，要求核查并退费。",
@@ -1193,7 +1274,7 @@ window.BUCHIKUI_CASES=[
     "shareText": "如果这是你在这家银行唯一的普通账户，2017 年后还在被收小额账户管理费，先让银行逐笔说明：当时你有几个账户、哪个账户享受减免、这笔钱依据什么收。",
     "hero": {
       "title": "银行扣的这几块钱，<br>可能<em>本来就不该扣。</em>",
-      "copy": "如果这是你在这家银行<strong>唯一的普通账户</strong>，2017 年 8 月 1 日以后，银行不应收取年费或小额账户管理费。有多个账户时，也可以指定一个账户享受减免。"
+      "copy": "如果这是你在这家银行<strong>唯一的普通账户</strong>，2017 年 8 月 1 日以后，境内人民币业务中银行应按规定减免年费或小额账户管理费；这项政策不含信用卡、贵宾账户。有多个账户时，也可以申请指定一个符合条件的账户享受减免。"
     },
     "panic": {
       "title": "先查扣费当天，<br>你在这家银行到底有几个账户。",
@@ -1248,9 +1329,9 @@ window.BUCHIKUI_CASES=[
     },
     "sources": [
       {
-        "title": "《中国银监会发改价格规20171250号》",
-        "href": "https://www.ndrc.gov.cn/xwdt/ztzl/gbmjcbzc/gjfzggw/201801/t20180122_1209033.html",
-        "note": "自 2017-08-01 起，客户可指定一个本行账户免收年费和账户管理费；客户未申请时，银行应主动对其在本行开立的唯一账户免收相关费用。"
+        "title": "【规范性文件】《关于取消和暂停商业银行部分基础金融服务收费的通知》",
+        "href": "https://www.ndrc.gov.cn/xxgk/zcfb/ghxwj/201707/t20170710_960917.html",
+        "note": "自2017-08-01执行；境内人民币业务中，客户可指定一个本行账户免年费和账户管理费，未申请时银行应主动减免唯一账户。不含信用卡、贵宾账户。"
       },
       {
         "title": "违规收取个人客户唯一账户小额账户管理费和年费典型案例",
@@ -1271,7 +1352,7 @@ window.BUCHIKUI_CASES=[
     "slug": "bank-wealth-not-guaranteed",
     "name": "银行理财不一定保本",
     "label": "BANK WEALTH",
-    "updated": "2026-08-28",
+    "updated": "2026-10-23",
     "meta": {
       "title": "不吃亏｜银行理财不保本：收益展示、推荐、封闭期与风险测评",
       "description": "银行理财不是存款，也不保证本金和收益。看懂短期年化、首页推荐、理财经理推销、封闭期和风险测评，分清正常净值波动与销售误导。",
@@ -1523,7 +1604,7 @@ window.BUCHIKUI_CASES=[
         "note": "要求售前、售中、售后全流程披露关键信息，建立消费者适当性管理和销售行为可回溯机制。"
       },
       {
-        "title": "【部门规章】《金融产品网络营销管理办法》",
+        "title": "【规范性文件】《金融产品网络营销管理办法》",
         "href": "https://www.cac.gov.cn/2026-04/24/c_1778769008779432.htm",
         "note": "已公布，将于 2026-09-30 施行；明确禁止简单依据短期、非常态业绩比较基准或过往业绩高低对资管产品进行展示排序并误导投资者。"
       },
@@ -2454,7 +2535,7 @@ window.BUCHIKUI_CASES=[
     "slug": "layoff-compensation",
     "name": "公司要裁你：别签个人离职",
     "label": "LAYOFF",
-    "updated": "2026-08-29",
+    "updated": "2026-10-23",
     "meta": {
       "title": "不吃亏｜遭遇裁员：别签“个人离职”",
       "description": "收到裁员、调岗、PIP或纪律处理信号后，先看公司准备把解除理由落在哪条法定路径，再固定工作量、调岗、绩效、考勤和解除证据，最后计算N、代通知金或2N。",
@@ -2764,16 +2845,16 @@ window.BUCHIKUI_CASES=[
       },
       {
         "title": "【行政法规】《中华人民共和国劳动合同法实施条例》",
-        "href": "https://www.beijing.gov.cn/zhengce/gwywj/201105/t20110506_780976.html",
+        "href": "https://xzfg.moj.gov.cn/front/law/detail?LawID=284",
         "note": "第二十条明确第四十条中的一个月工资属于代通知金选择；第二十五条明确违法解除赔偿金与经济补偿不重复；第二十七条明确经济补偿工资基数。"
       },
       {
-        "title": "【司法解释】《最高法劳动争议司法解释一》",
-        "href": "https://www.court.gov.cn/fabu/xiangqing/282121.html",
+        "title": "【司法解释】《最高人民法院关于审理劳动争议案件适用法律问题的解释（一）》",
+        "href": "https://www.court.gov.cn/zixun/xiangqing/282121.html",
         "note": "第四十四条明确辞退、解除、降薪、工龄等用人单位决定引发争议时，由用人单位承担相应举证责任。"
       },
       {
-        "title": "指导案例18号",
+        "title": "指导案例18号：中兴通讯（杭州）有限责任公司诉王鹏劳动合同纠纷案",
         "href": "https://www.court.gov.cn/shenpan/xiangqing/6002.html",
         "note": "最高法明确：绩效排名末位不等同于“不能胜任工作”，公司仍需证明符合法定解除条件。"
       },
@@ -3042,7 +3123,7 @@ window.BUCHIKUI_CASES=[
     "slug": "qingdao-travel",
     "name": "青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿",
     "label": "TRAVEL & TOURISM",
-    "updated": "2026-08-29",
+    "updated": "2026-10-23",
     "meta": {
       "title": "不吃亏｜青岛旅游避坑与维权：海鲜称重、司机带店、游艇出海、景区拍照与民宿毁约",
       "description": "青岛旅游消费避坑：海鲜先写清计价单位、重量和加工费；司机主动带店直接拒绝；游艇只认正规客运码头和全包价；民宿毁约不要替房东点“个人原因取消”。",
@@ -3139,7 +3220,7 @@ window.BUCHIKUI_CASES=[
         "blocks": [
           {
             "label": "关键事实",
-            "html": "<p>公共公园与市政步道属于开放性公共资源，游客使用便携相机或手机拍照属于正当休闲行为，没有禁止拍照的规定。2026 年海之恋公园事件中，个别人以“影响跑步/违规占道”为由对正常拍照的女游客进行长达数分钟的公然辱骂、尾随围堵与阻拦离开；警方认定寻衅滋事违法行为成立，经司法精神病学鉴定后于 2026-08-24 对该男子处以行政拘留十日。在公共场所借故挑衅、公然侮辱他人或限制他人人身自由，已构成《治安管理处罚法》第二十六条（寻衅滋事）、第四十二条（公然侮辱他人）的违法行为；当事人自称患有精神疾病的，必须经法定司法鉴定才可能影响责任认定，不能在现场自行免责。</p>"
+            "html": "<p>在公园拍照应遵守现场管理和隐私、肖像等规则；不能笼统地说公共空间内的任何拍摄都不受限制。遇到尾随围堵、追逐拦截、限制离开等行为，应优先保障安全、留存现场经过并报警。<strong class=\"key\">2026年1月1日起施行的修订《治安管理处罚法》第二十六条、第三十条，分别涉及扰乱公共场所秩序和追逐拦截等寻衅滋事行为。</strong>是否违法、是否具有责任能力及如何处罚，应由公安机关依法调查认定；不能只凭现场争执或当事人口头自述直接下结论。</p>"
           },
           {
             "label": "现在做什么",
@@ -3203,14 +3284,14 @@ window.BUCHIKUI_CASES=[
     "takeaway": "青岛旅游最实用的几件事：海鲜先算总价，司机带店不去，出海先确认码头和全包价，民宿毁约不主动取消。",
     "sources": [
       {
-        "title": "【法律】《中华人民共和国治安管理处罚法》",
-        "href": "https://www.gov.cn/flfg/2012-10/26/content_2252115.htm",
-        "note": "第二十六条规定寻衅滋事行为的处罚；第四十二条规定公然侮辱他人、恐吓或者捏造事实诽谤他人的治安处罚措施。"
+        "title": "【法律】《中华人民共和国治安管理处罚法（2025年修订）》",
+        "href": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/bgt/art/2025/art_8a1c722747214869b28c0ad7a0f8bb7a.html",
+        "note": "2025年修订文本自2026-01-01施行；第二十六条涉及扰乱公共场所秩序，第三十条涉及追逐、拦截等寻衅滋事行为，具体适用由公安机关认定。"
       },
       {
         "title": "青岛警方通报海之恋公园辱骂女游客事件",
         "href": "https://news.cctv.com/2026/08/24/ARTIej3p5tyENDGLbkgwv2KL260824.shtml",
-        "note": "2026-08-24。警方认定寻衅滋事违法行为成立，经司法精神病学鉴定后依据《治安管理处罚法》第十三条、第三十条对施某某处以行政拘留十日。"
+        "note": "媒体报道的个案材料，保留为背景线索；本轮未独立核实原始警方通报，不以该报道推导普遍责任或具体处罚结论。"
       },
       {
         "title": "《辱骂女游客男子经鉴定患有双相情感障碍已被行拘》",
@@ -3259,114 +3340,6 @@ window.BUCHIKUI_CASES=[
       }
     ],
     "legal": "免责声明：本案例用于青岛及海滨旅游中常见餐饮、交通、出海、购物、景区游览与住宿消费风险防范与维权指导。旅游消费价格通常实行市场调节价；经营者自主定价本身不直接等同于违法，关键在于是否真实明确明码标价、是否存在虚假宣传、强制交易、商业贿赂或违约欺诈。突发治安侵权应依法由公安机关认定与处置。具体纠纷认定及行政处罚结果以市场监管、公安、文旅、交通等主管部门依法调查和人民法院生效裁判为准。"
-  },
-  {
-    "id": "008",
-    "slug": "rental-credit-card-first",
-    "name": "信用免押？优先信用卡预授权",
-    "label": "PAYMENT CONTROL",
-    "updated": "2026-09-01",
-    "meta": {
-      "title": "不吃亏｜信用免押？优先信用卡预授权",
-      "description": "信用免押更方便，信用卡预授权更可控。两种方式都能选时，优先信用卡预授权：金额边界更清楚，争议时可以找发卡行核查、调单，交易证据也更容易进入独立复核。",
-      "question": "押金方式能选信用免押或信用卡预授权时，哪个更可控？",
-      "ogTitle": "信用免押？优先信用卡预授权。",
-      "ogDescription": "两种押金方式都能选时，通常优先信用卡预授权。重点看金额边界、争议入口和交易证据。"
-    },
-    "shareText": "租车、住宿、设备租借能选押金方式时，通常优先信用卡预授权。预授权金额和交易记录更清楚，发生争议时还能通过发卡行核查、调单和提出账务异议。",
-    "hero": {
-      "title": "信用免押？<br><em>优先信用卡预授权。</em>",
-      "copy": "信用免押把“先交押金”变成了<strong>后续授权扣款</strong>。两种方式都能选时，信用卡预授权通常更可控：<strong>预授权金额和交易记录更清楚，发生争议时还能通过发卡行核查、调单和提出账务异议。</strong>"
-    },
-    "panic": {
-      "title": "信用卡预授权，<br>为什么更可控？",
-      "items": [
-        {
-          "ruleId": "chargeback-review",
-          "title": "金额边界更清楚",
-          "text": "预授权会形成明确的授权金额和交易记录。结算时，可以把最终请款和原预授权逐笔核对。"
-        },
-        {
-          "ruleId": "chargeback-review",
-          "title": "多一个独立争议入口",
-          "text": "出现异常请款，可以直接向发卡行提出账务异议，要求核查、联系收单侧或调单，不必只在商户客服里打转。"
-        },
-        {
-          "ruleId": "authorization-proof",
-          "title": "交易证据更容易被调出来",
-          "text": "授权、收单、发卡和结算环节都有记录。发生争议时，可以围绕具体交易凭证核查，不必只听商户或平台单方解释。"
-        }
-      ]
-    },
-    "route": {
-      "title": "已经用了信用免押？<br>先保存授权，再确认授权终止。",
-      "intro": "下单时保存扣款授权；服务结束后确认授权是否终止。发生扣款时，把商户的损失主张和平台、支付机构的直接扣款依据分开核对。",
-      "steps": [
-        {
-          "title": "01｜下单时<br>把授权存下来",
-          "text": "别只看“0 押金”。保存交易当时的付款授权和平台规则，至少确认：谁能发起扣款、可以扣什么、金额有没有上限、授权到什么时候、怎么终止。支付宝公开的《付款授权服务协议》明确存在第三方向支付宝发送扣款指令的授权机制。",
-          "href": "https://render.alipay.com/p/f/fd-jnjxk5dz/index.html",
-          "link": "看支付宝付款授权机制 →"
-        },
-        {
-          "title": "02｜服务结束<br>确认授权已结束",
-          "text": "保留还车、退房、归还设备和最终结算记录，并确认付款授权是否已经终止。服务结束后，继续检查后续扣款权限是否同步结束。",
-          "href": "https://render.alipay.com/p/f/fd-jnjxk5dz/index.html",
-          "link": "核对授权范围和终止条件 →"
-        },
-        {
-          "title": "03｜发生扣款<br>把两件事分开问",
-          "text": "先问商户：损失是什么、责任依据是什么、金额怎么算；再问平台或支付机构：凭什么直接扣、依据哪份授权和规则、原始支付指令是什么。平台依据规则对消费者作出不利处理时，应说明事实、理由和依据并提供申诉；支付机构也负有用户争议处理责任。你否认本人或授权交易时，发卡行或非银行支付机构若主张属于本人 / 授权交易，还应承担相应举证责任。",
-          "href": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html",
-          "link": "看平台争议处理规则 →"
-        }
-      ],
-      "note": "<strong>扣款争议分两件事：</strong>商户主张你应赔钱，还要另外证明直接扣款的授权和依据。信用卡预授权多了发卡行这一条独立核查、调单和投诉路径，但并不保证每笔争议都能退款。"
-    },
-    "discussion": {
-      "title": "讨论｜为什么信用卡预授权更可控？",
-      "intro": "关键差别是争议发生后，谁必须进入交易核查链。信用卡预授权多了发卡行的授权、风险监测和调单路径；信用免押则要继续核对商户、平台和支付机构各自的授权与复核责任。",
-      "html": "<ul><li><strong>信用免押 / 授权扣款</strong><small>扣款链路长，审核责任被拆散</small><ol><li><strong>商户</strong><small>提出损失主张 / 发起扣款</small></li><li><strong>旅行平台 / 聚合平台</strong><small>“信息 / 广告服务平台，不参与交易”</small></li><li><strong>支付宝信用免押</strong><small>“支付通道，执行授权指令”</small></li><li><strong>银行卡 / 支付账户</strong><small>完成实际出账</small></li><li><strong>用户</strong><small>往往在扣款后才进入申诉</small></li></ol><p><strong>审核责任在哪里？</strong><br><span>平台：不参与交易</span><br><span>支付机构：只执行指令</span><br><strong>→ 用户最终被推回商户</strong></p></li><li><strong>信用卡预授权</strong><small>链路更短，发卡行有明确审核职责</small><ol><li><strong>商户 / 收单侧</strong><small>发起预授权或最终请款</small></li><li><strong>发卡银行</strong><small>交易授权 · 风险监测 · 异常核查 · 调单</small></li><li><strong>用户</strong><small>发现异常，可直接提出账务异议</small></li></ol><p><strong>发卡银行必须进入审核链</strong><br><span>《商业银行信用卡业务监督管理办法》第五十六条</span></p></li></ul><p><small>示意图只保留与消费者争议处理有关的节点，未展开卡组织、清算等技术环节。</small></p><p><strong>核心区别：扣钱能力之外，更重要的是谁必须审核这笔钱为什么能扣。</strong> 信用卡链路中，发卡行被监管规则明确放在交易授权和风险核查一侧；信用免押链路中，平台与支付机构通过协议强调各自角色边界，扣款可以一路执行，却容易留下<strong>“无人负责”的审核真空</strong>。</p><p><strong>协议角色不等于法定责任可以消失。</strong> 《网络交易平台规则监督管理办法》要求平台依据规则作出不利处理时说明事实、理由和依据，并提供申诉复核；《非银行支付机构监督管理条例》要求支付机构及时妥善处理用户争议、履行投诉处理主体责任。平台和支付机构如果只把消费者推回商户，与这些现行义务并不相容。发生争议时，平台应说明依据并提供申诉复核；支付机构也应处理支付争议，不能只用“去找商户”结束流程。</p>"
-    },
-    "sources": [
-      {
-        "title": "支付宝付款授权服务协议",
-        "href": "https://render.alipay.com/p/f/fd-jnjxk5dz/index.html",
-        "note": "第 1 条、第 2.3 条说明特定第三方向支付宝发送扣款指令的付款授权机制；第 2.6 条将支付宝表述为“被授权指令的执行方”，并约定相关损失与责任原则上由用户与特定第三方协商，支付宝未依指令操作或操作错误等情形除外。具体业务授权范围仍以交易当时实际确认的页面为准。"
-      },
-      {
-        "title": "中国建设银行信用卡预授权常见问题",
-        "href": "https://creditcard.ccb.com/faq/20130311_1362983493/questionlist_1.html",
-        "note": "预授权会先冻结授权金额范围内的额度或资金，结算时再完成预授权确认；消费者应保留预授权、最终结算和撤销记录。"
-      },
-      {
-        "title": "《商业银行信用卡业务监督管理办法》第五十六条",
-        "href": "https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=272670",
-        "note": "第 56 条要求发卡银行建立交易授权和风险监测制度，并对可疑交易通过联系确认、联系收单银行、调单等方式排查处理。"
-      },
-      {
-        "title": "【行政法规】《非银行支付机构监督管理条例》",
-        "href": "https://www.pbc.gov.cn/tiaofasi/144941/144953/5174993/index.html",
-        "note": "第 20 条要求支付服务协议明确电子支付指令、资金结算和纠纷处理等事项，不得不合理减轻支付机构责任；第 35 条要求支付机构及时妥善处理用户争议并履行投诉处理主体责任。"
-      },
-      {
-        "title": "【司法解释】《关于审理银行卡民事纠纷案件若干问题的规定》",
-        "href": "https://www.court.gov.cn/zixun/xiangqing/304771.html",
-        "note": "发卡行、非银行支付机构主张争议交易属于持卡人本人交易或授权交易的，应承担相应举证责任。该规则解决的是交易是否本人 / 授权等问题，不能泛化为所有车损或赔偿金额都由银行举证。"
-      },
-      {
-        "title": "【部门规章】《国家网信办网络交易平台规则监督管理办法》",
-        "href": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html",
-        "note": "自 2026-02-01 起施行。平台依据平台规则对消费者采取不利措施时，应说明事实、理由和依据并提供申诉复核；消费者要求人工判定时，不能只交给 AI / 系统处理。"
-      },
-      {
-        "title": "人民法院报信用免押租车被划扣6000元平台被判退回",
-        "href": "https://www.sdcourt.gov.cn/wfhtqfy/443068/443024/7238821/index.html",
-        "note": "该案中，法院分别审查消费者是否承担损失和平台是否具有直接划扣的合同依据。它提供的是现实争议提醒，不能泛化为所有信用免押扣款都当然无效。"
-      }
-    ],
-    "legal": "免责声明：信用免押和信用卡预授权都可能发生后续扣款或结算。本页的选择建议强调消费者对金额、交易记录和争议处理路径的可控性，不代表信用卡预授权可以阻止一切请款，也不代表任何争议都能退单。具体结果仍取决于交易当时的授权、合同、商户损失证据、平台审核以及收单 / 发卡记录。",
-    "takeaway": "两种押金方式都能选时，通常优先信用卡预授权。"
   },
   {
     "id": "001",
@@ -3774,11 +3747,119 @@ window.BUCHIKUI_CASES=[
     "takeaway": "租车避坑第一步：优先选择责任主体清楚的自营租赁公司。门头、平台广告和“官方授权”都不是责任主体；先查营业执照、合同出租方和收款主体，再看价格。"
   },
   {
+    "id": "008",
+    "slug": "rental-credit-card-first",
+    "name": "信用免押？优先信用卡预授权",
+    "label": "PAYMENT CONTROL",
+    "updated": "2026-10-23",
+    "meta": {
+      "title": "不吃亏｜信用免押？优先信用卡预授权",
+      "description": "信用免押更方便，信用卡预授权更可控。两种方式都能选时，优先信用卡预授权：金额边界更清楚，争议时可以找发卡行核查、调单，交易证据也更容易进入独立复核。",
+      "question": "押金方式能选信用免押或信用卡预授权时，哪个更可控？",
+      "ogTitle": "信用免押？优先信用卡预授权。",
+      "ogDescription": "两种押金方式都能选时，通常优先信用卡预授权。重点看金额边界、争议入口和交易证据。"
+    },
+    "shareText": "租车、住宿、设备租借能选押金方式时，通常优先信用卡预授权。预授权金额和交易记录更清楚，发生争议时还能通过发卡行核查、调单和提出账务异议。",
+    "hero": {
+      "title": "信用免押？<br><em>优先信用卡预授权。</em>",
+      "copy": "信用免押把“先交押金”变成了<strong>后续授权扣款</strong>。两种方式都能选时，信用卡预授权通常更可控：<strong>预授权金额和交易记录更清楚，发生争议时还能通过发卡行核查、调单和提出账务异议。</strong>"
+    },
+    "panic": {
+      "title": "信用卡预授权，<br>为什么更可控？",
+      "items": [
+        {
+          "ruleId": "chargeback-review",
+          "title": "金额边界更清楚",
+          "text": "预授权会形成明确的授权金额和交易记录。结算时，可以把最终请款和原预授权逐笔核对。"
+        },
+        {
+          "ruleId": "chargeback-review",
+          "title": "多一个独立争议入口",
+          "text": "出现异常请款，可以直接向发卡行提出账务异议，要求核查、联系收单侧或调单，不必只在商户客服里打转。"
+        },
+        {
+          "ruleId": "authorization-proof",
+          "title": "交易证据更容易被调出来",
+          "text": "授权、收单、发卡和结算环节都有记录。发生争议时，可以围绕具体交易凭证核查，不必只听商户或平台单方解释。"
+        }
+      ]
+    },
+    "route": {
+      "title": "已经用了信用免押？<br>先保存授权，再确认授权终止。",
+      "intro": "下单时保存扣款授权；服务结束后确认授权是否终止。发生扣款时，把商户的损失主张和平台、支付机构的直接扣款依据分开核对。",
+      "steps": [
+        {
+          "title": "01｜下单时<br>把授权存下来",
+          "text": "别只看“0 押金”。保存交易当时的付款授权和平台规则，至少确认：谁能发起扣款、可以扣什么、金额有没有上限、授权到什么时候、怎么终止。支付宝公开的《付款授权服务协议》明确存在第三方向支付宝发送扣款指令的授权机制。",
+          "href": "https://render.alipay.com/p/f/fd-jnjxk5dz/index.html",
+          "link": "看支付宝付款授权机制 →"
+        },
+        {
+          "title": "02｜服务结束<br>确认授权已结束",
+          "text": "保留还车、退房、归还设备和最终结算记录，并确认付款授权是否已经终止。服务结束后，继续检查后续扣款权限是否同步结束。",
+          "href": "https://render.alipay.com/p/f/fd-jnjxk5dz/index.html",
+          "link": "核对授权范围和终止条件 →"
+        },
+        {
+          "title": "03｜发生扣款<br>把两件事分开问",
+          "text": "先问商户：损失是什么、责任依据是什么、金额怎么算；再问平台或支付机构：凭什么直接扣、依据哪份授权和规则、原始支付指令是什么。平台依据规则对消费者作出不利处理时，应说明事实、理由和依据并提供申诉；支付机构也负有用户争议处理责任。你否认本人或授权交易时，发卡行或非银行支付机构若主张属于本人 / 授权交易，还应承担相应举证责任。",
+          "href": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html",
+          "link": "看平台争议处理规则 →"
+        }
+      ],
+      "note": "<strong>扣款争议分两件事：</strong>商户主张你应赔钱，还要另外证明直接扣款的授权和依据。信用卡预授权多了发卡行这一条独立核查、调单和投诉路径，但并不保证每笔争议都能退款。"
+    },
+    "discussion": {
+      "title": "讨论｜为什么信用卡预授权更可控？",
+      "intro": "关键差别是争议发生后，谁必须进入交易核查链。信用卡预授权多了发卡行的授权、风险监测和调单路径；信用免押则要继续核对商户、平台和支付机构各自的授权与复核责任。",
+      "html": "<ul><li><strong>信用免押 / 授权扣款</strong><small>扣款链路长，审核责任被拆散</small><ol><li><strong>商户</strong><small>提出损失主张 / 发起扣款</small></li><li><strong>旅行平台 / 聚合平台</strong><small>“信息 / 广告服务平台，不参与交易”</small></li><li><strong>支付宝信用免押</strong><small>“支付通道，执行授权指令”</small></li><li><strong>银行卡 / 支付账户</strong><small>完成实际出账</small></li><li><strong>用户</strong><small>往往在扣款后才进入申诉</small></li></ol><p><strong>审核责任在哪里？</strong><br><span>平台：不参与交易</span><br><span>支付机构：只执行指令</span><br><strong>→ 用户最终被推回商户</strong></p></li><li><strong>信用卡预授权</strong><small>链路更短，发卡行有明确审核职责</small><ol><li><strong>商户 / 收单侧</strong><small>发起预授权或最终请款</small></li><li><strong>发卡银行</strong><small>交易授权 · 风险监测 · 异常核查 · 调单</small></li><li><strong>用户</strong><small>发现异常，可直接提出账务异议</small></li></ol><p><strong>发卡银行必须进入审核链</strong><br><span>《商业银行信用卡业务监督管理办法》第五十六条</span></p></li></ul><p><small>示意图只保留与消费者争议处理有关的节点，未展开卡组织、清算等技术环节。</small></p><p><strong>核心区别：扣钱能力之外，更重要的是谁必须审核这笔钱为什么能扣。</strong> 信用卡链路中，发卡行被监管规则明确放在交易授权和风险核查一侧；信用免押链路中，平台与支付机构通过协议强调各自角色边界，扣款可以一路执行，却容易留下<strong>“无人负责”的审核真空</strong>。</p><p><strong>协议角色不等于法定责任可以消失。</strong> 《网络交易平台规则监督管理办法》要求平台依据规则作出不利处理时说明事实、理由和依据，并提供申诉复核；《非银行支付机构监督管理条例》要求支付机构及时妥善处理用户争议、履行投诉处理主体责任。平台和支付机构如果只把消费者推回商户，与这些现行义务并不相容。发生争议时，平台应说明依据并提供申诉复核；支付机构也应处理支付争议，不能只用“去找商户”结束流程。</p>"
+    },
+    "sources": [
+      {
+        "title": "支付宝付款授权服务协议",
+        "href": "https://render.alipay.com/p/f/fd-jnjxk5dz/index.html",
+        "note": "第 1 条、第 2.3 条说明特定第三方向支付宝发送扣款指令的付款授权机制；第 2.6 条将支付宝表述为“被授权指令的执行方”，并约定相关损失与责任原则上由用户与特定第三方协商，支付宝未依指令操作或操作错误等情形除外。具体业务授权范围仍以交易当时实际确认的页面为准。"
+      },
+      {
+        "title": "中国建设银行信用卡预授权常见问题",
+        "href": "https://creditcard.ccb.com/faq/20130311_1362983493/questionlist_1.html",
+        "note": "预授权会先冻结授权金额范围内的额度或资金，结算时再完成预授权确认；消费者应保留预授权、最终结算和撤销记录。"
+      },
+      {
+        "title": "【部门规章】《商业银行信用卡业务监督管理办法》",
+        "href": "https://www.nfra.gov.cn/cn/view/pages/rulesDetail.html?docId=272670",
+        "note": "第 56 条要求发卡银行建立交易授权和风险监测制度，并对可疑交易通过联系确认、联系收单银行、调单等方式排查处理。"
+      },
+      {
+        "title": "【行政法规】《非银行支付机构监督管理条例》",
+        "href": "https://www.pbc.gov.cn/tiaofasi/144941/144953/5174993/index.html",
+        "note": "第 20 条要求支付服务协议明确电子支付指令、资金结算和纠纷处理等事项，不得不合理减轻支付机构责任；第 35 条要求支付机构及时妥善处理用户争议并履行投诉处理主体责任。"
+      },
+      {
+        "title": "【司法解释】《关于审理银行卡民事纠纷案件若干问题的规定》",
+        "href": "https://www.court.gov.cn/zixun/xiangqing/304771.html",
+        "note": "发卡行、非银行支付机构主张争议交易属于持卡人本人交易或授权交易的，应承担相应举证责任。该规则解决的是交易是否本人 / 授权等问题，不能泛化为所有车损或赔偿金额都由银行举证。"
+      },
+      {
+        "title": "【部门规章】《国家网信办网络交易平台规则监督管理办法》",
+        "href": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2026/art_85b474fc5a08494bb60ca6a280b98d7d.html",
+        "note": "自 2026-02-01 起施行。平台依据平台规则对消费者采取不利措施时，应说明事实、理由和依据并提供申诉复核；消费者要求人工判定时，不能只交给 AI / 系统处理。"
+      },
+      {
+        "title": "人民法院报信用免押租车被划扣6000元平台被判退回",
+        "href": "https://www.sdcourt.gov.cn/wfhtqfy/443068/443024/7238821/index.html",
+        "note": "该案中，法院分别审查消费者是否承担损失和平台是否具有直接划扣的合同依据。它提供的是现实争议提醒，不能泛化为所有信用免押扣款都当然无效。"
+      }
+    ],
+    "legal": "免责声明：信用免押和信用卡预授权都可能发生后续扣款或结算。本页的选择建议强调消费者对金额、交易记录和争议处理路径的可控性，不代表信用卡预授权可以阻止一切请款，也不代表任何争议都能退单。具体结果仍取决于交易当时的授权、合同、商户损失证据、平台审核以及收单 / 发卡记录。",
+    "takeaway": "两种押金方式都能选时，通常优先信用卡预授权。"
+  },
+  {
     "id": "012",
     "slug": "thailand-travel-safety",
     "name": "泰国旅游安全：识别异常风险信号",
     "label": "TRAVEL SAFETY",
-    "updated": "2026-08-29",
+    "updated": "2026-10-23",
     "meta": {
       "title": "不吃亏｜泰国旅游安全：识别异常风险信号",
       "description": "泰国旅行中，如果陌生人开始替你决定目的地、车辆、住宿或要求你减少与家人联系，立即把它当成高风险变化；同时警惕景点关闭、低价 tuk-tuk、DCC、租车损坏索赔等常见骗局。",
@@ -3789,7 +3870,7 @@ window.BUCHIKUI_CASES=[
     "shareText": "泰国旅行要警惕四类异常：免费但不合理、行程被改变、交通被控制、被要求隔离。几个信号同时出现时，立即提高警惕。",
     "hero": {
       "title": "泰国旅行，<br><em>别把行程、交通和手机交给别人控制。</em>",
-      "copy": "普通游客路线风险通常可控。<strong>真正需要立即脱离的变化，是陌生人开始替你决定去哪、坐什么车、住哪里，甚至要求你交出手机或减少与家人联系。</strong>"
+      "copy": "出行前应核对当时的官方旅行与领事提醒。<strong>真正需要立即脱离的变化，是陌生人开始替你决定去哪、坐什么车、住哪里，甚至要求你交出手机或减少与家人联系。</strong>"
     },
     "panic": {
       "title": "陌生人开始替你决定去哪、坐什么车、联系谁，<br>立即脱离。",
@@ -3868,14 +3949,14 @@ window.BUCHIKUI_CASES=[
         "note": "2026 年 6 月 5 日。说明诈骗分子如何通过冒充执法人员、要求断联和独自旅行，远程操控受害者制造“绑架”假象。"
       },
       {
-        "title": "《中国驻泰国使馆：谨慎前往达府、湄索等泰缅边境地区》",
+        "title": "关于谨慎前往泰缅边境地区的领事提醒",
         "href": "https://th.china-embassy.gov.cn/chn/zgqz/1w1/202606/t20260624_11951552.html",
-        "note": "2026 年 6 月 24 日。使馆提示泰缅边境存在电诈、网赌、偷渡、人口贩运等跨境违法犯罪风险。"
+        "note": "2026-06-24使馆官方领事提醒，涉及泰缅边境风险和入境额外审查；属于风险提示，不是法律或裁判。"
       },
       {
-        "title": "《中国驻泰国使馆：谨防被诱骗经泰国前往泰缅边境》",
+        "title": "提醒中国公民谨防被诱骗经泰国前往泰缅边境",
         "href": "https://th.china-embassy.gov.cn/sgxw/202604/t20260424_11899129.html",
-        "note": "2026 年 4 月 24 日。特别提醒警惕“高薪招聘”“结伴旅行”“旅游观光”等名义下的诱骗。"
+        "note": "2026-04-24使馆官方安全提醒，提示邀约甄别、证件保管、与亲友联系及遇险求助；属于风险提示，不是法律或裁判。"
       },
       {
         "title": "TheGrandPalace开放时间与购票",
@@ -3920,7 +4001,7 @@ window.BUCHIKUI_CASES=[
     "slug": "transport-platform-layered-fees",
     "name": "出行平台的层层抽成：你付的钱去哪了",
     "label": "MOBILITY PLATFORMS",
-    "updated": "2026-09-02",
+    "updated": "2026-10-23",
     "meta": {
       "title": "不吃亏｜出行平台的层层抽成：你付的钱去哪了",
       "description": "网约车订单可能跨多个平台流转，同城货运也可能通过算法和竞价不断调整司机端运价。遇到价格差，保存两端账单、订单流转和每层收费，才能把钱对清楚。",
@@ -4215,12 +4296,12 @@ window.BUCHIKUI_CASES=[
         "note": "要求算法服务保护劳动者权益，建立完善平台订单分配、报酬构成及支付等相关算法，并要求算法机制接受相应监督检查和数据支持。"
       },
       {
-        "title": "【政策文件】《八部门关于加强交通运输新业态从业人员权益保障工作的意见》",
+        "title": "【政策文件】《关于加强交通运输新业态从业人员权益保障工作的意见》",
         "href": "https://xxgk.mot.gov.cn/2020/jigou/ysfws/202111/t20211130_3628783.html",
         "note": "要求网约车订单完成后在司机端列明乘客支付总额、司机劳动报酬和本单抽成比例，并公开计价及收入分配规则。"
       },
       {
-        "title": "【政策文件】《五部门关于切实做好网约车聚合平台规范管理有关工作的通知》",
+        "title": "【政策文件】《关于切实做好网约车聚合平台规范管理有关工作的通知》",
         "href": "https://xxgk.mot.gov.cn/jigou/ysfws/202304/t20230426_3811942.html",
         "note": "要求聚合平台显著展示合作网约车平台、许可、投诉方式和纠纷程序，落实首问负责并规范价格行为。"
       },
@@ -4230,7 +4311,7 @@ window.BUCHIKUI_CASES=[
         "note": "要求平台合理确定并公示计价、竞价和派单规则，不得诱导货主不合理压价或司机恶性低价竞争。"
       },
       {
-        "title": "督导货拉拉落实反垄断合规整改",
+        "title": "市场监管总局督导货拉拉落实反垄断合规整改",
         "href": "https://www.samr.gov.cn/zt/ndzt/2025n/zhzznjsjzwhgpjzsczx/zjbs/art/2026/art_4a37633a95ec4927a3898be3a8bd96dc.html",
         "note": "2026年6月明确要求货拉拉停止利用算法不合理压低货运价格，公平合理运用调价算法，公示计价规则和涨降理由；同时公布整体抽成约11%降至约9%。"
       },
@@ -4251,6 +4332,87 @@ window.BUCHIKUI_CASES=[
       }
     ],
     "legal": "安吉网约车内容是一笔公开报道个案，不能推定所有聚合订单都按相同路径流转。货拉拉“500多→300→320→290”的具体价格序列来自司机口述线索，公开资料不足以证明其为固定算法；本页可确认的监管事实是市场监管总局已要求货拉拉停止利用算法不合理压低货运价格。本页关于“累计抽成上限、接单前双边透明、最低保障收入锁定、限制个体化底价试探”的内容属于 Buchikui 治理建议，不是现行法律已经统一要求的制度。具体费用和责任仍应以订单、合同、平台规则、属地监管要求及后台数据为准。"
+  },
+  {
+    "id": "018",
+    "slug": "travel-booking",
+    "name": "订房与跟团旅游",
+    "updated": "2026-10-23",
+    "meta": {
+      "title": "不吃亏｜订房与跟团旅游",
+      "description": "无购物团加进玉石博物馆行程、到店付款却预扣、退房扣全款：对照报名和下单时的承诺。",
+      "question": "说好的无购物、到店付款，实际安排为什么变了？"
+    },
+    "hero": {
+      "title": "说好的安排，<br>为什么变了？",
+      "copy": "无购物团落地后增加玉石博物馆行程，到店付款却提前扣款。先对照承诺与实际发生了什么，再看对应个案；退订客房的材料另供查阅。"
+    },
+    "scenarios": [
+      {
+        "ruleId": "consumer-hotel-cancel",
+        "title": "超过限时取消客房",
+        "blocks": [
+          {
+            "label": "关键事实",
+            "html": "<p>离入住还有多久、订后多久取消、能否再销售和实际损失，不能被一条扣全款的约定抹掉。</p>"
+          },
+          {
+            "label": "现在做什么",
+            "kind": "action",
+            "html": "<p>按订单和取消时间说明情况，要求核实扣款依据及损失；不能只因提前取消就预期全额退款。</p>"
+          }
+        ]
+      },
+      {
+        "ruleId": "consumer-arrival-payment",
+        "title": "到店付款却提前扣款",
+        "blocks": [
+          {
+            "label": "关键事实",
+            "html": "<p>到店付款和提前扣全款存在实质区别。是否在下单时特别提示了预扣例外，是关键事实。</p>"
+          },
+          {
+            "label": "现在做什么",
+            "kind": "action",
+            "html": "<p>将下单页面的付款安排与实际扣款对照，再核对例外怎样提示，不把长协议里出现过一句当成当然充分告知。</p>"
+          }
+        ]
+      },
+      {
+        "ruleId": "consumer-tour-museum",
+        "title": "无购物团却增加玉石博物馆行程",
+        "blocks": [
+          {
+            "label": "关键事实",
+            "html": "<p>本案游客报名时确认没有购物环节，落地后签地接合同却增加玉石博物馆行程。问题在于行程与宣传不符，不能仅凭“博物馆”的名称判断一次交易。</p>"
+          },
+          {
+            "label": "现实提醒",
+            "kind": "action",
+            "html": "<p>保留报名时确认的行程，核对地接合同后来增加了什么。原通报未说明游客购买玉石、商品真假或实际损失。</p>"
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "title": "2026年最高法消费典型案例：限时退订客房",
+        "href": "https://www.court.gov.cn/zixun/xiangqing/494701.html",
+        "note": ""
+      },
+      {
+        "title": "2022年最高法消费典型案例：到店付款预扣",
+        "href": "https://www.court.gov.cn/shenpan/xiangqing/350961.html",
+        "note": ""
+      },
+      {
+        "title": "无购物旅游套餐落地后增加玉石博物馆行程案",
+        "href": "https://whhlyt.hunan.gov.cn/whhlyt/scjg/zfjc/202606/t20260615_34002094.html",
+        "note": ""
+      }
+    ],
+    "takeaway": "报名时怎么说、下单时怎么写，都要与实际行程和扣款对照。",
+    "legal": "本章包含裁判参考与监管处罚案例，不能由参观或消费行为直接推定受骗。"
   }
 ];
-window.BUCHIKUI_FACETS={"airport-sales-pitch":{"category":"线下推销","stage":["pre","during"],"types":["law","regulation","rule"],"related":[{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"},{"slug":"dating-safety","name":"相亲约会：第一次见面要保留随时离开的能力"},{"slug":"beauty-hair","name":"美容美发避免预付费"}]},"alibaba-auction-trap":{"category":"拍卖","stage":["pre","during","dispute"],"types":["law","case","rule"],"related":[{"slug":"rental","name":"租车警惕第三方平台"},{"slug":"rental-credit-card-first","name":"信用免押？优先信用卡预授权"}]},"alipay-advisor-cost":{"category":"投资与费用","stage":["pre","during"],"types":["rule"],"related":[]},"appliance-repair-trap":{"category":"维修","stage":["during","dispute"],"types":["rule"],"related":[]},"bank-small-account-fee":{"category":"银行","stage":["dispute"],"types":["case"],"related":[]},"bank-wealth-not-guaranteed":{"category":"银行与理财","stage":["pre","during","dispute"],"types":["other"],"related":[]},"beauty-hair":{"category":"预付消费","stage":["pre","during","dispute"],"types":["interpretation","regulation","rule"],"related":[{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"dating-safety","name":"相亲约会：第一次见面要保留随时离开的能力"},{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"}]},"dating-safety":{"category":"人身与财产安全","stage":["pre","during"],"types":["law","regulation","rule"],"related":[{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"},{"slug":"beauty-hair","name":"美容美发避免预付费"}]},"internet-court-self-litigation":{"category":"诉讼","stage":["dispute"],"types":["interpretation","rule"],"related":[]},"layoff-compensation":{"category":"劳动","stage":["during","dispute"],"types":["case","interpretation","law","regulation"],"related":[]},"mobile-plan-cost":{"category":"通信","stage":["during","dispute"],"types":["rule"],"related":[]},"qingdao-travel":{"category":"旅行消费","stage":["pre","during","dispute"],"types":["rule","law","regulation"],"related":[{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"dating-safety","name":"相亲约会：第一次见面要保留随时离开的能力"},{"slug":"beauty-hair","name":"美容美发避免预付费"}]},"rental-credit-card-first":{"category":"租车","stage":["pre","dispute"],"types":["other","interpretation","rule","regulation"],"related":[{"slug":"rental","name":"租车警惕第三方平台"},{"slug":"alibaba-auction-trap","name":"阿里拍卖局中局：先查谁在拍、谁在竞价"}]},"rental":{"category":"租车","stage":["pre","during","dispute"],"types":["regulation","rule"],"related":[{"slug":"rental-credit-card-first","name":"信用免押？优先信用卡预授权"},{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"alibaba-auction-trap","name":"阿里拍卖局中局：先查谁在拍、谁在竞价"}]},"thailand-travel-safety":{"category":"旅行","stage":["during"],"types":["case"],"related":[]},"transport-platform-layered-fees":{"category":"平台交易","stage":["during","dispute"],"types":["rule","case"],"related":[]}};
+window.BUCHIKUI_FACETS={"after-sales":{"category":"售后服务","stage":["during","dispute"],"types":["case"],"related":[{"slug":"travel-booking","name":"订房与跟团旅游"}]},"airport-sales-pitch":{"category":"线下推销","stage":["pre","during"],"types":["law","regulation","rule"],"related":[{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"},{"slug":"dating-safety","name":"相亲约会：第一次见面要保留随时离开的能力"},{"slug":"beauty-hair","name":"美容美发避免预付费"}]},"alibaba-auction-trap":{"category":"拍卖","stage":["pre","during","dispute"],"types":["law","rule"],"related":[{"slug":"rental","name":"租车警惕第三方平台"},{"slug":"rental-credit-card-first","name":"信用免押？优先信用卡预授权"}]},"alipay-advisor-cost":{"category":"投资与费用","stage":["pre","during"],"types":["rule"],"related":[]},"appliance-repair-trap":{"category":"维修","stage":["during","dispute"],"types":["rule"],"related":[]},"bank-small-account-fee":{"category":"银行","stage":["dispute"],"types":["rule"],"related":[]},"bank-wealth-not-guaranteed":{"category":"银行与理财","stage":["pre","during","dispute"],"types":["rule"],"related":[]},"beauty-hair":{"category":"预付消费","stage":["pre","during","dispute"],"types":["interpretation","regulation","rule","case"],"related":[{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"dating-safety","name":"相亲约会：第一次见面要保留随时离开的能力"},{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"}]},"dating-safety":{"category":"人身与财产安全","stage":["pre","during"],"types":["law","regulation","rule"],"related":[{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"},{"slug":"beauty-hair","name":"美容美发避免预付费"}]},"internet-court-self-litigation":{"category":"诉讼","stage":["dispute"],"types":["interpretation","rule"],"related":[]},"layoff-compensation":{"category":"劳动","stage":["during","dispute"],"types":["law","interpretation","case","regulation"],"related":[]},"mobile-plan-cost":{"category":"通信","stage":["during","dispute"],"types":["rule"],"related":[]},"qingdao-travel":{"category":"旅行消费","stage":["pre","during","dispute"],"types":["rule","law","regulation"],"related":[{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"dating-safety","name":"相亲约会：第一次见面要保留随时离开的能力"},{"slug":"beauty-hair","name":"美容美发避免预付费"}]},"rental":{"category":"租车","stage":["pre","during","dispute"],"types":["regulation","rule"],"related":[{"slug":"rental-credit-card-first","name":"信用免押？优先信用卡预授权"},{"slug":"airport-sales-pitch","name":"机场推销：他到底是谁"},{"slug":"alibaba-auction-trap","name":"阿里拍卖局中局：先查谁在拍、谁在竞价"}]},"rental-credit-card-first":{"category":"租车","stage":["pre","dispute"],"types":["rule","interpretation","regulation"],"related":[{"slug":"rental","name":"租车警惕第三方平台"},{"slug":"alibaba-auction-trap","name":"阿里拍卖局中局：先查谁在拍、谁在竞价"}]},"thailand-travel-safety":{"category":"旅行","stage":["during"],"types":["other"],"related":[]},"transport-platform-layered-fees":{"category":"平台交易","stage":["during","dispute"],"types":["rule","case"],"related":[]},"travel-booking":{"category":"旅行消费","stage":["pre","dispute"],"types":["case"],"related":[{"slug":"after-sales","name":"售后与退订"},{"slug":"qingdao-travel","name":"青岛旅游消费避坑与维权：海鲜、交通、出海、景区拍照与住宿"}]}};

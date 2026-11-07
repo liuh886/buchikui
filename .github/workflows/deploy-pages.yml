@@ -30,7 +30,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Validate JavaScript syntax
         run: |
@@ -38,12 +38,12 @@ jobs:
           for file in scripts/*.mjs scripts/lib/*.mjs; do node --check "$file"; done
 
       - name: Behaviour tests
-        run: npm test
+        run: npm run build && npm test
 
       - name: Validate generated artifacts are in sync
         run: |
           npm run build
-          git diff --exit-code -- legal-updates.js cases-data.js docs/content-index.md
+          git diff --exit-code -- legal-updates.js cases-data.js content-data.js sw.js docs/content-index.md sitemap.xml
 
       - name: Validate corpus and frontend contracts
         run: npm run check

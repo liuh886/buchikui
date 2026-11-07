@@ -22,7 +22,7 @@ export async function listDataFiles(){
 /** @deprecated 同步读取会拿不到 glob 结果；请用 await listDataFiles() */
 export const DATA_FILES=[];
 
-const RENDER_FILES=['render-cases.js','legal-updates.js'];
+const RENDER_FILES=['book-order.js','render-cases.js','legal-updates.js','content-data.js','survey-portrait.js','survey-state.js'];
 
 /**
  * 在 vm 沙箱里跑 CASE 源文件，拿到它们挂到 window 上的数据。
@@ -73,6 +73,8 @@ export async function loadRuntime(){
       cases:await resolveSources(runtime.BUCHIKUI_CASES),
       render:runtime.BuchikuiRender,
       authority:runtime.BuchikuiAuthority,
+      scenarios:runtime.BuchikuiSurvey,
+      book:runtime.BuchikuiBook,
       stage:runtime.BUCHIKUI_FACET_STAGE||{}
     };
   })();
@@ -125,7 +127,7 @@ function rewriteAssets(html,prefix){
 }
 
 function staticHeader(base,name){
-  return `<div class="shell header-inner"><a class="brand" href="${base}" aria-label="不吃亏首页">不吃亏</a><span class="header-note">${esc(name||'消费普法 · 只看关键依据')}</span></div>`;
+  return `<div class="shell header-inner"><div class="brand-block"><a class="brand" href="${base}" aria-label="不吃亏首页">不吃亏</a><span class="header-note">不花钱，也能买到教训。</span></div><nav class="header-nav" aria-label="主要导航"><a href="${base}?view=library">资料库</a></nav></div>`;
 }
 
 function articleJsonLd(item,canonical){

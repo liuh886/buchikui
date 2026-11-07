@@ -7,6 +7,9 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { prepareSite } from './prepare-site.mjs';
+import { BASE_PATH } from './prerender-cases.mjs';
+import {readPublicContent} from './lib/content-db.mjs';
+import {handleSurveyResponse,handleSurveyStats} from './lib/survey-responses.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const site = path.join(root, '_site');
@@ -16,11 +19,14 @@ const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8',
   '.webmanifest': 'application/manifest+json; charset=utf-8', '.xml': 'application/xml; charset=utf-8',
-  '.txt': 'text/plain; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml'
+  '.txt': 'text/plain; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp':'image/webp'
 };
 
 async function resolve(urlPath) {
-  const clean = decodeURIComponent(urlPath.split('?')[0]);
+  let clean = decodeURIComponent(urlPath.split('?')[0]);
+  // 同时预览根路径与 GitHub Pages 子路径，404 壳的绝对资源地址也能实际验证。
+  if(clean===BASE_PATH.slice(0,-1)) clean='/';
+  else if(clean.startsWith(BASE_PATH)) clean=`/${clean.slice(BASE_PATH.length)}`;
   const candidates = clean.endsWith('/')
     ? [path.join(site, clean, 'index.html')]
     : [path.join(site, clean), path.join(site, clean, 'index.html'), path.join(site, `${clean}.html`)];
@@ -39,6 +45,18 @@ if (!existsSync(path.join(site, 'index.html'))) {
 }
 
 createServer(async (req, res) => {
+  const pathname=new URL(req.url||'/', 'http://localhost').pathname;
+  if(pathname==='/api/survey-stats'||pathname===`${BASE_PATH}api/survey-stats`){handleSurveyStats(req,res);return;}
+  if(pathname==='/api/survey-responses'||pathname===`${BASE_PATH}api/survey-responses`){await handleSurveyResponse(req,res,pathname);return;}
+  if(pathname==='/api/content'||pathname===`${BASE_PATH}api/content`){
+    res.setHeader('cache-control','no-store');
+    res.setHeader('content-type','application/json; charset=utf-8');
+    res.setHeader('x-content-type-options','nosniff');
+    if(req.method!=='GET'){res.writeHead(405,{'allow':'GET'});res.end(JSON.stringify({error:'method_not_allowed'}));return;}
+    try{const content=readPublicContent();res.writeHead(200);res.end(JSON.stringify(content));}
+    catch(error){res.statusCode=503;res.end(JSON.stringify({error:'content_unavailable'}));}
+    return;
+  }
   const file = await resolve(req.url || '/');
   // 找不到就回落到 404 壳，但**状态码必须是 404**：软 404 会让人工做的
   // 「链接可达性」检查误判通过，而这正是发布 bar 里机器查不了的那一项。
@@ -61,7 +79,7 @@ createServer(async (req, res) => {
     res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' });
     res.end('not found');
   }
-}).listen(port, () => {
+}).listen(port,'127.0.0.1', () => {
   console.log(`预览地址  http://localhost:${port}/`);
   console.log(`案例页    http://localhost:${port}/c/rental/`);
   console.log('Ctrl+C 停止。移动端检查建议用浏览器设备模拟切到 390px。');

@@ -1,0 +1,21 @@
+{
+  "id": "case-consumer-annual-closure",
+  "kind": "case",
+  "title": "2025年最高法消费典型案例：年卡停业",
+  "weight": "典型案例",
+  "issuer": "最高人民法院",
+  "date": "2025-03-14",
+  "issued": "2025-03-14",
+  "verified": "2026-10-23",
+  "url": "https://www.court.gov.cn/zixun/xiangqing/459331.html",
+  "facts": "消费者花800元办理一年不限次数的儿童乐园会员卡。约三个月后门店停业，年卡仍在有效期内，消费者后来起诉要求解除合同、退还余款。",
+  "holding": "法院从实际停业时计算未履行的剩余期限，而非等到起诉解除时才算，判退599元。",
+  "note": "date与issued均为最高法公开发布日期，未披露原判决日期。案例二。边界：计时年卡，不是计次卡。",
+  "locator": "案例二",
+  "consumerTopic": "beauty-hair",
+  "selectionTags": [
+    "年卡",
+    "停业"
+  ],
+  "boundary": "计时年卡，不是计次卡。"
+}

@@ -1,136 +1,238 @@
+# 当前计划：角色库、案例库与题库完善（2026-10-25）
+
+产品目标、批次、角色方向和质量门槛统一见[三库完善计划](consumer-portrait/library-improvement-plan.md)，需求决定已回写PRD第13节。上一轮收尾经独立复核通过；真人/真机仍待验，本节为下一轮执行清单，不表示已实施。
+
+- [x] 建立完善计划、明确六角色方向及三库依赖，回写PRD与文档索引。
+- [x] **P0：角色价值定义、现行8题盘点与12候选问题筛选**：
+  - [x] **P0.1 六角色定义与对比稿**：产出全角色定义表（稳定ID、名称候选、画面/道具、事实短句、生成依据、禁止推断含义、两则推荐策略、分享卡短句、alt文字、适用版本、证据位置）；落实小团雀特别规则（全NO与有skip文案区分、试拟“轻盈小团雀”）；建立海獭（承诺落差）与水豚（安排变动）的明确辨识对比。交付 `tasks/consumer-portrait/p0-portrait-definitions.md`。
+  - [x] **P0.2 现行8题与原案逐项盘点及整卷覆盖表**：审查健身Q3与乐园Q4停业重复、写真Q6多条件、电池Q7换新对象、二手Q8售假识别、旅游Q1/Q2接触面；逐题记录保留/改写/替换/退役建议与整卷覆盖表。交付 `tasks/consumer-portrait/p0-question-audit.md`。
+  - [x] **P0.3 12个候选消费问题筛选与4个优先深审清单**：盘点18章现有真实来源，筛选12个候选日常消费波折问题，锁定优先深审的4个候选清单（覆盖自动续费/扣费同意、退款附加条件、七天无理由退货、租车验损等高频场景）。交付 `tasks/consumer-portrait/p0-candidate-cases.md`。
+  - [x] **P0.4 P0门槛核验与成果同步**：确保不越界测能力、不设能力标签、无虚假通过宣称，三库对齐后锁定P1候选。
+
+## P0 阶段交付复盘与结论 (Review)
+- **六角色定义闭环**：
+  - 产出 [p0-portrait-definitions.md](consumer-portrait/p0-portrait-definitions.md)；
+  - 明确“海獭（说好与实际不同/实物内容落差）”与“水豚（原定安排被单方调整/履约流程时空变动）”的核心区隔与道具记忆点；
+  - 规范小团雀分母区分（全NO vs 有skip）及分享卡隐私隔离，试拟“轻盈小团雀”以提升认领自豪感并消除能力暗示。
+- **题目与原案诊断明确**：
+  - 产出 [p0-question-audit.md](consumer-portrait/p0-question-audit.md)；
+  - 定位 Q3（健身）与 Q4（乐园）预付闭店重叠，建议替换 Q4 为非闭店高频争议；诊断 Q6（写真）复合度过高，建议简化；诊断 Q7（电池）与 Q1（旅游）接触面局限。
+- **候选问题与优先清单锁定**：
+  - 产出 [p0-candidate-cases.md](consumer-portrait/p0-candidate-cases.md)；
+  - 盘点 18 章法源，筛选 12 个贴近日常生活的消费问题，正式锁定 4 个进入 P1 阶段深度事实与文本审核的候选：
+    1. C01 网购拆封查验拒绝七天无理由退货（`after-sales`）；
+    2. C02 APP会员自动续费未提前显著通知扣款（数字消费/`mobile-plan-cost`）；
+    3. C03 预付充值卡未消费退卡被按最高原价倒扣（`beauty-hair`）；
+    4. C04 租车还车提灯验损被无依据索赔划痕费与停运费（`rental`）。
+- **退出门槛核验**：确认未越界测能力、未设心理性格标签、角色定义表与题目覆盖表完备，具备推进 P1 深度审核的条件。
+
+- [x] **P1：优先深审4个候选，争取2–4个合格案例/修订单元；完成八题逐项处置与最多4道新题草稿，未核验不发布**：
+  - [x] **P1.1 4个优先候选深度审核**：深入审核 C01（拆封退货）、C02（自动续费）、C03（退卡原价倒扣）、C04（租车提灯验损）的事实要点、裁判边界、适用法条、短读与禁止概括，交付 `tasks/consumer-portrait/p1-case-review.md`。
+  - [x] **P1.2 八题处置与新题草稿拟定**：完成现行 8 题逐题审查；确立 Q4 替换方案（储值卡未用退款门市原价倒扣）与 Q6 改写方案（去加价升级复合度，聚焦未完成独立项目）；编制 4 道标准新题草稿并锁定新 8 题候选卷，交付 `tasks/consumer-portrait/p1-question-drafts.md`。
+
+- [x] **P2：锁定候选卷，完成题库与规则数据落地及全量回归**：
+  - [x] **P2.1 案例与规则入库**：在 `corpus/cases` 新增 `case-consumer-prepaid-retail-deduction.json`（最高法典型判例），在 `editorial/game-rules.json` 新增 `consumer-prepaid-retail-deduction`。
+  - [x] **P2.2 题库替换与旧题安全归档**：在 `editorial/retired-questions.json` 归档 `survey-annual-closure`（历史答卷不损毁）；在 `editorial/game-content.json` 正式替换 Q4 为 `survey-prepaid-retail-deduction` 并改写 Q6；更新情境组 `prepaid`。
+  - [x] **P2.3 画像机制与审核指纹对齐**：在 `editorial/consumer-portraits.json` 同步经历机制 `settlement-obstacle`，配置 `prepaid-retail-deduction-lesson` 及其严格校验指纹（`12f07354...`）。
+  - [x] **P2.4 全量构建与双端回归验证**：运行 `npm run build`、`npm run build:site`、`npm test`（91/91测试全通）、`npm run check`（前端契约 0 告警）、`verify_iteration_2_ui.py`（短屏 390×666/320×640 按钮与教训高度断言全通）、`portrait_browser.py`（6 角色端到端运行无报错）及 `npm run verify`。更新 `tasks/consumer-portrait/delivery-iteration-2.md`。
+
+## P1 与 P2 阶段交付复盘与结论 (Review)
+- **4 个优先候选案例深度审核合格**：
+  - 产出 [p1-case-review.md](consumer-portrait/p1-case-review.md)；
+  - C01 网购拆封（最高法司法解释第3条）、C02 会员续费（消法条例第10条+最高法典型案例）、C03 退卡原价倒扣（预付解释第14条+民法典）、C04 租车验损（小微客车办法+生效判决）四项四要素齐全且边界分明，全部通过准入审核。
+- **题目处置与候选卷锁定**：
+  - 产出 [p1-question-drafts.md](consumer-portrait/p1-question-drafts.md)；
+  - 替换 Q4 为 C03（`survey-prepaid-retail-deduction`），彻底解决健身与乐园闭店双重同质化，将机制 C 拓展至大众日常高频的美发/美容/生活储值预付争议；
+  - 改写 Q6 为“写真套餐里还没做的独立项目，申请取消时被拒绝？”，剥离诱导加购前置动作，纯化为单动作经历题（32字）；
+  - 维持单卷 8 题规模与情境组（2-3-3）、经历机制（3-2-3）数学判定模型零扰动。
+- **数据与代码落地验证闭环**：
+  - 案例、规则、题目、短读与画像机制全链路闭环，旧题安全迁入 `editorial/retired-questions.json` 保障历史答卷兼容；
+  - 内容库包含 150 条来源、18 个章节、40 个真实案例（13 个已核验）、60 条权威规则、8 道公开经历题与 16 道历史归档题；
+  - 自动化回归绿灯：`npm test` 91/91 通过，`npm run check` 前端契约 0 告警，`verify_iteration_2_ui.py` 短屏断言全部通过，`portrait_browser.py` 6 角色端到端通过，`npm run verify` 全流程通过。
+- **P3 验收准备就绪**：
+  - 编制 [p3-validation-preparation.md](consumer-portrait/p3-validation-preparation.md)，制定 6–8 人真实理解访谈模板与真机读屏实测矩阵；
+  - 严格分栏：模拟器已通过，真实 iPhone/Android 真机与真人受访者待执行。
+
+- [ ] **P3：执行6–8人理解/认领/提醒/分享动机测试及iOS/Android真机读屏清单，关键误解修正复查**。
+- [ ] **发布判定：记录完整版本、证据、回退包与未完成项；不将自动化绿色代替人工签收**。
+- [ ] **后续研究：防骗判断情境的独立概念稿与评审，不混入经历问卷，不从YES/NO推能力**。
+
+以下为上一轮收尾与历史记录。
+
+# 2026-10-25 整改回查收尾任务 (Rectification Recheck Follow-up)
+
+- 复核输入：`tasks/consumer-portrait/rectification-recheck-2026-10-25.md`。
+- 目标定位：针对构建端兜底角色排除边界（3.A）、角色描述中的非事实行为习惯（3.B）、三机制全并列两则容量表述（3.C）进行严谨收尾，完善发布准备质量。
+- [x] **Task 1: 构建端同步排除兜底角色校验并补全回滚测试**：在 `scripts/lib/portrait-content.mjs` 中增加经历机制角色不能为兜底角色（tie/noReported/insufficient）的校验；在 `tests/portrait-content.test.mjs` 中添加导入变异与回滚测试。
+- [x] **Task 2: 纯化角色文案为纯客观画面与经历叙事**：在 `editorial/consumer-portraits.json` 中调整小海獭、小水豚、小浣熊的文案，剔除“习惯按部就班”、“认真对待每次约定”、“仔细清点每项权益”等答卷未证实的习惯推断，聚焦于装进行囊/本子及清点票据等客观视觉设定与经历记录。
+- [x] **Task 3: 澄清多机制并列容量文案**：在 `survey-ui.js` 的 `portrait-why` 中，对并列状态明确说明“下方先选两则对应案例与提醒”，三机制全并列时明确提示第三个维度可在下方资料库查阅，消除容量误解。
+- [x] **Task 4: 全量构建与回归验证**：运行 `npm run build`、`npm run build:site`、`npm test`、`node scripts/check-frontend-contract.mjs`、`verify_iteration_2_ui.py`、`portrait_browser.py` 与 `npm run verify`，更新交付说明 `delivery-iteration-2.md` 与待验状态。
+
+## 2026-10-25 收尾复盘与结论 (Review)
+- **3.A 构建端兜底角色排除防错**：在 `scripts/lib/portrait-content.mjs` 的 `validatePortraitPublication` 中加入 `fallbackRoles` 校验，禁止任何普通经历机制配置兜底角色（`fox`、`bird`、`cloud`）；在 `tests/portrait-content.test.mjs` 中增加变异拦截与事务回滚断言（数据库保留 0 污染记录），与前端校验对齐。
+- **3.B 角色文案去习惯推断**：
+  - 守约小海獭：“把约定装进小行囊，记录这次遇到的说好与实际落差。”
+  - 约定小水豚：“把约定装进小本子，看看这次记录里原本安排的单方调整。”
+  - 细致小浣熊：“拿着放大镜清点手边票据，记录这次预付与结算遇到的阻碍。”
+  - 彻底移除了“习惯按部就班”、“认真对待每次约定”、“仔细清点每项权益”等答卷无法证明的性格推断，完全基于视觉道具设定与实际题目遭遇。
+- **3.C 并列两则容量明确澄清**：`portrait-why` 明确说明“下方先选两则对应案例与提醒”，当三机制全并列时明确提示“第三个维度的案例可继续在下方资料库查阅”，在 `tests/verify_iteration_2_ui.py` 新增 Test 5 实机断言通过。
+- **自动化验证证据**：
+  - `npm test`：91/91 测试全通过；
+  - `node scripts/check-frontend-contract.mjs`：前端契约 0 告警通过；
+  - `python tests/verify_iteration_2_ui.py`：短屏 390×666、320×640、首屏教训、狐狸并列胜出机制名以及三机制并列容量提示全部通过；
+  - `python tests/portrait_browser.py`：6 角色端到端运行通过（pageErrors: 0）；
+  - `npm run verify`：构建、测试、契约全流程绿灯。
+- **真实设备与真人访谈待验分栏保留**：
+  - 真机触摸、VoiceOver/TalkBack 实机测试待执行；
+  - 6–8 人真实受访者理解访谈待执行（模板与矩阵已就绪）。
+
+# 第二轮独立复核整改与深度打磨（2026-10-24）
+
+- 复核输入：`tasks/consumer-portrait/iteration-2-independent-review.md`。
+- 目标：坚决修复 R1（覆盖混用分组）、R2（并列推荐未覆盖双机制）、R3（机制校验准入缺失）、R4（状态与规范口径冲突），并对角色命名、短屏排版与文案重复进行深度打磨。
+- [x] **Fix R1: 统一画像机制与缺答覆盖分组**：在 `survey-portrait.js` 中将有效覆盖检查从旧 `journeys` 统一为当前生效的 `dimensions`（经历机制）；增加“机制全skip旧组不空”和“旧组全skip机制不空”的反例回归测试。
+- [x] **Fix R2: 并列结果推荐覆盖两个胜出机制**：在 `survey-portrait.js` 的 `lessons` 中，当并列画像时，两则推荐分别严格回应两个并列胜出的机制；UI理由区分并列方向，消除重复文案。
+- [x] **Fix R3: 补齐机制载荷准入校验**：在 `survey-portrait.js`（浏览器前端）与 `scripts/lib/portrait-content.mjs`（构建端）严格验证 `mechanisms` 存在性、非空、题号全覆盖无重漏与角色映射；坏载荷原子拒绝保留旧包；添加损坏机制回归测试。
+- [x] **Fix R4: 规范文档与通过状态口径统一**：同步 `docs/survey-standard.md` 与 `docs/product-experience-spec.md` 为现行经历机制口径；在 todo 与交付文档中将 G3 严格标注为“分栏待真实设备与真人访谈执行”，G4 为“具备发布准备条件”，消除内部状态冲突。
+- [x] **产品细节打磨与体验提升**：
+  - 将角色名称打磨为与经历特征更加自洽的命名（守约小海獭、约定小水豚、细致小浣熊、故事小狐狸、初见小团雀、留白小云朵）；
+  - 团雀公共描述修正为“本次答卷中，没有报告这些常见的消费遭遇”；
+  - 优化短屏下的纸牌纵向布局，题目保持 20px 舒适阅读字号，压缩冗余空白而非一味缩小文本；
+  - 补齐短屏与结果页全部关键视口的精确高度断言。
+- [x] **全量回归与自动化证明**：运行 `npm run verify`、`verify_iteration_2_ui.py`、`portrait_browser.py`，证明所有已知与新增缺陷全部修复。
+
+# 第二轮优化实施记录（2026-10-24）
+
+- 目标定位：依据 `tasks/consumer-portrait/iteration-2-plan.md`，从“功能交齐”推进到“用户看得懂角色、获得具体提醒、能顺畅操作、具备发布验收条件”。
+- 核心发现：对照 `docs/consumer-portrait-pm-assessment.md`，修复F01画像辨识弱、F02推荐错位、F03短屏裁切、F04首屏缺教训、F05问句复合度、F06短读重审缺失。
+
+## A阶段：产品与内容校准（G1门槛）
+- [x] **N01 经历特征与题目覆盖表**：完成 `tasks/consumer-portrait/iteration-2-experience-matrix.md`，登记8题实际提问、支持的经历机制（承诺不符/服务被改/售后结算受阻）、禁止推断及排序改写建议。
+- [x] **N02 画像解释与角色样例契约**：完成 `tasks/consumer-portrait/iteration-2-portrait-contract.md`，交付3个差异化样例+混合/并列/全NO/全skip/单一YES处理，定义可计算性规则、证据线索与提醒边界。
+- [x] **N03 问句与结果页原型校准**：完成 `tasks/consumer-portrait/iteration-2-prototype-review.md`，校准健身/停业/写真/电池/二手5题候选表达；确定结果首屏目标层级原型（角色形象/名称 → 一句经历解释 → 一条具体提醒+案例入口 → 留角色卡次行动 → 原案与记录在下方）。
+- [x] **G1退出核验**：确认角色可由答卷支持且无性格/能力推断，样例差异明确，架构确认算法可落地。
+
+## B阶段：核心体验改进与工程交付（G2门槛）
+- [x] **N04 短屏回答区优化**：调整 `survey-portrait.css` 与卡片布局，解决390×666、320×640下YES/NO被裁切问题，实测按钮底部在567px（低于666px折线），保证完整语义可见、跳过可达、44px触控目标及无横向溢出。
+- [x] **N05 短读改写重审门禁**：升级 `scripts/lib/portrait-content.mjs` 中的 `lessonReviewFingerprint`，同时绑定来源、规则与短读文本（situation/outcome/boundary/notice），短读修改立即触发重审失效；添加单元测试并通过。
+- [x] **N06 画像与证据模块**：在 `survey-portrait.js` 与 `consumer-portraits.json` 中实现新画像机制（承诺落差、安排变动、结算阻碍），提取客观线索，覆盖缺答/无YES/并列/单一线索。
+- [x] **N07 推荐与主画像对齐**：修改 `survey-portrait.js` 推荐算法，第一则严格对齐主画像的YES证据案例，第二则兼顾另一YES或跨场景；保留并验证 `NO/YES/YES/NO/NO/YES/YES/YES` 复现用例。
+- [x] **N08 结果首屏与分享衔接**：在 `survey-ui.js` 和 `survey-portrait.css` 实现首屏提醒与案例阅读入口，首屏直接呈现具体提醒（390×844下底部约612px）；保持可爱主体与分享卡隐私隔离。
+- [x] **N09 问句及版本集成**：画像规则升级至 `portrait-2`，重构与构建通过，保障旧版本答卷不混算不损坏；运行全量测试与防漂移构建。
+- [x] **G2退出核验**：全量单元测试（`npm run verify`，88项全部通过），Edge/Playwright端到端浏览器复现验证通过。
+
+## C阶段：用户与设备验证准备（G3门槛）
+- [x] **N10 6至8人理解与回报测试模板**：完成 `tasks/consumer-portrait/iteration-2-user-validation.md`，制定受访者复述、困惑、角色认同、提醒记忆与保存意愿观察规范，如实标注真人测试待执行状态。
+- [x] **N11 实机、读屏与异常路径矩阵**：完成 `tasks/consumer-portrait/iteration-2-acceptance.md`，制定iPhone Safari、Android Chrome、VoiceOver/TalkBack、系统大字缩放等真实验收清单（严格分栏记录模拟器通过项与真机待执行项）。
+- [ ] **G3退出核验**：准备就绪；自动化与模拟器已通过，真人访谈与真机验收如实分栏待执行。
+
+## D阶段：生产闭环与发布准备（G4门槛）
+- [x] **N12 内容批次留痕与可审查发布包**：完成 `tasks/consumer-portrait/delivery-iteration-2.md`，记录本次校准的真实内容批次 `batch-20261024-portrait-2`；建立发布候选说明与完整旧包回退方案。
+- [ ] **G4退出核验**：形成有证据的准入结论，具备发布准备条件；待真机与受访者签收后正式发布。
+
+## Review（复盘与结果记录）
+- **核心成效**：
+  1. **彻底解决 R1（经历机制与覆盖分组混用）**：覆盖检查严格使用经历机制（`promise-gap`、`arrangement-change`、`settlement-obstacle`），任一经历机制缺答均正确落入留白小云朵，经历机制完整但旧题组有空时正确分配对应画像。
+  2. **彻底解决 R2（并列推荐未覆盖双机制）**：当答卷出现并列画像（故事小狐狸）时，第一则推荐严格对应胜出机制 1 的 YES 案例，第二则推荐严格对应胜出机制 2 的 YES 案例，绝不被落选机制的高优先级案例抢占；UI 首屏理由动态列出并列的经历机制，`portrait-why` 按机制分类罗列勾选记录，消除重复文案。
+  3. **彻底解决 R3（经历机制准入校验缺失）**：在前端 `BuchikuiPortrait.validate` 与构建端 `validatePortraitPublication` 中加入对 `mechanisms` 数量（3个）、题目全覆盖无重漏（8题严格划分）、合法角色映射、门槛整数合法性的全量原子校验，损坏机制原子拦截并保留旧快照。
+  4. **彻底解决 R4（规范文档与通过口径冲突）**：`docs/survey-standard.md` 与 `docs/product-experience-spec.md` 全面同步现行经历机制口径；明确标注 G3 自动化与模拟器已通过、真实设备与真人访谈待执行，G4 具备发布准备条件。
+  5. **产品细节打磨**：角色命名升级为“守约小海獭”、“约定小水豚”、“细致小浣熊”，团雀描述更新为“本次答卷中，没有报告这些常见的消费遭遇”；短屏下题目字号保持 20px 舒适阅读，按钮底部实测 557px（远低于 666px 和 640px 折线），教训卡片底部实测 549px。
+- **验证证据**：
+  - 90/90 单元测试全绿（`npm test`）；
+  - `npm run verify`、`scripts/check-frontend-contract.mjs` 零告警全量通过；
+  - `tests/verify_iteration_2_ui.py` 实机浏览器测试通过：390×666、320×640 视口按钮及教训卡片高度精确断言全部通过；
+  - `tests/portrait_browser.py` 6 角色端到端测试与真实来源访问通过（pageErrors: 0）。
+- **待执行项（诚实分栏留痕）**：
+  - 真实 iPhone/Android 真机触摸与 VoiceOver/TalkBack 实机测试（已在矩阵中分栏留存）；
+  - 6 至 8 位真实受访者理解与可爱度偏好访谈（访谈模板已就绪）。
+
+# 首版基线：可爱消费者画像与案例回报已本地实现（2026-10-24）
+
+- [x] 用户确认两类参与收益、可爱画像、核心体验改善与生产闭环；产品需求见docs/consumer-portrait-prd.md。
+- [x] 架构评审、schema 3内容与迁移、6角色正式插画、8则审核短读、确定性画像、覆盖不足、两则案例回报与手动角色卡导出已完成。
+- [x] 旧schema 2恢复、题号整卷入口、原问句语义与真实回答保留；资源哈希、发布白名单、SW整包缓存和防混版已接入。
+- [x] 八题编辑预审、当前规范与人工清单同步；开发与自动检查详见tasks/consumer-portrait/delivery.md，实施进度见同目录implementation-plan.md。
+- [x] headless Edge六角色390px、320px、桌面、子路径、键盘、CSS zoom、修改/刷新/解析、离线图片样式、PNG导出、故障后备验证；应用页面错误0。三个来源浏览器HTTP200。
+- [ ] 真实iPhone/Android触摸、VoiceOver/TalkBack、系统大字和系统分享面板；6–8位受访者理解与可爱偏好待执行，模拟浏览器不能代签。
+- [ ] 本地版本提交/发布、发布后复盘；当前未部署。集中云收卷及产品指标为独立P1，未实现。
+
+下方为历史迭代记录，日期及旧测试数不作为当前发布结论。
+
+# 最新完成：每题案例解析（2026-10-24）
+
+- [x] 卡片右下角增加12px“案例解析”，主动展开详细案例，关闭返回原题。
+- [x] 八题分别关联核验案例、处理结果、分析与原文；不写问卷回答、不改变进度，离线可读。
+- [x] 71项测试、来源与前端契约、18章构建及手机/桌面逐题验证通过。
+
+# 当前状态：问卷场景与提问校准
+
+2026-10-23最新用户意见覆盖下方历史游戏记录：具体场景作标题，统一“你是否遭遇过：”，删除回想选择的提示。
+
+- [x] 撤下不清楚的订房取消题，增加核验的无购物团／玉石博物馆行程案例与问句。
+- [x] 八题自然表达、YES／NO直接继续，旧版本自述不混算。
+- [x] 69项测试、来源与前端契约、18章构建、390px及桌面实际浏览器验证通过。
+- [x] 本地4188预览更新；测试回答仅在独立4189测试库。
+- [ ] 茶叶博物馆购物继续作候选线索；需要独立来源和明确调查口径，不能套用玉石行程案例。
+- [ ] 真实受访者对题目的理解、真实手机触摸和读屏仍需验证。云端集中收集尚未部署。
+
+## 以下为此前记录
+
+# 最新调整：消费经历问卷与真实答卷汇总
+
+2026-10-23：用户明确改为吃亏调研问卷，MBTI类比用于简单填写和描述性结果。已统一八题为“你是否曾经：”的实际决策/波折经历，YES有过、NO没有过都直接下一题，支持跳过和返回修改；无标准答案、判分或答对解锁。旧14道判断题均退役。
+
+回答先保存在浏览器，本机预览同步到独立data/survey.sqlite，不随内容重建删除。结尾显示个人经历分布、实际完整答卷数量、常见遭遇和数量分布；仅本机当前版本完整答卷，跳过单列、重复去重，不把答卷标识当作核验过的个人，不统计损失金额或过错。云端集中收集尚未部署。
+
+68项测试、18章构建和前端契约通过。隔离浏览器验证390px与桌面、八题连续回答、修改/刷新/分享/案例返回、离线排队恢复、真实汇总和隐私隔离通过；两份合成完整答卷和一份部分答卷只在4189隔离测试库中，不进入当前4188真实预览。
+
+现行规范：docs/product-experience-spec.md、docs/survey-standard.md；数据库及来源流程见docs/content-database.md。真实设备、读屏及真实受访者理解仍待验收。未提交、推送或发布。
+
+## 历史：内容数据库与八道判断题
+
+2026-10-23：用户要求的五项已在本地实现。SQLite内容库已导入148条来源、38条案例、18个章节和58条规则；新增11条最高法个案、1条监管解读。8道新题接入数据库公开接口及静态/离线快照，旧六题退役保留。题面已改为短场景+单一问题，细节见docs/content-database.md。27条既有案例仍待事实与边界整理；不冒称全部已核验。
+
+当前仍待：真实手机触摸、读屏、系统分享及用户内容试玩。此前六题和十二题记录均为历史。
+
+本轮检查：67项测试、18章静态构建、前端契约通过；390px和桌面八题三组、数据库只读接口、刷新/依据返回/分享以及离线快照已实际检查，应用错误为0。未提交或发布。
+
+## 历史：题目现实性校准
+
+2026-10-23补充：按用户提出的“反常识、易出错、典型、有代表性、简洁呈现”收集七个有一手出处的候选，见docs/scenario-candidates.md。先选退房、赠送次数退款、未完成写真套餐三项做内容试玩；其余保留。候选未进入游戏；逐项入库复核、试玩与剧情编排待完成。
+
+2026-10-23：用户指出十二题弱且不符合实际，已撤下原全部题面，重写为六题三段校准版，取消最低题量测试。工程通过不代表内容评审通过。新记录见docs/scenario-editorial-review.md；下方十二题记录为本次调整前的历史。
+
 # 不吃亏 — 当前待办
 
-> 更新：2026-10-03（完成修复整理 + 定位修订为「决策指南」后的真实状态）
-> 门禁：`node scripts/check-frontend-contract.mjs` 必须通过。
-> **注意**：规范已改为决策指南形态，但代码尚未实现；契约脚本目前仍按旧结构断言，
-> 改动情景卡时必须同批更新契约脚本，否则 CI 会红。
+更新：2026-10-23。用户确认定位为“不花钱，也买教训”的消费场景游戏平台。
+首轮体验：Tinder式简单滑卡、即时后果、连续场景。资料库承接查证。
 
-## 已完成（2026-10 修复与整理）
+## 本轮四项处理
 
-- [x] 删除泰国 CASE 的 Reddit 网络爆料 Tab，把「持续向边境移动」并入已确认案件的动作
-- [x] 青岛「景区拍照」依据换成可打开的警方通报报道（央视网 / 新京报），修正法律条文引用
-      （第十三条、第二十六条、第三十条），去掉无法追溯的文旅局与地方规章链接
-- [x] 「AI替岗」「撤销部门」等媒体来源的裁判重新标注为裁判报道；星宇事件从「裁判参考」改为
-      权威依据层的「监管通报」
-- [x] 权威层来源并入 CASE「原文」段（浏览器与预渲染同一套 HTML），删除失效的 `syncSources`
-- [x] 预渲染富文本改为白名单序列化，与浏览器渲染一致
-- [x] 清理遗留兼容路径（`.hero`、`#caseName`）与 12 个 CASE 里不渲染的 `panic.items`
-- [x] `ruleId` 场景级跨链铺满（86 条现实提醒中 70 条有明确依据）
-- [x] `docs/content-index.md` 改为脚本生成并接入契约校验；「现实问题」存入 `meta.question`
-- [x] 契约脚本新增：法源来源不得为裸域名、媒体爆料不得作依据、`ruleId` 不得指向不存在的依据、
-      移动端触摸目标 44px、目录防漂移、核验覆盖度报告
-- [x] 文档术语统一（「权利校验」→「权威依据」）、核验日期纪律与复核节奏、反馈文档与实现对齐
+- [x] 公开依据硬准入；待核验、媒体线索不能独撑，效力与时间须匹配；50条规则均有合格支撑。
+- [x] 核验薄弱公开来源，替换旧治安法，更新金融新规状态；官方安全提醒与法律/裁判区分。
+- [x] 巡检输出HTTP错误/网络未知计数；全量发现坏链创建或更新告警，零错误零未知才关闭；认证失败不再吞掉。
+- [x] PWA v18仅清理buchikui-pwa-前缀旧缓存，保留同域其他项目缓存。
+- [x] 增加PR验证工作流（测试/构建/防漂移/契约），不部署；新增回归测试。
+- [x] 12题三段：租车5、维修4、美容卡3；24条选择后果、答错重选、答对继续，段末“再遇一件事”。
+- [x] 59/59测试、构建/语料/前端契约、16个静态章节构建通过。
+- [x] 浏览器实测十二题和跨段循环、后果、刷新/依据返回、分享入口、鼠标滑卡、窄屏和桌面。
+- [x] 真实触摸、读屏、系统分享及5–8人试玩步骤已写入docs/release-acceptance.md。
 
-## Phase A — 语料层（已完成）
+## 仍需实际验收
 
-三层架构落地：`corpus/`（事实）→ `editorial/`（翻译 + 渲染）→ 生成物。
+- [ ] 真实iPhone/Android触摸、纵向阅读与手势取消。
+- [ ] VoiceOver/TalkBack、大字/系统缩放、系统分享与取消。
+- [ ] 目标用户试玩，观察首次判断、理由复述和相似新场景迁移；不以反复重选后的通关率冒充学习效果。
+- [ ] 本地改版提交与发布；本轮没有自动提交、推送或发布。
+- [ ] 工作流发布后确认真实巡检告警链路；本轮issue操作为mock测试。
 
-- [x] `docs/corpus-standard.md`：四类记录（law / case / portal / reference）+ 术语表 + 11 条硬约束
-- [x] `scripts/lib/corpus.mjs` + `scripts/check-corpus.mjs`：语料层门禁，带棘轮
-      （`needsReview` / `待核验` / 缺 `verified` 的记录缺字段只警告；补齐后删标记即变成错误）
-- [x] `editorial/rules.js`：50 条依据改为 `sourceIds` 引用，`type` / `authority` / `effective` /
-      `verified` 全部删除，改由 corpus 派生；契约脚本禁止编辑层再写这些字段
-- [x] `editorial/authority-runtime.js`：渲染代码独立成文件
-- [x] `scripts/build-authority.mjs`：corpus + editorial → 生成 `legal-updates.js`，生成即校验语法
-- [x] `corpus/` 迁移 **135 条**：law 82 · case 27 · reference 15 · portal 11；合并 URL 变体为 `aliasUrls`
-- [x] 门禁接入 `check-frontend-contract.mjs`：**未登记的链接直接失败**，指向 `已取代`/`已废止`
-      法源的引用直接失败；`legal-updates.js` 与源文件不同步直接失败
-- [x] 重新分类 21 条错放记录（裁判被当成法源、基金费率页被当成法源）· 合并 3 条重复 · 删除 1 条孤儿
-- [x] 修掉三个真实错误：《反不正当竞争法》2019 修正版被当成现行依据引用（规则层 + CASE 层各一处）、
-      泰国 CASE 的 sources 里残留的 Reddit 网络爆料链接
-- [x] `corpus/terms.json`：27 条术语（IA §7 的 C）
-- [x] 等价性验证：16 页预渲染对比基线，0 处标题变化，链接差异全部是预期修复
+## 内容维护余项
 
-## Phase B — 判例与术语（已完成主体）
+当前136条语料，待核验39、needsReview73，二者有重叠。采集欠账保留，不包装成已核验；公开权威层独立硬准入。
+历史个案、产品价格样本及低优先级背景仍需逐项复核，不能因CASE更新日期变为今天就声称全章事实全部重核。
+86条现实提醒中70条有显式ruleId，其余按必要性补强；真实法源复核与链接可达性仍需持续维护。
 
-- [x] 11 条 case 记录的 `holding` 取自编辑层规则的一句话判断（已有编辑背书）
-- [ ] 16 条 case 记录补 `court` / `date`（现在只有 weight + holding）
-
-## Phase C — 自动化（已完成）
-
-- [x] `scripts/check-links.mjs` + `.github/workflows/corpus-link-check.yml`：每天体检，
-      **只对 HTTP 报错开 issue**，连不上只统计（境外 runner 常见，避免每天误报）
-- [x] 引用计数与零引用数进 CI 输出（复利健康度可见）
-
-## A3 剩余：核验待核验记录
-
-`node scripts/check-corpus.mjs` → 待核验 51 · needsReview 88 · 零引用 11。
-其中 **14 条被规则引用**（会在页面上显示施行日期与类型），优先级最高：
-
-| 记录 | 缺什么 |
-| --- | --- |
-| `law-auction-1996` 拍卖法（2 条规则引用） | effective · verified |
-| `law-auction-supervision-2023` 拍卖监督管理办法 | effective · verified |
-| `law-taxi-2019` 巡游出租汽车经营服务管理规定 | effective · verified |
-| `law-labor-contract-reg-2008` 劳动合同法实施条例 | effective · verified |
-| `law-financial-product-marketing-2026` 金融产品网络营销管理办法 | effective · issuer |
-| `law-五部门关于切实做好网约车聚合平台规范管理有关工作的通知` | effective · verified |
-| `policy-truck-driver-rights-2021` 货车司机权益保障意见 | effective · verified |
-| 其余 7 条 | 同上 |
-
-**核验方法**：打开官方页面确认施行日期与发布机关 → 写进记录 → 删 `needsReview` → 跑
-`node scripts/check-corpus.mjs`。禁止凭记忆填日期。
-37 条仅作链接的记录不影响页面显示，可按 `--orphans` 与引用次数排序后处理。
-
-## 内容缺口（有据可查，尚未补）
-
-这些不是 bug，是权威层还没有对应规则的现实问题。补的时候必须先找到一手依据，
-挂不上的宁可留空（契约脚本会拒绝错挂）。
-
-- [ ] `rental`：最重要的 `deposit`（押金退还）没有任何场景指向它，缺「押金不退 / 退还条件」
-      场景
-- [ ] `rental`：S4 强制搭售、S5 提灯验损、S9 待处理费仍无依据（消保条例第十条、
-      停车位与验损规范）
-- [ ] `mobile-plan-cost`：`appeal-deadline`（15 日答复 / 5 个月收费争议）无场景指向
-- [ ] `alipay-advisor-cost`：`third-party-platform`（第三方平台即将禁止）无场景指向，
-      需要一个「在第三方平台买投顾」的现实问题
-- [ ] `rental-credit-card-first`：`platform-appeal` 无场景指向
-- [ ] `layoff-compensation`：`ai-replacement`、`department-closure` 无场景指向
-- [ ] `alibaba-auction-trap`：`platform-preservation` 只被一条 panic 之外的内容覆盖；
-      估值纪律与悔拍责任（《拍卖法》违约、保证金、差价）整块没有依据
-- [ ] `internet-court-self-litigation`：S1 是否值得起诉、S6 证据目录、S8 追加当事人、S10 开庭
-      无依据
-- [ ] `dating-safety`：S1 身份核验、S2 场所安全无依据
-- [ ] `bank-wealth-not-guaranteed`：S6 市场风险与销售责任拆分无单一依据
-- [ ] `beauty-hair`：S4 过敏 / 灼伤 / 断发损伤无依据
-- [ ] `transport-platform-layered-fees`：S4 依赖《互联网平台价格行为规则》（2026-04-10 施行），
-      但该规章没有进入权威层，需要补官方链接
-
-## 待决策（需要人来定）
-
-- [x] **CASE 形态**：保留 `/c/<slug>/` 地址、改变页面形态（书的一章），不合并页面
-- [x] **按钮语义**：跳过 = 不判定直接翻面；换一题 = 换随机卡；查看答案 = 翻面
-- [x] **题目反馈落点**：GitHub issue（预填题号）；消费者经历仍走 Supabase
-- [ ] **卷序**：spec §4 给出了 5 卷初始方案，待确认后写进 `case-facets.js` 一类的数据文件
-- [ ] **核验日期覆盖**：50 条依据里只有 5 个主题有逐条 `verified`，其余显示「本批核验」。
-      是否安排一轮 90 天复核把日期补齐？
-- [ ] **内容新鲜度**：全站最近更新停在 2026-09-02。是否按 `legal-freshness-standard.md` §11
-      启动季度复核？
-
-## 下一步开发计划（2026-10-03 定位修订后）
-
-按依赖顺序，每一步都能独立发布、独立回滚：
-
-1. **题目数据与规范落地**
-   - 新增 `scenario-checks.js`（首批 12–15 题，只做单选）
-   - `legal-freshness-standard.md` 增加「题目纪律」小节，与 spec §6 对齐
-   - 契约脚本新增守卫：每题必须有 `ruleId` 与 `exception`、`ruleId` 必须存在、
-     题面/选项/解析字数上限、选项措辞平行
-2. **首页情景卡**
-   - `render-cases.js` 增加卡片渲染（DOM-free，浏览器与预渲染共用）
-   - `app.js` 接入随机、判定、翻面、键盘可达、aria-live 播报
-   - 导航 bar：随机情景 / 搜索主题 / 目录 / 反馈
-   - `styles.css` 情景卡样式；`rights-pulse.css` 不动
-3. **目录页与章节化 CASE**
-   - `book-order` 数据 + 目录页 `/toc/`
-   - CASE 页加章序、目录入口、上一章 / 下一章（prerender 同步）
-   - 契约脚本：断言章序与目录页存在，且 `/c/<slug>/` 仍是唯一规范路径
-4. **契约脚本同步**
-   - 移除 `feedback.js` / `feedback.css` 退役断言（题目反馈走 issue，不需要前端反馈脚本）
-   - 把「首页 = 搜索库」的结构断言换成「首页 = 情景卡」的结构断言
-   - **注意：这一步必须与第 2 步同批提交，否则 CI 会红**
-
-## 规划中（IA §7 备查，尚未批准）
-
-- [ ] C 术语表：共享术语数据 + 虚线解释
-- [ ] D 效力 / 置信标记：`争议 / 待核实` 标记并接入筛选
+完整核验记录：tasks/remediation/findings-authority.md。
+本轮进度：tasks/remediation/task_plan.md、progress.md。
+原待办原样保留在tasks/remediation/todo-before-remediation.md，仅作历史，不作为当前状态。
+本地试玩：http://localhost:4188/。

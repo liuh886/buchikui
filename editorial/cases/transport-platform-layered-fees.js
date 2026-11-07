@@ -5,7 +5,7 @@ window.BUCHIKUI_CASES.push({
   "slug": "transport-platform-layered-fees",
   "name": "出行平台的层层抽成：你付的钱去哪了",
   "label": "MOBILITY PLATFORMS",
-  "updated": "2026-09-02",
+  "updated": "2026-10-23",
   "meta": {
     "title": "不吃亏｜出行平台的层层抽成：你付的钱去哪了",
     "description": "网约车订单可能跨多个平台流转，同城货运也可能通过算法和竞价不断调整司机端运价。遇到价格差，保存两端账单、订单流转和每层收费，才能把钱对清楚。",

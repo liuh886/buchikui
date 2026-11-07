@@ -7,10 +7,14 @@ export const CORPUS_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.u
 export const LAW_TYPES = ['法律', '行政法规', '司法解释', '部门规章', '规范性文件', '政策文件', '地方规章', '监管规范性文件'];
 export const CASE_WEIGHTS = ['指导性案例', '典型案例', '生效裁判', '监管处罚案例', '监管通报', '媒体披露'];
 export const LAW_STATUS = ['现行', '即将生效', '已取代', '已废止', '待核验'];
+export const OFFICIAL_ADVISORY_TYPE = '官方提示';
+const ISSUED_WITHOUT_EFFECTIVE = new Set(['规范性文件', '政策文件', '监管规范性文件']);
 export const SOCIAL_HOSTS = /weibo|weixin|xiaohongshu|zhihu|douban|reddit|tieba|telegram/i;
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const today = () => new Date().toISOString().slice(0, 10);
+const isDate = value => DATE.test(String(value || '')) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
+const hasIssuedDate = record => ISSUED_WITHOUT_EFFECTIVE.has(record.type) && isDate(record.issued) && !!String(record.note || '').trim();
 
 async function readDir(dir) {
   try {
@@ -89,7 +93,9 @@ function checkLaw(problems, record, corpus, report) {
   if (!LAW_TYPES.includes(record.type)) report(`type 不在枚举内: ${record.type ?? '(空)'}`);
   if (!record.issuer) report('缺少 issuer（发布机关全称）');
   if (!LAW_STATUS.includes(record.status)) report(`status 不在枚举内: ${record.status ?? '(空)'}`);
-  if (record.status === '现行' && !DATE.test(String(record.effective || ''))) report('status=现行 必须给 effective（施行日期）');
+  if (record.status === '现行' && !isDate(record.effective) && !hasIssuedDate(record)) report('现行法源须有 effective；未单列施行日的政策／规范性文件须有 issued 与口径说明');
+  if (record.effective && !isDate(record.effective)) report('effective 必须是真实日期 YYYY-MM-DD');
+  if (record.issued && !isDate(record.issued)) report('issued 必须是真实日期 YYYY-MM-DD');
   if ((record.status === '已取代' || record.status === '已废止') && !record.supersededBy && !record.note) {
     report(`${record.status} 必须给 supersededBy，或在 note 里说明`);
   }
@@ -164,6 +170,37 @@ export function validateReferences(corpus, references) {
   return problems;
 }
 
+/** 采集可保留缺项，公开依据必须通过这份硬准入。官方提示有明确地位，不冒充法律。 */
+export function authoritySourceProblems(record, at = today()) {
+  if (!record) return ['来源不存在'];
+  const problems = [];
+  const report = message => problems.push(message);
+  if (record.needsReview || record.status === '待核验') report('来源仍待核验');
+  if (!isDate(record.verified) || record.verified > at) report('缺少已完成且非未来的核验日期');
+  if (isDate(record.verified) && [record.issued, record.kind === 'case' ? record.date : ''].some(date => isDate(date) && date > record.verified)) report('核验日期早于材料签发／裁判日期');
+  if (!String(record.title || '').trim()) report('缺少来源标题');
+  checkUrl([], record, report);
+  if (record.kind === 'law') {
+    if (!LAW_TYPES.includes(record.type) || !String(record.issuer || '').trim()) report('缺少准确的法源类型或发布机关');
+    if (!['现行', '即将生效'].includes(record.status)) report('来源不是现行或待生效法源');
+    if (!isDate(record.effective) && !hasIssuedDate(record)) report('缺少施行日期或未单列施行日的真实签发信息');
+    if (record.effective && !isDate(record.effective)) report('施行日期无效');
+    if (record.issued && (!isDate(record.issued) || record.issued > at)) report('签发日期无效或在未来');
+    if (record.status === '现行' && record.effective > at) report('标为现行但尚未施行');
+    if (record.status === '即将生效' && (!isDate(record.effective) || record.effective <= at)) report('待生效状态与施行日期矛盾');
+  } else if (record.kind === 'case') {
+    checkCase([], record, report);
+    if (record.weight === '媒体披露') report('媒体披露只能作为发现线索或背景');
+    if (!isDate(record.date) || record.date > at) report('裁判／通报日期无效或在未来');
+  } else if (record.kind === 'reference' && record.authorityRole === 'official-advisory') {
+    if (!String(record.publisher || '').trim() || !isDate(record.issued) || record.issued > at) report('官方提示须有发布机关与真实发布日期');
+    if (!String(record.note || '').trim()) report('官方提示须说明材料性质与适用边界');
+  } else {
+    report('普通参考资料或办事入口不能支撑权威判断');
+  }
+  return problems;
+}
+
 /** url -> id（含 aliasUrls 里的等价官方链接），供迁移与引用检查使用。 */
 export function urlIndex(corpus) {
   const index = new Map();
@@ -183,6 +220,7 @@ export function urlIndex(corpus) {
 export function sourceLabel(record) {
   if (record.kind === 'law') return record.type || '';
   if (record.kind === 'case') return record.weight || '';
+  if (record.kind === 'reference' && record.authorityRole === 'official-advisory') return OFFICIAL_ADVISORY_TYPE;
   return '';
 }
 

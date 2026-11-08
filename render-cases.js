@@ -74,10 +74,32 @@
     const category=facet.category||categoryOf(item);
     const chapter=root.BuchikuiBook?.chapter(item.slug);
     return `<a class="topic-row" data-topic="${esc(item.slug)}" data-category="${esc(category)}" data-types="${esc((facet.types||[]).join(' '))}" data-stage="${esc((facet.stage||[]).join(' '))}" href="${esc(caseUrl(item,base))}">
-      <strong>${esc(chapter?`${chapter.label} · ${chapter.title}`:item.name)}</strong>
-      <span class="topic-question">${esc(item.meta?.question||item.meta?.description)}</span>
+      <strong>${esc(item.meta?.question||item.meta?.description||item.name)}</strong>
+      <span class="topic-question">${esc(chapter?`${chapter.label} · ${chapter.title}`:item.name)}</span>
       <span class="topic-read" aria-hidden="true">阅读</span>
     </a>`;
+  }
+
+  // Reuse published chapter content; collection notes and pending cases never enter this index.
+  function searchEntries(item,query){
+    const terms=String(query||'').trim().toLocaleLowerCase('zh-CN').split(/\s+/).filter(Boolean);
+    if(!terms.length) return [];
+    const synonyms=[['售假','假货','真伪'],['退款','退费']];
+    const matches=text=>{
+      const normalized=stripTags(text).toLocaleLowerCase('zh-CN');
+      return terms.every(term=>(synonyms.find(group=>group.includes(term))||[term]).some(word=>normalized.includes(word)));
+    };
+    const entries=caseReminders(item).map((entry,index)=>({
+      title:entry.title,
+      text:stripTags(entry.fact||entry.action),
+      anchor:`case-${index+1}`,
+      searchable:[entry.title,entry.fact,entry.action].join(' ')
+    })).filter(entry=>matches(entry.searchable));
+    if(entries.length) return entries.map(({searchable,...entry})=>entry);
+    const chapterText=[item.name,item.meta?.question,item.meta?.description,item.hero?.title,item.hero?.copy,
+      item.takeaway,item.legal,categoryOf(item),...(item.sources||[]).map(source=>source.title),
+      ...caseReminders(item).map(entry=>[entry.title,entry.fact,entry.action].join(' '))].join(' ');
+    return matches(chapterText)?[{title:item.meta?.question||item.name,text:stripTags(item.meta?.description||item.hero?.copy),anchor:''}]:[];
   }
 
   function reminderRow(entry,index,rich){
@@ -128,7 +150,7 @@
 
     return `<article class="case-page">
         <header class="case-intro shell">
-          <nav class="case-nav" aria-label="章节导航">${opts.resume?`<a class="back-link" href="${esc(base)}?resume=1">返回问卷</a>`:`<a class="back-link" href="${esc(base)}?view=library">返回资料库</a>`}<a class="back-link" href="${esc(base)}?${opts.resume?'view=library':'resume=1'}">${opts.resume?'资料库':'填写问卷'}</a></nav>
+          <nav class="case-nav" aria-label="章节导航">${opts.resume?`<a class="back-link" href="${esc(base)}?resume=1">返回问卷</a>`:`<a class="back-link" href="${esc(base)}?view=library">返回案例库</a>`}<a class="back-link" href="${esc(base)}?${opts.resume?'view=library':'resume=1'}">${opts.resume?'案例库':'填写问卷'}</a></nav>
           ${chapter?`<p class="chapter-volume">第${esc(book.number(chapter.volumeIndex))}卷 · ${esc(chapter.volume)}</p>`:''}
           <div class="case-meta"><span>${esc(chapter?`${chapter.label} · ${chapter.title}`:categoryOf(item))}</span>${item.updated?`<time datetime="${esc(item.updated)}">更新 ${esc(item.updated)}</time>`:''}</div>
           <h1>${rich(heading)}</h1>
@@ -176,7 +198,7 @@
   }
 
   function missingHtml(base){
-    return `<section class="missing shell"><p class="eyebrow">404</p><h1>这个主题不存在。</h1><p>可能已经调整名称或移除。</p><a href="${esc(base)}?view=library">返回资料库</a></section>`;
+    return `<section class="missing shell"><p class="eyebrow">404</p><h1>这个主题不存在。</h1><p>可能已经调整名称或移除。</p><a href="${esc(base)}?view=library">返回案例库</a></section>`;
   }
 
   root.BuchikuiRender={
@@ -188,6 +210,7 @@
     categoryOf,
     caseUrl,
     caseReminders,
+    searchEntries,
     mergedSources,
     topicRow,
     reminderRow,

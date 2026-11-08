@@ -186,7 +186,7 @@ try:
             time.sleep(0.05)
         expect(page_tie3.locator('.portrait-result')).to_have_attribute('data-portrait', 'fox')
         why_tie3 = page_tie3.locator('.portrait-why')
-        expect(why_tie3).to_contain_text('第三个维度的案例可继续在下方资料库查阅')
+        expect(why_tie3).to_contain_text('第三个维度的案例可继续在下方案例库查阅')
         ctx_tie3.close()
         results['three_way_tie_capacity'] = 'passed'
 

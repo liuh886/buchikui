@@ -1,0 +1,16 @@
+.library-lead{margin:10px 0 0;color:var(--ink-soft);line-height:1.8}
+.library-shortcuts{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:10px;color:var(--muted);font-size:13px}
+.library-shortcut{min-height:44px;padding:8px 12px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink-soft);font:inherit;cursor:pointer}
+.library-shortcut:hover{color:var(--accent);border-color:var(--accent)}
+.library-results{max-width:820px;margin-top:24px;margin-bottom:48px}
+.library-results-heading{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 20px;border-bottom:1px solid var(--line-strong);padding-bottom:12px}
+.library-results-heading h2{margin:0;font-family:var(--font-serif);font-size:25px}
+.library-results-heading .text-button{min-height:44px}
+.library-result{padding:22px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.library-result-context{margin:0 0 8px;color:var(--muted);font-size:13px;line-height:1.7}
+.library-result h3{margin:0;font-family:var(--font-serif);font-size:22px;line-height:1.6}
+.library-result h3 a{text-decoration:none}
+.library-result h3 a:hover{text-decoration:underline;text-underline-offset:4px}
+.library-result>p:not(.library-result-context){margin:10px 0;color:var(--ink-soft);font-size:15px;line-height:1.8}
+.library-result-link{display:inline-flex;align-items:center;min-height:44px;color:var(--accent);font-size:14px;text-underline-offset:4px}
+.reminder-row{scroll-margin-top:24px}

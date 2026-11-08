@@ -1,10 +1,10 @@
 const CACHE_PREFIX='buchikui-pwa-';
-const CACHE_NAME='buchikui-pwa-v23';
+const CACHE_NAME='buchikui-pwa-v24';
 // PORTRAIT_ASSETS_START
 const PORTRAIT_ASSETS=["./portraits/otter.b7dc9be5e27f.webp","./portraits/otter-thumb.4c05d7735936.webp","./portraits/capybara.0b5dd52ab8a2.webp","./portraits/capybara-thumb.3c55dce197b6.webp","./portraits/raccoon.3cd672a6ff76.webp","./portraits/raccoon-thumb.4fea7c428062.webp","./portraits/fox.a3f3899c8731.webp","./portraits/fox-thumb.df6fc8815e65.webp","./portraits/bird.94b4aa4d0f2a.webp","./portraits/bird-thumb.3754341f3ede.webp","./portraits/cloud.17f24d058575.webp","./portraits/cloud-thumb.5269bf4b0c3f.webp"];
 // PORTRAIT_ASSETS_END
 const CORE_ASSETS=[
-  './','./index.html','./styles.css','./rights-pulse.css','./survey-analysis.css','./survey-portrait.css',
+  './','./index.html','./styles.css','./library.css','./rights-pulse.css','./survey-analysis.css','./survey-portrait.css',
   './render-cases.js','./book-order.js','./content-data.js','./survey-portrait.js','./survey-state.js','./survey-portrait-share.js','./survey-ui.js','./cases-data.js','./app.js','./legal-updates.js','./pwa.js','./manifest.webmanifest',
   './icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/og-cover.png'
 ];

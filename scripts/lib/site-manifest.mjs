@@ -16,6 +16,7 @@ export const SITE_FILES = [
   'survey-portrait.css',
   'rights-pulse.css',
   'styles.css',
+  'library.css',
   'pwa.js',
   'sw.js',
   'case-facets.js',

@@ -76,7 +76,7 @@
     header.innerHTML=`<div class="shell header-inner">
       <div class="brand-block"><a class="brand" href="${esc(base)}" aria-label="不吃亏首页">不吃亏</a>
       <span class="header-note">不花钱，也能买到教训。</span></div>
-      <nav class="header-nav" aria-label="主要导航">${document.body.dataset.page==='case'&&window.BuchikuiSurveyApp?.hasSaved()?`<a href="${esc(base)}?resume=1">返回问卷</a>`:''}${document.body.dataset.page==='library'?`<a href="${esc(base)}?resume=1">${window.BuchikuiSurveyApp?.hasSaved()?'返回问卷':'填写问卷'}</a>`:`<a href="${esc(base)}?view=library">资料库</a>`}</nav>
+      <nav class="header-nav" aria-label="主要导航">${document.body.dataset.page==='case'&&window.BuchikuiSurveyApp?.hasSaved()?`<a href="${esc(base)}?resume=1">返回问卷</a>`:''}${document.body.dataset.page==='library'?`<a href="${esc(base)}?resume=1">${window.BuchikuiSurveyApp?.hasSaved()?'返回问卷':'填写问卷'}</a>`:`<a href="${esc(base)}?view=library">案例库</a>`}</nav>
     </div>`;
   }
 
@@ -91,21 +91,30 @@
   function renderLibrary(){
     document.body.dataset.page='library';
     delete document.body.dataset.activeCaseSlug;
-    setMeta('资料库｜不吃亏','按卷章阅读消费问题、权威依据和现实提醒，也可以搜索具体问题。');
+    setMeta('案例库｜不吃亏','搜索具体消费问题，阅读对应案例、权威依据和现实提醒，也可以按卷章浏览。');
     renderHeader();
     const book=window.BuchikuiBook;
     app.innerHTML=`<section class="library-intro shell" aria-labelledby="libraryTitle">
-        <h1 id="libraryTitle">资料库</h1>
+        <h1 id="libraryTitle">案例库</h1>
+        <p class="library-lead">遇到了什么？先找相似问题，再看依据与提醒。</p>
         <label class="search-box" for="caseSearch">
           <span class="sr-only">搜索消费问题</span>
-          <input id="caseSearch" type="search" autocomplete="off" placeholder="租车、办卡、维修……">
+          <input id="caseSearch" type="search" autocomplete="off" placeholder="搜索具体问题，如：退卡、扣款、售假" aria-controls="libraryResults topicList" enterkeyhint="search">
         </label>
+        <div class="library-shortcuts" aria-label="按问题查找"><span>试试</span>${['退卡','扣款','售假','维修','旅游'].map(term=>`<button class="library-shortcut" type="button" data-library-query="${esc(term)}">${esc(term)}</button>`).join('')}</div>
         <div class="library-tools"><p id="searchCount" role="status" aria-live="polite">${cases.length} 个主题</p><details class="library-filters"><summary>按条件筛选</summary>${facetControls()}</details></div>
-      </section><div class="library-book shell" id="topicList">${book.volumes.map((volume,index)=>`<section class="book-volume" data-book-volume aria-labelledby="volume-${index}"><h2 id="volume-${index}"><small>第${book.number(index)}卷</small>${esc(volume.title)}</h2><div class="topic-list">${volume.chapters.map(([slug])=>cases.find(item=>item.slug===slug)).filter(Boolean).map(item=>R.topicRow(item,base,facets)).join('')}</div></section>`).join('')}</div><section class="library-empty shell" id="emptyState" aria-live="polite" hidden><h2>暂时没有匹配的主题</h2><p>换个关键词试试，也可以回到目录。</p><button class="decision-button" type="button" id="searchClear">清空搜索与筛选</button></section>`;
+      </section><section class="library-results shell" id="libraryResults" aria-labelledby="libraryResultsTitle" hidden><div class="library-results-heading"><h2 id="libraryResultsTitle">相关消费问题</h2><button class="text-button" type="button" id="libraryBrowse">清空搜索，浏览目录</button></div><div id="libraryResultList"></div></section><div class="library-book shell" id="topicList">${book.volumes.map((volume,index)=>`<section class="book-volume" data-book-volume aria-labelledby="volume-${index}"><h2 id="volume-${index}"><small>第${book.number(index)}卷</small>${esc(volume.title)}</h2><div class="topic-list">${volume.chapters.map(([slug])=>cases.find(item=>item.slug===slug)).filter(Boolean).map(item=>R.topicRow(item,base,facets)).join('')}</div></section>`).join('')}</div><section class="library-empty shell" id="emptyState" aria-live="polite" hidden><h2>暂时没有匹配的问题</h2><p>可以换一个说法，或清空条件浏览已有章节。</p><button class="decision-button" type="button" id="searchClear">清空搜索与筛选</button></section>`;
 
     const search=document.getElementById('caseSearch');
     if(!search) return;
     search.addEventListener('input',()=>{filterTopics(search.value);syncFacetUrl();});
+    app.querySelectorAll('[data-library-query]').forEach(button=>button.addEventListener('click',()=>{
+      search.value=button.dataset.libraryQuery;
+      filterTopics(search.value);syncFacetUrl();search.focus();
+    }));
+    document.getElementById('libraryBrowse').addEventListener('click',()=>{
+      search.value='';filterTopics('');syncFacetUrl();search.focus();
+    });
     document.getElementById('searchClear').addEventListener('click',()=>{
       document.getElementById('facetClear').click();
       search.focus();
@@ -151,7 +160,7 @@
     if(types.length>1) groups.push(`<div class="facet-group"><span>依据类型</span><div class="facet-options">${types.map(type=>facetChip('type',type,TYPE_LABELS[type])).join('')}</div></div>`);
     const categories=presentCategories();
     if(categories.length>1) groups.push(`<div class="facet-group"><span>消费场景</span><div class="facet-options">${categories.map(category=>facetChip('category',category,category)).join('')}</div></div>`);
-    return `<div class="topic-facets" id="topicFacets"><div class="topic-facets-head"><span>筛选</span><button class="facet-clear" type="button" id="facetClear" hidden>清空筛选</button></div>${groups.join('')}<p class="facet-note">同一组可多选（或），不同组取交集（且），也可直接搜索。</p></div>`;
+    return `<div class="topic-facets" id="topicFacets"><div class="topic-facets-head"><span>筛选</span><button class="facet-clear" type="button" id="facetClear" hidden>清空搜索与筛选</button></div>${groups.join('')}</div>`;
   }
 
   function bindFacets(){
@@ -207,21 +216,6 @@
     history.replaceState(null,'',qs?`${location.pathname}?${qs}`:location.pathname);
   }
 
-  const searchIndexCache=new Map();
-
-  function searchableText(item){
-    if(searchIndexCache.has(item.slug)) return searchIndexCache.get(item.slug);
-    const scenarioText=(item.scenarios||[]).map(entry=>[entry.title,...(entry.blocks||[]).map(block=>block.html)].join(' ')).join(' ');
-    const panicText=(item.panic?.items||[]).map(entry=>`${entry.title} ${entry.text||''}`).join(' ');
-    const sourceText=(item.sources||[]).map(source=>source.title).join(' ');
-    const text=[item.name,item.hero?.title,item.meta?.description,item.hero?.copy,item.takeaway,item.legal,categoryOf(item),scenarioText,panicText,sourceText]
-      .join(' ')
-      .replace(/<[^>]*>/g,' ')
-      .toLocaleLowerCase('zh-CN');
-    searchIndexCache.set(item.slug,text);
-    return text;
-  }
-
   function filterTopics(query){
     currentQuery=String(query||'');
     applyFilters();
@@ -231,23 +225,35 @@
     const term=currentQuery.trim().toLocaleLowerCase('zh-CN');
     const anyFilter=!!term||activeFilters.stage.size>0||activeFilters.type.size>0||activeFilters.category.size>0;
     let count=0;
+    const results=[];
     document.querySelectorAll('[data-topic]').forEach(row=>{
       const slug=row.dataset.topic;
       const item=cases.find(candidate=>candidate.slug===slug);
       const facet=facets[slug]||{};
       let matched=!!item;
-      if(matched&&term) matched=searchableText(item).includes(term);
+      const entries=matched&&term?R.searchEntries(item,term):[];
+      if(matched&&term) matched=entries.length>0;
       if(matched&&activeFilters.stage.size) matched=(facet.stage||[]).some(stage=>activeFilters.stage.has(stage));
       if(matched&&activeFilters.type.size) matched=(facet.types||[]).some(type=>activeFilters.type.has(type));
       if(matched&&activeFilters.category.size) matched=activeFilters.category.has(facet.category);
       row.hidden=!matched;
-      if(matched) count+=1;
+      if(matched){count+=1;for(const entry of entries) results.push({item,...entry});}
     });
     document.querySelectorAll('[data-book-volume]').forEach(volume=>{
       volume.hidden=![...volume.querySelectorAll('[data-topic]')].some(row=>!row.hidden);
     });
     const countNode=document.getElementById('searchCount');
-    if(countNode) countNode.textContent=anyFilter?`${count} 个相关主题`:`${cases.length} 个主题`;
+    if(countNode) countNode.textContent=term?`${results.length} 个相关问题 · ${count} 个章节`:anyFilter?`${count} 个相关章节`:`${cases.length} 个主题章节`;
+    const resultSection=document.getElementById('libraryResults');
+    if(resultSection) resultSection.hidden=!term||results.length===0;
+    const directory=document.getElementById('topicList');
+    if(directory) directory.hidden=!!term;
+    const resultList=document.getElementById('libraryResultList');
+    if(resultList) resultList.innerHTML=results.map(entry=>{
+      const chapter=window.BuchikuiBook?.chapter(entry.item.slug);
+      const excerpt=entry.text.length>110?`${entry.text.slice(0,110)}…`:entry.text;
+      return `<article class="library-result"><p class="library-result-context">${esc(chapter?`${chapter.volume} · ${chapter.title}`:entry.item.name)}</p><h3><a href="${esc(caseUrl(entry.item)+(entry.anchor?`#${entry.anchor}`:''))}">${esc(entry.title)}</a></h3><p>${esc(excerpt)}</p><a class="library-result-link" href="${esc(caseUrl(entry.item)+(entry.anchor?`#${entry.anchor}`:''))}">查看${entry.anchor?'对应内容':'这一章'}与依据 →</a></article>`;
+    }).join('');
     const empty=document.getElementById('emptyState');
     if(empty) empty.hidden=count!==0;
     const clear=document.getElementById('facetClear');

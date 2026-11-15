@@ -1,5 +1,8 @@
 # 不吃亏 / Buchikui
 
+> **下一版方向已确认，尚未上线：** Game-first「每日五关」消费决策游戏（YES 买 / NO 不买 → 事实揭晓 → 通关成绩 → 分享挑战）。[新产品 PRD](docs/game-first-prd.md) · [首期五关](tasks/game-first/episode-001.md) · [实施计划](tasks/game-first/execution-plan.md)。以下仍描述当前 main 的经历问卷；不要把未来的判分机制混进现有答卷。
+
+
 测测你的消费经历角色，不花钱，也买教训。
 
 八道“你是否遭遇过：”问卷卡，记录自己的实际消费波折。右滑YES有过、左滑NO没有过，任一选择直接继续；支持跳过、返回修改和刷新恢复，没有标准答案或判分。

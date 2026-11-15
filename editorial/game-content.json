@@ -44,18 +44,18 @@
       "selectionReason": "赠送次数和未用余额的处理容易混淆；问卷只记录退费波折，算法留在案例阅读。"
     },
     {
-      "id": "survey-prepaid-retail-deduction",
+      "id": "survey-prepaid-records",
       "caseSlug": "beauty-hair",
-      "ruleId": "consumer-prepaid-retail-deduction",
-      "realCaseId": "case-consumer-prepaid-retail-deduction",
+      "ruleId": "consumer-prepaid-records",
+      "realCaseId": "case-consumer-prepaid-records",
       "origin": "case-inspired-survey",
       "reviewState": "published",
       "mode": "self-report",
-      "decisionType": "购买",
+      "decisionType": "选择",
       "stage": "储值办卡",
-      "action": "你是否遭遇过：充值卡没用完想退款，商家却按门市最高原价倒扣已消费的项目？",
+      "action": "你是否遭遇过：办卡退费对账时，门店拒绝出示后台消费流水明细？",
       "researchPurpose": "记录具体消费决策后的波折经历；不据此推定最终损失金额、责任或消费者做错了。",
-      "selectionReason": "充值优惠与门市原价倒扣形成鲜明结算落差，是可直接辨认的高频预付消费遭遇。"
+      "selectionReason": "对应最高法2025-03-14预付式消费典型案例四（杨某诉某健康管理公司）：经营者掌握流水却拒绝提供时，法院可结合消费者支付与合理主张酌定退费。"
     },
     {
       "id": "survey-training-relocation",
@@ -136,7 +136,7 @@
       "chapterTitle": "预付消费",
       "questionIds": [
         "survey-prepaid-gift",
-        "survey-prepaid-retail-deduction",
+        "survey-prepaid-records",
         "survey-training-relocation"
       ]
     },

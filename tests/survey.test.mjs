@@ -56,12 +56,12 @@ test('画像分享从完整问卷开始，旧题号不能截取半卷生成画�
   for(const q of S.questions){const state=S.start(q.id);assert.equal(S.current(state).id,S.questions[0].id);assert.equal(state.responses.length,0);assert.equal(state.index,0);assert.equal(state.order.length,S.questions.length);}
 });
 
-test('案例章节与规则锚点仍完整，读案例入口可返回问卷',()=>{
+test('案例章节与规则锚点仍完整，读案例入口可返回今日 5 关',()=>{
   assert.equal(book.chapters.length,cases.length);
   for(const item of cases){
     assert.ok(book.chapter(item.slug));
     const html=render.caseArticleHtml(item,{rich:richStatic,authorityHtml:authority.staticBlock(item.slug),resume:true});
-    assert.ok(html.includes('返回问卷'));
+    assert.ok(html.includes('返回今日 5 关'));
     const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]));
     for(const m of html.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.has(m[1]),`${item.slug}: ${m[1]}`);
   }

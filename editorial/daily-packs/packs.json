@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "defaultPackId": "episode-001",
+  "schedule": [
+    {
+      "date": "2026-11-15",
+      "packId": "episode-001"
+    }
+  ],
+  "packs": [
+    {
+      "id": "episode-001",
+      "state": "approved",
+      "publishedDate": "2026-11-15",
+      "title": "第 001 期｜出游、家电、拍照、银行卡：这 5 个决定你买不买单？",
+      "subtitle": "3 个看似常见的消费套路 + 2 个容易错过的好规则与实测好物，决定前先看面前线索。",
+      "shareHook": "今天这 5 关：别因为怕掉坑而把真正省钱、经过消协实测的决定也一起拒绝掉。",
+      "companionId": "otter",
+      "challengeIds": [
+        "ep001-l1-arrival-payment",
+        "ep001-l2-robot-vacuum-value",
+        "ep001-l3-photo-upgrade",
+        "ep001-l4-bank-basic-account",
+        "ep001-l5-tour-museum"
+      ]
+    }
+  ]
+}

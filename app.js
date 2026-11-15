@@ -73,19 +73,22 @@
   function renderHeader(){
     const header=document.getElementById('siteHeader');
     if(!header) return;
+    const isCase=document.body.dataset.page==='case';
+    const isLibrary=document.body.dataset.page==='library';
+    const navHtml=`<nav class="header-nav" aria-label="主要导航">${isCase&&window.BuchikuiGameApp?.hasSaved()?`<a href="${esc(base)}">返回挑战</a>`:''}${isLibrary?`<a href="${esc(base)}">${window.BuchikuiGameApp?.hasSaved()?'返回挑战':'今日 5 关'}</a>`:`<a href="${esc(base)}?view=library">案例库</a>`}</nav>`;
     header.innerHTML=`<div class="shell header-inner">
       <div class="brand-block"><a class="brand" href="${esc(base)}" aria-label="不吃亏首页">不吃亏</a>
       <span class="header-note">不花钱，也能买到教训。</span></div>
-      <nav class="header-nav" aria-label="主要导航">${document.body.dataset.page==='case'&&window.BuchikuiSurveyApp?.hasSaved()?`<a href="${esc(base)}?resume=1">返回问卷</a>`:''}${document.body.dataset.page==='library'?`<a href="${esc(base)}?resume=1">${window.BuchikuiSurveyApp?.hasSaved()?'返回问卷':'填写问卷'}</a>`:`<a href="${esc(base)}?view=library">案例库</a>`}</nav>
+      ${navHtml}
     </div>`;
   }
 
   function renderHome(){
     document.body.dataset.page='home';
     delete document.body.dataset.activeCaseSlug;
-    setMeta('不吃亏｜测测你的消费经历角色','测测你的消费经历角色，不花钱，也买教训。简单记录真实遭遇，带走可爱的角色和真实案例提醒。');
+    setMeta('不吃亏｜每日 5 关消费决策游戏','每天 5 关真实消费决策小游戏：先看线索，再做决定，不花一分钱看懂真假套路。');
     renderHeader();
-    window.BuchikuiSurveyApp.mount({app,base});
+    window.BuchikuiGameApp.mount({app,base});
   }
 
   function renderLibrary(){
@@ -272,7 +275,7 @@
       related:facets[item.slug]?.related||[],
       authoritySources:authority?authority.allSources(item.slug):[],
       verified:authority?authority.verifiedAt(item.slug):'',
-      resume:!!window.BuchikuiSurveyApp?.hasSaved()
+      resume:!!window.BuchikuiGameApp?.hasSaved()
     });
 
     if(window.BuchikuiRights?.render){

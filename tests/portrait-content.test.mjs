@@ -16,7 +16,7 @@ async function withDb(callback,source=seed){
 }
 
 test('画像配置与审核短读进入可重建内容库，六角色八题均有发布依据',async()=>withDb(db=>{
-  assert.equal(db.prepare('SELECT max(version) AS version FROM schema_migrations').get().version,3);
+  assert.ok(db.prepare('SELECT max(version) AS version FROM schema_migrations').get().version>=3);
   const config=JSON.parse(db.prepare('SELECT payload FROM portrait_publications WHERE id=1').get().payload);
   assert.equal(config.portraits.length,6);
   assert.equal(config.lessons.length,8);

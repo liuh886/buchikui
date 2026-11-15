@@ -14,7 +14,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export async function prepareSite(target) {
   const site = path.resolve(target);
   await mkdir(site, { recursive: true });
-  for(const retired of ['scenario-checks.js','scenario-ui.js']) await rm(path.join(site,retired),{force:true});
+  for(const retired of ['scenario-checks.js','scenario-ui.js','survey-state.js','survey-portrait.js','survey-portrait-share.js','survey-ui.js','survey-analysis.css','survey-portrait.css']) await rm(path.join(site,retired),{force:true});
 
   for (const file of [...SITE_FILES, ...GENERATED_FILES]) {
     await copyFile(path.join(root, file), path.join(site, file));

@@ -1,19 +1,20 @@
 # Buchikui 文档索引
 
-> 更新：2026-10-24
+> 更新：2026-11-15
 > 本文件是 `docs/` 的**唯一文档索引**。改内容前先在这里确认哪份文档是现行规范。
 
-## 已确认的下一版本方向（尚未切换运行版）
+## 当前运行版本：Game-first「每日五关」+ 案例库（已切换上线基线）
 
-2026-11-15 用户确认：Buchikui 从「消费者经历问卷」向「Wordle 式每日五关消费判断游戏」演进。以下文件是 **下一版的已批准产品设计目标**，不替代下面仍约束当前运行代码的自述问卷规范。新游戏需要单独 Challenge 模型，YES=买、NO=不买，首次选择计分，判断后提供来源可核验的事实反转，且必须具有真实的正向好物案例。
+2026-11-15 已完成重构并在首页正式切换为 **Wordle 式每日五关消费决策游戏**（YES=买/接受、NO=不买/拒绝，首次锁定得分、两阶段依据揭晓、3 个反向陷阱 + 2 个实证正向好选择），站内仅保留**案例库**（`?view=library` 与 `/c/<slug>/`）供自主查证阅读。以下为现行设计与交付权威：
 
-| 新文件 | 作用 |
+| 文档 | 作用 |
 | --- | --- |
-| [game-first-prd.md](game-first-prd.md) | 核心体验、证据与判定、传播、数据隔离、MVP 验收 |
-| [episode-001.md](../tasks/game-first/episode-001.md) | 首期五关剧情脚本、真实来源与两个尚未核验的 YES 槽位 |
-| [execution-plan.md](../tasks/game-first/execution-plan.md) | 既有资产复用表、开发顺序、实施与合并门槛 |
+| [game-first-prd.md](game-first-prd.md) | 现行产品合同、判定门禁、传播规则、数据隔离与验收口径 |
+| [episode-001.md](../tasks/game-first/episode-001.md) | 首期 5 关（3 NO + 2 YES）正式入库内容、来源核验与反方审查记录 |
+| [execution-plan.md](../tasks/game-first/execution-plan.md) | 资产复用、状态机不变量、系统交付与实机验收清单 |
+| [release-acceptance.md](release-acceptance.md) | 自动化/无头浏览器已验证项与真实手机/真人试玩待验清单 |
 
-当前语料中的「退卡按原价倒扣」与所引最高法典型案例四存在内容定位冲突；修正前不得据此做正式判分题。当前问卷与 CASE 的事实保护不应被新方向覆盖；正式切换首页时再同步更新当前规范、AGENTS、README、SEO 和验收。
+原 `corpus/cases/case-consumer-prepaid-retail-deduction.json` 已标记 `needsReview: true` 停止公开引用，`beauty-hair` 对应规则改由 `law-prepaid-interpretation-2025`（《法释〔2025〕4号》第十八、十九条）支撑；旧自述问卷仅保留历史数据库与退役清单作为资产隔离，不再在首页与导航露出。以下规范中与「案例库章节、法源准入、视觉令牌、反馈队列」相关的部分继续有效；旧版自述问卷首页规则已被 [game-first-prd.md](game-first-prd.md) 取代。
 
 
 

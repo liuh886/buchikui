@@ -1,4 +1,40 @@
-# 当前计划：角色库、案例库与题库完善（2026-10-25）
+# 当前计划：Game-first「每日五关」重构与上线（2026-11-15）
+
+> **产品基线**：PR #103（`docs/game-first-prd.md`、`tasks/game-first/episode-001.md`、`tasks/game-first/execution-plan.md`）已合并为当前重构基线。
+> **用户决策**：1. 直接合并推送 `main`；2. 先把关前后端系统完善，再严格核验内容证据；3. 仅保留案例库（`/` 切换为每日五关游戏，保留 `/c/<slug>/` 与 `?view=library`，退场旧问卷界面但不删除 `data/survey.sqlite` 和 `editorial/retired-questions.json`）。
+
+## 重点一：前后端系统完善（G1 + G2 + G3 + G5 + G6 轻入口）
+- [x] **S1. 数据模型、SQLite 校验与构建管道（G1）**：
+  - [x] 新增 `editorial/challenges/` 与 `editorial/daily-packs/` 版本化 JSON 结构（含 `state`、`levelRole`、`productSnapshot`、`goal`、`offer`、`observableClues`、`prompt`、`answer`、`counterfactual`、`revealSteps`、`nextTimeSignal`、`evidence`、`review`）。
+  - [x] 扩展 `database/schema.sql`（migration 4 新增 `challenges`、`challenge_sources`、`daily_packs`、`daily_pack_challenges`、`daily_publications` 表）和 `scripts/lib/challenge-content.mjs` / `scripts/lib/content-db.mjs`：严格执行准入校验（未核验/阻塞/Draft 题目不得进入 `approved` Daily Pack；引用来源必须存在于 `corpus/` 且非待核验/失效法源）。
+  - [x] 扩展 `scripts/build-content-db.mjs` 输出 `daily-data.js`（`schema: 4`、`mode: 'daily-challenge'`）至静态入口，并在 `scripts/serve.mjs` 新增只读 `/api/daily-content`。
+- [x] **S2. 游戏状态机与判分不变量（G2）**：
+  - [x] 新增 `game-state.js`（独立存储 Key `buchikui-daily-v1`，不污染 `buchikui-survey-v1`）。
+  - [x] 实现完整状态机（`ready` → `revealing` → `resolved` → `completed` / `paused-source-invalid` / `missing-pack`），`Asia/Shanghai` 日期匹配、首次锁定计分、防重放/双击刷分、回退只读查看、刷新/跨版本部分保留恢复、`?pack=<id>&challenge=1` 好友挑战模式。
+- [x] **S3. 游戏卡片 UI、两阶段揭晓、成绩与无剧透分享（G2 + G3）**：
+  - [x] 新增 `game-ui.js`、`game-share.js`、`game.css`：S1–S6 全屏状态、左右滑动/按钮/键盘 `ArrowLeft`/`ArrowRight` 等价（320px/390px 零横向溢出、>=44px 触控目标、支持 `prefers-reduced-motion`）、两阶段 Reveal（先对错与一句反转，再可展开事实边界与一手来源链接）、0–5 分五格结果卡、纪念小海獭插画（不作能力评定）、1080×1440 PNG 无剧透成绩卡导出 + 原生/剪贴板分享、G6 轻量消费线索投稿入口。
+- [x] **S4. 首页切换、仅保留案例库、PWA/SEO/契约同步（G5）**：
+  - [x] 更新 `index.html`、`app.js`、`render-cases.js`、`manifest.webmanifest`、`sw.js`（升至 `buchikui-pwa-v25` 并纳入新模块）、`scripts/lib/site-manifest.mjs`、`scripts/prepare-site.mjs`、`scripts/check-frontend-contract.mjs`、GitHub Actions 同步清单；移除首页与导航旧问卷入口，仅保留今日 5 关与案例库。
+  - [x] 新增 `tests/daily-game.test.mjs` 与 `tests/daily_browser.py`，跑通全部 Node 测试、前端契约及无头 Edge 端到端回归。
+
+## 重点二：内容把关与实证核验（G4 + 语料修复）
+- [x] **C1. 修复语料错配**：复核最高法 2025-03-14 `459331.html` 案例三/案例四与《法释〔2025〕4号》第十八条、第十九条；将错配的 `corpus/cases/case-consumer-prepaid-retail-deduction.json` 标记 `needsReview: true` 暂停使用，修复 `editorial/game-rules.json` 中 `beauty-hair/consumer-prepaid-retail-deduction` 为准确法释规则并新增 `consumer-prepaid-records`（对应案例四），同步更新 `editorial/retired-questions.json`、`editorial/game-content.json` 与 `editorial/consumer-portraits.json` 指纹。
+- [x] **C2. 核验并落盘 Episode 001 五关（3 NO + 2 YES）**：
+  - [x] 关 1（NO，热身）：到店付款预扣（最高法 2022 案例 6，`case-consumer-arrival-payment`）。
+  - [x] 关 2（YES，首次正向反转）：北京市消协 2026-03-17《20款扫地机器人比较试验结果》（`reference-北京市消协扫地机器人比较试验2026`，实测 1999 元米家 DIO1CN vs 4299 元旗舰）。
+  - [x] 关 3（NO，中场陷阱）：19.9 元写真升级套餐（最高法 2022 案例 2，`case-consumer-photo-unfinished`）。
+  - [x] 关 4（YES，第二次正向反转）：《发改价格规〔2017〕1250号》+《工行小额账户收费通告》（唯一普通借记卡 0 元免年费/小额管理费，拒绝不必要的付费升级）。
+  - [x] 关 5（NO，Boss）：「无购物」团落地新增「玉石博物馆」（湖南文旅厅 2026-06-15 案例一，`case-consumer-tour-museum`）。
+- [x] **C3. 文档同步与发布收口**：更新 `AGENTS.md`、`README.md`、`docs/README.md`、`docs/product-experience-spec.md`、`docs/release-acceptance.md` 与 `tasks/game-first/` 状态，明确区分自动化/无头浏览器验证与待实机补齐的物理手机及真人试玩项。
+
+## 本轮完成复盘 (Review)
+- **前后端与构建产物**：完成 Challenge/Daily Pack schema 4 数据库迁移与发布闸门、无剧透分享状态机及 Canvas 成绩卡，首页与案例库导航完全切换至 Daily 5 + 案例库；`data/survey.sqlite`、`editorial/retired-questions.json` 与旧问卷历史结构保持隔离不受破坏。
+- **验证结果**：`npm run verify`（含 104 项 Node 测试与前端契约门禁）、`npm run build:site`（生成纯静态 `_site`）、`node scripts/check-links.mjs`（新增 3 个官方页面均返回可用）及 `python tests/daily_browser.py`（390×844/390×666/320×640/1365×900 零横向溢出、>=44px 触控、5/5 与 0/5 流程、PNG 导出下载、刷新恢复、案例库与章节往返、损坏存档恢复）均实测通过。
+- **已知待办**：真实 iPhone Safari / Android Chrome、VoiceOver / TalkBack 读屏以及 6–8 名普通消费者盲测仍待上线后真机补验（已登记于 `docs/release-acceptance.md`）。
+
+---
+
+# 历史计划：角色库、案例库与题库完善（2026-10-25）
 
 > **2026-11-15 产品转向：** 用户已批准优先推进 Game-first「每日五关」游戏。新的 [PRD](../docs/game-first-prd.md)、[首期五关](game-first/episode-001.md)、[执行与验收计划](game-first/execution-plan.md) 为**下一版开发方向**。下列原问卷任务保留为历史交付/待验记录，不能误认为下一版游戏的主要功能清单。尚未切换当前首页或重计旧问卷数据。两个正向关卡和退卡原价案例来源核查仍是上线阻塞项。
 

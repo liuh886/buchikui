@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 INSERT OR IGNORE INTO schema_migrations VALUES (1, 'consumer content and editorial publication');
 INSERT OR IGNORE INTO schema_migrations VALUES (2, 'self-report survey publication');
 INSERT OR IGNORE INTO schema_migrations VALUES (3, 'reviewed consumer portrait and case lessons');
+INSERT OR IGNORE INTO schema_migrations VALUES (4, 'game-first daily 5 challenges and curated packs');
 
 CREATE TABLE portrait_publications (
   id INTEGER PRIMARY KEY CHECK (id=1),
@@ -110,3 +111,46 @@ WHERE q.review_state='published' AND c.review_state='verified' AND s.eligible=1 
     SELECT 1 FROM rule_sources rs JOIN sources src ON src.id=rs.source_id
     WHERE rs.topic_slug=q.topic_slug AND rs.rule_id=q.rule_id AND src.eligible=0
   );
+
+CREATE TABLE challenges (
+  id TEXT PRIMARY KEY,
+  version TEXT NOT NULL,
+  state TEXT NOT NULL CHECK (state IN ('draft','fact-reviewed','playtested','approved','blocked','retired')),
+  level_role TEXT NOT NULL CHECK (level_role IN ('warmup','spot-trap','positive-surprise','hard','boss')),
+  topic_slug TEXT NOT NULL REFERENCES topics(slug),
+  rule_id TEXT,
+  answer TEXT NOT NULL CHECK (answer IN ('yes','no')),
+  payload TEXT NOT NULL CHECK (json_valid(payload)),
+  FOREIGN KEY (topic_slug,rule_id) REFERENCES authority_rules(topic_slug,id)
+) STRICT;
+
+CREATE TABLE challenge_sources (
+  challenge_id TEXT NOT NULL REFERENCES challenges(id),
+  source_id TEXT NOT NULL REFERENCES sources(id),
+  position INTEGER NOT NULL,
+  PRIMARY KEY (challenge_id,source_id)
+) STRICT;
+
+CREATE TABLE daily_packs (
+  id TEXT PRIMARY KEY,
+  published_date TEXT NOT NULL,
+  state TEXT NOT NULL CHECK (state IN ('draft','preview','approved','retired')),
+  revision TEXT NOT NULL,
+  payload TEXT NOT NULL CHECK (json_valid(payload))
+) STRICT;
+
+CREATE TABLE daily_pack_challenges (
+  pack_id TEXT NOT NULL REFERENCES daily_packs(id),
+  challenge_id TEXT NOT NULL REFERENCES challenges(id),
+  position INTEGER NOT NULL,
+  PRIMARY KEY (pack_id,position),
+  UNIQUE (pack_id,challenge_id)
+) STRICT;
+
+CREATE TABLE daily_publications (
+  id INTEGER PRIMARY KEY CHECK (id=1),
+  payload TEXT NOT NULL CHECK (json_valid(payload))
+) STRICT;
+
+CREATE INDEX idx_challenges_state ON challenges(state,topic_slug);
+CREATE INDEX idx_daily_packs_state ON daily_packs(state,published_date);

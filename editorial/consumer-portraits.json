@@ -44,7 +44,7 @@
       "portraitId": "raccoon",
       "questionIds": [
         "survey-prepaid-gift",
-        "survey-prepaid-retail-deduction",
+        "survey-prepaid-records",
         "survey-photo-unfinished"
       ]
     }
@@ -164,21 +164,21 @@
       }
     },
     {
-      "id": "prepaid-retail-deduction-lesson",
-      "questionId": "survey-prepaid-retail-deduction",
-      "caseId": "case-consumer-prepaid-retail-deduction",
+      "id": "prepaid-records-lesson",
+      "questionId": "survey-prepaid-records",
+      "caseId": "case-consumer-prepaid-records",
       "topicSlug": "beauty-hair",
-      "ruleId": "consumer-prepaid-retail-deduction",
+      "ruleId": "consumer-prepaid-records",
       "priority": 40,
       "introPriority": 40,
-      "situation": "消费者办打折卡后申请退款，门店拿出格式条款称“退卡要按单次门市最高原价扣除前面已做项目”。",
-      "outcome": "司法裁判认定“退费按原价倒扣”属加重消费者责任的无效格式条款，判令按实际优惠折扣折算退还余款。",
-      "boundary": "消费者自身原因解除无违约合同的，商家可主张合理手续费或违约金，但不能单方加价倒扣。",
-      "notice": "退卡结算时坚持按购卡时的实际折扣比例分摊已做费用，警惕在结算单上签字同意“按原价扣费”。",
-      "reviewedAgainst": "12f07354ffb7816d2ada75396b7a6de2181e363f7625f369e4f67e0cc881eaa5",
+      "situation": "美疗店掌握后台消费记录却不完整提供，消费者与门店对剩余预付款余额发生争议。",
+      "outcome": "法院结合消费者支付记录与已提供的部分消费证据，依据公平与举证分配规则酌定退还余额。",
+      "boundary": "经营者不交记录会承担不利后果，但并不意味着消费者主张多少金额法院就一律照退。",
+      "notice": "办理储值卡后保留每次充值转账与消费核销截图，退卡对账时要求商家完整出示后台明细。",
+      "reviewedAgainst": "eafc98f447e64167a2df124ab299d5cc480ee966d566323dcb02f99aa84ad3d5",
       "review": {
         "reviewer": "editorial-audit",
-        "reviewedAt": "2026-10-25",
+        "reviewedAt": "2026-11-15",
         "scope": "situation,outcome,boundary,notice",
         "verdict": "approved"
       }

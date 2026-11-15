@@ -7,6 +7,7 @@ import {loadCorpus,authoritySourceProblems} from './corpus.mjs';
 import {loadCases,loadRawCases} from '../prerender-cases.mjs';
 import {loadEditorialRules,joinRule} from '../build-authority.mjs';
 import {validatePortraitPublication,publicPortrait,questionnaireVersion} from './portrait-content.mjs';
+import {loadChallengeSeed,populateChallengeTables,publicDailyContent} from './challenge-content.mjs';
 
 export const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 export const DATABASE=path.join(ROOT,'data','content.sqlite');
@@ -15,11 +16,11 @@ const readJson=async file=>JSON.parse(await readFile(path.join(ROOT,file),'utf8'
 const publicFields=['id','caseSlug','ruleId','realCaseId','origin','mode','decisionType','stage','action'];
 
 export async function loadContentSeed(){
-  const [corpus,topics,rules,game,retired,raw,portrait]=await Promise.all([
-    loadCorpus(),loadCases(),loadEditorialRules(),readJson('editorial/game-content.json'),readJson('editorial/retired-questions.json'),loadRawCases(),readJson('editorial/consumer-portraits.json')
+  const [corpus,topics,rules,game,retired,raw,portrait,challengeSeed]=await Promise.all([
+    loadCorpus(),loadCases(),loadEditorialRules(),readJson('editorial/game-content.json'),readJson('editorial/retired-questions.json'),loadRawCases(),readJson('editorial/consumer-portraits.json'),loadChallengeSeed()
   ]);
   const topicSources=raw.cases.flatMap(topic=>(topic.sources||[]).map(s=>({topic:topic.slug,sourceId:s.sourceId})));
-  return {sources:[...corpus.values()],topics,topicSources,editorial:rules.editorial,questions:[...game.questions,...retired],journeys:game.journeys,portrait};
+  return {sources:[...corpus.values()],topics,topicSources,editorial:rules.editorial,questions:[...game.questions,...retired],journeys:game.journeys,portrait,challenges:challengeSeed.challenges,packsConfig:challengeSeed.packsConfig};
 }
 
 export function validateQuestion(q){
@@ -87,6 +88,12 @@ export async function populateDatabase(db,seed){
     if(orphan.length) throw new Error(`已审核题没有编排：${orphan.map(r=>r.id).join(',')}`);
     validatePortraitPublication(seed.portrait,db);
     db.prepare('INSERT INTO portrait_publications VALUES (1,?)').run(json(seed.portrait));
+    const topicSlugs=new Set(seed.topics.map(t=>t.slug));
+    const ruleMap=new Map();
+    for(const [slug,item] of Object.entries(seed.editorial)) for(const r of item.rules||[]) ruleMap.set(`${slug}/${r.id}`,r);
+    const companions=new Set((seed.portrait?.portraits||[]).map(p=>p.id));
+    const {packsConfig}=populateChallengeTables(db,{challenges:seed.challenges||[],packsConfig:seed.packsConfig},{corpus,topics:topicSlugs,ruleMap,companions});
+    db.prepare('INSERT INTO daily_publications VALUES (1,?)').run(json({defaultPackId:packsConfig.defaultPackId||'',schedule:packsConfig.schedule||[]}));
     if(db.prepare('PRAGMA foreign_key_check').all().length) throw new Error('内容关系校验失败');
     db.exec('COMMIT');
   }catch(error){db.exec('ROLLBACK');throw error;}
@@ -121,8 +128,23 @@ export function publicContent(db){
   return {...payload,revision:createHash('sha256').update(json([payload,basis])).digest('hex').slice(0,20)};
 }
 
+export function publicDaily(db){
+  const packsConfig=JSON.parse(db.prepare('SELECT payload FROM daily_publications WHERE id=1').get().payload);
+  const portraitConfig=JSON.parse(db.prepare('SELECT payload FROM portrait_publications WHERE id=1').get().payload);
+  return publicDailyContent(db,packsConfig,portraitConfig);
+}
+
 export function databaseStats(db){
-  return {sources:db.prepare('SELECT count(*) AS n FROM sources').get().n,topics:db.prepare('SELECT count(*) AS n FROM topics').get().n,realCases:db.prepare('SELECT count(*) AS n FROM real_cases').get().n,rules:db.prepare('SELECT count(*) AS n FROM authority_rules').get().n,questions:db.prepare('SELECT review_state,count(*) AS count FROM questions GROUP BY review_state').all(),casesByReview:db.prepare('SELECT review_state,count(*) AS count FROM real_cases GROUP BY review_state').all()};
+  return {
+    sources:db.prepare('SELECT count(*) AS n FROM sources').get().n,
+    topics:db.prepare('SELECT count(*) AS n FROM topics').get().n,
+    realCases:db.prepare('SELECT count(*) AS n FROM real_cases').get().n,
+    rules:db.prepare('SELECT count(*) AS n FROM authority_rules').get().n,
+    questions:db.prepare('SELECT review_state,count(*) AS count FROM questions GROUP BY review_state').all(),
+    casesByReview:db.prepare('SELECT review_state,count(*) AS count FROM real_cases GROUP BY review_state').all(),
+    challenges:db.prepare('SELECT state,count(*) AS count FROM challenges GROUP BY state').all(),
+    dailyPacks:db.prepare('SELECT state,count(*) AS count FROM daily_packs GROUP BY state').all()
+  };
 }
 
 export async function buildContentDatabase(target=DATABASE,seed){
@@ -131,7 +153,7 @@ export async function buildContentDatabase(target=DATABASE,seed){
   const db=new DatabaseSync(temp);
   try{
     await populateDatabase(db,seed||await loadContentSeed());
-    const result={content:publicContent(db),stats:databaseStats(db)};
+    const result={content:publicContent(db),daily:publicDaily(db),stats:databaseStats(db)};
     db.close();
     await rename(temp,target);
     return result;
@@ -145,6 +167,11 @@ export async function buildContentDatabase(target=DATABASE,seed){
 export function readPublicContent(file=DATABASE){
   const db=new DatabaseSync(file,{readOnly:true});
   try{return publicContent(db);}finally{db.close();}
+}
+
+export function readPublicDailyContent(file=DATABASE){
+  const db=new DatabaseSync(file,{readOnly:true});
+  try{return publicDaily(db);}finally{db.close();}
 }
 
 export function readDatabaseTopics(file=DATABASE){

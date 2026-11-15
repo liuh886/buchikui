@@ -1,6 +1,6 @@
 # 不吃亏 — 产品体验规范
 
-状态：Normative · 更新：2026-10-24。可爱消费者经历角色版本已本地实现，待真实设备与用户验收，尚未发布。需求依据见[PRD](consumer-portrait-prd.md)，技术方案见[架构文档](consumer-portrait-architecture.md)。
+状态：Partially Superseded（2026-11-15）。**首页与游戏主流程已正式切换为 [Game-first 每日五关 PRD](game-first-prd.md)**；本文档中关于旧自述问卷（第 1–3 节“你是否遭遇过：”与性格角色总结）的部分已由新首页流程取代，**仅关于 18 章案例库、法源分离与移动端无溢出底线的规范继续有效**。
 
 ## 1. 定位与参与收益
 

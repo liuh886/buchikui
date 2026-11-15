@@ -150,7 +150,7 @@
 
     return `<article class="case-page">
         <header class="case-intro shell">
-          <nav class="case-nav" aria-label="章节导航">${opts.resume?`<a class="back-link" href="${esc(base)}?resume=1">返回问卷</a>`:`<a class="back-link" href="${esc(base)}?view=library">返回案例库</a>`}<a class="back-link" href="${esc(base)}?${opts.resume?'view=library':'resume=1'}">${opts.resume?'案例库':'填写问卷'}</a></nav>
+          <nav class="case-nav" aria-label="章节导航">${opts.resume?`<a class="back-link" href="${esc(base)}">返回今日 5 关</a>`:`<a class="back-link" href="${esc(base)}?view=library">返回案例库</a>`}<a class="back-link" href="${esc(base)}${opts.resume?'?view=library':''}">${opts.resume?'案例库':'今日 5 关'}</a></nav>
           ${chapter?`<p class="chapter-volume">第${esc(book.number(chapter.volumeIndex))}卷 · ${esc(chapter.volume)}</p>`:''}
           <div class="case-meta"><span>${esc(chapter?`${chapter.label} · ${chapter.title}`:categoryOf(item))}</span>${item.updated?`<time datetime="${esc(item.updated)}">更新 ${esc(item.updated)}</time>`:''}</div>
           <h1>${rich(heading)}</h1>

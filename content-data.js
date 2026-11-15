@@ -2,7 +2,7 @@
 window.BUCHIKUI_CONTENT={
   "schema": 3,
   "mode": "self-report",
-  "questionnaireVersion": "fd1bbe24c2709ad30e0c",
+  "questionnaireVersion": "70cae405e666f7dae7e7",
   "questions": [
     {
       "id": "survey-tour-museum",
@@ -107,38 +107,38 @@ window.BUCHIKUI_CONTENT={
       "version": "bccef79b2b5e80b650cf"
     },
     {
-      "id": "survey-prepaid-retail-deduction",
+      "id": "survey-prepaid-records",
       "caseSlug": "beauty-hair",
-      "ruleId": "consumer-prepaid-retail-deduction",
-      "realCaseId": "case-consumer-prepaid-retail-deduction",
+      "ruleId": "consumer-prepaid-records",
+      "realCaseId": "case-consumer-prepaid-records",
       "origin": "case-inspired-survey",
       "mode": "self-report",
-      "decisionType": "购买",
+      "decisionType": "选择",
       "stage": "储值办卡",
-      "action": "你是否遭遇过：充值卡没用完想退款，商家却按门市最高原价倒扣已消费的项目？",
+      "action": "你是否遭遇过：办卡退费对账时，门店拒绝出示后台消费流水明细？",
       "analysis": {
-        "title": "退卡按门市原价倒扣，法律不予支持。",
-        "explanation": "原案认定“退费按单次门市原价重新结算”格式条款无效，判令按合同约定折扣分摊已消费金额并退还剩余本金。",
-        "reminder": "退卡时坚持按充值时的实际折扣比例折算已消费部分；消费者自身违约可扣除合理违约金，但不能被擅自按原价倒扣。",
+        "title": "经营者拒不提供控制中的消费记录，应承担相应不利后果。",
+        "explanation": "原案中经营者掌握消费明细却不完整提供，法院结合支付记录及部分消费证据，依据消费者合理主张酌定应退余额。",
+        "reminder": "充值后尽量留存每次核销截图和转账凭证；门店拒不出示后台流水时，可在维权中主张由掌握账目的经营者承担举证责任。",
         "cases": [
           {
-            "id": "case-consumer-prepaid-retail-deduction",
-            "title": "最高法预付式消费典型案例：退卡按门市原价折算",
-            "facts": "消费者充值办美发打折卡后申请退款，门店要求按单次最高门市原价重新折算此前项目并扣光余额。",
-            "holding": "认定退费按原价倒扣条款无效，判令按合同约定折扣分摊已消费金额并退还剩余本金。",
-            "boundary": "消费者自身原因解除无违约合同的，商家可主张合理手续费，但不能单方加价倒扣。",
+            "id": "case-consumer-prepaid-records",
+            "title": "2025年最高法消费典型案例：预付消费流水",
+            "facts": "美疗店掌握消费流水却不完整提交，双方余额争议。",
+            "holding": "法院结合支付及部分消费证据酌定退款。",
+            "boundary": "不是消费者主张多少都须照退。",
             "source": {
               "href": "https://www.court.gov.cn/zixun/xiangqing/459331.html",
               "publisher": "最高人民法院",
               "type": "典型案例",
               "published": "2025-03-14",
-              "verified": "2026-10-25",
+              "verified": "2026-10-23",
               "locator": "案例四"
             }
           }
         ]
       },
-      "version": "3ccac72b94ab696a05ae"
+      "version": "77f966f32218322b48cd"
     },
     {
       "id": "survey-training-relocation",
@@ -299,7 +299,7 @@ window.BUCHIKUI_CONTENT={
       "chapterTitle": "预付消费",
       "questionIds": [
         "survey-prepaid-gift",
-        "survey-prepaid-retail-deduction",
+        "survey-prepaid-records",
         "survey-training-relocation"
       ]
     },
@@ -464,26 +464,26 @@ window.BUCHIKUI_CONTENT={
         }
       },
       {
-        "id": "prepaid-retail-deduction-lesson",
-        "questionId": "survey-prepaid-retail-deduction",
-        "caseId": "case-consumer-prepaid-retail-deduction",
+        "id": "prepaid-records-lesson",
+        "questionId": "survey-prepaid-records",
+        "caseId": "case-consumer-prepaid-records",
         "topicSlug": "beauty-hair",
-        "ruleId": "consumer-prepaid-retail-deduction",
+        "ruleId": "consumer-prepaid-records",
         "priority": 40,
         "introPriority": 40,
-        "situation": "消费者办打折卡后申请退款，门店拿出格式条款称“退卡要按单次门市最高原价扣除前面已做项目”。",
-        "outcome": "司法裁判认定“退费按原价倒扣”属加重消费者责任的无效格式条款，判令按实际优惠折扣折算退还余款。",
-        "boundary": "消费者自身原因解除无违约合同的，商家可主张合理手续费或违约金，但不能单方加价倒扣。",
-        "notice": "退卡结算时坚持按购卡时的实际折扣比例分摊已做费用，警惕在结算单上签字同意“按原价扣费”。",
+        "situation": "美疗店掌握后台消费记录却不完整提供，消费者与门店对剩余预付款余额发生争议。",
+        "outcome": "法院结合消费者支付记录与已提供的部分消费证据，依据公平与举证分配规则酌定退还余额。",
+        "boundary": "经营者不交记录会承担不利后果，但并不意味着消费者主张多少金额法院就一律照退。",
+        "notice": "办理储值卡后保留每次充值转账与消费核销截图，退卡对账时要求商家完整出示后台明细。",
         "groupId": "prepaid",
         "mechanismId": "settlement-obstacle",
         "source": {
-          "title": "最高法预付式消费典型案例：退卡按门市原价折算",
+          "title": "2025年最高法消费典型案例：预付消费流水",
           "href": "https://www.court.gov.cn/zixun/xiangqing/459331.html",
           "publisher": "最高人民法院",
           "type": "典型案例",
           "published": "2025-03-14",
-          "verified": "2026-10-25",
+          "verified": "2026-10-23",
           "locator": "案例四"
         }
       },
@@ -610,11 +610,11 @@ window.BUCHIKUI_CONTENT={
         "portraitId": "raccoon",
         "questionIds": [
           "survey-prepaid-gift",
-          "survey-prepaid-retail-deduction",
+          "survey-prepaid-records",
           "survey-photo-unfinished"
         ]
       }
     ]
   },
-  "revision": "7635ee5a14801f693c2d"
+  "revision": "f2d9cd71d93f7db2cfe5"
 };

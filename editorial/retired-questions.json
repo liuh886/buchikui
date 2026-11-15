@@ -284,5 +284,18 @@
     "stage": "儿童乐园",
     "action": "你是否遭遇过：儿童乐园年卡还没到期，门店就关门了？",
     "researchPurpose": "2026-10-25退役：与健身卡闭店退款同质化且受众偏窄；由非闭店高频争议充值卡未消费按门市原价倒扣（survey-prepaid-retail-deduction）替换。"
+  },
+  {
+    "id": "survey-prepaid-retail-deduction",
+    "caseSlug": "beauty-hair",
+    "ruleId": "consumer-prepaid-retail-deduction",
+    "realCaseId": "case-consumer-prepaid-retail-deduction",
+    "origin": "case-inspired-survey",
+    "reviewState": "retired",
+    "mode": "self-report",
+    "decisionType": "购买",
+    "stage": "储值办卡",
+    "action": "你是否遭遇过：充值卡没用完想退款，商家却按门市最高原价倒扣已消费的项目？",
+    "researchPurpose": "2026-11-15退役：核对459331.html原文发现案例四实为经营者未提供消费记录举证责任（杨某诉某健康管理公司），原题面“门市原价倒扣无效”与案例四不符且忽略法释〔2025〕4号第18/19条对退款原因的区分；由survey-prepaid-records替换。"
   }
 ]

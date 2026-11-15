@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { prepareSite } from './prepare-site.mjs';
 import { BASE_PATH } from './prerender-cases.mjs';
-import {readPublicContent} from './lib/content-db.mjs';
+import {readPublicContent,readPublicDailyContent} from './lib/content-db.mjs';
 import {handleSurveyResponse,handleSurveyStats} from './lib/survey-responses.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -54,6 +54,15 @@ createServer(async (req, res) => {
     res.setHeader('x-content-type-options','nosniff');
     if(req.method!=='GET'){res.writeHead(405,{'allow':'GET'});res.end(JSON.stringify({error:'method_not_allowed'}));return;}
     try{const content=readPublicContent();res.writeHead(200);res.end(JSON.stringify(content));}
+    catch(error){res.statusCode=503;res.end(JSON.stringify({error:'content_unavailable'}));}
+    return;
+  }
+  if(pathname==='/api/daily-content'||pathname===`${BASE_PATH}api/daily-content`){
+    res.setHeader('cache-control','no-store');
+    res.setHeader('content-type','application/json; charset=utf-8');
+    res.setHeader('x-content-type-options','nosniff');
+    if(req.method!=='GET'){res.writeHead(405,{'allow':'GET'});res.end(JSON.stringify({error:'method_not_allowed'}));return;}
+    try{const daily=readPublicDailyContent();res.writeHead(200);res.end(JSON.stringify(daily));}
     catch(error){res.statusCode=503;res.end(JSON.stringify({error:'content_unavailable'}));}
     return;
   }

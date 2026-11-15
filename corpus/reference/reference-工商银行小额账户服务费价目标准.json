@@ -1,0 +1,13 @@
+{
+  "id": "reference-工商银行小额账户服务费价目标准",
+  "kind": "reference",
+  "authorityRole": "official-disclosure",
+  "title": "中国工商银行：对人民币小额个人活期存款账户收取账户服务费的通告",
+  "publisher": "中国工商银行",
+  "issued": "2006-03-20",
+  "verified": "2026-11-15",
+  "url": "https://www.icbc.com.cn/icbc/html/gonggao/2006nian/0320/sy_pop_xiaoezhanghushoufei_060320.htm",
+  "facts": "2006年3月20日工行通告：日均存款余额不足300元（不含）的人民币小额个人活期存款账户，按每季度3元收取账户服务费（11类特定账户及按国家规定免收的唯一/指定免费普通账户除外）。",
+  "note": "官方历史收费通告。需配合2017年发改价格规〔2017〕1250号一并理解：商业银行须为客户唯一普通本行人民币账户（不含信用卡、贵宾账户）主动免收年费与小额账户管理费。",
+  "consumerTopic": "bank-small-account-fee"
+}

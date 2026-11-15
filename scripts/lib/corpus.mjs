@@ -8,6 +8,10 @@ export const LAW_TYPES = ['法律', '行政法规', '司法解释', '部门规�
 export const CASE_WEIGHTS = ['指导性案例', '典型案例', '生效裁判', '监管处罚案例', '监管通报', '媒体披露'];
 export const LAW_STATUS = ['现行', '即将生效', '已取代', '已废止', '待核验'];
 export const OFFICIAL_ADVISORY_TYPE = '官方提示';
+export const CHALLENGE_REFERENCE_ROLES = {
+  'comparative-test': '官方比较试验',
+  'official-disclosure': '官方产品披露'
+};
 const ISSUED_WITHOUT_EFFECTIVE = new Set(['规范性文件', '政策文件', '监管规范性文件']);
 export const SOCIAL_HOSTS = /weibo|weixin|xiaohongshu|zhihu|douban|reddit|tieba|telegram/i;
 
@@ -201,6 +205,25 @@ export function authoritySourceProblems(record, at = today()) {
   return problems;
 }
 
+/** 判分关卡来源准入：在权威依据准入基础上，额外接纳经核验的官方比较试验与官方产品/费率披露，仍拒绝媒体与普通参考资料。 */
+export function challengeSourceProblems(record, at = today()) {
+  if (!record) return ['来源不存在'];
+  if (record.kind === 'reference' && CHALLENGE_REFERENCE_ROLES[record.authorityRole]) {
+    const problems = [];
+    const report = message => problems.push(message);
+    if (record.needsReview || record.status === '待核验') report('来源仍待核验');
+    if (!isDate(record.verified) || record.verified > at) report('缺少已完成且非未来的核验日期');
+    if (!isDate(record.issued) || record.issued > at) report('官方材料须有真实发布日期');
+    if (isDate(record.verified) && isDate(record.issued) && record.issued > record.verified) report('核验日期早于材料发布日期');
+    if (!String(record.title || '').trim()) report('缺少来源标题');
+    if (!String(record.publisher || '').trim()) report('缺少发布机构全称');
+    if (!String(record.note || '').trim()) report('须说明测试/披露范围与适用边界');
+    checkUrl([], record, report);
+    return problems;
+  }
+  return authoritySourceProblems(record, at);
+}
+
 /** url -> id（含 aliasUrls 里的等价官方链接），供迁移与引用检查使用。 */
 export function urlIndex(corpus) {
   const index = new Map();
@@ -222,6 +245,13 @@ export function sourceLabel(record) {
   if (record.kind === 'case') return record.weight || '';
   if (record.kind === 'reference' && record.authorityRole === 'official-advisory') return OFFICIAL_ADVISORY_TYPE;
   return '';
+}
+
+export function challengeSourceLabel(record) {
+  if (record?.kind === 'reference' && CHALLENGE_REFERENCE_ROLES[record.authorityRole]) {
+    return CHALLENGE_REFERENCE_ROLES[record.authorityRole];
+  }
+  return sourceLabel(record);
 }
 
 /**

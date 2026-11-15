@@ -1,42 +1,15 @@
 # Buchikui Agent Contract
 
-## Approved next-product direction (2026-11-15; design target, not current runtime)
+## Current baseline: Game-first Daily 5 & Case Library (2026-11-15)
 
-The user has approved a **Game-first Daily 5** redesign: five real consumer purchase-decision levels per day; YES = buy/accept this specific offer; NO = decline; first decision scores; a source-backed evidence reveal follows; all five can be completed and shared as an unspoiled challenge. The product must also reveal overlooked *good* purchases. See [Game-first PRD](docs/game-first-prd.md), [Episode 001](tasks/game-first/episode-001.md), and [execution plan](tasks/game-first/execution-plan.md).
+The user approved adopting PR #103 (**Game-first Daily 5**) as the production baseline, retaining only the **Case Library** (`?view=library` and `/c/<slug>/`) alongside the game. See [Game-first PRD](docs/game-first-prd.md), [Episode 001](tasks/game-first/episode-001.md), and [execution plan](tasks/game-first/execution-plan.md).
 
-This is an **authorized next-version target, not a claim that the existing self-report questionnaire has changed**. Do not add answer/scoring to the existing self-report questionnaire, reinterpret old YES/NO answers, erase survey.sqlite, or switch the homepage until a separate implementation and release acceptance PR. For the *current running version*, the self-report rules below remain binding. For the *new Challenge mode*, answers require a clear user goal, pre-purchase observable evidence, and editorial review; negative claims must be individually verifiable. The pilot includes two **blocked** positive-story slots: do not publish imaginary products or fabricate evidence just to fill the daily five.
-
-Priority is a runnable five-level vertical slice and credible reveals, not a defensive repo-wide refactor. Existing CASE URLs, sources, animal art and share mechanisms should be reused. Read the new product documents before any work on the next game experience.
-
-
-
-The user explicitly requested cute consumer portraits, a product-to-architect handoff and implementation.
-Read `docs/consumer-portrait-prd.md` and `docs/consumer-portrait-architecture.md` before changing this version.
-Six illustrated, explainable experience-themed characters and two source-backed case lessons are implemented locally.
-They describe this questionnaire's reports, not personality, competence or verified
-experience level. P0 chooses portraits rather than consumer ability grades. NO does not establish skill or
-lack of exposure; YES counts are never a competence score. The existing questionnaire and source boundaries
-remain in force. Public content and survey state use schema 3; valid full-questionnaire schema 2 state can migrate.
-Portrait coverage and valid complete-questionnaire statistics have separate thresholds. Images and summaries do not
-change question semantic versions or erase answers. Implementation is local and not deployed; real mobile devices,
-screen readers and 6–8 participant comprehension/cuteness acceptance remain pending. See `docs/release-acceptance.md`.
-
-Buchikui is a **consumer-experience survey** with a source-backed case library.
-
-The user confirmed on 2026-10-23 that the homepage asks only actual consumer decisions, always starting
-with “你是否遭遇过：”. Ask about believing, choosing, cooperating or purchasing in a concrete consumer
-experience. YES means “有过”; NO means “没有过”. Both immediately record the response and continue.
-There is no correct answer, scoring, retry requirement or answer gate. This replaces the earlier game
-positioning. The MBTI analogy concerns a simple survey flow and a descriptive result, not a psychological diagnosis.
-
-Questions concern specific adverse experiences; record self-reports without treating any purchase as loss.
-The result first shows a cute experience-themed character, its answer-backed explanation and two case lessons;
-personal records and aggregates follow. It shows real aggregates of complete, current-version
-questionnaires. Use “答卷”, not a claim of uniquely verified people. Never invent sample counts, infer total
-losses from YES counts, or rank named participants. The searchable case library remains separate and optional.
-
-The source of truth for published content is GitHub main. Supabase public.product_feedback remains the
-consumer feedback queue; questionnaire responses are stored locally in a separate survey database.
+- `/` opens directly on today's 5-level Daily 5 consumer decision game (`game-ui.js`, `game-state.js`, `game-share.js`, `daily-data.js`, `schema: 4`). YES = accept/buy the specific offer; NO = decline; first answer locks score (`0–5`); a two-stage source-backed reveal follows every decision; unspoilered 5-grid + PNG share cards link via `?pack=<id>&challenge=1`.
+- Prompts must describe a concrete decision scenario with pre-purchase observable clues and a fixed player goal; never reintroduce `你是否遭遇过：` or self-report survey flows on the homepage UI. Positive `YES` levels require verified comparative-test, official-disclosure, or rule evidence (`可证实性价比优势`).
+- The Case Library (`?view=library` and `/c/<slug>/` chapters backed by `legal-updates.js` and `cases-data.js`) remains the sole companion content experience.
+- Historical self-report survey assets (`data/survey.sqlite`, `editorial/retired-questions.json`, `editorial/game-content.json`, `buchikui-survey-v1` storage) remain isolated and untouched; the new game uses `buchikui-daily-v1`.
+- `corpus/cases/case-consumer-prepaid-retail-deduction.json` is paused (`needsReview: true`) after confirming `459331.html` 案例四 covers merchant record-keeping rather than retail-price deduction; retail deduction rules in `beauty-hair` now cite `law-prepaid-interpretation-2025` (法释〔2025〕4号 第十八条、第十九条) directly.
+- Automated Node tests, contract checks, static site builds, and headless Edge E2E tests cover logic and simulated mobile viewports; physical iPhone/Android devices, VoiceOver/TalkBack, and 6–8 participant playtests remain pending (see `docs/release-acceptance.md`).
 
 ## Product authority
 
@@ -141,12 +114,12 @@ When processing consumer feedback, read `docs/agent-feedback-workflow.md`, then 
 
 A release is acceptable only when:
 
-- `/` opens on a self-report questionnaire card, and the topic library stays reachable from the nav;
+- `/` opens on today's Daily 5 decision game card, and only the Case Library (`?view=library`, `/c/<slug>/`) remains reachable from the nav;
 - `/c/<slug>/` is the sole canonical CASE path, presented as one chapter of a book;
-- the first screen tells the consumer what real-world issue the page covers;
+- every Daily 5 level has verified source-backed evidence (`corpus/`), clear pre-purchase clues, counterfactual validation, and non-spoiler share output;
 - authoritative material is visibly separated from Buchikui's practical translation;
 - original sources remain reachable;
-- mobile has no horizontal overflow at 390 px;
+- mobile has no horizontal overflow at 390 px and 320 px;
 - `node scripts/check-frontend-contract.mjs` passes.
 
 

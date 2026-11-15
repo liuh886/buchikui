@@ -196,7 +196,6 @@
       <div class="daily-companion-body">
         <p class="daily-eyebrow">本期纪念陪伴 · ${esc(companion.name)}</p>
         <p class="daily-companion-hook">${esc(pack.shareHook || companion.description)}</p>
-        <p class="daily-companion-note">仅作本期通关纪念与分享装饰，不给消费者做能力分级或人格贴标。</p>
       </div>
     </section>` : '';
 
@@ -295,7 +294,6 @@
     const isFrontierUnanswered = viewIndex === run.activeIndex && run.status === 'ready' && !record;
     const isPastReview = Boolean(record) && viewIndex !== run.activeIndex;
 
-    const clueItems = (level.observableClues || []).map((clue) => `<li>${esc(clue)}</li>`).join('');
     const detailItems = (level.productSnapshot?.details || []).map((item) => `<li>${esc(item)}</li>`).join('');
     const roleClass = ROLE_COLORS[level.levelRole] || 'role-warmup';
 
@@ -374,11 +372,6 @@
         </div>
 
         <p class="daily-goal"><strong>你的目标：</strong>${esc(level.goal || '')}</p>
-
-        <div class="daily-clues">
-          <h3>决定前可确认的线索</h3>
-          <ul>${clueItems}</ul>
-        </div>
 
         <p class="daily-prompt">${esc(level.prompt || '')}</p>
 

@@ -75,6 +75,8 @@ def main():
                 pg.goto(BASE_URL, wait_until='networkidle')
                 expect(pg.locator('.daily-stage-card')).to_be_visible()
                 assert '你是否遭遇过：' not in pg.content(), 'Survey prefix leaked onto homepage'
+                assert '决定前可确认的线索' not in pg.content(), 'Clue hint block should not render on play card'
+                assert pg.locator('.daily-clues').count() == 0, 'Clue container should not render on play card'
                 assert_no_overflow(pg, f'home {vw}x{vh}')
                 assert_hit_targets(pg, ['.daily-choice-btn'])
                 ctx.close()
@@ -109,6 +111,7 @@ def main():
 
             expect(page.locator('.daily-result')).to_be_visible()
             expect(page.locator('.daily-score-num')).to_contain_text('5')
+            assert '仅作本期通关纪念与分享装饰' not in page.content(), 'Companion boilerplate note should not render'
             assert_no_overflow(page, 'result 390x844')
             assert_hit_targets(page, ['.daily-result-actions .daily-btn', '.daily-clue-submit .daily-btn'])
 

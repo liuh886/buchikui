@@ -1,6 +1,14 @@
 # Buchikui Agent Contract
 
-## Current portrait implementation (2026-10-24)
+## Approved next-product direction (2026-11-15; design target, not current runtime)
+
+The user has approved a **Game-first Daily 5** redesign: five real consumer purchase-decision levels per day; YES = buy/accept this specific offer; NO = decline; first decision scores; a source-backed evidence reveal follows; all five can be completed and shared as an unspoiled challenge. The product must also reveal overlooked *good* purchases. See [Game-first PRD](docs/game-first-prd.md), [Episode 001](tasks/game-first/episode-001.md), and [execution plan](tasks/game-first/execution-plan.md).
+
+This is an **authorized next-version target, not a claim that the existing self-report questionnaire has changed**. Do not add answer/scoring to the existing self-report questionnaire, reinterpret old YES/NO answers, erase survey.sqlite, or switch the homepage until a separate implementation and release acceptance PR. For the *current running version*, the self-report rules below remain binding. For the *new Challenge mode*, answers require a clear user goal, pre-purchase observable evidence, and editorial review; negative claims must be individually verifiable. The pilot includes two **blocked** positive-story slots: do not publish imaginary products or fabricate evidence just to fill the daily five.
+
+Priority is a runnable five-level vertical slice and credible reveals, not a defensive repo-wide refactor. Existing CASE URLs, sources, animal art and share mechanisms should be reused. Read the new product documents before any work on the next game experience.
+
+
 
 The user explicitly requested cute consumer portraits, a product-to-architect handoff and implementation.
 Read `docs/consumer-portrait-prd.md` and `docs/consumer-portrait-architecture.md` before changing this version.
